@@ -1,0 +1,132 @@
+\section{Domaines réalistes}
+\label{section:language:realdoms}
+
+Un des moyens les plus répandus pour caractériser une donnée est d'utiliser des
+types. Malheureusement, la majorité des langages interprétés, dont PHP, n'a pas
+de type. Plus précisément, PHP a un système de typage dynamique. Cela signifie
+que les types ne sont pas déclarés syntaxiquement mais déduit lors de
+l'exécution. De plus, PHP a un système de typage faible. Cela signifie qu'il est
+très facile de transtyper une donnée, c'est à dire de passer d'un type vers un
+autre. Par exemple, l'addition de la chaîne de caractères \code{'1.2'} avec
+l'entier \code{4} produit le réel \code{5.2}.
+
+To fill the gap of the absence of information about data, we propose realistic
+domains. Roughly speaking, they refine usual types such as integers, strings,
+arrays, etc., and more complex types. The word ``realistic'' means they are
+intended to specify domains of relevant data for a specific context. For
+example, an email address can be a realistic domain: many software identify
+their users by their email address. It is more than a string, as it matches a
+specific syntax.
+
+Realistic domains have been designed in order to be used in a testing context.
+That is why they have two properties:
+\begin{itemize}
+\item their {\em predicability} allows to verify that a data belongs to the set
+of values described by the realistic domain,
+\item their {\em samplability} allows to generate a value described by the
+realistic domain.
+\end{itemize}
+
+\subsection{Implementation}
+\label{realdom:implementation:sec}
+
+In our PHP implementation, a realistic domain is represented by a class, and the
+properties of predicability and samplability by methods, respectively:
+\begin{itemize}
+\item \code{predicate(\$q)}, where \code{\$q} is the value to validate,
+\item \code{sample(\$sampler)}, where \code{\$sampler} is a numerical sampler:
+it generates only integers and floats, and allows to guide the generation of
+data; for example we will use this numerical sampler to pick a character within
+a given range of characters. For now, the sole numerical sampler available is
+pseudo-random.
+\end{itemize}
+
+\subsection{Hierarchy}
+
+Since realistic domains are implemented as classes and PHP is object-oriented,
+we have inheritance. Consequently, a child realistic domain can inherit and
+refine the properties of its parent. For example, \code{Color} extends
+\code{String}, and \code{Boundinteger} extends \code{Integer}. All realistic
+domains must be children of the \code{Realdom} class.
+
+Figure~\ref{fig:realdom_boundinteger} shows a light implementation of the
+\code{Boundinteger} realistic domain. It extends the \code{Integer} realistic
+domain in \circled{1}. The \code{predicate} property refines the one of its
+parent in \circled{2}, and adds new constraints in \circled{3} and \circled{4}.
+
+\begin{figure}
+\begin{alltt}\footnotesize\centering
+\begin{tabular}{l}
+class Boundinteger extends Integer /* \(\circled{1} \)*/ \{ \\
+\\
+    protected \$_arguments = array( \\
+        'Constinteger lower' => PHP_INT_MIN, /* \(\circled{5}\) */ \\
+        'Constinteger upper' => PHP_INT_MAX  /* \(\circled{6}\) */ \\
+    ); \\
+\\
+    public function predicate ( \$q ) \{ \\
+\\
+        return    parent::predicate(\$q)                     /* \(\circled{2}\) */ \\
+               && \$q >= \$this['lower']->getConstantValue()  /* \(\circled{3}\) */ \\
+               && \$q <= \$this['upper']->getConstantValue(); /* \(\circled{4}\) */ \\
+    \} \\
+\\
+    public function sample ( \$sampler ) \{ \\
+\\
+        return \$sampler->getInteger( \\
+            \$this['lower']->sample(\$sampler), \\
+            \$this['upper']->sample(\$sampler) \\
+        ); \\
+    \} \\
+\}
+\end{tabular}
+\end{alltt}
+\caption{\label{fig:realdom_boundinteger} Light implementation of the
+\code{Boundinteger} realistic domain. We can see the inheritance, the properties
+\code{predicate} and \code{sample}, the refinement and the parameters
+declaration.}
+\end{figure}
+
+\subsection{Parameters}
+
+Similarly to functions, realistic domains are parameterizable. The data received
+by a realistic domain are called its arguments. Parameters are very useful when
+we want to represent complex structures, such as nested arrays, graphs,
+automata, trees, etc.
+
+For example, the realistic domain \code{string(0x61, 0x7a, boundinteger(4, 12))}
+represents a string whose size is between 4 and 12 and whose character
+code-points are between \code{0x61} and \code{0x7a}. We can write
+\code{4..12}, which is a syntactic sugar.
+
+When we describe the parameters of a realistic domain, we can indicate their
+type. This type is expressed through the name of one or many
+realistic domains. Indeed, a realistic domain can accept many sorts of
+arguments, and is able to make the translation from one type to another by
+itself.  We stay close to the spirit of PHP. For example, for the realistic
+domain \code{String}, its two first parameters can be integers or characters.
+Then, we are allow to write \code{string('a', 'z', 4..12)} without any error,
+but \code{string(true, 'z', 4..12)} will throw an error.
+
+The Figure~\ref{fig:realdom_boundinteger} shows the declaration of two
+parameters: \code{lower} in \circled{5}, and \code{upper} in \circled{6}.
+
+\subsection{Classification}\label{sec:domain}
+
+Inheritance is one classification. A transversal one is the use of interfaces.
+They help to characterize the ``landscape'' of realistic domains. The most
+interesting interfaces are:
+\begin{itemize}
+\item \code{Constant}, to represent an immutable realistic domain with only one
+value, such as \code{42}, \code{true}, etc.,
+\item \code{Interval}, to represent an interval by a lower and an upper bound,
+which can be reduce dynamically (at runtime),
+\item \code{Finite}, to represent a realistic domain with a countable number of
+values,
+\item \code{Nonconvex}, to represent a realistic domain with holes, i.e. where
+values have been excluded, and thus, can no longer be generated,
+\item \code{Enumerable}, to represent a realistic domain that can be enumerated.
+\end{itemize}
+
+Thus, a realistic domain that implements the \code{Interval} and \code{Nonconvex}
+interfaces represents an interval with holes.

@@ -1,0 +1,78 @@
+             The Art of Contract-based Testing in PHP
+                                ou
+            Principle of Contract-based Testing in PHP
+
+
+
+Introduction
+
+    Problématique et contexte
+
+    (état de l'art distillé dans les chapitres de contributions)
+    (liste des contributions détaillées)
+    (annonce de plan)
+
+Langage de spécification/contrat pour PHP              (ICTSS'11)
+
+    (introduction)
+
+    État de l'art
+
+    Domaines réalistes
+        theory
+        implementation
+        hierarchy
+        parameters
+        classification
+        (standard library)
+
+    Praspel
+        syntaxe
+        sémantique
+
+    Synthèse
+
+Génération de données de test
+
+    (introduction)
+
+    État de l'art
+
+    Algorithme de génération général
+
+    Algorithme de génération sur les grammaires        (AMOST'12)
+        aléatoire exhaustif borné, couverture
+
+    Algorithme de génération sur les tableaux          (CSTVA'13)
+
+    Synthèse
+
+Génération de tests unitaires automatiques
+
+    (introduction)
+
+    État de l'art
+
+    Critère de couvertures sur le code et les contrats (SoSyM'13)
+
+    Synthèse
+
+Expérimentations
+
+    Suite de l'expérimentation de SoSyM'13
+
+Conclusions et perspectives
+
+
+
+
+
+Utiliser le style “thloria”, ou trouver un style. Demander à Christophe Guyot ?
+Voir HAL pour des exemples de thèses (TEL = Thèse En Ligne)
+Voir la thèse d'Helena.
+
+
+
+chapter
+    section
+        subsection

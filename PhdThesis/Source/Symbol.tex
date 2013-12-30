@@ -1,0 +1,66 @@
+% Style.
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\mem}[1]{\mathit{#1}}
+\newcommand{\m}[1]{\mathcal{#1}}
+\newcommand{\fig}[3]{
+    \begin{center}
+    \resizebox{#1}{#2}{
+        \begin{tikzpicture}[>=latex,line join=bevel]
+        \pgfsetlinewidth{1bp}
+        \input{Figures/#3}
+        \end{tikzpicture}
+    }
+    \end{center}
+}
+\newcommand{\circled}[1]{
+\protect\tikz[baseline=(char.base)]{
+\protect\node[shape=circle,draw,inner sep=1pt](char){\small #1};}}
+
+% Shortcut.
+\def\eg{\textit{e.g. }}
+\def\ie{\textit{i.e. }}
+\def\sc{\textsc}
+\def\tb{\textbf}
+\def\ti{\em}
+\def\via{\textit{via }}
+
+% Praspel.
+\def\abehavior{\code{@be\-ha\-vior}\xspace}
+\def\adefault{\code{@de\-fault}\xspace}
+\def\adescription{\code{@desc\-rip\-tion}\xspace}
+\def\aensures{\code{@en\-su\-res}\xspace}
+\def\ainvariant{\code{@in\-va\-riant}\xspace}
+\def\ais{\code{@is}\xspace}
+\def\aolde{\code{$\bslash$old($e$)}\xspace}
+\def\aold{\code{$\bslash$old}\xspace}
+\def\apredicate{\code{@pre\-di\-ca\-te}\xspace}
+\def\apred{\code{$\bslash$pred($p$)}\xspace}
+\def\arequires{\code{@re\-qui\-res}\xspace}
+\def\aresult{\code{$\bslash$result}\xspace}
+\def\athrowable{\code{@thro\-wa\-ble}\xspace}
+\def\false{\texttt{false}}
+\def\true{\texttt{true}}
+
+% Math.
+\def\N{\mathbb{N}}
+\def\R{\mathbb{R}}
+\def\Q{\mathbb{Q}}
+\def\Z{\mathbb{Z}}
+\def\U{\mathcal{U}}
+\def\O{\mathcal{O}}
+\def\disjunion{\uplus}
+\def\Intersection{\bigcap}
+\def\Land{\bigwedge}
+\def\Lor{\bigvee}
+\def\Union{\bigcup}
+\def\intersection{\cap}
+\def\land{\wedge}
+\def\lor{\vee}
+\def\mvert{$\;\;|\;\;$}
+\def\union{\cup}
+
+% Others.
+\def\aand{\code{and}\xspace}
+\def\aor{\code{or}\xspace}
+\def\atsign{\code{@}\xspace}
+\def\bslash{\symbol{`\\}}
