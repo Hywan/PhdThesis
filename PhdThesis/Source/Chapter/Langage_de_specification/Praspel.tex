@@ -1,2 +1,161 @@
 \section{Praspel}
 \label{section:language:praspel}
+
+Praspel est un acronyme anglais signifiant {\em PHP Realistic Annotation and
+SPEcification Language}. C'est un langage et un framework pour du test à partir
+de contrats en PHP (voir la
+Section~\ref{subsection:language:contract-based_testing}). Ce langage s'appuye
+sur les domaines réalistes.
+
+Praspel est un {\em langage d'annotation} car il s'écrit dans les commentaires
+du code source du programme. PHP comprend trois catégories de commentaires~: en
+ligne (avec \code{//} ou \code{\#}), multi-lignes (entre \code{/*} et \code{*/})
+et en bloc (entre \code{/**} et \code{*/}). C'est dans cette dernière catégorie
+que nous écrirons Praspel, catégorie qui est culturellement dédiée à l'écriture
+des annotations, documentations API etc.
+
+Praspel est un {\em Behavioral Interface Specification Language} (BISL) basé sur
+les contrats. Un {\em contrat} est un modèle du comportement du code, décrit à
+travers des contraintes formelles, alors appelées clauses, comme les
+préconditions, les postconditions et les invariants. Ces contraintes sont
+généralement localisées dans le code source autour des données. Dans le cas de
+Praspel, les invariants sont localisés sur les attributs des classes et les
+préconditions avec les postconditions sont localisées sur les paramètres des
+méthodes. La sémantique d'un contrat est la suivante~:
+
+\begin{itemize}
+
+\item l'appelant de la méthode s'engage à satisfaire la précondition~;
+
+\item seulement dans ce cas, la méthode appelée s'engage à satisfaire sa
+postcondition~;
+
+\item les invariants, quant à eux, doivent être satisfait avant et après
+l'exécution de la méthode.
+
+\end{itemize}
+
+Le reste de la section décrit les parties de la grammaire de Praspel, en forme
+normale.
+
+\subsection{Clauses}
+\label{subsection:language:clauses}
+
+\def\gsep{$\quad::=\quad$}
+\def\mvert{$\;\;|\;\;$}
+\newcommand{\token}[1]{\underline{\code{php-#1}}}
+\newcommand{\grule}[1]{\textit{#1}}
+
+\begin{figure}
+\centering
+\begin{tabular}{rcl}
+\grule{specification} & \gsep &
+    \grule{attribute-clauses} \mvert \grule{method-clauses} \\
+
+\grule{attribute-clauses} & \gsep &
+    \grule{invariant-clause}$^?$ \\
+
+\grule{method-clauses} & \gsep &
+    $($ \grule{description-clause} \code{;} $)^?$ \\ & &
+    \grule{rbet-clauses} \\
+
+\grule{rbet-clauses} & \gsep &
+    $($ \grule{requires-clause} \code{;} $)^?$ \\ & &
+    $($ \\ & &
+    $\quad\,\,($ \grule{behavior-clause}$^+$ \grule{default-clause}$^?$ $)^?$ \\ & &
+    \mvert $($ \grule{ensures-clause} \code{;} $)^?$
+    $($ \grule{throwable-clause} \code{;} $)^?$ \\ & &
+    $)$ \\
+\end{tabular}
+
+\caption{\label{figure:language:grammar_part0} Grammaire de Praspel en forme
+normale~: les règles de plus haut niveau.}
+
+\end{figure}
+
+\begin{figure}
+\centering
+\begin{tabular}{rcl}
+\grule{invariant-clause} & \gsep &
+    \ainvariant \grule{expression} \\
+
+\grule{requires-clause} & \gsep &
+    \arequires \grule{expression} \\
+
+\grule{behavior-clause} & \gsep &
+    \abehavior \token{identifier} \code{\{} \\ & &
+    \quad $($ \grule{description-clause} \code{;} $)^?$ \\ & &
+    \quad \grule{rbet-clauses} \\ & &
+    \code{\}} \\
+
+\grule{default-clause} & \gsep &
+    \adefault \code{\{} \\ & &
+    \quad $($ \grule{description-clause} \code{;} $)^?$ \\ & &
+    \quad $($ \grule{ensures-clause} \code{;} $)^?$ \\ & &
+    \quad $($ \grule{throwable-clause} \code{;} $)^?$ \\ & &
+    \code{\}} \\
+
+\grule{ensures-clause} & \gsep &
+    \aensures \grule{expression} \\
+
+\grule{throwable-clause} & \gsep &
+    \athrowable \grule{exceptional-expression} \\
+
+\grule{description-clause} & \gsep &
+    \adescription \token{string} \\
+\end{tabular}
+
+\caption{\label{figure:language:grammar_part1} Grammaire de Praspel en forme
+normale~: les règles des clauses.}
+
+\end{figure}
+
+Un contrat est composé de clauses, dont la syntaxe est décrite dans les
+Figures~\ref{figure:language:grammar_part0},
+\ref{figure:language:grammar_part1}, \ref{figure:language:grammar_part2} et
+\ref{figure:language:grammar_part3}. Dans ces figures, le style \code{token}
+représente un lexème de la grammaire de Praspel, \grule{rule} représente une
+entité syntaxique (règle) de la grammaire, et \token{token} représente un lexème
+de la grammaire de PHP (pour être le plus proche possible du langage manipulé
+par le développeur). La notation $e^r_s$ signifie que le motif $e$ est répété
+$r$ fois, et séparé par $s$. $r$ peut être $?$, $+$ ou $*$, respectivement pour
+0 ou 1 fois, 1 ou plusieurs fois et 0 ou plusieurs fois. Si $s$ n'est pas vide,
+alors $s$ doit être un lexème.
+
+\begin{figure}
+\begin{pre}
+class \(C\) \{ \\
+\\
+    /** \\
+     * @invariant \(I\); \\
+     */ \\
+    protected \$a; \\
+\\
+    /** \\
+     * @requires \(R\); \\
+     * @behavior \(\alpha\) \{ \\
+     *     @requires  \(R\sb{\alpha}\); \\
+     *     @behavior \(\beta\) \{ \\
+     *         @requires  \(R\sb{\alpha.\beta}\); \\
+     *         @ensures   \(E\sb{\alpha.\beta}\); \\
+     *         @throwable \(T\sb{\alpha.\beta}\); \\
+     *     \} \\
+     * \} \\
+     * @behavior \(\gamma\) \{ \\
+     *     @requires  \(R\sb{\gamma}\); \\
+     *     \(\dots\) \\
+     * \} \\
+     * @default \{ \\
+     *     @ensures   \(E\sb{\m{D}}\); \\
+     *     @throwable \(T\sb{\m{D}}\); \\
+     * \} \\
+     */ \\
+    public function f ( ) \{ \} \\
+\}
+\end{pre}
+
+\caption{\label{figure:language:typical_contract} Un contrat Praspel avec toutes
+les clauses.}
+
+\end{figure}
+
