@@ -13,21 +13,21 @@
 \usepackage{tikz}
   \usetikzlibrary{snakes,arrows,shapes,automata}
 \usepackage{url}
-%  \hypersetup{
-%      backref=true,
-%      pagebackref=true,
-%      hyperindex=true,
-%      colorlinks=true,
-%      breaklinks=true,
-%      urlcolor= black,
-%      linkcolor= black,
-%      citecolor= black,
-%      bookmarks=true,
-%      bookmarksopen=true
-%      %pdftitle={Hello Gordon},
-%      %pdfauthor={Ivan Enderlin},
-%      %pdfsubject={Foobar}
-%  }
+\usepackage[linktoc=all]{hyperref}
+  \hypersetup{
+      backref       = true,
+      pagebackref   = true,
+      hyperindex    = true,
+      colorlinks    = true,
+      breaklinks    = true,
+      urlcolor      = black,
+      linkcolor     = black,
+      citecolor     = black,
+      bookmarks     = true,
+      bookmarksopen = true
+  }
+\usepackage{minitoc}
+  \renewcommand{\mtctitle}{Table des matières}
 
 \everymath{\displaystyle}
 
@@ -47,9 +47,6 @@
 %\newenvironment{principle}[1][]{\refstepcounter{principle}\medskip\noindent
 %\tb{Principe~\theprinciple.} {\ti #1} \\ \rmfamily}{\medskip}
 
-\setcounter{tocdepth}{3}
-\setcounter{secnumdepth}{3}
-%\renewcommand{\mtctitle}{Sommaire}
 
 \newcommand{\HRule}{\rule{\linewidth}{.5mm}}
 \newcommand{\blankpage}{\newpage\thispagestyle{empty}\mbox{}}
