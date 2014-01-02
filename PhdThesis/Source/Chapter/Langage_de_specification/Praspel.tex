@@ -1,10 +1,15 @@
+\def\gsep{$\quad::=\quad$}
+\def\mvert{$\;\;|\;\;$}
+\newcommand{\token}[1]{\underline{\code{php-#1}}}
+\newcommand{\grule}[1]{\textit{#1}}
+
 \section{Praspel}
 \label{section:language:praspel}
 
 Praspel est un acronyme anglais signifiant {\em PHP Realistic Annotation and
-SPEcification Language}. C'est un langage et un framework pour du test à partir
-de contrats en PHP (voir la
-Section~\ref{subsection:language:contract-based_testing}). Ce langage s'appuye
+SPEcification Language}. C'est un langage et un framework de test à partir de
+contrats en PHP (voir la
+Section~\ref{subsection:language:contract-based_testing}). Ce langage repose
 sur les domaines réalistes.
 
 Praspel est un {\em langage d'annotation} car il s'écrit dans les commentaires
@@ -41,11 +46,6 @@ normale.
 \subsection{Clauses}
 \label{subsection:language:clauses}
 
-\def\gsep{$\quad::=\quad$}
-\def\mvert{$\;\;|\;\;$}
-\newcommand{\token}[1]{\underline{\code{php-#1}}}
-\newcommand{\grule}[1]{\textit{#1}}
-
 \begin{figure}
 \centering
 \begin{tabular}{rcl}
@@ -69,7 +69,7 @@ normale.
 \end{tabular}
 
 \caption{\label{figure:language:grammar_part0} Grammaire de Praspel en forme
-normale~: les règles de plus haut niveau.}
+normale~: les entités syntaxiques de plus haut niveau.}
 
 \end{figure}
 
@@ -106,7 +106,7 @@ normale~: les règles de plus haut niveau.}
 \end{tabular}
 
 \caption{\label{figure:language:grammar_part1} Grammaire de Praspel en forme
-normale~: les règles des clauses.}
+normale~: les entités syntaxiques des clauses.}
 
 \end{figure}
 
@@ -134,7 +134,7 @@ class \(C\) \{ \\
     /** \\
      * @requires \(R\); \\
      * @behavior \(\alpha\) \{ \\
-     *     @requires  \(R\sb{\alpha}\); \\
+     *     @requires \(R\sb{\alpha}\); \\
      *     @behavior \(\beta\) \{ \\
      *         @requires  \(R\sb{\alpha.\beta}\); \\
      *         @ensures   \(E\sb{\alpha.\beta}\); \\
@@ -142,7 +142,7 @@ class \(C\) \{ \\
      *     \} \\
      * \} \\
      * @behavior \(\gamma\) \{ \\
-     *     @requires  \(R\sb{\gamma}\); \\
+     *     @requires \(R\sb{\gamma}\); \\
      *     \(\dots\) \\
      * \} \\
      * @default \{ \\
@@ -154,8 +154,75 @@ class \(C\) \{ \\
 \}
 \end{pre}
 
-\caption{\label{figure:language:typical_contract} Un contrat Praspel avec toutes
-les clauses.}
+\caption{\label{figure:language:typical_contract} Un contrat Praspel typique
+avec toutes les clauses.}
 
 \end{figure}
 
+Les entités syntaxiques \grule{attribute-clauses} et \grule{method-clauses} de
+la Figure~\ref{figure:language:grammar_part0} définissent respectivement les
+clauses annotant les attributs d'une classe et ses méthodes. Toutes ces clauses
+introduisent des expressions Praspel, détaillées dans la
+Section~\ref{subsection:language:expressions}. L'entité syntaxique
+\grule{method-clauses} montre l'ordre des clauses en forme normale. La grammaire
+actuelle de Praspel est bien plus libérale~: elle accepte des clauses dans
+n'importe quel ordre mais pour faciliter le raisonnement, nous ne présenterons
+et ne travaillerons que sur une forme normale.
+
+La Figure~\ref{figure:language:typical_contract} montre un contrat sous sa forme
+la plus typique~: une classe \code{C} avec un attribut \code{a} et une méthode
+\code{f}. La clause \ainvariant est localisée juste avant l'attribute \code{a}.
+Les invariants sont vérifiés avant et après l'exécution du système. Les autres
+clauses sont des clauses de méthode. Elles sont localisées juste avant l'en-tête
+des méthodes.
+
+La précondition d'une méthode est exprimée à l'aide de la clause \arequires, la
+postcondition à l'aide de la clause \aensures. La précondition exprime des
+contraintes sur le pré-état du système, alors que la postcondition exprime des
+contraintes sur le post-état du système. Afin de modifier l'état du système, il
+doit être exécuté en appelant une méthode. La clause \aensures représente une
+postcondition normale, mais le système peut aussi lever une exception et être
+alors placé dans un post-état exceptionnel. La clause \athrowable exprime des
+contraintes sur cet état particulier~: elle exprime les conditions sous
+lesquelles des exceptions peuvent être levées par la méthode et aussi le
+post-état du système associé (par exemple une exception a été levée mais le
+système est suffisamment propre pour tenter une nouvelle exécution). La syntaxe
+de $T$ ($T_{\alpha.\beta}$ et $T_\m{D}$) dans la
+Figure~\ref{figure:language:typical_contract} est définie par l'entité
+syntaxique \grule{exceptional-expression} dans la
+Figure~\ref{figure:language:grammar_part2}. $T$ peut être \code{$T_C$ with
+$T_E$}, où $T_C$ est une liste de nom de classes asssociée à un identifiant, et
+$T_E$ est une expression, appelée {\em postcondition exceptionnelle}, dont la
+syntaxe est détaillée dans la Section~\ref{subsection:language:expressions}.
+Tous les identifiants définis dans $T_C$ peuvent apparaître dans $T_E$. La
+sémantique est la suivante~: si l'exception levée est une instance d'une classe
+représentant une exception listée dans $T_C$, alors elle est assignée à
+l'identifiant associée et la postcondition exceptionnelle $T_E$ doit être
+satisfaite.
+
+Une méthode peut avoir différents comportements relatifs à ses arguments et
+l'état du système. Praspel propose la clause \abehavior pour représenter un
+comportement, identifié par un nom, et peut potentiellement contenir une
+description informelle, grâce à la clause \adescription~; ces deux informations
+peuvent s'avérer très utiles pour offrir un retour à l'utilisateur. Les clauses
+\arequires, \aensures, \athrowable et \abehavior elle-même peuvent apparaître à
+l'intérieur d'une clause \abehavior. Cette structure décrit des comportements
+imbriqués, comme illustré dans la Figure~\ref{figure:language:typical_contract}
+dans laquelle le comportement $\beta$ est imbriqué dans le comportement
+$\alpha$. À côté de ça, nous pouvons également décrire des comportements
+alternatifs en juxtaposant des clauses \abehavior. Ceci est toujours illustré
+dans la Figure~\ref{figure:language:typical_contract} avec le comportement
+$\gamma$, frère du comportement $\alpha$. Les comportements sont, dans la
+pratique, mutuellement exclusifs. Cependant, la syntaxe autorise l'écriture de
+comportement non-déterministe.
+
+Afin d'«~activer~» un comportement donné, sa clause \arequires doit être
+satisfaite. La clause \adefault est strictement équivalente à une clause
+\abehavior avec une clause \arequires implicite décrivant la conjonction de
+toutes les négations des clauses \arequires des comportements frères précédents.
+
+Après l'exécution, le système est dans le post-état. Nous faisons face à deux
+situations. Si c'est un post-état normal, alors la clause \aensures du
+comportement courant doit être satisfaite. Si c'est un post-état exceptionel,
+alors la clause \athrowable doit être satisfaite, \ie les deux $T_C$ et $T_E$
+doivent être satisfait, comme décrit précédemment.
