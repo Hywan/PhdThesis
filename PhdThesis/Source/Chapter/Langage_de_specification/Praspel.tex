@@ -19,14 +19,14 @@ commentaires~: en ligne (avec \code{//} ou \code{\#}), multi-lignes (entre
 cette dernière catégorie que nous écrirons Praspel, catégorie qui est
 culturellement dédiée à l'écriture des annotations, documentations API etc.
 
-Praspel est un \inenglish{Behavioral Interface Specification Language} (BISL)
-basé sur les contrats. Un {\strong contrat} est un modèle du comportement du
-code, décrit à travers des contraintes formelles, alors appelées clauses, comme
-les préconditions, les postconditions et les invariants. Ces contraintes sont
-généralement localisées dans le code source autour des données. Dans le cas de
-Praspel, les invariants sont localisés sur les attributs des classes et les
-préconditions avec les postconditions sont localisées sur les paramètres des
-méthodes. La sémantique d'un contrat est la suivante~:
+Praspel est un \inenglish{Behavioral Interface Specification Language} ({\strong
+BISL}) basé sur les contrats. Un {\strong contrat} est un modèle du comportement
+du code, décrit à travers des contraintes formelles, alors appelées {\strong
+clauses}, comme les préconditions, les postconditions et les invariants. Ces
+contraintes sont généralement localisées dans le code source autour des données.
+Dans le cas de Praspel, les invariants sont localisés sur les attributs des
+classes et les préconditions avec les postconditions sont localisées sur les
+paramètres des méthodes. La sémantique d'un contrat est la suivante~:
 
 \begin{itemize}
 
@@ -134,6 +134,7 @@ class \(C\) \{ \\
     /** \\
      * @requires \(R\); \\
      * @behavior \(\alpha\) \{ \\
+     *     @description 'Apply the \(\alpha\) process.'; \\
      *     @requires \(R\sb{\alpha}\); \\
      *     @behavior \(\beta\) \{ \\
      *         @requires  \(R\sb{\alpha.\beta}\); \\
@@ -146,6 +147,7 @@ class \(C\) \{ \\
      *     \(\dots\) \\
      * \} \\
      * @default \{ \\
+     *     @description 'Apply the fallback process.'; \\
      *     @ensures   \(E\sb{\m{D}}\); \\
      *     @throwable \(T\sb{\m{D}}\); \\
      * \} \\
@@ -171,61 +173,64 @@ et ne travaillerons que sur une forme normale.
 
 La Figure~\ref{figure:language:typical_contract} montre un contrat sous sa forme
 la plus typique~: une classe \code{C} avec un attribut \code{a} et une méthode
-\code{f}. La clause \ainvariant est localisée juste avant l'attribute \code{a}.
+\code{f}. La clause \ainvariant est localisée juste avant l'attribut \code{a}.
 Les invariants sont vérifiés avant et après l'exécution du système. Les autres
 clauses sont des clauses de méthode. Elles sont localisées juste avant l'en-tête
 des méthodes.
 
 La précondition d'une méthode est exprimée à l'aide de la clause \arequires, la
 postcondition à l'aide de la clause \aensures. La précondition exprime des
-contraintes sur le pré-état du système, alors que la postcondition exprime des
-contraintes sur le post-état du système. Afin de modifier l'état du système, il
-doit être exécuté en appelant une méthode. La clause \aensures représente une
-postcondition normale, mais le système peut aussi lever une exception et être
-alors placé dans un post-état exceptionnel. La clause \athrowable exprime des
-contraintes sur cet état particulier~: elle exprime les conditions sous
-lesquelles des exceptions peuvent être levées par la méthode et aussi le
-post-état du système associé (par exemple une exception a été levée mais le
-système est suffisamment propre pour tenter une nouvelle exécution). La syntaxe
-de $T$ ($T_{\alpha.\beta}$ et $T_\m{D}$) dans la
-Figure~\ref{figure:language:typical_contract} est définie par l'entité
+contraintes sur le {\strong pré-état} du système, alors que la postcondition
+exprime des contraintes sur le {\strong post-état} du système. Afin de modifier
+l'état du système, il doit être exécuté en appelant une méthode. La clause
+\aensures représente une {\strong postcondition normale}, mais le système peut
+aussi lever une exception et être alors placé dans un {\strong post-état
+exceptionnel}. La clause \athrowable exprime des contraintes sur cet état
+particulier~: elle exprime les conditions sous lesquelles des exceptions peuvent
+être levées par la méthode et aussi le post-état du système associé (par exemple
+une exception a été levée mais le système est suffisamment propre pour tenter
+une nouvelle exécution). La syntaxe de $T$ ($T_{\alpha.\beta}$ et $T_\m{D}$ dans
+la Figure~\ref{figure:language:typical_contract}) est définie par l'entité
 syntaxique \grule{exceptional-expression} dans la
 Figure~\ref{figure:language:grammar_part2}. $T$ peut être \code{$T_C$ with
 $T_E$}, où $T_C$ est une liste de nom de classes asssociée à un identifiant, et
-$T_E$ est une expression, appelée {\em postcondition exceptionnelle}, dont la
-syntaxe est détaillée dans la Section~\ref{subsection:language:expressions}.
+$T_E$ est une expression, appelée {\strong postcondition exceptionnelle}, dont
+la syntaxe est détaillée dans la Section~\ref{subsection:language:expressions}.
 Tous les identifiants définis dans $T_C$ peuvent apparaître dans $T_E$. La
 sémantique est la suivante~: si l'exception levée est une instance d'une classe
 représentant une exception listée dans $T_C$, alors elle est assignée à
 l'identifiant associée et la postcondition exceptionnelle $T_E$ doit être
 satisfaite.
 
-Une méthode peut avoir différents comportements relatifs à ses arguments et
-l'état du système. Praspel propose la clause \abehavior pour représenter un
-comportement, identifié par un nom, et peut potentiellement contenir une
-description informelle, grâce à la clause \adescription~; ces deux informations
-peuvent s'avérer très utiles pour offrir un retour à l'utilisateur. Les clauses
-\arequires, \aensures, \athrowable et \abehavior elle-même peuvent apparaître à
-l'intérieur d'une clause \abehavior. Cette structure décrit des comportements
-imbriqués, comme illustré dans la Figure~\ref{figure:language:typical_contract}
-dans laquelle le comportement $\beta$ est imbriqué dans le comportement
-$\alpha$. À côté de ça, nous pouvons également décrire des comportements
-alternatifs en juxtaposant des clauses \abehavior. Ceci est toujours illustré
-dans la Figure~\ref{figure:language:typical_contract} avec le comportement
-$\gamma$, frère du comportement $\alpha$. Les comportements sont, dans la
-pratique, mutuellement exclusifs. Cependant, la syntaxe autorise l'écriture de
+Une méthode peut avoir différents {\strong comportements} relatifs à ses
+arguments et l'état du système. Praspel propose la clause \abehavior pour
+représenter un comportement, identifié par un nom, et peut potentiellement
+contenir une description informelle, grâce à la clause \adescription~; ces deux
+informations peuvent s'avérer très utiles pour offrir un retour à l'utilisateur.
+Les clauses \arequires, \aensures, \athrowable et \abehavior elle-même peuvent
+apparaître à l'intérieur d'une clause \abehavior. Cette structure décrit des
+comportements {\strong imbriqués}, comme illustré dans la
+Figure~\ref{figure:language:typical_contract} dans laquelle le comportement
+$\beta$ est imbriqué dans le comportement $\alpha$. À côté de ça, nous pouvons
+également décrire des comportements {\strong alternatifs} en juxtaposant des
+clauses \abehavior. Ceci est toujours illustré dans la
+Figure~\ref{figure:language:typical_contract} avec le comportement $\gamma$,
+frère du comportement $\alpha$. Les comportements sont, dans la pratique,
+{\strong mutuellement exclusifs}. Cependant, la syntaxe autorise l'écriture de
 comportement non-déterministe.
 
-Afin d'«~activer~» un comportement donné, sa clause \arequires doit être
-satisfaite. La clause \adefault est strictement équivalente à une clause
+La clause \adefault est strictement équivalente à une clause
 \abehavior avec une clause \arequires implicite décrivant la conjonction de
 toutes les négations des clauses \arequires des comportements frères précédents.
+Par exemple, la clause \arequires de \adefault pourrait mathématiquement
+s'écrire $\neg R_\alpha \land \neg R_\gamma$.
 
-Après l'exécution, le système est dans le post-état. Nous faisons face à deux
-situations. Si c'est un post-état normal, alors la clause \aensures du
-comportement courant doit être satisfaite. Si c'est un post-état exceptionel,
-alors la clause \athrowable doit être satisfaite, \ie les deux $T_C$ et $T_E$
-doivent être satisfait, comme décrit précédemment.
+Afin d'«~activer~» un comportement donné, sa clause \arequires doit être
+satisfaite. Après l'exécution, le système est dans le post-état. Nous faisons
+face à deux situations. Si c'est un post-état normal, alors la clause \aensures
+du dernier comportement activé doit être satisfaite. Si c'est un post-état
+exceptionel, alors c'est la clause \athrowable qui doit être satisfaite, \ie les
+deux $T_C$ et $T_E$ doivent être satisfaits, comme décrit précédemment.
 
 \subsection{Expressions}
 \label{subsection:language:expressions}
@@ -346,28 +351,28 @@ public function generate ( \$seed, \$factor ) \{ ... \}
 réalistes à une variable à travers l'opérateur \code{:}. Une variable est soit
 un attribut de classe, spécifié dans une clause \ainvariant, soit un paramètre
 de la méthode, spécifié dans les autres clauses. La valeur d'une variable peut
-appartenir à différent domaines réalistes si la variable est définie par une
-{\em disjonction} de domaines réalistes, représentée par le mot-clé \code{or}.
-La Figure~\ref{figure:language:short_contract} représente un court contrat
-contenant seulement une précondition (\arequires) et une postcondition
-(\aensures). Cette figure présente la variable \code{seed}, dont le domaine
-réaliste est soit une intervalle entre 7 et 42, soit un intervalle entre 153 et
-256, et la variable \code{factor} avec un seul domaine réaliste qui est un réel
-supérieur ou égal à 1.0 (représenté par un intervalle de réels avec une seule
-borne inférieure 1.0~—~le sucre syntaxique \code{1.2..3.4} est équivalent à
-\code{boundfloat(1.2, 3.4)}~—). Une disjonction de domaines réalistes peut
-contenir n'importe quelle sorte de domaine réaliste~: ce afin de mimer l'aspect
-dynamique de PHP.
+appartenir à plusieurs domaines réalistes si la variable est définie par une
+{\strong disjonction} de domaines réalistes, représentée par le mot-clé
+\code{or}.  La Figure~\ref{figure:language:short_contract} représente un court
+contrat contenant seulement une précondition et une postcondition. Cette figure
+présente la variable \code{seed}, dont le domaine réaliste est soit un
+intervalle entre 7 et 42, soit un intervalle entre 153 et 256, et la variable
+\code{factor} avec un seul domaine réaliste qui est un réel supérieur ou égal à
+1.0 (représenté par un intervalle de réels avec une seule borne inférieure
+1.0~—~le sucre syntaxique \code{1.2..3.4} est équivalent à \code{boundfloat(1.2,
+3.4)}~—). Une disjonction de domaines réalistes peut contenir n'importe quelle
+sorte de domaine réaliste~: ce afin de mimer l'aspect dynamique de PHP.
 
 Si une variable est précédée par le mot-clé \code{let}, cela signifie que c'est
-une variable locale, qui appartient au modèle et non pas au système. C'est très
-utile pour manipuler des représentations intermédiaires de données.
+une variable {\strong locale}, qui appartient au modèle et non pas au système
+(attribut de classe ou paramètre d'une méthode). C'est très utile pour
+manipuler des représentations intermédiaires de données.
 
 La clause \aensures a une particularité~: elle peut contenir la variable
-spéciale \aresult qui représente la valeur retournée par la méthode. Les clauses
-\aensures et \athrowable peuvent également faire référence à la valeur d'une
-variable dans le pré-état grâce à la construction \aold{i}, où $i$ est le nom
-d'une variable.
+spéciale \aresult qui représente la valeur {\strong retournée} par la méthode.
+Les clauses \aensures et \athrowable peuvent également faire {\strong référence}
+à la valeur d'une variable dans le pré-état grâce à la construction \aold{i}, où
+$i$ est le nom d'une variable.
 
 \paragraph{Prédicats.} Toutes les constructions présentent dans Praspel
 supportent la validation et la vérification, \ie par les propriétés de
@@ -376,22 +381,23 @@ introduit dans le langage doit supporter ces deux aspects. Mais ils arrivent que
 certaines choses ne puissent pas être exprimées avec les constructions
 actuelles. C'est pourquoi nous avons la construction «~boîte-noire~» \apred{p},
 où $p$ est du code PHP. Cette construction permet à l'utilisateur d'exprimer des
-contraintes arbitraites en utilisant PHP lui-même au lieu de Praspel. Le code
-$p$ doit être un prédicat en forme normal disjonctive (DNF). La construction
-\apred{\empty} ne supporte que la validation (prédicabilité) et non pas la
-vérification (générabilité). Le prédicat \apred{\code{'isfemtotime() or
+contraintes arbitraires en utilisant PHP lui-même au lieu de Praspel. Le code
+$p$ doit être un prédicat en forme normal {\strong disjonctive} (DNF). La
+construction \apred{p} ne supporte que la validation (prédicabilité) et non pas
+la vérification (générabilité). Le prédicat \apred{\code{'isfemtotime() or
 isarch(64)'}} dans la Figure~\ref{figure:language:short_contract} signifie que
 si le système supporte le temps femto (une variante du temps micro) ou si
 l'architecture est en 64~bits, alors cette partie de la précondition est
 satisfaite.
 
-Parce que la construction \apred{\empty} est une boîte-noire, elle introduit du
-rejet lors de la génération de données. En effet, quand nous générons des
-données, nous les validons auprès des prédicats. Si un prédicat est trop fort,
-il invalide la donnée, et nous en générons de nouvelles. Une telle situation
-peut conduire à une boucle infinie. Heureusement, il existe un nombre maximum
-d'essais (qui est paramétrable). Quand ce nombre est atteint, le générateur
-abandonne.
+Parce que la construction \apred{p} est une boîte-noire, elle introduit du rejet
+lors de la génération de données car les contraintes $p$ ne sont pas
+considérées. En effet, quand nous générons des données, nous les validons auprès
+des prédicats. Si un prédicat est trop fort, il invalide la donnée, et nous en
+générons de nouvelles. Une telle situation peut conduire à une boucle infinie.
+Heureusement, il existe un nombre maximum d'essais (qui est paramétrable). Quand
+ce nombre est atteint, le générateur abandonne et émet une erreur qui sera
+journalisée.
 
 Une tâche récurrente est d'observer et analyser ce que les utilisateurs écrivent
 le plus dans cette construction, et l'extraire dans Praspel afin de supporter
@@ -412,30 +418,32 @@ Section~\ref{section:data:arrays}.
 La description de tableaux est une partie très important de Praspel, contrôlant
 la génération de tableaux présentée dans la Section~\ref{section:data:arrays}.
 
-Dans PHP, un tableau est toujours un {\em tableau associatif} (ou une {\em map},
-ou un {\em dictionnaire}, \ie une collection de paires clé-valeur, où chaque clé
-apparaît au maximum une fois. Les clés peuvent être de type nul, booléen,
-entier, réel ou chaîne de caractères. PHP accepte ces types de clés mais les
-booléens sont transtyper en entier et les réels sont réduits à leur partie
-entière. Les valeurs quant à elles peuvent être de n'importe quel type. Un
-tableau peut être {\em homogène} ou {\em hétérogène}. Dans un tableau homogène,
-toutes les clés ont le même type, ainsi que toutes les valeurs. Dans un tableau
-hétérogène, les clés peuvent avoir des types distincts, tout comme les valeurs.
-Les clés peuvent être {\em auto-incrémentées}, en ajoutant 1 à la dernière clé
-entière, à partir de 0. La {\em longueur} (ou la {\em taille}) d'un tableau est
-son nombre de paires. Un tableau n'a pas de longueur prédéfinie, mais sa
-longueur (stockée en interne par le moteur PHP) peut être connu grâce à la
-fonction PHP \code{count()}. Un tableau n'a également pas de profondeur
-prédéfinie, \ie il peut contenir un nombre arbitraire de tableaux.
+Dans PHP, un tableau est toujours un {\strong tableau associatif} (ou une
+\inenglish{map} ou un {\strong dictionnaire}), \ie une collection de paires
+clé-valeur, où chaque clé apparaît au maximum une fois. Les clés peuvent être de
+type nul, booléen, entier, réel ou chaîne de caractères. PHP accepte ces types
+de clés mais les booléens sont transtypés en entier et les réels sont réduits à
+leur partie entière. Les valeurs quant à elles peuvent être de n'importe quel
+type. Un tableau peut être {\strong homogène} ou {\strong hétérogène}. Dans un
+tableau homogène, toutes les clés ont le même type, ainsi que toutes les
+valeurs. Dans un tableau hétérogène, les clés peuvent avoir des types distincts,
+tout comme les valeurs.  Les clés peuvent être {\strong auto-incrémentées}, en
+ajoutant 1 à la dernière clé entière, à partir de 0. La {\strong longueur} (ou
+la {\strong taille}) d'un tableau est son nombre de paires. Un tableau n'a pas
+de longueur prédéfinie, mais sa longueur (stockée en interne par le moteur PHP)
+peut être connu grâce à la fonction PHP \code{count()}. Un tableau n'a également
+pas de profondeur prédéfinie, \ie il peut contenir un nombre arbitraire de
+sous-tableaux.
 
 Dans Praspel, \code{array($D$, $L$)} dénote le domaine réaliste des tableaux
 dont les domaines et codomaines sont décrits par $D$ et dont la longueur
 appartient à la disjonction $L$ de domaines réalistes d'entiers non-négatifs.
-$D$ est une liste séparée par une virgule, entre \code{[} et \code{]}, de {\em
-descriptions de tableau} de la forme \code{from $K$ to $V$}, où $K$ et $V$ sont
-des disjonctions de domaines réalistes, respectivement pour les clés et les
-valeurs. Quand le mot-clé \code{from} est manquant, nous introduisons le domaine
-réaliste représentant un entier auto-incrémenté démarrant de 0 avec un pas de 1.
+$D$ est une liste séparée par une virgule, entre \code{[} et \code{]}, de
+{\strong descriptions} de paires de la forme \code{from $K$ to $V$}, où $K$ et
+$V$ sont des disjonctions de domaines réalistes, respectivement pour les clés et
+les valeurs. Quand le mot-clé \code{from} est manquant, nous introduisons le
+domaine réaliste représentant un entier auto-incrémenté démarrant de 0 avec un
+pas de 1.
 
 \begin{example}[Tableaux homogènes et hétérogènes]
 
@@ -452,23 +460,22 @@ a4: array([from 0..10 or 20..30 to boolean() or float()], 7)
 L'identifiant \code{a1} est déclaré comme un tableau homogène de booléens avec
 une longueur comprise entre 7 et 42. L'identifiant \code{a2} est déclaré comme
 un tableau homogène de longueur 7, dont les clés sont des entiers entre 0 et 5
-ou simplement 10, et dont les valeurs sont des entiers. L'identifiant \code{a3}
-et \code{a4} sont déclarés comme des tableaux hétérogène. Les deux tableaux
-peuvent contenir des paires $(\code{5}, \code{true})$ et $(\code{15},
+ou simplement 10, et dont les valeurs sont des entiers. Les identifiants
+\code{a3} et \code{a4} sont déclarés comme des tableaux hétérogènes. Les deux
+tableaux peuvent contenir les paires $(\code{5}, \code{true})$ et $(\code{25},
 \code{4.2})$, mais \code{a4} peut contenir la paire $(\code{5}, \code{4.2})$,
 alors que \code{a3} ne peut pas la contenir.
 
 \end{example}
 
-En fait, nous introduisons une {\em forme normale} pour supprimer les
-disjonctions dans les descriptions de tableaux (la construction \code{from
-\ldots to \ldots}), en appliquant itérativement la règle de réécriture
-suivante~:
+En fait, nous introduisons une {\strong forme normale} pour supprimer les
+disjonctions dans les descriptions des paires, en appliquant itérativement la
+règle de réécriture suivante~:
 
 \begin{center}
 \begin{tabular}{c}
 \code{from $F_1$ or $F_2$ to $T_1$ or $T_2$} \\
-$\rightarrow$ \\
+\hline
 \code{from $F_1$ to $T_1$, from $F_1$ to $T_2$, from $F_2$ to $T_1$, from $F_2$ to $T_2$} \\
 \end{tabular}
 \end{center}
