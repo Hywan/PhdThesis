@@ -21,11 +21,16 @@
 \protect\tikz[baseline=(char.base)]{
 \protect\node[shape=circle,draw,inner sep=1pt](char){\small #1};}}
 \newenvironment{pre}{
-    \begin{alltt}\footnotesize\centering
+    \begin{alltt}\centering
     \begin{tabular}{l}
 }{
     \end{tabular}
     \end{alltt}
+}
+\newenvironment{bigpre}{
+    \footnotesize\begin{pre}
+}{
+    \end{pre}
 }
 
 % Shortcut.
