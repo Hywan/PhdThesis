@@ -2,30 +2,31 @@
 \label{section:language:realdoms}
 
 Un des moyens les plus répandus pour caractériser les données manipulées par un
-programme est d'utiliser un système de {\em typage}. Il en existe grossièrement
-deux grandes familles~: {\em statique} et {\em dynamique}, que nous pouvons
-comprendre comme types déclarés syntaxiquement ou déduits lors de la compilation
-ou de l'exécution. Dans tous les cas, le type d'une donnée est connu au moment
-de l'{\em exécution} du programme. Le typage permet de {\em vérifier} la
-cohérence entre les données manipulées. Ainsi, la plupart des systèmes de typage
-ne permettent pas l'addition d'une chaîne de caractères avec un entier, sauf si
-ce système est dit {\em faible}. Prenons l'exemple de PHP qui a un système de
-typage dynamique (déduit à l'exécution) et faible~: l'addition de la chaîne de
-caractères \code{'1.2'} avec l'entier \code{4} produit le réel \code{5.2}. Dans
-ce cas, le langage opère un transtypage, c'est~à~dire qu'à partir de règles
-internes il transforme les données vers un autre type.
+programme est d'utiliser un système de {\strong typage}. Il en existe
+grossièrement deux grandes familles~: {\strong statique} et {\strong dynamique},
+que nous pouvons comprendre comme types déclarés syntaxiquement ou déduits lors
+de la compilation ou de l'exécution. Dans tous les cas, le type d'une donnée est
+connu au moment de l'{\strong exécution} du programme. Le typage permet de
+{\strong vérifier} la cohérence entre les données manipulées. Ainsi, la plupart
+des systèmes de typage ne permettent pas l'addition d'une chaîne de caractères
+avec un entier, sauf si ce système est dit {\strong faible}. Prenons l'exemple
+de PHP qui a un système de typage dynamique (déduit à l'exécution) et faible~:
+l'addition de la chaîne de caractères \code{'1.2'} avec l'entier \code{4}
+produit le réel \code{5.2}. Dans ce cas, le langage opère un transtypage,
+c'est~à~dire qu'à partir de règles internes il transforme les données vers un
+autre type.
 
 Notons que dans un langage comme PHP où les types ne sont pas déclarés
 syntaxiquement, il est culturellement admis d'écrire une documentation API qui
 décrit la nature des données manipulées par le programme, comme ses types.
 
 Nous profitons de la présence quasi permente d'un système de typage dans tous
-les langages pour introduire la notion de {\em domaine réaliste}. Naïvement,
+les langages pour introduire la notion de {\strong domaine réaliste}. Naïvement,
 nous pouvons dire qu'ils raffinent les types usuels comme les entiers, les
 chaînes de caractères, les tableaux etc., ainsi que des types plus complexes. Le
-mot {\em réaliste} signifie qu'ils sont conçus pour spécifier des domaines de
-données pertinentes pour un contexte spécifique. Par exemple, une adresse email
-peut être un domaine réaliste~: plusieurs logiciels identifient leurs
+mot {\strong réaliste} signifie qu'ils sont conçus pour spécifier des domaines
+de données pertinentes pour un contexte spécifique. Par exemple, une adresse
+email peut être un domaine réaliste~: plusieurs logiciels identifient leurs
 utilisateurs avec leur adresse email. Ceci est plus qu'une chaîne de
 caractères~; en effet, ça doit respecter certaines règles, notamment
 syntaxiques.
@@ -35,30 +36,30 @@ test. C'est pourquoi ils ont les deux propriétés suivantes~:
 
 \begin{itemize}
 
-\item la {\em prédicabilité} permet de vérifier qu'une donnée appartient à
+\item la {\strong prédicabilité} permet de vérifier qu'une donnée appartient à
 l'ensemble des valeurs décrites par le domaine réaliste~;
 
-\item la {\em générabilité} permet de générer une valeur décrite par le domaine
-réaliste.
+\item la {\strong générabilité} permet de générer une valeur décrite par le
+domaine réaliste.
 
 \end{itemize}
 
-Ces deux propriétés permettent respectivement de {\em valider} et de {\em
-vérifier} un programme.
+Ces deux propriétés permettent respectivement de {\strong valider} et de
+{\strong vérifier} un programme.
 
 \subsection{Implémentation}
 \label{subsection:language:realdom:implementation}
 
 Nous proposons une implémentation des domaines réalistes en PHP. Dans cette
-implémentation, un domaine réaliste est représenté par une {\em classe}, et ses
-propriétés de prédicabilité et de générabilité par les {\em méthodes}
+implémentation, un domaine réaliste est représenté par une {\strong classe}, et
+ses propriétés de prédicabilité et de générabilité par les {\strong méthodes}
 respectives suivantes~:
 
 \begin{itemize}
 
 \item \code{predicate(\$q)}, où \code{\$q} est la valeur à valider~;
 
-\item \code{sample(\$sampler)}, où \code{\$sampler} est un {\em générateur
+\item \code{sample(\$sampler)}, où \code{\$sampler} est un {\strong générateur
 numérique}~: il génère uniquement des entiers et des réels, et permet de guider
 la génération d'une donnée~; par exemple nous allons utiliser ce générateur
 numérique pour choisir un caractère parmi une plage de caractères donnés.  Pour
@@ -70,33 +71,38 @@ l'instant, le seul générateur numérique disponible est pseudo-aléatoire.
 \label{subsection:language:realdom:hierarchy}
 
 Parce que les domaines réalistes sont implémentés à travers des classes et que
-PHP est orienté objet, nous pouvons faire de l'{\em héritage}. Par conséquent,
-un domaine réaliste enfant peut hériter et {\em rafiner} les propriétés de son
-parent. Par exemple, le domaine réaliste \code{Color} hérite de \code{String},
-et \code{Boundinteger} hérite de \code{Integer}. Tous les domaines réalistes
-doivent être enfant de la classe \code{Realdom}.
+PHP est orienté objet, nous pouvons faire de l'{\strong héritage}. Par
+conséquent, un domaine réaliste enfant peut hériter et {\strong rafiner} les
+propriétés de son parent. Par exemple, le domaine réaliste \code{Color} hérite
+de \code{String}, et \code{Boundinteger} hérite de \code{Integer}. Tous les
+domaines réalistes doivent être enfant de la classe \code{Realdom}.
 
-La Figure~\ref{figure:language:realdom_boundinteger} montre une implémentation
-légère du domaine réaliste \code{Boundinteger}. Il hérite du domaine réaliste
+La Figure~\ref{figure:language:boundinteger} montre une implémentation légère du
+domaine réaliste \code{Boundinteger}. Il hérite du domaine réaliste
 \code{Integer} en \circled{1}. La propriété de prédicabilité rafine celle du
-parent en \circled{2}, et ajoute de nouvelles contraintes en \circled{3} et en
-\circled{4} qui vérifient que \code{\$q} appartient à l'intervalle décrit par le
-domaine réaliste.
+parent en \circled{2}, et ajoute de nouvelles contraintes en \circled{3} qui
+vérifient que \code{\$q} appartient à l'intervalle décrit par le domaine
+réaliste.
 
 \begin{figure}[t]
 \begin{bigpre}
-class Boundinteger extends Integer /* \(\circled{1} \)*/ \{ \\
+class          Boundinteger \\
+    extends    Integer                                      /* \(\circled{1}\) */ \\
+    implements IRealdom\bslash{}Interval,                           /* \(\circled{5}\) */ \\
+               IRealdom\bslash{}Finite,    \\
+               IRealdom\bslash{}Nonconvex, \\
+               IRealdom\bslash{}Enumerable \{ \\
 \\
     protected \$_arguments = array( \\
-        'Constinteger lower' => PHP_INT_MIN, /* \(\circled{5}\) */ \\
-        'Constinteger upper' => PHP_INT_MAX  /* \(\circled{6}\) */ \\
+        'Constinteger lower' => PHP_INT_MIN,                /* \(\circled{4}\) */ \\
+        'Constinteger upper' => PHP_INT_MAX \\
     ); \\
 \\
     public function predicate ( \$q ) \{ \\
 \\
         return    parent::predicate(\$q)                     /* \(\circled{2}\) */ \\
                && \$q >= \$this['lower']->getConstantValue()  /* \(\circled{3}\) */ \\
-               && \$q <= \$this['upper']->getConstantValue(); /* \(\circled{4}\) */ \\
+               && \$q <= \$this['upper']->getConstantValue(); \\
     \} \\
 \\
     public function sample ( \$sampler ) \{ \\
@@ -109,8 +115,8 @@ class Boundinteger extends Integer /* \(\circled{1} \)*/ \{ \\
 \}
 \end{bigpre}
 
-\caption{\label{figure:language:realdom_boundinteger} Implémentation légère du
-domainer réaliste \code{Boundinteger}. Nous pouvons voir l'héritage, les
+\caption{\label{figure:language:boundinteger} Implémentation légère du domainer
+réaliste \code{Boundinteger}. Nous pouvons voir l'héritage, les interfaces, les
 propriétés de prédicabilité et de générabilité à travers les méthodes
 \code{predicate} et \code{sample}, le rafinement et la déclaration des
 paramètres.}
@@ -120,11 +126,11 @@ paramètres.}
 \subsection{Paramèters}
 \label{subsection:language:realdom:parameters}
 
-{\em A l'instar} des fonctions, les domaines réalistes sont {\em paramétrables}.
-Les données reçues par le domaine réaliste sont appelées ses {\em arguments}.
-Les paramètres sont très utiles pour représenter des structures de données
-complexes, telles que des tableaux imbriqués, des graphes, des automates, des
-arbres etc.
+{\em A l'instar} des fonctions, les domaines réalistes sont {\strong
+paramétrables}.  Les données reçues par le domaine réaliste sont appelées ses
+{\strong arguments}. Les paramètres sont très utiles pour représenter des
+structures de données complexes, telles que des tableaux imbriqués, des graphes,
+des automates, des arbres etc.
 
 \begin{example}[Paramétrer un domaine réaliste]
 
@@ -137,7 +143,7 @@ pouvons écrire \code{4..12}, qui est un sucre syntaxique de
 \end{example}
 
 Quand nous décrivons les paramètres d'un domaine réaliste, nous pouvons indiquer
-leur type. Le type est exprimé à travers le ou les noms d'un des domaines
+leurs types. Le type est exprimé à travers le ou les noms d'un des domaines
 réalistes. En effet, un domaine réaliste accepte plusieurs sortes d'arguments et
 est capable de faire la traduction d'un type vers un autre lui-même. Ainsi, nous
 restons proche de la philosophie de PHP. Par exemple, pour le domaine réaliste
@@ -145,18 +151,19 @@ restons proche de la philosophie de PHP. Par exemple, pour le domaine réaliste
 caractères. Alors, nous pouvons écrire \code{string('a', 'z', 4..12)} sans
 produire d'erreur, mais \code{string(true, 'z', 4..12)} produira une erreur.
 
-La Figure~\ref{figure:language:realdom_boundinteger} montre la déclaration de
-deux paramètres~: \code{lower} en \circled{5} et \code{upper} en \circled{6},
-avec respectivement en valeur par défaut \code{PHP\_INT\_MIN} et
-\code{PHP\_INT\_MAX}. Si aucune valeur par défaut n'est précisée, alors le
-paramètre est {\em obligatoire}, sinon il est {\em optionnel}.
+La Figure~\ref{figure:language:boundinteger} montre la déclaration de deux
+paramètres~: \code{lower} et \code{upper} en \circled{4}, avec respectivement en
+valeur par défaut \code{PHP\_INT\_MIN} et \code{PHP\_INT\_MAX}. Si aucune valeur
+par défaut n'est précisée, alors le paramètre est {\strong obligatoire}, sinon
+il est {\strong optionnel}.
 
 \subsection{Classification}
 \label{subsection:language:realdom:classification}
 
-L'héritage est une classification. Une autre classification {\em transversale}
-est possible grâce aux {\em interfaces}. Elles aident à caractériser le
-«~paysage~» des domaines réalistes. Les interfaces les plus intéressantes sont~:
+L'héritage est une classification. Une autre classification {\strong
+transversale} est possible grâce aux {\strong interfaces}. Elles aident à
+caractériser le «~paysage~» des domaines réalistes. Les interfaces les plus
+intéressantes sont~:
 
 \begin{itemize}
 
@@ -166,7 +173,7 @@ seulement une valeur, comme \code{42} (du domaine réaliste \code{Constinteger})
 
 \item \code{Interval}, pour représenter un intervalle à travers une borne
 inférieure et supérieure, qui peuvent être réduites dynamiquement (à
-l'exécution) comme \code{Boundinteger}~;
+l'exécution)~;
 
 \item \code{Finite}, pour représenter un domaine réaliste avec un ensemble de
 valeurs dénombrable~;
@@ -175,9 +182,12 @@ valeurs dénombrable~;
 où des valeurs ont été exclues, et donc, ne peuvent plus être générées~;
 
 \item \code{Enumerable}, pour représenter un domaine réaliste dont les valeurs
-peuvent être énumérées, comme \code{Integer}.
+peuvent être énumérées.
 
 \end{itemize}
 
-Ainsi, par exemple, un domaine réaliste qui implémente les interfaces
-\code{Interval} et \code{Nonconvex} représente un intervalle à trous.
+Ainsi, par exemple, dans la Figure~\ref{figure:language:boundinteger} en
+\circled{5}, nous voyons que le domaine réaliste \code{Boundinteger} implémente
+les interfaces \code{Interval}, \code{Finite}, \code{Nonconvex} et
+\code{Enumerable}. C'est donc un intervalle avec un nombre fini d'éléments que
+nous pouvons énumérer mais qui peut contenir des trous.
