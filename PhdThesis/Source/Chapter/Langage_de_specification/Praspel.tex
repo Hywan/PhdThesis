@@ -6,23 +6,23 @@
 \section{Praspel}
 \label{section:language:praspel}
 
-Praspel est un acronyme anglais signifiant {\em PHP Realistic Annotation and
-SPEcification Language}. C'est un langage et un framework de test à partir de
-contrats en PHP (voir la
-Section~\ref{subsection:language:contract-based_testing}). Ce langage repose
-sur les domaines réalistes.
+Praspel est un acronyme anglais signifiant \inenglish{PHP Realistic Annotation
+and SPEcification Language}. C'est un langage et un framework de test à partir
+de contrats en PHP (voir la
+Section~\ref{subsection:language:contract-based_testing}). Ce langage repose sur
+les domaines réalistes.
 
-Praspel est un {\em langage d'annotation} car il s'écrit dans les commentaires
-du code source du programme. PHP comprend trois catégories de commentaires~: en
-ligne (avec \code{//} ou \code{\#}), multi-lignes (entre \code{/*} et \code{*/})
-et en bloc (entre \code{/**} et \code{*/}). C'est dans cette dernière catégorie
-que nous écrirons Praspel, catégorie qui est culturellement dédiée à l'écriture
-des annotations, documentations API etc.
+Praspel est un {\strong langage d'annotation} car il s'écrit dans les
+commentaires du code source du programme. PHP comprend trois catégories de
+commentaires~: en ligne (avec \code{//} ou \code{\#}), multi-lignes (entre
+\code{/*} et \code{*/}) et en bloc (entre \code{/**} et \code{*/}). C'est dans
+cette dernière catégorie que nous écrirons Praspel, catégorie qui est
+culturellement dédiée à l'écriture des annotations, documentations API etc.
 
-Praspel est un {\em Behavioral Interface Specification Language} (BISL) basé sur
-les contrats. Un {\em contrat} est un modèle du comportement du code, décrit à
-travers des contraintes formelles, alors appelées clauses, comme les
-préconditions, les postconditions et les invariants. Ces contraintes sont
+Praspel est un \inenglish{Behavioral Interface Specification Language} (BISL)
+basé sur les contrats. Un {\strong contrat} est un modèle du comportement du
+code, décrit à travers des contraintes formelles, alors appelées clauses, comme
+les préconditions, les postconditions et les invariants. Ces contraintes sont
 généralement localisées dans le code source autour des données. Dans le cas de
 Praspel, les invariants sont localisés sur les attributs des classes et les
 préconditions avec les postconditions sont localisées sur les paramètres des
@@ -123,7 +123,7 @@ $r$ fois, et séparé par $s$. $r$ peut être $?$, $+$ ou $*$, respectivement po
 alors $s$ doit être un lexème.
 
 \begin{figure}
-\begin{pre}
+\begin{bigpre}
 class \(C\) \{ \\
 \\
     /** \\
@@ -152,7 +152,7 @@ class \(C\) \{ \\
      */ \\
     public function f ( ) \{ \} \\
 \}
-\end{pre}
+\end{bigpre}
 
 \caption{\label{figure:language:typical_contract} Un contrat Praspel typique
 avec toutes les clauses.}
@@ -328,7 +328,7 @@ entités syntaxiques de construction des expressions.}
 \end{figure}
 
 \begin{figure}
-\begin{pre}
+\begin{bigpre}
 /** \\
  * \arequires seed:   7..42 or 153..256 and \\
  *           factor: 1.0.. and \\
@@ -336,7 +336,7 @@ entités syntaxiques de construction des expressions.}
  * \aensures  \(\bslash\)result: array([to float()], 1..5); \\
  */ \\
 public function generate ( \$seed, \$factor ) \{ ... \}
-\end{pre}
+\end{bigpre}
 
 \caption{\label{figure:language:short_contract} Exemple d'un court contrat.}
 
@@ -405,3 +405,116 @@ Section~\ref{section:data:arrays}.
 soit en utilisant la syntaxe des déclarations, soit en utilisant le mot-clé
 \code{is}. Des exemples de contraintes sont présentées dans la
 Section~\ref{section:data:arrays}.
+
+\subsection{Description de tableaux}
+\label{subsection:language:array}
+
+La description de tableaux est une partie très important de Praspel, contrôlant
+la génération de tableaux présentée dans la Section~\ref{section:data:arrays}.
+
+Dans PHP, un tableau est toujours un {\em tableau associatif} (ou une {\em map},
+ou un {\em dictionnaire}, \ie une collection de paires clé-valeur, où chaque clé
+apparaît au maximum une fois. Les clés peuvent être de type nul, booléen,
+entier, réel ou chaîne de caractères. PHP accepte ces types de clés mais les
+booléens sont transtyper en entier et les réels sont réduits à leur partie
+entière. Les valeurs quant à elles peuvent être de n'importe quel type. Un
+tableau peut être {\em homogène} ou {\em hétérogène}. Dans un tableau homogène,
+toutes les clés ont le même type, ainsi que toutes les valeurs. Dans un tableau
+hétérogène, les clés peuvent avoir des types distincts, tout comme les valeurs.
+Les clés peuvent être {\em auto-incrémentées}, en ajoutant 1 à la dernière clé
+entière, à partir de 0. La {\em longueur} (ou la {\em taille}) d'un tableau est
+son nombre de paires. Un tableau n'a pas de longueur prédéfinie, mais sa
+longueur (stockée en interne par le moteur PHP) peut être connu grâce à la
+fonction PHP \code{count()}. Un tableau n'a également pas de profondeur
+prédéfinie, \ie il peut contenir un nombre arbitraire de tableaux.
+
+Dans Praspel, \code{array($D$, $L$)} dénote le domaine réaliste des tableaux
+dont les domaines et codomaines sont décrits par $D$ et dont la longueur
+appartient à la disjonction $L$ de domaines réalistes d'entiers non-négatifs.
+$D$ est une liste séparée par une virgule, entre \code{[} et \code{]}, de {\em
+descriptions de tableau} de la forme \code{from $K$ to $V$}, où $K$ et $V$ sont
+des disjonctions de domaines réalistes, respectivement pour les clés et les
+valeurs. Quand le mot-clé \code{from} est manquant, nous introduisons le domaine
+réaliste représentant un entier auto-incrémenté démarrant de 0 avec un pas de 1.
+
+\begin{example}[Tableaux homogènes et hétérogènes]
+
+La syntaxe des descriptions de tableaux est illustrée avec les déclarations de
+tableaux suivantes~:
+
+\begin{pre}
+a1: array([to boolean()], 7..42) \\
+a2: array([from 0..5 or 10 to integer()], 7) \\
+a3: array([from 0..10 to boolean(), from 20..30 to float()], 7) \\
+a4: array([from 0..10 or 20..30 to boolean() or float()], 7)
+\end{pre}
+
+L'identifiant \code{a1} est déclaré comme un tableau homogène de booléens avec
+une longueur comprise entre 7 et 42. L'identifiant \code{a2} est déclaré comme
+un tableau homogène de longueur 7, dont les clés sont des entiers entre 0 et 5
+ou simplement 10, et dont les valeurs sont des entiers. L'identifiant \code{a3}
+et \code{a4} sont déclarés comme des tableaux hétérogène. Les deux tableaux
+peuvent contenir des paires $(\code{5}, \code{true})$ et $(\code{15},
+\code{4.2})$, mais \code{a4} peut contenir la paire $(\code{5}, \code{4.2})$,
+alors que \code{a3} ne peut pas la contenir.
+
+\end{example}
+
+En fait, nous introduisons une {\em forme normale} pour supprimer les
+disjonctions dans les descriptions de tableaux (la construction \code{from
+\ldots to \ldots}), en appliquant itérativement la règle de réécriture
+suivante~:
+
+\begin{center}
+\begin{tabular}{c}
+\code{from $F_1$ or $F_2$ to $T_1$ or $T_2$} \\
+$\rightarrow$ \\
+\code{from $F_1$ to $T_1$, from $F_1$ to $T_2$, from $F_2$ to $T_1$, from $F_2$ to $T_2$} \\
+\end{tabular}
+\end{center}
+
+Une description de tableau est en forme normale quand elle ne peut plus être
+réduite par cette règle.
+
+\begin{example}[Description de tableau en forme normale]
+
+La déclaration suivante de \code{a4} est en forme normale~:
+
+\begin{pre}
+a4: array([from  0..10 to boolean(), \\
+           from  0..10 to float(), \\
+           from 20..30 to boolean(), \\
+           from 20..30 to float()], 7)
+\end{pre}
+
+\end{example}
+
+\subsection{Exécution et assignement du verdict de tests}
+\label{subsection:language:verdict}
+
+Le verdict du test est basé sur la vérification d'assertions à l'exécution
+(\inenglish{runtime assertion checking}, abbrégé RAC) du contrat spécifié dans
+le code source. Quand la vérification d'une assertion échoue, une erreur
+spécifique est produite. Les erreurs de la RAC (aussi appelées les
+\inenglish{Praspel failures} ou erreurs Praspel) peuvent être de cinq sortes~:
+%
+\begin{inparaenum}[$(i)$]
+%
+\item \inenglish{precondition failure}, quand une précondition n'est pas
+satisfaite lors de l'invocation de la méthode~;
+%
+\item \inenglish{postcondition failure}, quand une postcondition n'est pas
+satisfaite après l'exécution de la méthode~;
+%
+\item \inenglish{throwable failure}, quand l'exécution de la méthode lève une
+exception inattendue~;
+%
+\item \inenglish{invariant failure}, quand un invariant de classe est cassé~; et
+%
+\item \inenglish{internal precondition failure}, qui correspond à la propagation
+d'une \inenglish{precondition failure} à un niveau supérieur.
+%
+\end{inparaenum}
+
+Le test réussit si aucune erreur Praspel n'est détectée. Autrement, il échoue,
+et l'erreur avec des informations supplémentaires est consignée.
