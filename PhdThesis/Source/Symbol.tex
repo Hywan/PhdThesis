@@ -18,8 +18,10 @@
     \end{center}
 }
 \newcommand{\circled}[1]{
-\protect\tikz[baseline=(char.base)]{
-\protect\node[shape=circle,draw,inner sep=1pt](char){\small #1};}}
+  \protect\tikz[baseline=(char.base)]{
+      \protect\node[shape=circle,draw,inner sep=1pt](char){\footnotesize $#1$};
+  }
+}
 \newenvironment{pre}{
     \begin{alltt}\centering
     \begin{tabular}{l}
