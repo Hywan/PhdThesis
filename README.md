@@ -5,6 +5,7 @@ My PhdThesis. This is a “subtree” of a private SVN repository.
 How to compile the document? Blazing easy:
 
     $ cd PhdThesis
+    $ make bib
     $ make
     $ make open # on Darwin
 
