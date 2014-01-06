@@ -5,7 +5,7 @@ all: tex
 
 tex:
 	@pdflatex \
-		-output-directory Dist/ \
+		-output-directory Dist \
 		-output-format pdf \
 		-interaction errorstopmode \
 		-halt-on-error \
