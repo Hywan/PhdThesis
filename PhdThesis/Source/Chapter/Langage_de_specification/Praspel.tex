@@ -161,22 +161,23 @@ avec toutes les clauses.}
 
 \end{figure}
 
-Les entités syntaxiques \grule{attribute-clauses} et \grule{method-clauses} de
-la Figure~\ref{figure:language:grammar_part0} définissent respectivement les
-clauses annotant les attributs d'une classe et ses méthodes. Toutes ces clauses
-introduisent des expressions Praspel, détaillées dans la
-Section~\ref{subsection:language:expressions}. L'entité syntaxique
+La Figure~\ref{figure:language:grammar_part0} montre les familles de clauses,
+dont le contenu est décrit par la Figure~\ref{figure:language:grammar_part1}.
+Ainsi, nous apprenons que les entités syntaxiques \grule{attribute-clauses} et
+\grule{method-clauses} définissent respectivement les clauses annotant les
+attributs d'une classe et ses méthodes.  L'entité syntaxique
 \grule{method-clauses} montre l'ordre des clauses en forme normale. La grammaire
 actuelle de Praspel est bien plus libérale~: elle accepte des clauses dans
 n'importe quel ordre mais pour faciliter le raisonnement, nous ne présenterons
-et ne travaillerons que sur une forme normale.
-
-La Figure~\ref{figure:language:typical_contract} montre un contrat sous sa forme
-la plus typique~: une classe \code{C} avec un attribut \code{a} et une méthode
+et ne travaillerons que sur une forme normale. La
+Figure~\ref{figure:language:typical_contract} illustre la localisation typique
+des clauses sur une classe \code{C} avec un attribut \code{a} et une méthode
 \code{f}. La clause \ainvariant est localisée juste avant l'attribut \code{a}.
-Les invariants sont vérifiés avant et après l'exécution du système. Les autres
-clauses sont des clauses de méthode. Elles sont localisées juste avant l'en-tête
-des méthodes.
+Les autres clauses sont des clauses de méthode.  Elles sont localisées juste
+avant l'en-tête des méthodes. La plupart de ces clauses introduisent des
+expressions Praspel, représentée par les entités syntaxiques \grule{expression}
+ou \grule{exceptional-expression}, détaillées dans la
+Section~\ref{subsection:language:expressions}.
 
 La précondition d'une méthode est exprimée à l'aide de la clause \arequires, la
 postcondition à l'aide de la clause \aensures. La précondition exprime des
@@ -216,7 +217,7 @@ $\beta$ est imbriqué dans le comportement $\alpha$. À côté de ça, nous pouv
 clauses \abehavior. Ceci est toujours illustré dans la
 Figure~\ref{figure:language:typical_contract} avec le comportement $\gamma$,
 frère du comportement $\alpha$. Les comportements sont, dans la pratique,
-{\strong mutuellement exclusifs}. Cependant, la syntaxe autorise l'écriture de
+{\strong mutuellement exclusifs}, cependant, la syntaxe autorise l'écriture de
 comportement non-déterministe.
 
 La clause \adefault est strictement équivalente à une clause
@@ -416,10 +417,11 @@ Section~\ref{section:data:arrays}.
 \label{subsection:language:array}
 
 La description de tableaux est une partie très important de Praspel, contrôlant
-la génération de tableaux présentée dans la Section~\ref{section:data:arrays}.
+la génération de collections présentée dans la
+Section~\ref{section:data:arrays}.
 
 Dans PHP, un tableau est toujours un {\strong tableau associatif} (ou une
-\inenglish{map} ou un {\strong dictionnaire}), \ie une collection de paires
+\inenglish{map}, un {\strong dictionnaire}), \ie une collection de paires
 clé-valeur, où chaque clé apparaît au maximum une fois. Les clés peuvent être de
 type nul, booléen, entier, réel ou chaîne de caractères. PHP accepte ces types
 de clés mais les booléens sont transtypés en entier et les réels sont réduits à
