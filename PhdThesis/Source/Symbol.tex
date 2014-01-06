@@ -19,7 +19,7 @@
 }
 \newcommand{\circled}[1]{
     \protect\tikz[baseline=(char.base)]{
-        \protect\node[shape=circle,draw,inner sep=2pt](char){\footnotesize $#1$};
+        \protect\node[shape=circle,draw,inner sep=2pt](char){\scriptsize $#1$};
     }
 }
 
@@ -31,7 +31,7 @@
     \end{alltt}
 }
 \newenvironment{bigpre}{
-    \footnotesize\begin{pre}
+    \scriptsize\begin{pre}
 }{
     \end{pre}
 }
@@ -62,6 +62,7 @@
 \def\true{\texttt{true}}
 
 % Math.
+\def\B{\mathbb{B}}
 \def\N{\mathbb{N}}
 \def\R{\mathbb{R}}
 \def\Q{\mathbb{Q}}
