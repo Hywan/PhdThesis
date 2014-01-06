@@ -501,11 +501,18 @@ a4: array([from  0..10 to boolean(), \\
 \subsection{Exécution et assignement du verdict de tests}
 \label{subsection:language:verdict}
 
-Le verdict du test est basé sur la vérification d'assertions à l'exécution
-(\inenglish{runtime assertion checking}, abbrégé RAC) du contrat spécifié dans
-le code source. Quand la vérification d'une assertion échoue, une erreur
-spécifique est produite. Les erreurs de la RAC (aussi appelées les
-\inenglish{Praspel failures} ou erreurs Praspel) peuvent être de cinq sortes~:
+Nous nous appuyons sur un \inenglish{runtime assertion checker} (RAC) pour
+calculer le verdict du test. Ce verdict est basé sur la vérification
+d'assertions à l'exécution. Le RAC manipule trois informations~: un système sous
+test, un contrat et des données. Avec la
+Figure~\ref{figure:language:typical_contract}, le système sous test est la
+méthode \code{f} de la classe \code{C}, le contrat est le contrat associé à
+cette méthode et les données sont soit fournies, soit générées automatiquement
+(nous verrons comment dans les chapitres suivants).
+
+Quand la vérification d'une assertion échoue, une erreur spécifique est
+produite. Les erreurs du RAC (aussi appelées les \inenglish{Praspel failures}
+ou erreurs Praspel) peuvent être de cinq sortes~:
 %
 \begin{inparaenum}[$(i)$]
 %
