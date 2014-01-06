@@ -1,3 +1,6 @@
+SHELL = bash
+
+
 all: tex
 
 tex:
@@ -11,11 +14,21 @@ tex:
 bib: tex
 	@bibtex Dist/PhdThesis.aux
 
+figures: dots
+
+dots:
+	@for i in `find Source/Figure -type f -name '*.dot'`; do \
+		echo -n `basename $$i`'…'; \
+		dot2tex -tmath --codeonly --autosize $$i \
+			> Dist/Figure/`basename $${i%.dot}.tex`; \
+		echo -e '\b, ok'; \
+	done
+
 open:
 	@open -g -F Dist/PhdThesis.pdf
 
 clean:
-	@rm -f Dist/*
+	@find Dist -type f -not -name '.*' | xargs rm -f
 
 reload: tex open
 
