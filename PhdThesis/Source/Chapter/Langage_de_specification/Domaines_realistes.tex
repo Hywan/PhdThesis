@@ -20,26 +20,27 @@ Notons que dans un langage comme PHP où les types ne sont pas déclarés
 syntaxiquement, il est culturellement admis d'écrire une documentation API qui
 décrit la nature des données manipulées par le programme, comme ses types.
 
-Nous profitons de la présence quasi permente d'un système de typage dans tous
-les langages pour introduire la notion de {\strong domaine réaliste}. Naïvement,
-nous pouvons dire qu'ils raffinent les types usuels comme les entiers, les
-chaînes de caractères, les tableaux etc., ainsi que des types plus complexes. Le
-mot {\strong réaliste} signifie qu'ils sont conçus pour spécifier des domaines
-de données pertinentes pour un contexte spécifique. Par exemple, une adresse
-email peut être un domaine réaliste~: plusieurs logiciels identifient leurs
-utilisateurs avec leur adresse email. Ceci est plus qu'une chaîne de
-caractères~; en effet, ça doit respecter certaines règles, notamment
-syntaxiques.
+Nous profitons du fait que les développeurs connaissent bien les systèmes de
+typage grâce à leur présence quasi permente dans tous les langages pour
+introduire la notion de {\strong domaine réaliste}. Naïvement, nous pouvons dire
+qu'ils raffinent les types usuels comme les entiers, les chaînes de caractères,
+les tableaux etc., et qu'ils permettent d'exprimer des types plus complexes,
+comme des grammaires, des graphes etc. Le mot {\strong réaliste} signifie qu'ils
+sont conçus pour spécifier des domaines de données {\strong pertinentes} pour un
+contexte {\strong spécifique}. Par exemple, une adresse email peut être un
+domaine réaliste~: plusieurs logiciels identifient leurs utilisateurs avec leur
+adresse email. Ceci est plus qu'une chaîne de caractères~; en effet, ça doit
+respecter certaines règles, notamment syntaxiques.
 
 Les domaines réalistes ont été conçus afin de répondre aux problématiques de
 test. C'est pourquoi ils ont les deux propriétés suivantes~:
 
 \begin{itemize}
 
-\item la {\strong prédicabilité} permet de vérifier qu'une donnée appartient à
-l'ensemble des valeurs décrites par le domaine réaliste~;
+\item la {\strong prédicabilité} qui permet de vérifier qu'une donnée appartient
+à l'ensemble des valeurs décrites par le domaine réaliste~;
 
-\item la {\strong générabilité} permet de générer une valeur décrite par le
+\item la {\strong générabilité} qui permet de générer une valeur décrite par le
 domaine réaliste.
 
 \end{itemize}
@@ -93,10 +94,10 @@ class          Boundinteger \\
                IRealdom\bslash{}Nonconvex, \\
                IRealdom\bslash{}Enumerable \{ \\
 \\
-    protected \$_arguments = array( \\
+    protected \$_arguments = [ \\
         'Constinteger lower' => PHP_INT_MIN,                /* \(\circled{4}\) */ \\
         'Constinteger upper' => PHP_INT_MAX \\
-    ); \\
+    ]; \\
 \\
     public function predicate ( \$q ) \{ \\
 \\
@@ -112,6 +113,8 @@ class          Boundinteger \\
             \$this['upper']->sample(\$sampler) \\
         ); \\
     \} \\
+\\
+    // … \\
 \}
 \end{bigpre}
 
@@ -144,18 +147,20 @@ pouvons écrire \code{4..12}, qui est un sucre syntaxique de
 
 Quand nous décrivons les paramètres d'un domaine réaliste, nous pouvons indiquer
 leurs types. Le type est exprimé à travers le ou les noms d'un des domaines
-réalistes. En effet, un domaine réaliste accepte plusieurs sortes d'arguments et
-est capable de faire la traduction d'un type vers un autre lui-même. Ainsi, nous
-restons proche de la philosophie de PHP. Par exemple, pour le domaine réaliste
-\code{String}, ses deux premiers paramètres peuvent être des entiers ou des
-caractères. Alors, nous pouvons écrire \code{string('a', 'z', 4..12)} sans
-produire d'erreur, mais \code{string(true, 'z', 4..12)} produira une erreur.
+réalistes, séparés par le symbole \code{$\vert$}. En effet, un domaine réaliste
+accepte plusieurs sortes d'arguments et est capable de faire la traduction d'un
+type vers un autre lui-même. Ainsi, nous restons proche de la philosophie de
+PHP. Par exemple, pour le domaine réaliste \code{String}, ses deux premiers
+paramètres peuvent être des entiers ou des caractères. Alors, nous pouvons
+écrire \code{string('a', 'z', 4..12)} sans produire d'erreur, mais
+\code{string(true, 'z', 4..12)} produira une erreur.
 
 La Figure~\ref{figure:language:boundinteger} montre la déclaration de deux
-paramètres~: \code{lower} et \code{upper} en \circled{4}, avec respectivement en
-valeur par défaut \code{PHP\_INT\_MIN} et \code{PHP\_INT\_MAX}. Si aucune valeur
-par défaut n'est précisée, alors le paramètre est {\strong obligatoire}, sinon
-il est {\strong optionnel}.
+paramètres~: \code{lower} et \code{upper} en \circled{4}, qui sont de type
+\code{Constinteger}, avec respectivement en valeur par défaut
+\code{PHP\_INT\_MIN} et \code{PHP\_INT\_MAX}. Si aucune valeur par défaut n'est
+précisée, alors le paramètre est {\strong obligatoire}, sinon il est {\strong
+optionnel}.
 
 \subsection{Classification}
 \label{subsection:language:realdom:classification}
