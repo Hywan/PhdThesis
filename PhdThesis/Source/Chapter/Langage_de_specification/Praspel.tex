@@ -1,6 +1,6 @@
 \def\gsep{$\quad::=\quad$}
 \def\mvert{$\;\;|\;\;$}
-\newcommand{\token}[1]{\underline{\code{php-#1}}}
+\newcommand{\gtoken}[1]{\underline{\code{php-#1}}}
 \newcommand{\grule}[1]{\textit{#1}}
 
 \section{Praspel}
@@ -56,10 +56,11 @@ normale.
     \grule{invariant-clause}$^?$ \\
 
 \grule{method-clauses} & \gsep &
+    $($ \grule{is-clause} \code{;} $)^?$ \\ & &
     $($ \grule{description-clause} \code{;} $)^?$ \\ & &
-    \grule{rbet-clauses} \\
+    \grule{rbdet-clauses} \\
 
-\grule{rbet-clauses} & \gsep &
+\grule{rbdet-clauses} & \gsep &
     $($ \grule{requires-clause} \code{;} $)^?$ \\ & &
     $($ \\ & &
     $\quad\,\,($ \grule{behavior-clause}$^+$ \grule{default-clause}$^?$ $)^?$ \\ & &
@@ -73,49 +74,12 @@ normale~: les entités syntaxiques de plus haut niveau.}
 
 \end{figure}
 
-\begin{figure}
-\centering
-\begin{tabular}{rcl}
-\grule{invariant-clause} & \gsep &
-    \ainvariant \grule{expression} \\
-
-\grule{requires-clause} & \gsep &
-    \arequires \grule{expression} \\
-
-\grule{behavior-clause} & \gsep &
-    \abehavior \token{identifier} \code{\{} \\ & &
-    \quad $($ \grule{description-clause} \code{;} $)^?$ \\ & &
-    \quad \grule{rbet-clauses} \\ & &
-    \code{\}} \\
-
-\grule{default-clause} & \gsep &
-    \adefault \code{\{} \\ & &
-    \quad $($ \grule{description-clause} \code{;} $)^?$ \\ & &
-    \quad $($ \grule{ensures-clause} \code{;} $)^?$ \\ & &
-    \quad $($ \grule{throwable-clause} \code{;} $)^?$ \\ & &
-    \code{\}} \\
-
-\grule{ensures-clause} & \gsep &
-    \aensures \grule{expression} \\
-
-\grule{throwable-clause} & \gsep &
-    \athrowable \grule{exceptional-expression} \\
-
-\grule{description-clause} & \gsep &
-    \adescription \token{string} \\
-\end{tabular}
-
-\caption{\label{figure:language:grammar_part1} Grammaire de Praspel en forme
-normale~: les entités syntaxiques des clauses.}
-
-\end{figure}
-
 Un contrat est composé de clauses, dont la syntaxe est décrite dans les
 Figures~\ref{figure:language:grammar_part0},
 \ref{figure:language:grammar_part1}, \ref{figure:language:grammar_part2} et
 \ref{figure:language:grammar_part3}. Dans ces figures, le style \code{token}
 représente un lexème de la grammaire de Praspel, \grule{rule} représente une
-entité syntaxique (règle) de la grammaire, et \token{token} représente un lexème
+entité syntaxique (règle) de la grammaire, et \gtoken{token} représente un lexème
 de la grammaire de PHP (pour être le plus proche possible du langage manipulé
 par le développeur). La notation $e^r_s$ signifie que le motif $e$ est répété
 $r$ fois, et séparé par $s$. $r$ peut être $?$, $+$ ou $*$, respectivement pour
@@ -132,6 +96,7 @@ class \(C\) \{ \\
     protected \$a; \\
 \\
     /** \\
+     * @is \(Q\); \\
      * @requires \(R\); \\
      * @behavior \(\alpha\) \{ \\
      *     @description 'Apply the \(\alpha\) process.'; \\
@@ -178,6 +143,46 @@ avant l'en-tête des méthodes. La plupart de ces clauses introduisent des
 expressions Praspel, représentée par les entités syntaxiques \grule{expression}
 ou \grule{exceptional-expression}, détaillées dans la
 Section~\ref{subsection:language:expressions}.
+
+\begin{figure}
+\centering
+\begin{tabular}{rcl}
+\grule{invariant-clause} & \gsep &
+    \ainvariant \grule{expression} \\
+
+\grule{requires-clause} & \gsep &
+    \arequires \grule{expression} \\
+
+\grule{behavior-clause} & \gsep &
+    \abehavior \gtoken{identifier} \code{\{} \\ & &
+    \quad $($ \grule{description-clause} \code{;} $)^?$ \\ & &
+    \quad \grule{rbdet-clauses} \\ & &
+    \code{\}} \\
+
+\grule{default-clause} & \gsep &
+    \adefault \code{\{} \\ & &
+    \quad $($ \grule{description-clause} \code{;} $)^?$ \\ & &
+    \quad $($ \grule{ensures-clause} \code{;} $)^?$ \\ & &
+    \quad $($ \grule{throwable-clause} \code{;} $)^?$ \\ & &
+    \code{\}} \\
+
+\grule{ensures-clause} & \gsep &
+    \aensures \grule{expression} \\
+
+\grule{throwable-clause} & \gsep &
+    \athrowable \grule{exceptional-expression} \\
+
+\grule{is-clause} & \gsep &
+    \ais \code{pure} \\
+
+\grule{description-clause} & \gsep &
+    \adescription \gtoken{string} \\
+\end{tabular}
+
+\caption{\label{figure:language:grammar_part1} Grammaire de Praspel en forme
+normale~: les entités syntaxiques des clauses.}
+
+\end{figure}
 
 La précondition d'une méthode est exprimée à l'aide de la clause \arequires, la
 postcondition à l'aide de la clause \aensures. La précondition exprime des
@@ -233,6 +238,79 @@ du dernier comportement activé doit être satisfaite. Si c'est un post-état
 exceptionel, alors c'est la clause \athrowable qui doit être satisfaite, \ie les
 deux $T_C$ et $T_E$ doivent être satisfaits, comme décrit précédemment.
 
+Enfin, la clause \ais permet de qualifier la catégorie de la méthode. Le seul
+qualificatif actuel est \code{pure}, pour contrôler la mutabilité de
+l'environnement. En effet, une méthode peut muter (modifier) ou pas son
+environnement lors de son exécution. Si elle ne le modifie pas, alors nous
+parlons d'une méthode {\strong pure}, sinon nous parlons d'une méthode {\strong
+mutante} (par défaut). Seules les méthodes pures peuvent être utilisées dans les
+contrats.
+
+\begin{figure}
+\begin{bigpre}
+class Filesystem \{ \\
+\\
+    const SIZE = 1024; \\
+\\
+    /** \\
+     * @invariant _usage: boundinteger(0, static::SIZE); \\
+     */ \\
+    protected \$_usage = 0; \\
+\\
+    /** \\
+     * @invariant _map: array([to class('File')], 0..0xffff); \\
+     */ \\
+    protected \$_map = array(); \\
+\\
+    /** \\
+     * @is pure; \\
+     * @ensures \(\bslash\)result: this->_usage; \\
+     */ \\
+    public function getUsage ( ) \{ /* … */ \} \\
+\\
+    /** \\
+     * @requires file: class('File') and \\
+     *           index: 0..0xffff or void; \\
+     * @behavior full \{ \\
+     *     @description 'The filesystem is full.'; \\
+     *     @requires  \(\bslash\)pred('\$this->getUsage() + \$file->getSize() > static::SIZE'); \\
+     *     @throwable AllocationException e with \\
+     *                    file->isAttached(): false and \\
+     *                    e->getFilesystem(): this; \\
+     * \} \\
+     * @default \{ \\
+     *     @ensures file->isAttached(): true and \\
+     *              \(\bslash\)result: boolean(); \\
+     * \} \\
+     */ \\
+    public function store ( File \$file, \$index = null ) \{ /* … */ \} \\
+\}
+\end{bigpre}
+
+\caption{\label{figure:language:short_contract} Exemple d'une classe annotée par
+des contrats.}
+
+\end{figure}
+
+La Figure~\ref{figure:language:short_contract} montre un exemple concret d'une
+classe \code{Filesystem} annotée, avec deux méthodes \code{getUsage} et
+\code{store}. Cet exemple sera utilisé pour illustrer chaque notion introduite
+dans la suite de ce document.
+
+La méthode \code{getUsage} est déclarée comme \code{pure}, ce qui veut dire
+qu'elle ne modifie pas son environnement. Elle n'a pas de clause \arequires,
+donc elle refusera tous les arguments. Elle a une postcondition, nous y
+reviendrons. La méthode \code{store} a deux comportements~: un comportement
+\code{full} quand le système de fichier est plein, et un comportement par
+défaut. Le premier comportement décrit une précondition et une postcondition
+uniquement exceptionnelle. En l'absence de postcondition normale, toute valeur
+retournée sera invalide. Ici, seule l'exception \code{AllocationException} peut
+être levée. Elle sera associée à l'identifiant \code{e}, puis le reste de la
+clause devra être valide. Dans le second comportement (par défaut), aucune
+exception ne peut être levée car la clause \athrowable est absente. Nous pouvons
+voir également que les attributs \code{\_usage} et \code{\_map} sont annotés
+d'invariants avec la clause \ainvariant.
+
 \subsection{Expressions}
 \label{subsection:language:expressions}
 
@@ -254,7 +332,7 @@ contraintes, respectivement présentées dans les paragraphes suivants.
     \code{with} \grule{expression} $)^+_{\code{or}}$ \\
 
 \grule{exception-identifier} & \gsep &
-    \token{classname} \token{identifier} \\
+    \gtoken{classname} \gtoken{identifier} \\
 \end{tabular}
 \end{center}
 
@@ -273,13 +351,13 @@ normale~: les entités syntaxiques d'expressions.}
     \grule{qualification} \mvert \grule{contains} \\
 
 \grule{qualification} & \gsep &
-    \grule{identifier} \code{is} \token{identifier}$^+_\code{,}$ \\
+    \grule{identifier} \code{is} \gtoken{identifier}$^+_\code{,}$ \\
 
 \grule{contains} & \gsep &
     \grule{extended-identifier} \code{contains} \grule{constant}$^+_\code{or}$ \\
 
 \grule{predicate} & \gsep &
-    \code{\bslash pred(} \token{string} \code{)} \\
+    \code{\bslash pred(} \gtoken{string} \code{)} \\
 
 \grule{disjunction} & \gsep &
     $($
@@ -287,7 +365,7 @@ normale~: les entités syntaxiques d'expressions.}
     $)^+_\code{or}$ \\
 
 \grule{realdom} & \gsep &
-    \token{identifier} \code{(} \grule{argument}$^?_\code{,}$ \code{)} \\
+    \gtoken{identifier} \code{(} \grule{argument}$^?_\code{,}$ \code{)} \\
 
 \grule{argument} & \gsep &
     \code{default} \mvert \grule{realdom} \mvert \grule{constant} \mvert
@@ -298,12 +376,12 @@ normale~: les entités syntaxiques d'expressions.}
     \grule{scalar} \mvert \grule{array} \\
 
 \grule{scalar} & \gsep &
-    \code{null} \mvert \token{boolean} \mvert \grule{number} \mvert
-    \token{string} \\
+    \code{null} \mvert \gtoken{boolean} \mvert \grule{number} \mvert
+    \gtoken{string} \\
 
 \grule{number} & \gsep &
-    \token{binary} \mvert \token{octal} \mvert \token{hexa} \mvert
-    \token{decimal} \\
+    \gtoken{binary} \mvert \gtoken{octal} \mvert \gtoken{hexa} \mvert
+    \gtoken{decimal} \\
 
 \grule{array} & \gsep &
     \code{[} \grule{pair}$^?_\code{,}$ \code{]} \\
@@ -319,10 +397,10 @@ normale~: les entités syntaxiques d'expressions.}
     \grule{identifier} $($ \code{[} \grule{scalar} \code{]} $)^?$ \\
 
 \grule{identifier} & \gsep &
-    \token{identifier} \\ & &
-    \mvert \code{this} $($ \code{->} \token{identifier} $)^*$ \\ & &
+    \gtoken{identifier} \\ & &
+    \mvert \code{this} $($ \code{->} \gtoken{identifier} $)^*$ \\ & &
     \mvert $($ \code{self} \mvert \code{static} \mvert \code{parent} $)$
-    $($ \code{::} \token{identifier} $)^+$ \\ & &
+    $($ \code{::} \gtoken{identifier} $)^+$ \\ & &
     \mvert \code{\bslash old(} \grule{extended-identifier} \code{)} \\ & &
     \mvert \code{\bslash result} \\
 \end{tabular}
@@ -333,36 +411,17 @@ entités syntaxiques de construction des expressions.}
 
 \end{figure}
 
-\begin{figure}
-\begin{bigpre}
-/** \\
- * \arequires seed:   7..42 or 153..256 and \\
- *           factor: 1.0.. and \\
- *           \(\bslash\)pred('isfemtotime() or isarch(64)'); \\
- * \aensures  \(\bslash\)result: array([to float()], 1..5); \\
- */ \\
-public function generate ( \$seed, \$factor ) \{ ... \}
-\end{bigpre}
-
-\caption{\label{figure:language:short_contract} Exemple d'un court contrat.}
-
-\end{figure}
-
 \paragraph{Déclarations.} Une déclaration assigne un ou plusieurs domaines
 réalistes à une variable à travers l'opérateur \code{:}. Une variable est soit
 un attribut de classe, spécifié dans une clause \ainvariant, soit un paramètre
 de la méthode, spécifié dans les autres clauses. La valeur d'une variable peut
 appartenir à plusieurs domaines réalistes si la variable est définie par une
 {\strong disjonction} de domaines réalistes, représentée par le mot-clé
-\code{or}.  La Figure~\ref{figure:language:short_contract} représente un court
-contrat contenant seulement une précondition et une postcondition. Cette figure
-présente la variable \code{seed}, dont le domaine réaliste est soit un
-intervalle entre 7 et 42, soit un intervalle entre 153 et 256, et la variable
-\code{factor} avec un seul domaine réaliste qui est un réel supérieur ou égal à
-1.0 (représenté par un intervalle de réels avec une seule borne inférieure
-1.0~—~le sucre syntaxique \code{1.2..3.4} est équivalent à \code{boundfloat(1.2,
-3.4)}~—). Une disjonction de domaines réalistes peut contenir n'importe quelle
-sorte de domaine réaliste~: ce afin de mimer l'aspect dynamique de PHP.
+\code{or}. Dans la Figure~\ref{figure:language:short_contract}, la variable
+\code{index} du contrat de la méthode \code{store} peut avoir deux valeurs~:
+soit un entier entre 0 et 65535, soit \code{null}. Une disjonction de domaines
+réalistes peut contenir n'importe quelle sorte de domaine réaliste~: ce afin de
+mimer l'aspect dynamique de PHP.
 
 Si une variable est précédée par le mot-clé \code{let}, cela signifie que c'est
 une variable {\strong locale}, qui appartient au modèle et non pas au système
@@ -385,10 +444,10 @@ où $p$ est du code PHP. Cette construction permet à l'utilisateur d'exprimer d
 contraintes arbitraires en utilisant PHP lui-même au lieu de Praspel. Le code
 $p$ doit être un prédicat en forme normal {\strong disjonctive} (DNF). La
 construction \apred{p} ne supporte que la validation (prédicabilité) et non pas
-la vérification (générabilité). Le prédicat \apred{\code{'isfemtotime() or
-isarch(64)'}} dans la Figure~\ref{figure:language:short_contract} signifie que
-si le système supporte le temps femto (une variante du temps micro) ou si
-l'architecture est en 64~bits, alors cette partie de la précondition est
+la vérification (générabilité). Le prédicat \apred{\code{'\$this->getUsage() +
+\$file->getSize() > static::SIZE'}} dans la
+Figure~\ref{figure:language:short_contract} signifie que s'il n'y a plus de
+place pour ajouter un nouveau fichier, alors cette partie de la précondition est
 satisfaite.
 
 Parce que la construction \apred{p} est une boîte-noire, elle introduit du rejet
@@ -412,6 +471,20 @@ Section~\ref{section:data:arrays}.
 soit en utilisant la syntaxe des déclarations, soit en utilisant le mot-clé
 \code{is}. Des exemples de contraintes sont présentées dans la
 Section~\ref{section:data:arrays}.
+\\
+
+Un mot sur les identifiants. Dans la Figure~\ref{figure:language:short_contract}
+ainsi que dans la règle \grule{identifier} de la grammaire de la
+Figure~\ref{figure:language:grammar_part3}, nous pouvons voir l'utilisation de
+mot-clés comme \code{this}, \code{self} etc. Pour faire référence à un
+identifiant sur un objet, nous utiliserons \code{this}. Pour faire référence à
+la classe courante, nous utiliserons \code{self}, pour la classe parente, nous
+utiliserons \code{parent}. Et pour faire référence à l'enfant courant d'une
+classe, nous utiliserons \code{static}. Par exemple, si nous créons la classe
+\code{BigFilesystem} qui hérite de \code{Filesystem} et redéfinit la constante
+\code{SIZE}, alors dans \code{Filesystem}, \code{self::SIZE} sera équivalent à
+\code{Filesystem::SIZE} alors que \code{static::SIZE} sera équivalent à
+\code{BigFilesystem::SIZE}.
 
 \subsection{Description de tableaux}
 \label{subsection:language:array}
@@ -497,6 +570,9 @@ a4: array([from  0..10 to boolean(), \\
 \end{pre}
 
 \end{example}
+
+Dans la Figure~\ref{figure:language:short_contract}, l'attribut \code{\_map} est
+spécifié comme un tableau d'objets \code{File}, d'une longueur entre 0 et 65535.
 
 \subsection{Exécution et assignement du verdict de tests}
 \label{subsection:language:verdict}
