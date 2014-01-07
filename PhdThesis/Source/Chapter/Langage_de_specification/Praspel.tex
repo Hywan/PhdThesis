@@ -225,11 +225,11 @@ frère du comportement $\alpha$. Les comportements sont, dans la pratique,
 {\strong mutuellement exclusifs}, cependant, la syntaxe autorise l'écriture de
 comportement non-déterministe.
 
-La clause \adefault est strictement équivalente à une clause
-\abehavior avec une clause \arequires implicite décrivant la conjonction de
-toutes les négations des clauses \arequires des comportements frères précédents.
-Par exemple, la clause \arequires de \adefault pourrait mathématiquement
-s'écrire $\neg R_\alpha \land \neg R_\gamma$.
+La clause \adefault est strictement équivalente à une clause \abehavior avec une
+clause \arequires implicite décrivant la conjonction de toutes les négations des
+clauses \arequires des comportements frères précédents.  Par exemple, dans la
+Figure~\ref{figure:language:typical_contract} la clause \arequires de \adefault
+pourrait mathématiquement s'écrire $\neg R_\alpha \land \neg R_\gamma$.
 
 Afin d'«~activer~» un comportement donné, sa clause \arequires doit être
 satisfaite. Après l'exécution, le système est dans le post-état. Nous faisons
@@ -580,11 +580,11 @@ spécifié comme un tableau d'objets \code{File}, d'une longueur entre 0 et 6553
 Nous nous appuyons sur un \inenglish{runtime assertion checker} (RAC) pour
 calculer le verdict du test. Ce verdict est basé sur la vérification
 d'assertions à l'exécution. Le RAC manipule trois informations~: un système sous
-test, un contrat et des données. Avec la
-Figure~\ref{figure:language:typical_contract}, le système sous test est la
-méthode \code{f} de la classe \code{C}, le contrat est le contrat associé à
-cette méthode et les données sont soit fournies, soit générées automatiquement
-(nous verrons comment dans les chapitres suivants).
+test, un contrat et des données. Dans la
+Figure~\ref{figure:language:short_contract}, le système sous test peut être la
+méthode \code{store}, le contrat est le contrat associé à cette méthode et les
+données sont soit fournies, soit générées automatiquement (nous verrons comment
+dans les chapitres suivants).
 
 Quand la vérification d'une assertion échoue, une erreur spécifique est
 produite. Les erreurs du RAC (aussi appelées les \inenglish{Praspel failures}
