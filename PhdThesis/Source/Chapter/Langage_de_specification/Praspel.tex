@@ -610,3 +610,43 @@ d'une \inenglish{precondition failure} à un niveau supérieur.
 
 Le test réussit si aucune erreur Praspel n'est détectée. Autrement, il échoue,
 et l'erreur avec des informations supplémentaires est consignée.
+
+Par exemple, dans la Figure~\ref{figure:language:short_contract}, prenons la
+méthode \code{store} et son contrat.
+%
+Avec le jeu (\code{'foo'}, \code{null}), nous aurons une \inenglish{precondition
+failure}~: la contrainte \code{file: class('File')} n'est pas respectée car la
+méthode \code{predicate(\$q)} du domaine réaliste \code{Class} avec \code{\$q =
+'foo'} retourne \code{false}, et aucun autre domaine réaliste n'est spécifié
+pour cette variable.
+%
+Avec le jeu de paramètres (\code{new File(…)}, \code{null}), avec un fichier
+vide, nous activerons le comportement par défaut et nous n'observerons aucune
+erreur sur les préconditions. Nous sommes maintenant dans le post-état. Si la
+méthode \code{store} retourne un booléen et que la méthode \code{isAttached} de
+l'objet \code{File} retourne \code{true}, aucune erreur non plus sur la
+postcondition.  Si cette méthode retourne autre chose que \code{true} ou que la
+méthode \code{store} retourne autre chose qu'un booléen, nous aurons une
+\inenglish{postcondition failure}. Si une exception est levée, nous aurons une
+\inenglish{throwable failure}.
+%
+Avec le même jeu de paramètres mais un fichier de grande taille ne pouvant être
+enregistré, nous activerons le comportement \code{full}. Nous devrons avoir une
+exception levée de type \code{AllocationException}, avec une méthode
+\code{getFilesystem} qui retournera l'instance de notre système de fichier. Le
+fichier ne devra pas non plus être attaché, \ie sa méthode \code{isAttached}
+devra retourner \code{false}. Si une autre exception est levée ou que la
+postcondition exceptionnelle n'est pas respectée, nous aurons une
+\inenglish{throwable failure}. Si aucune exception n'est levée, nous aurons une
+\inenglish{postcondition failure}.
+%
+Si pendant avant ou après l'exécution de la méthode \code{store}, un invariant
+est cassé, nous aurons une \inenglish{invariant failure}. Par exemple, si
+l'attribut \code{\_map} contient autre chose que des objets \code{File} ou que
+sa taille dépasse 65535.
+%
+Enfin, si la méthode \code{store} fait appel à la méthode \code{getUsage} en ne
+respectant pas sa précondition (ici en lui donnant un argument par exemple),
+alors une \inenglish{precondition failure} sera émise depuis la méthode
+\code{getUsage}, qui sera ensuite traduite en \inenglish{internal precondition
+failure} depuis la méthode \code{store}.
