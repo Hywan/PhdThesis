@@ -1,0 +1,25 @@
+digraph {
+    graph [rankdir=LR];
+    node [shape=circle, width=.5];
+
+    v_1    -> i_m    [label=" ", texlbl="$I$"];
+    i_m    -> hidden [style=dashed];
+    hidden -> n_m    [style=dashed];
+    hidden -> e_m    [style=dashed];
+    n_m    -> v_2    [label=" ", texlbl="$I$"];
+    e_m    -> v_3    [label=" ", texlbl="$I$"];
+
+    subgraph cluster0 {
+        style="dashed";
+
+        i_m;
+        hidden;
+        n_m;
+        e_m;
+    }
+
+    v_1    [style="state,initial"];
+    hidden [shape=plaintext, label=" ", texlbl="$\dotso$", width=1.3];
+    v_2    [style="state,accepting"];
+    v_3    [style="state,accepting", shape=rect];
+}

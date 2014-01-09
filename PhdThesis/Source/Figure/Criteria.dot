@@ -1,0 +1,19 @@
+digraph {
+    graph [ratio=compress, splines=line];
+    node [shape=plaintext, height=.3];
+    compound=true;
+
+    ac  -> sdc;
+    ac  -> spc;
+    sdc -> dc;
+    sdc -> sc;
+    spc -> sc;
+    spc -> pc;
+
+    ac  [width=1.0, label=" ", texlbl="All-$G$ Coverage"];
+    sc  [width=1.0, label=" ", texlbl="Clause Coverage"];
+    dc  [width=1.0, label=" ", texlbl="Domain Coverage"];
+    pc  [width=1.0, label=" ", texlbl="Predicate Coverage"];
+    sdc [width=1.0, label=" ", texlbl="\begin{tabular}{c}Clause + Domain \\ Coverage\end{tabular}"];
+    spc [width=1.0, label=" ", texlbl="\begin{tabular}{c}Clause + Predicate \\ Coverage\end{tabular}"];
+}

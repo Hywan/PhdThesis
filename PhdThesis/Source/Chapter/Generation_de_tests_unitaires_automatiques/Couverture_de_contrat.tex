@@ -139,22 +139,22 @@ exceptionnelle, qui est aussi une expression de type \grule{expression}. Le
 graphe de contrat associé à ce contrat atomique est~:
 
 $$G = (
-    \{v_1, v_2, v_3, v_4, v_5, v_6\},
-    D,
-    v_1,
-    \{v_3\},
-    \{v_5\},
-    \{v_6\}
+  \{v_1, v_2, v_3, v_4, v_5, v_6\},
+  D,
+  v_1,
+  \{v_3\},
+  \{v_5\},
+  \{v_6\}
 )$$
 
 où
 
 $$D = \{
-    (v_1, R, v_2),
-    (v_2, E, v_3),
-    (v_2, T_C, v_4),
-    (v_4, T_E, v_5),
-    (v_2, \neg T_C, v_6)
+  (v_1, R, v_2),
+  (v_2, E, v_3),
+  (v_2, T_C, v_4),
+  (v_4, T_E, v_5),
+  (v_2, \neg T_C, v_6)
 \}$$
 
 \begin{figure}
@@ -179,9 +179,9 @@ La Section~\ref{subsection:test:atomic_graph} considérait un contrat avec un
 seule clause \athrowable. Dans cette section, nous voyons comment un contrat est
 modifié quand nous ajoutons une ou plusieurs clauses \code{\athrowable $T_C$
 with $T_E$} à un contrat dont le graphe est $G = (V, D, i, N, E, U)$. Par
-induction, nous pouvons supposer que l'ensemble des sommets $V$ contient au
-moins les six sommets $v_1 = i$, $v_2$, $v_3$, $v_4$, $v_5$, $v_6$ introduits
-dans la Section~\ref{subsection:test:atomic_graph}.
+induction, supposons que l'ensemble des sommets $V$ contient au moins les six
+sommets $v_1 = i$, $v_2$, $v_3$, $v_4$, $v_5$, $v_6$ introduits dans la
+Section~\ref{subsection:test:atomic_graph}.
 
 Le graphe résultat est $G' = (V \union \{v'\}, D', i, N, E, U)$ avec le nouveau
 sommet $v' \notin V$, et~:
@@ -251,8 +251,69 @@ quand le comportement est atomique et contient seulement une seule clause
 \abehavior}
 \label{subsection:test:behaviors_graph}
 
+La Section~\ref{subsection:test:behavior_graph} considérait un contrat avec une
+seule clause \abehavior. Dans cette section, nous voyons comment ajouter une
+clause \abehavior~$\beta$ à la liste des comportements dont le graphe de contrat
+est $(V, D, i, N, E, U)$. Soit $G_\beta = (V_\beta, D_\beta, i_\beta, N_\beta,
+E_\beta, U_\beta)$ le graphe de contrat associé au comportement $\beta$. Modulo
+quelques renommages, supposons que $V$ contient un sommet $v$ tel que $D$
+contiens un arc $(i, R, v)$ et que tous les sommets de $G_\beta$ sont distincts
+de ceux de $G$ ($V \intersection V_\beta = \emptyset$). Alors, le nouveau graphe
+de contrat est $G = (V \union V_\beta - \{i_\beta\}, D \union D'_\beta, i, N
+\union N'_\beta, E \union E_\beta, U \union U_\beta)$, où $D'_\beta$
+(respectivement $N'_\beta$) est obtenu de $D_\beta$ (respectivement $N_\beta$)
+en remplaçant $i_\beta$ par $v$.
+
 \subsection{Cas de la clause \adefault}
 \label{subsection:test:default_graph}
 
+Après un groupe de clauses \abehavior, nous pouvons avoir une clause \adefault.
+Rappelons-nous que une clause \adefault est strictement équivalent à une clause
+\abehavior avec une clause \arequires implicite (voir la
+Section~\ref{subsection:language:clauses}). Ainsi, ajouter une clause \adefault
+est un cas spécial d'ajout d'une clause \abehavior, considéré dans la
+Section~\ref{subsection:test:behaviors_graph}.
+
 \subsection{Cas de la clause \ainvariant}
 \label{subsection:test:invariant_graph}
+
+Dans cette dernière section, nous voyons comment intégrer une clause
+\ainvariant~$I$ (localisée sur les attributs de classe) dans le graphe de
+contrat d'une méthode $G_M = (V_M, D_M, i_M, N_M, E_M, U_M)$. Nous supposons que
+l'ensemble $V_M$ ne contient pas les sommets $v_1$, $v_2$ et $v_3$. Le graphe
+résultant est~:
+
+$$G = (
+  \{v_1, v_2, v_3\} \union V_M,
+  D,
+  v_1,
+  \{v_2\},
+  \{v_3\},
+  U_M
+)$$
+
+avec
+
+$$D = \{(v_1, I, i_M)\} \union
+      \{(n, I, v_2) \vert n \in N_M\} \union
+      \{(e, I, v_3) \vert e \in E_M\}$$
+
+Il contient trois sommets supplémentaires et plusieurs nouveaux arcs, dont la
+signification est que l'invariant $I$ doit être satisfait avant et après
+l'exécution de la méthode, et dans tous les cas, que ce soit une terminaison
+normale ou exceptionnelle.
+
+\begin{figure}
+
+\fig{\textwidth}{!}{Invariant_graph.tex}
+
+\caption{\label{figure:test:invariant_graph} Graphe correspondant à contrat avec
+un invariant.}
+
+\end{figure}
+
+La Figure~\ref{figure:test:invariant_graph} illustre ce principe d'extension
+d'un graphe de contrat avec un invariant. Pour des raisons des simplicités, elle
+représente seulement un sommet final normal et un sommet final exceptionnel.
+
+Nous remarquons que tous les graphes construits sont acycliques.
