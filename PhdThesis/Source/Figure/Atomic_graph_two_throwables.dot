@@ -1,0 +1,15 @@
+digraph {
+    graph [rankdir=LR];
+    node [shape=circle, width=0.5];
+    v_1 -> v_2 [label=" ", texlbl="$R$"];
+    v_2 -> v_3 [label=" ", texlbl="$E$"];
+    v_2 -> v_4 [label=" ", texlbl="$T_{C_1}$"];
+    v_4 -> v_5 [label=" ", texlbl="$T_{E_1}$"];
+    v_2 -> v_7 [label=" ", texlbl="$T_{C_2}$"];
+    v_7 -> v_5 [label=" ", texlbl="$T_{E_2}$"];
+    v_2 -> v_6 [label=" ", texlbl="$\neg T_{C_1} \land \neg T_{C_2}$"];
+
+    v_1 [style="state,initial"];
+    v_3 [style="state,accepting"];
+    v_5 [style="state,accepting", shape=rect];
+}

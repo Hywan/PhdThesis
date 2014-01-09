@@ -1,0 +1,216 @@
+\section{Couverture de contrat}
+\label{section:test:contract}
+
+Dans cette section, nous expliquons comment construire le graphe d'un contrat
+Praspel, en forme normale. Ce graph reflète les clauses du contrat à travers les
+assignements de domaines réalistes et les prédicats.
+
+Dans la suite, nous notons $A$ l'ensemble composé de toutes les expressions
+Praspel générées par les entités syntaxiques \grule{expression} et
+\grule{exception-identifier} de la grammaire de la
+Figure~\ref{figure:language:grammar_part2}, et complété par toutes les
+expressions de la forme $\neg t_1 \land \dots \land \neg t_n$ où $t_i$ est
+généré par l'entité syntaxique \grule{exception-identifier}, pour $1 \leq i \leq
+n$. Nous considérons deux familles de graphes, à savoir {\strong graphes
+d'expressions} et {\strong graphes de contrats}, définis comme suit.
+
+\begin{definition}
+
+Un {\strong graphe d'expression} est un tuple $(V, D, i, n)$ où $V$ est
+l'ensemble fini des {\strong sommets}, $D \subseteq V \times A \times V$ est
+l'ensemble fini des {\strong arcs} de $V$ dans $V$ annotés par une {\strong
+expression} dans $A$, $i \in V$ est le {\strong sommet initial}, $n \in V$ est
+le {\strong sommet final normal}.
+
+\end{definition}
+
+\begin{definition}
+
+Un {\strong graphe de contrat} est un tuple $(V, D, i, N, E, U)$ où $V$ est
+l'ensemble fini des {\strong sommets}, $D \subseteq V \times A \times V$ est
+l'ensemble fini des {\strong arcs} de $V$ dans $V$ annotés par une expression
+dans $A$, $i \in V$ est le {\strong sommet initial}, $N$ est l'ensemble des
+{\strong sommets finaux normaux}, $E$ est l'ensemble des {\strong sommets finaux
+exceptionnels} et $U$ est l'ensemble des {\strong sommets pièges/d'erreurs},
+avec $N \disjunion E \disjunion U \subseteq V$.
+
+\end{definition}
+
+La Section~\ref{subsection:test:expression_graph} transforme n'importe quelle
+expression Praspel en un graphe d'expression. Les autres sections définissent la
+transformation de tout contrat Praspel en graphe de contrat. Le cas le plus
+simple est celui d'un contrat sans comportement, appelé {\strong contrat
+atomique}. Ils sont considérés dans les
+Sections~\ref{subsection:test:atomic_graph} et
+\ref{subsection:test:throwable_graph}. Ensuite, les graphes de contrat avec des
+comportements sont définis par induction. Le cas simple avec seulement un
+comportement est traité dans la Section~\ref{subsection:test:behavior_graph}. Le
+pas d'induction considérant un ou plusieurs comportements est traité dans la
+Section~\ref{subsection:test:behaviors_graph}. Le cas d'unc contrat avec une
+clause \adefault (respectivement \ainvariant) est traité dans la
+Section~\ref{subsection:test:default_graph} (respectivement
+\ref{subsection:test:invariant_graph}. Afin de rester de simple, nous allons
+seulement considérer des contrats en forme normale.
+
+\subsection{Graphe d'une expression}
+\label{subsection:test:expression_graph}
+
+Les expressions Praspel sont décrites dans la
+Figure~\ref{figure:language:grammar_part2} par l'entité syntaxique
+\grule{expression}. Une expression est une conjonction de déclarations, de
+prédicats et de contraintes, respectivement décritent par les entités
+syntaxiques \grule{declaration}, \grule{predicate} et \grule{constraint} dans la
+Figure~\ref{figure:language:grammar_part3}. Nous transformons seulement les deux
+premières sortes d'expressions, comme les expressions de type \grule{constraint}
+ne sont pas pertinente pour la couverture: elles représentent un seul
+comportement (par exemple, \grule{constraint} et \grule{declaration}
+apparaissent toujours ensembles) et sont toujours exécutées.
+
+Une expression sans contrainte en forme normale est de la forme \code{$d$ and
+$p$}, où $d$ (respectivement $p$) est une conjonction d'expressions de type
+\grule{declaration} (respectivement \grule{predicate}). Son graphe d'expression
+est la concaténation par une transition $\varepsilon$ du {\strong graphe des
+domaines} obtenu à partir $d$ et du {\strong graphe des prédicats} obtenu à
+partir de $p$. Les deux constructions sont détaillées ci-dessous.
+
+Une conjonction de déclarations a la forme générale \code{$i_1$: $D_1$ and
+$\dots$ and $i_m$: $D_m$}, où \code{$D_j = d_{j,1}$ or $\dots$ or $d_{j,k}$} est
+une disjonction de domaines réalistes ($1 \leq j \leq m$). Nous notons aussi par
+$D_j$ la liste $[d_{j,1}, \dots, d_{j,k}]$ de domaines réalistes dans la
+disjonction. Soit $S = [i_1, \dots, i_m]$ la liste des identifiants déclarés
+dans cette expression. Soit $\mathrm{last}(S)$ représentant le dernier élément
+de la liste $S$. Par exemple, pour l'expression:
+
+$$\code{i: foo() or bar() and j: baz() or qux()}$$
+
+nous avons $S = [\code{i}, \code{j}]$, $D_1 = [\code{foo()}, \code{bar()}]$ et
+$D_2 = [\code{baz()}, \code{qux()}]$.
+
+Le {\strong graphe des domaines} associé à l'expression \code{$i_1$: $D_1$ and
+$\dots$ and $i_m$: $D_m$} est $G = (\{\mathit{dom}\} \union \{v_s \vert \in S\},
+D, \mathit{dom}, v_{\mathrm{last}(S)})$ où~:
+
+$$D = \Union_{d \in D_1} \{(\mathit{dom}, \code{$i_1$: $d$}, v_{i_1})\} \union
+      \Union_{2 \leq j \leq m}
+      \Union_{d \in D_j} \{(v_{i_{j - 1}}, \code{$i_j$: $d$}, v_{i_{j}})\}$$
+
+Un prédicat est de la forme \apred{p}, où $p$ est une chaîne de caractères
+contenant un prédicat PHP en forme normale disjonctive (DNF). Nous lui associons
+un {\strong graphe de prédicat}. La définition est similaire à celle des graphes
+de domaines, après avoir remplacé \code{\&\&} par \code{and} et \code{||} par
+\code{or}, et annoté les disjonctions pour avoir des sommets numérotés. Le
+sommet initial n'est plus $\mathit{dom}$ mais $\mathit{pred}$. Par exemple,
+\apred{\code{'(\$a || \$b) \&\& (\$c || \$d)'}} devient \code{$(1~:)$ \$a or \$b
+and $(2~:)$ \$c and \$d}.
+
+\begin{figure}
+
+\fig{\textwidth}{!}{Expression_graph.tex}
+
+\caption{\label{figure:test:expression_graph} Un graphe d'expressions, composé
+d'un graphe de domaine et d'un graphe de prédicat.}
+
+\end{figure}
+
+La Figure~\ref{figure:test:expression_graph} présente graphiquement le graphe
+associé au dernier exemple.
+
+\subsection{Graphe d'un contrat atomique}
+\label{subsection:test:atomic_graph}
+
+Un {\strong contrat atomique} est un contrat composé uniquement des clauses
+\arequires, \aensures et \athrowable. Il ne contient ni clauses \abehavior, ni
+\adefault, \ie aucun sous-contrat, and n'est par conséquent pas décomposable en
+contrat pour plus. Un contrat atomique en forme normale adopte la forme générale
+suivante~:
+
+\begin{pre}
+\arequires  \(R\); \\
+\aensures   \(E\); \\
+\athrowable \(T\sb{C}\) with \(T\sb{E}\);
+\end{pre}
+
+où $R$ et $E$ sont des expressions de type \grule{expressions} respectivement
+associées aux clauses \arequires et \aensures. L'expression de type
+\grule{exceptional-expression} associée à la clause \athrowable est composée de
+deux parties~: $T_C$ représente le nom de la classe de l'eception et
+l'identifiant qui porte l'exception, et $T_E$ représente la postcondition
+exceptionnelle, qui est aussi une expression de type \grule{expression}. Le
+graphe de contrat associé à ce contrat atomique est~:
+
+$$G = (
+    \{v_1, v_2, v_3, v_4, v_5, v_6\},
+    D,
+    v_1,
+    \{v_3\},
+    \{v_5\},
+    \{v_6\}
+)$$
+
+où
+
+$$D = \{
+    (v_1, R, v_2),
+    (v_2, E, v_3),
+    (v_2, T_C, v_4),
+    (v_4, T_E, v_5),
+    (v_2, \neg T_C, v_6)
+\}$$
+
+\begin{figure}
+
+\fig{10cm}{!}{Atomic_graph.tex}
+
+\caption{\label{figure:test:atomic_graph} Graphe correspondant à un contrat
+atomique.}
+
+\end{figure}
+
+La Figure~\ref{figure:test:atomic_graph} présente graphiquement ce graphe. Dans
+cette figure ainsi que dans toutes celles qui vont suivre, le sommet normal
+final est représenté par un double cercle, et le sommet final exceptionnel par
+un double rectangle.
+
+\subsection{Extension du graphe d'un contrat atomique avec une ou plusieurs
+clauses \athrowable}
+\label{subsection:test:throwable_graph}
+
+La Section~\ref{subsection:test:atomic_graph} considérait un contrat avec un
+seule clause \athrowable. Dans cette section, nous voyons comment un contrat est
+modifié quand nous ajoutons une ou plusieurs clauses \code{\athrowable $T_C$
+with $T_E$} à un contrat dont le graphe est $G = (V, D, i, N, E, U)$. Par
+induction, nous pouvons supposer que l'ensemble des sommets $V$ contient au
+moins les six sommets $v_1 = i$, $v_2$, $v_3$, $v_4$, $v_5$, $v_6$ introduits
+dans la Section~\ref{subsection:test:atomic_graph}.
+
+Le graphe résultat est $G' = (V \union \{v'\}, D', i, N, E, U)$ avec le nouveau
+sommet $v' \notin V$, et~:
+
+$$D = D \union \{(v2, T_C, v'), (v', T_E, v5)\}
+      - \{(v_2, \varphi, v_6) \vert (v_2, \varphi, v_6) \in D\} \union
+      \{(v_2, \varphi \land \neg T_C, v_6) \vert (v_2, \varphi, v_6) \in D\}$$
+
+\begin{figure}
+
+\fig{11cm}{!}{Atomic_graph_two_throwables.tex}
+
+\caption{\label{figure:test:throwable_graph} Graphe correspondant à un contrat
+atomique avec deux clauses \athrowable.}
+
+\end{figure}
+
+La Figure~\ref{figure:test:throwable_graph} présente graphiquement ce graphe
+quand il y a deux clauses \athrowable (dans la figure, $v'$ est noté $v_7$).
+
+\subsection{Graphe d'un contrat avec une clause \abehavior}
+\label{subsection:test:behavior_graph}
+
+\subsection{Extension du graph d'un contrat avec une ou plusieurs clauses
+\abehavior}
+\label{subsection:test:behaviors_graph}
+
+\subsection{Cas de la clause \adefault}
+\label{subsection:test:default_graph}
+
+\subsection{Cas de la clause \ainvariant}
+\label{subsection:test:invariant_graph}
