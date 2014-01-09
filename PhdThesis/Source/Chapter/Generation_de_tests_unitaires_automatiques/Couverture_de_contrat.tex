@@ -2,8 +2,8 @@
 \label{section:test:contract}
 
 Dans cette section, nous expliquons comment construire le graphe d'un contrat
-Praspel, en forme normale. Ce graph reflète les clauses du contrat à travers les
-assignements de domaines réalistes et les prédicats.
+Praspel, en forme normale. Ce graphe reflète les clauses du contrat à travers
+les assignements de domaines réalistes et les prédicats.
 
 Dans la suite, nous notons $A$ l'ensemble composé de toutes les expressions
 Praspel générées par les entités syntaxiques \grule{expression} et
@@ -186,9 +186,14 @@ dans la Section~\ref{subsection:test:atomic_graph}.
 Le graphe résultat est $G' = (V \union \{v'\}, D', i, N, E, U)$ avec le nouveau
 sommet $v' \notin V$, et~:
 
-$$D = D \union \{(v2, T_C, v'), (v', T_E, v5)\}
-      - \{(v_2, \varphi, v_6) \vert (v_2, \varphi, v_6) \in D\} \union
-      \{(v_2, \varphi \land \neg T_C, v_6) \vert (v_2, \varphi, v_6) \in D\}$$
+\begin{equation*}
+\centering
+\begin{aligned}
+D = & D \union \{(v2, T_C, v'), (v', T_E, v5)\} \\
+    & - \{(v_2, \varphi, v_6) \vert (v_2, \varphi, v_6) \in D\} \union
+      \{(v_2, \varphi \land \neg T_C, v_6) \vert (v_2, \varphi, v_6) \in D\}
+\end{aligned}
+\end{equation*}
 
 \begin{figure}
 
@@ -205,7 +210,44 @@ quand il y a deux clauses \athrowable (dans la figure, $v'$ est noté $v_7$).
 \subsection{Graphe d'un contrat avec une clause \abehavior}
 \label{subsection:test:behavior_graph}
 
-\subsection{Extension du graph d'un contrat avec une ou plusieurs clauses
+Maintenant, nous considérions le cas d'un contrat contenant exactement une
+clause \abehavior. Soit $C$ le contrat~:
+
+\begin{pre}
+\arequires \(R\);
+\abehavior \(\alpha\) \{ \(B\) \}
+\end{pre}
+
+où $B$ est le contrat du comportement $\alpha$. Soit $G_\alpha = (V_\alpha,
+D_\alpha, i_\alpha, N_\alpha, E_\alpha, U_\alpha)$ le graphe de contrat associé
+à $B$. Alors, le contrat de contrat associé au contrat $C$ est~:
+
+$$G = (
+  \{v\} \union V_\alpha,
+  \{(v, R, i_\alpha)\} \union D_\alpha,
+  v,
+  \{i_\alpha\} \union N_\alpha,
+  E_\alpha,
+  U_\alpha
+)$$
+
+avec le nouveau sommet $v \notin V_\alpha$. Ce graphe est composé de tous les
+sommets et arcs de $G_\alpha$, complété avec le nouvel arc.
+
+\begin{figure}
+
+\fig{\textwidth}{!}{One_behavior_graph.tex}
+
+\caption{\label{figure:test:behavior_graph} Le graphe correspondant à un contrat
+avec une seule clause \abehavior, qui contient un (sous-)contrat atomique.}
+
+\end{figure}
+
+La Figure~\ref{figure:test:behavior_graph} présente graphiquement ce graphe
+quand le comportement est atomique et contient seulement une seule clause
+\athrowable.  Dans la figure, les sommets sont renumérotés depuis $v_1$.
+
+\subsection{Extension du graphe d'un contrat avec une ou plusieurs clauses
 \abehavior}
 \label{subsection:test:behaviors_graph}
 
