@@ -1,4 +1,4 @@
-\usepackage[english,french]{babel}
+%\usepackage[english,french]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 
@@ -15,40 +15,31 @@
   \usetikzlibrary{snakes,arrows,shapes,automata}
 \usepackage{paralist}
 \usepackage{url}
-\usepackage[linktoc=all]{hyperref}
-  \hypersetup{
-      backref       = true,
-      pagebackref   = true,
-      hyperindex    = true,
-      colorlinks    = true,
-      breaklinks    = true,
-      urlcolor      = black,
-      linkcolor     = black,
-      citecolor     = black,
-      bookmarks     = true,
-      bookmarksopen = true
-  }
 \usepackage{minitoc}
   \renewcommand{\mtctitle}{Table des matières}
 
 \everymath{\displaystyle}
 
-%\newcommand{\listexamplename}{Table des exemples}
-%\newlistof[chapter]{example}{ex}{\listexamplename}
-%\newenvironment{example}[1][]{
-%    \refstepcounter{example}
-%    \addcontentsline{ex}{example}{\protect\numberline{\theexample}#1}
-%    \medskip
-%    \noindent\tb{Exemple~\theexample.}
-%    {\ti #1} \\
-%    \rmfamily
-%}{\medskip}
-%\settowidth{\cftexamplenumwidth}{7.77~\,}
+%\newcommand{\HRule}{\rule{\linewidth}{.5mm}}
+%\newcommand{\blankpage}{\newpage\thispagestyle{empty}\mbox{}}
 
-%\newcounter{principle}
-%\newenvironment{principle}[1][]{\refstepcounter{principle}\medskip\noindent
-%\tb{Principe~\theprinciple.} {\ti #1} \\ \rmfamily}{\medskip}
+\declarethesis[Sous-titre]{Titre}{30 juin 2014}{XXX}
+\addauthor[ivan.enderlin@femto-st.fr]{Ivan}{Enderlin}
 
+\addjury{Foo}{Bar}{Rapporteur}{Professeur à l'Université …}
+\addjury{Fabrice}{Bouquet}{Directeur de thèse}{Professeur à l'Université de Franche-Comté}
+\addjury{Frédéric}{Dadeau}{Encadrant de thèse}{Docteur à l'Université de Franche-Comté}
+\addjury{Alain}{Giorgetti}{Encadrant de thèse}{Docteur à l'Université de Franche-Comté}
 
-\newcommand{\HRule}{\rule{\linewidth}{.5mm}}
-\newcommand{\blankpage}{\newpage\thispagestyle{empty}\mbox{}}
+\thesisabstract[english]{
+    This is an abstract in English.
+}
+\thesiskeywords[english]{Keyword 1, Keyword 2}
+
+\thesisabstract[french]{
+    Ceci est le résumé en français.
+}
+\thesiskeywords[english]{Mot-clé 1, Mot-clé 2}
+
+\Set{speciality}{Informatique}
+\Set{universityname}{Université Sciences et Techniques de Besançon}
