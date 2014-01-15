@@ -31,8 +31,8 @@ l'ensemble fini des {\strong sommets}, $D \subseteq V \times A \times V$ est
 l'ensemble fini des {\strong arcs} de $V$ dans $V$ annotés par une expression
 dans $A$, $i \in V$ est le {\strong sommet initial}, $N$ est l'ensemble des
 {\strong sommets finaux normaux}, $E$ est l'ensemble des {\strong sommets finaux
-exceptionnels} et $U$ est l'ensemble des {\strong sommets pièges/d'erreurs},
-avec $N \disjunion E \disjunion U \subseteq V$.
+exceptionnels} et $U$ est l'ensemble des {\strong sommets pièges}/d'{\strong
+erreurs}, avec $N \disjunion E \disjunion U \subseteq V$.
 
 \end{definition}
 
@@ -46,10 +46,10 @@ Sections~\ref{subsection:test:atomic_graph} et
 comportements sont définis par induction. Le cas simple avec seulement un
 comportement est traité dans la Section~\ref{subsection:test:behavior_graph}. Le
 pas d'induction considérant un ou plusieurs comportements est traité dans la
-Section~\ref{subsection:test:behaviors_graph}. Le cas d'unc contrat avec une
+Section~\ref{subsection:test:behaviors_graph}. Le cas d'un contrat avec une
 clause \adefault (respectivement \ainvariant) est traité dans la
 Section~\ref{subsection:test:default_graph} (respectivement
-\ref{subsection:test:invariant_graph}. Afin de rester de simple, nous allons
+\ref{subsection:test:invariant_graph}). Afin de rester simple, nous allons
 seulement considérer des contrats en forme normale.
 
 \subsection{Graphe d'une expression}
@@ -80,20 +80,20 @@ $D_j$ la liste $[d_{j,1}, \dots, d_{j,k}]$ de domaines réalistes dans la
 disjonction. Soit $S = [i_1, \dots, i_m]$ la liste des identifiants déclarés
 dans cette expression. Soit $\mathrm{last}(S)$ représentant le dernier élément
 de la liste $S$. Par exemple, pour l'expression:
-
+%
 $$\code{i: foo() or bar() and j: baz() or qux()}$$
-
+%
 nous avons $S = [\code{i}, \code{j}]$, $D_1 = [\code{foo()}, \code{bar()}]$ et
 $D_2 = [\code{baz()}, \code{qux()}]$.
 
 Le {\strong graphe des domaines} associé à l'expression \code{$i_1$: $D_1$ and
 $\dots$ and $i_m$: $D_m$} est $G = (\{\mathit{dom}\} \union \{v_s \vert \in S\},
 D, \mathit{dom}, v_{\mathrm{last}(S)})$ où~:
-
+%
 $$D = \Union_{d \in D_1} \{(\mathit{dom}, \code{$i_1$: $d$}, v_{i_1})\} \union
       \Union_{2 \leq j \leq m}
       \Union_{d \in D_j} \{(v_{i_{j - 1}}, \code{$i_j$: $d$}, v_{i_{j}})\}$$
-
+%
 Un prédicat est de la forme \apred{p}, où $p$ est une chaîne de caractères
 contenant un prédicat PHP en forme normale disjonctive (DNF). Nous lui associons
 un {\strong graphe de prédicat}. La définition est similaire à celle des graphes
@@ -120,7 +120,7 @@ associé au dernier exemple.
 
 Un {\strong contrat atomique} est un contrat composé uniquement des clauses
 \arequires, \aensures et \athrowable. Il ne contient ni clauses \abehavior, ni
-\adefault, \ie aucun sous-contrat, and n'est par conséquent pas décomposable en
+\adefault, \ie aucun sous-contrat, et n'est par conséquent pas décomposable en
 contrat pour plus. Un contrat atomique en forme normale adopte la forme générale
 suivante~:
 
@@ -129,11 +129,11 @@ suivante~:
 \aensures   \(E\); \\
 \athrowable \(T\sb{C}\) with \(T\sb{E}\);
 \end{pre}
-
+%
 où $R$ et $E$ sont des expressions de type \grule{expressions} respectivement
 associées aux clauses \arequires et \aensures. L'expression de type
 \grule{exceptional-expression} associée à la clause \athrowable est composée de
-deux parties~: $T_C$ représente le nom de la classe de l'eception et
+deux parties~: $T_C$ représente le nom de la classe de l'exception et
 l'identifiant qui porte l'exception, et $T_E$ représente la postcondition
 exceptionnelle, qui est aussi une expression de type \grule{expression}. Le
 graphe de contrat associé à ce contrat atomique est~:
@@ -146,9 +146,9 @@ $$G = (
   \{v_5\},
   \{v_6\}
 )$$
-
+%
 où
-
+%
 $$D = \{
   (v_1, R, v_2),
   (v_2, E, v_3),
@@ -214,14 +214,14 @@ Maintenant, nous considérions le cas d'un contrat contenant exactement une
 clause \abehavior. Soit $C$ le contrat~:
 
 \begin{pre}
-\arequires \(R\);
+\arequires \(R\); \\
 \abehavior \(\alpha\) \{ \(B\) \}
 \end{pre}
-
+%
 où $B$ est le contrat du comportement $\alpha$. Soit $G_\alpha = (V_\alpha,
 D_\alpha, i_\alpha, N_\alpha, E_\alpha, U_\alpha)$ le graphe de contrat associé
-à $B$. Alors, le contrat de contrat associé au contrat $C$ est~:
-
+à $B$. Alors, le graphe de contrat associé au contrat $C$ est~:
+%
 $$G = (
   \{v\} \union V_\alpha,
   \{(v, R, i_\alpha)\} \union D_\alpha,
@@ -230,7 +230,7 @@ $$G = (
   E_\alpha,
   U_\alpha
 )$$
-
+%
 avec le nouveau sommet $v \notin V_\alpha$. Ce graphe est composé de tous les
 sommets et arcs de $G_\alpha$, complété avec le nouvel arc.
 
@@ -268,7 +268,7 @@ en remplaçant $i_\beta$ par $v$.
 \label{subsection:test:default_graph}
 
 Après un groupe de clauses \abehavior, nous pouvons avoir une clause \adefault.
-Rappelons-nous que une clause \adefault est strictement équivalent à une clause
+Rappelons-nous qu'une clause \adefault est strictement équivalente à une clause
 \abehavior avec une clause \arequires implicite (voir la
 Section~\ref{subsection:language:clauses}). Ainsi, ajouter une clause \adefault
 est un cas spécial d'ajout d'une clause \abehavior, considéré dans la
@@ -282,7 +282,7 @@ Dans cette dernière section, nous voyons comment intégrer une clause
 contrat d'une méthode $G_M = (V_M, D_M, i_M, N_M, E_M, U_M)$. Nous supposons que
 l'ensemble $V_M$ ne contient pas les sommets $v_1$, $v_2$ et $v_3$. Le graphe
 résultant est~:
-
+%
 $$G = (
   \{v_1, v_2, v_3\} \union V_M,
   D,
@@ -291,9 +291,9 @@ $$G = (
   \{v_3\},
   U_M
 )$$
-
+%
 avec
-
+%
 $$D = \{(v_1, I, i_M)\} \union
       \{(n, I, v_2) \vert n \in N_M\} \union
       \{(e, I, v_3) \vert e \in E_M\}$$
@@ -313,7 +313,7 @@ un invariant.}
 \end{figure}
 
 La Figure~\ref{figure:test:invariant_graph} illustre ce principe d'extension
-d'un graphe de contrat avec un invariant. Pour des raisons des simplicités, elle
-représente seulement un sommet final normal et un sommet final exceptionnel.
+d'un graphe de contrat avec un invariant. Pour des raisons de simplicité, elle
+représente seulement un sommet final normal et un sommet final exceptionnel. \\
 
 Nous remarquons que tous les graphes construits sont acycliques.
