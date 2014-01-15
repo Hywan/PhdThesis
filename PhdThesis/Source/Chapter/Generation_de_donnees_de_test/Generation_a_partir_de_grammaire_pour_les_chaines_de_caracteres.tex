@@ -1,2 +1,284 @@
 \section{Génération à partir de grammaire pour les chaînes de caractères}
 \label{section:data:strings}
+
+Les grammaires sont utilisées pour représenter, et par conséquent au moins à
+valider, des données textuelles complexes. Ce qui fait que les grammaires
+semblent être un bon candidat pour être une base d'un domaine réaliste. Nous
+allons en premier lieu nous concentrer sur la première caractéristique des
+domaines réalistes, à savoir la prédicabilité, et présenter un langage simple de
+description de grammaire ainsi que son interprétation avec un compilateur de
+compilateur dédié.
+
+\subsection{Langage de description de grammaire}
+\label{subsection:data:pp}
+
+Le langage \inenglish{PHP Parser}, (abbrégé PP) est utilisé pour exprimer
+simplement des grammaires \inenglish{top-down} et algébriques. La syntaxe est
+principalement inspiré de JavaCC avec l'ajout de nouvelles constructions.
+L'objectif de l'analyse est de produire un \inenglish{abstract syntax tree}
+(AST) pour des données syntaxiquement correctes.
+
+La déclaration d'un lexème est de la forme~:
+
+\begin{pre}
+%token ns_source:name value -> ns_dest
+\end{pre}
+%
+où \code{name} représente son nom, \code{value} sa valeur exprimée avec une
+expression régulière, et \code{ns\_source} et \code{ns\_dest} sont des noms
+d'espace de nom optionnels. Les expressions régulières sont écrites en utilisant
+la syntaxe standard des PCRE, très expressive et largement utilisés et supportés
+(par exemple dans PHP, Javascript, Perl, Python, Apache, KDE etc.). Les espaces
+de noms servent à représenter des sous-ensembles disjoints de lexèmes pour la
+phases d'analyse lexicale. Une déclaration \code{\%skip} est similaire à une
+déclaration \code{\%token} excepté qu'elle reprénsete un lexème à sauter.
+
+\begin{figure}
+
+\begin{bigpre}
+%skip   space           \(\bslash\)s \\
+%token  lt              <        -> in_tag \\
+%token  text            [^<]* \\
+\\
+%skip   in_tag:space    \(\bslash\)s \\
+%token  in_tag:slash    / \\
+%token  in_tag:tagname  [^>]+ \\
+%token  in_tag:equal    = \\
+%token  in_tag:value    ".*?(?<!\(\bslash\bslash\bslash\))" \\
+%token  in_tag:gt       >        -> default \\
+\\
+xml: \\
+    tag()+ \\
+\\
+tag: \\
+    ::lt:: <tagname[0]> \\
+    ( \\
+      ::slash:: ::gt:: \\
+    | attribute()* ::gt:: ( inner() | tag() )* \\
+      ::lt:: ::slash:: <tagname[0]> ::gt:: \\
+    ) \\
+\\
+attribute: \\
+    <name> ( ::equal:: <value> )? \\
+\\
+inner: \\
+    <text>
+\end{bigpre}
+
+\caption{\label{figure:data:xml} Grammaire simplifiée d'un document XML.}
+
+\end{figure}
+
+La Figure~\ref{figure:data:xml} montre un exemple d'une grammaire simplifiée
+d'un document XML. Elle commence par la déclaration des lexèmes, en utilisant
+des espaces de noms pour identifier si l'analyse se déroule à l'extérieur ou à
+l'intérieur d'une balise. La règle \code{xml} décrit un document XML comme une
+séquence de balises, chaque balise ayant potentiellement des attributs et étant
+atomique (\code{<aTag />}), composite (contenant d'autres balises) ou contenant
+du texte (\code{<aTag>with text</aTag>}). Un nom de règle (\code{xml},
+\code{tag}, \code{attribute} etc. dans la Figure~\ref{figure:data:xml}) est
+suivi du symbole \code{:}, puis d'une nouvelle ligne, immédiatement suivie par
+une {\strong déclaration de règle}, préfixée par des caractères blancs (espaces
+ou tabulations). Les lexèmes peuvent être référencés en utilisant deux types de
+constructions. La construction \code{::token::} signifie que le lexème ne sera
+pas conservé dans l'AST, il sera consommé, contrairement à la construction
+\code{<token>}. La construction \code{rule()} représente un appel à une règle.
+Les opérations de répétition sont classiques: \code{\{$x$, $y$\}} pour répéter
+le motif $x$ à $y$ fois, \code{?} est identique à \code{\{0, 1\}}, \code{+} à
+\code{\{1, \}}, \code{*} à \code{\{0, \}}. Les disjonctions sont représentées
+par le symbole \code{\mvert} et le groupement par \code{(} et \code{)}. La
+construction \code{\#node} permet d'identifier un nœud dans l'AST.
+
+De plus, si un lexème est suivi de \code{[$i$]} avec $i \geq 0$, nous avons une
+unification. Une unification pour les lexèmes implique que tous les
+\code{token[$i$]} avec le même $i$ ont la même valeur localement à la règle.
+Remarquons la présence d'une unification de lexème dans la
+Figure~\ref{figure:data:xml}~: \code{tagname[0]} indique que la balise
+d'ouverture et de fermeture doivent avoir le même nom.
+
+\subsubsection{Compilateur de compilateur}
+\label{subsection:data:compiler-compiler}
+
+Avec le langage PP, nous proposons un compilateur de compilateur LL(*) associé
+qui permet d'exploiter la description de grammaire afin de produire un analyseur
+lexical et syntaxique.
+
+Quand le compilateur analyse une donnée, il commence par…
+
+\subsubsection{Utiliser PP avec le domaine réaliste \code{Grammar}}
+
+Une grammaire et sa technique classique de compilation associée permet d'assurer
+la caractéristique de prédicabilité d'un domaine réaliste, en vérifiant qu'une
+donnée est correctement structurée par rapport à une grammaire…
+
+\begin{pre}
+@requires payload: grammar('Json.pp');
+\end{pre}
+
+\subsection{Algorithmes de génération de données à partir de grammaires}
+\label{subsection:data:algorithms}
+
+Nous décrivons maintenant l'utilisation de grammaire pour la génération de
+données textuelles complexes, afin d'assurer la caractéristique de générabilité
+des domaines réalistes.
+
+Nous proposons pour le domaine réaliste \code{Grammar} trois algorithmes
+différents~: un génération aléatoire uniforme, un 
+
+\subsubsection{Génération isotropique de lexèmes}
+\label{subsection:data:isotropic_generation}
+
+\subsubsection{Génération aléatoire et uniforme}
+\label{subsection:data:random_uniform_generation}
+
+Sans autre critère de génération que la grammaire et la taille de la donnée à
+générer, la génération aléatoire et uniforme peut être retenue comme stratégie.
+Nous attentions que le choix soit non-biaisé, avec une distribution des
+probabilités qui soit uniforme parmis toutes les données générées possibles.
+Pour un…
+
+À chaque construction du langage PP est associée une fonction de dénombrement
+$\psi$ qui compte le nombre de sous-structures de taille $n$ qu'il est possible
+de générer. Ainsi~:
+
+\begin{align*}
+%
+\psi(n, e) & =
+    \delta_n^1
+    &
+    \text{si $e$ est un lexème}
+    \\
+%
+\psi(n, e_1 \cdot \dotso \cdot e_k) & =
+    \sum_{\gamma \in \Gamma_k^n}
+    \prod_{\alpha = 1}^k
+    \psi(\gamma_\alpha, e_\alpha)
+    \\
+%
+\psi(n, e_1 \vert \dots \vert e_k) & =
+    \sum_{\alpha = 1}^k
+    \psi(n, e_\alpha)
+    \\
+%
+\psi(n, e^{\{x, y\}}) & =
+    \sum_{\alpha = x}^y
+    \sum_{\gamma \in \Gamma_\alpha^n}
+    \prod_{\beta = 1}^\alpha
+    \psi(\gamma_\beta, e)
+    &
+    \text{avec $0 \leq x \leq y$}
+%
+\end{align*}
+
+Dans la première formule, $\delta_i^j$ est le symbole de Kronecker, définie
+comme 1 si $i = j$, 0 sinon. $\Gamma_k^n$ désigne l'ensemble des $k$-uplets dont
+la somme des éléments est $n$. Par exemple, $\Gamma_3^2 = \{(2, 0, 0), (1, 1,
+0), (1, 0, 1), (0, 2, 0), (0, 1, 1), (0, 0, 2)\}$. Pour chaque $k$-uplet
+$\gamma$ et chaque $\alpha$ dans $\{1, \dotso, k\}$, $\gamma_\alpha$ désigne le
+$\alpha$\textsuperscript{ième} élément de $\gamma$. Pour chaque opérateur:
+
+\begin{itemize}
+
+\item la concaténation $\cdot$ somme la distribution de $n$ parmis toutes les
+sous-constructions~;
+
+\item la disjonction $\vert$ somme les sous-constructions de taille $n$~;
+
+\item la répétition $\{x, y\}$ est une disjonction de concaténations.
+
+\end{itemize}
+
+Pour explorer une règle, nous utilisons des poids représentant le nombre de
+sous-structures pour chaque sous-règle. Alors, nous choisissons uniformément et
+aléatoirement un nombre pour sélectionner la prochaine sous-règle à explorer en
+fonction de son poids.
+
+\subsubsection{Génération exhaustive bornée}
+\label{subsection:data:bounded_exaustive_generation}
+
+\begin{align*}
+%
+\beta(1, e) & =
+    \{\code{sample($e$)}\}
+    &
+    \text{si $e$ est un lexème}
+    \\
+%
+\beta(n, e) & =
+    \{\}
+    &
+    \text{si $n \neq 1$}
+    \\
+%
+\beta(n, e_1 \vert e_2) & =
+    \beta(n, e_1) \union \beta(n, e_2)
+    \\
+%
+\beta(n, e_1 \cdot e_2) & =
+    \Union_{p = 1}^{n - 1}
+    \beta(p, e_1) \cdot \beta(n - p, e_2)
+    \\
+%
+\beta(n, e^{\{x, y\}}) & =
+    \Union_{p = x}^y \beta(n, e_p)
+    \\
+%
+\beta(n, e^*) & =
+    \Union_{p = 0}^n \beta(n, e_p)
+    \\
+%
+\beta(n, e^+) & =
+    \beta(n, e \cdot e^*)
+    \\
+%
+\beta(n, e^0) & =
+    \{\}
+    \\
+%
+\beta(n, e^1) & =
+    \beta(n, e)
+    \\
+%
+\beta(n, e^p) & =
+    \beta(n, e \cdot e^{p - 1})
+    &
+    \text{si $p \geq 2$}
+%
+\end{align*}
+
+\subsubsection{Génération basée sur la couverture}
+\label{subsection:data:coverage_based_generation}
+
+\begin{align*}
+%
+\phi(p, e) & =
+    [\code{sample($e$)}]
+    &
+    \text{si $e$ est un lexème}
+    \\
+%
+\phi(p, e_1 \cdot e_2) & =
+    \phi(\phi(p, e_1), e_2)
+    \\
+%
+\phi(p, e_1 \vert \dotso \vert e_k) & =
+    \phi(p, e_1) \oplus \dotso \oplus \phi(p, e_k)
+    \\
+%
+\phi(p, e^?) & =
+    [] \oplus \phi(p, e)
+    \\
+%
+\phi(p, e^*) & =
+    [] \oplus \bigoplus_{i = 1}^\infty
+    \phi(p, \underbrace{e \cdot \dotso \cdot e}_i)
+    \\
+%
+\phi(p, e^+) & =
+    \bigoplus_{i = 1}^\infty \phi(p, \underbrace{e \cdot \dotso \cdot e}_i)
+    \\
+%
+\phi(p, e^{\{x, y\}}) & =
+    \bigoplus_{i = x}^y \phi(p, \underbrace{e \cdot \dotso \cdot e}_i)
+%
+\end{align*}
