@@ -2,3 +2,266 @@
 \label{chapter:state}
 
 \minitoc
+
+Les travaux présentés dans cette thèse sont liés à des activités relatives à la
+validation et à la vérification de programmes PHP à travers un nouveau langage
+de spécification accompagné de ses outils. Ces activités s'articulent autour de
+trois axes majeurs~: langage de spécification, génération de données et
+génération automatique de tests.
+
+Informellement, nous pouvons voir un test comme étant composé de trois parties~:
+
+\begin{enumerate}
+
+\item un Système Sous Test (\inenglish{System Under Test}, abbrégé SUT)~;
+
+\item des données pour exécuter ce SUT~;
+
+\item un oracle, capable de nous calculer le verdict du test~: est-ce l'état
+du SUT après son exécution est celui attendu ou non~?
+
+\end{enumerate}
+
+Aujourd'hui, dans le monde industriel, la majorité des tests sont écrits
+manuellement, par des ingénieurs de test. Un SUT leur est fourni, ils
+l'exécutent avec des données et calculent eux-même le verdict du test. Dans le
+cas des tests automatisés, l'exécution et le calcul du verdict est fait par la
+machine. C'est le rôle qui incombe aux frameworks xUnit, comme
+JUnit~\cite{JUnit} pour Java, atoum~\cite{atoum} ou PHPUnit~\cite{PHPUnit} pour
+PHP, CUnit~\cite{CUnit} etc. Ce que font les ingénieurs de test peut se résumer
+à écrire une spécification informelle exécutable. En effet, ils transforment le
+cahier des charges en tests afin de vérifier et valider le programme.
+
+Toutefois, cela reste informelle. Et surtout, c'est une tâche laborieuse qui
+peut revenir cher \footnote{TODO, environ la moitié du prix d'un projet}. Et
+pourquoi ne pas écrire une spécification formelle, et la rendre exécutable~?
+C'est~à~dire d'utiliser un langage formelle pour décrire le fonctionnement du
+programme, puis dériver, à partir de cette spécification, des tests qui soient
+exécutables et qui vont vérifier ou valider plusieurs aspects de cette
+spécification.
+
+Nous nous intéressons à des programmes écrits en PHP~\cite{PHP} pour plusieurs
+raisons. D'une part, PHP est un langage non-typé et hautement dynamique. Il nous
+apporte des problématiques encore peu ou pas abordé dans l'état de l'art actuel.
+De plus, aucun travaux ne considère PHP pour la génération de données ou la
+génération de tests. De même, aucun langage de spécification n'existait avant
+les travaux de cette thèse. Par ailleurs, plus de 85\% du Web fonctionne avec
+PHP. Cela implique qu'il y a un marché important avec d'immenses besoins~; que
+ce soit des sites de commerces\footnote{Etsy, \url{https://etsy.com/}.}, de
+banques, d'assurances, de réseaux sociaux\footnote{Facebook,
+\url{https://facebook.com/}}, de moteurs de recherche\footnote{Yahoo,
+\url{https://yahoo.com/}}, d'encyclopédie\footnote{Wikipedia,
+\url{https://wikipedia.org/}}, gouvernementaux\footnote{France, Belgique,
+Suisse, USA, Canada etc.} et d'autres.
+
+Nous avons choisi de créer un nouveau langage de spécification plutôt que de
+reprendre et améliorer un langage existant.
+%Une des raisons est la complexité des autres langages par rapport au niveau des
+%ingénieurs de tests. Nous voulions un langage simple, abordable et pragmatique.
+La raison principale est qu'il n'existe pas de langage de spécification unifiant
+plusieurs théories de l'état de l'art. Plusieurs langages ont permis à des
+théories intéressantes d'émerger, mais malheureusement, ces théories sont
+trop souvent éparpillées, et donc inutilisables par un ingénieur de test car la
+chaîne de développement deviendrait trop complexe.
+
+Cette thèse s'intéresse à la conformité entre un programme et sa spécification,
+à travers la création d'un nouveau langage de spécification simple, pradgmatique
+pour le Web et unifiant plusieurs théories. Chaque théorie introduit se verra
+enrichie pour la rendre compatible avec le Web.
+
+\section{\inenglish{Behavioral Interface Specification Languages}}
+
+Le terme {\strong spécification} signifie généralement une description précise
+d'un comportement d'un artéfact, tel qu'un type abstrait~\cite{LiskovZ74}. Les
+spécifications sont souvent utilisées comme des contrats~\cite{Meyer92}. La
+{\strong vérification} signifie prouver qu'une implémentation satisfait une
+spécification particulière dans toutes les exécutions et configurations
+possibles. Généralement, une telle preuve est accomplie à l'aide de raisonnement
+statique.%, mais il est possible de combiner un raisonnement statique avec des
+%contrôles dynamiques (comme le \inenglish{runtime assertion
+%checking})~\cite{Geller76}.
+
+Un {\strong langage de spécification formel} est une notation mathématiquement
+précise pour décrire les propriétés prévues d'un programme. Les notations
+formelles aident à rendre les spécifications non-ambiguës, moins dépendantes des
+normes culturelles, et ainsi moins sujettes à une mauvaise interprétation. Les
+spécifications formelles peuvent aider à automatiser le test, autant pour
+calculer le verdict du test~\cite{CheonL02} que pour générer les données de
+test~\cite{BernotGM91,KorelA98}.
+
+Les spécifications qui documentent les interfaces des parties d'un programme
+peuvent jouer un rôle central dans la programmation, décrivant les comportements
+attendus des parties d'un programme. Cette information est primordiale pour la
+maintenance, depuis que le code seul n'est pas assez expressif pour faire
+comprendre au développeur l'objectif de ce code (avec tous les tenants et les
+aboutissants).
+
+% là on enchaîne avec les annotations (car on parlait de spéc' qui document le
+% code)
+% ensuite, on enchaîne sur le Design by Contract
+% on s'attarde sur ce qu'est un contrat
+% puis, on enchaîne avec le Contract-based Testing
+% il faut enfoncer le clou (réfléchir à TAROT)
+
+
+% …
+
+Cependant, la vérification dynamique souffre de deux limitations. Premièrement,
+elle consomme des cycles qui pourraient mieux être utilisés. Plus sérieusement,
+la vérification dynamique fournit seulement une couverture limité~: les
+spécifications sont souvent vérifiées avec les données des exécutions courantes.
+Ainsi, la vérification dynamique résulte souvent à une détection incomplète et
+tardive (potentiellement en production) de défauts. Une façon de pallier à cette
+limitation est soit d'utiliser une approche hybrique~\cite{Flanagan06}, soit de
+générer des données pertinentes pour tenter de couvrir tous les comportements de
+la spécification.
+
+\section{Génération de données de tests}
+
+%  Intro :
+%      qu'est-ce qu'un test ?
+%      tester manuellement :
+%          un humain qui écrit des tests
+%          long
+%          cher
+%          faillible
+%      un test manuel = une spéc' informelle mais exécutable
+%      idée : avoir une spéc' formelle exécutable
+%          ça veut dire quoi ?
+%          générer des tests à partir de cette spéc'
+%  
+%      pourquoi PHP ?
+%          power 85\% of the Web
+%          utiliser partout (banque, social, marché, média…)
+%          y avait aucun outil/langage de test non-manuel
+%          champs libre pour un nouveau langage de spéc'
+%  
+%      pourquoi ne pas reprendre un langage existant et l'adapter ?
+%          PHP est hautement dynamique, nouvelles problématiques (lesquelles ?)
+%          il manque un langage qui unifie les théories
+%              beaucoup de théories intéressantes
+%              mais éparpillées
+%  
+%      objectifs de cette thèse :
+%          qu'est-ce que l'on cherche à faire ?
+%              nous nous intéressons à la conformité entre le programme et sa
+%              spécification
+%  
+%          pour y arriver :
+%              faire un nouveau langage de spéc' simple, unifiant plusieurs théories
+%              améliorer chaque théorie introduite pour la rendre « compatible »
+%              avec le Web
+%  
+%              à partir duquel nous allons faire de la validation et de la vérification
+%              ça implique
+%                  d'une part, de générer des données
+%                  d'autre part, de générer des tests
+%  
+%  
+%  Langage de spéc' :
+%  
+%      V&V
+%          verification: are we building the product right?
+%          validation: are we building the right product?
+%  
+%      Model-based Testing
+%          super mais trop dur à faire
+%  
+%      Design-by-Contract
+%          Eiffel
+%              on explique les pré-, postconditions, invariants.
+%  
+%      Contract-based Testing
+%          du MBT dans le code finalement
+%          plus simple
+%          plus rapide
+%          on est au niveau unitaire du coup (proche du code)
+%          on est au niveau black-box du coup
+%              sauf si on annote des tests (tests paramétrés, tests fonctionnels…)
+%  
+%      Ça nous paraît être le bon endroit pour écrire une spéc' (annotation du
+%      code), simple pour les développeurs, ça rentre dans les méthodes de dév'
+%      etc.
+%  
+%      JML
+%      Spec#
+%      ACSL
+%  
+%      Bilan**
+%  
+%  
+%  Génération de données :
+%  
+%      Une spécification décrit le fonctionnement du programme. Avec le
+%      design-by-contract, on décrit les données.
+%  
+%      Deux approches :
+%          validation : on va valider les données fournies
+%          vérification : on va générer puis valider ses données
+%  
+%      Comment fait-on en général ?
+%          Solveur ou autre/aléatoire
+%          PHP manipule beaucoup les types suivants :
+%              Entiers
+%              Tableaux
+%              Chaînes/grammaires
+%              Objets
+%  
+%      Bilan**
+%  
+%  
+%  Génération automatique de tests :
+%  
+%      On fait du contract-based testing
+%      On prend une spéc', on génère des séquences d'exécution (des tests), avec
+%      les données précédemment générées
+%  
+%      Comment générer des tests à partir d'une spéc' ?
+%      Que cherche-t-on à atteindre ?
+%      => couvrir tous les comportements de la spéc', since elle représente/reflète
+%      le comportement du programme
+%  
+%      Qui a fait ça avant ?
+%  
+%      Bilan**
+%  
+%  
+%  Synthèse
+%  
+%  
+%  
+%  
+%  
+%  Les outils à étudier :
+%      Apollo (Sosym)
+%      JML
+%      JSConTest
+%      Eiffel
+%      Madsen
+%      Yagg
+%      Geno
+%      YouGen
+%      @Flajolet
+%      @Howden
+%      @Hennessy "Analysing the effectiveness of rule-coverage as a reduction…"
+%      Korat
+%      TestEra (pré-Korat)
+%      UDITA (post-Korat)
+%      Java PathFinder
+%      Alloy
+%      SpecExplorer
+%      Spec#
+%      ACSL
+%      AsmL
+%      Cute
+%      Kleen (?)
+%      Exe
+%      Symstra
+%      Jartege
+%      Euclide
+%      InKA
+%      FDCC
+%      ARTOO
+%      AutoTest
+%      Pex
+%      Quickcheck
