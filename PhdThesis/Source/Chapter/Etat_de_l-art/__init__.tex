@@ -68,10 +68,10 @@ Le terme {\strong spécification} signifie généralement une description préci
 d'un comportement d'un artéfact. La {\strong vérification} signifie prouver
 qu'une implémentation (c'est~à~dire un programme) satisfait une spécification
 particulière dans toutes les exécutions et configurations possibles.
-Généralement, une telle preuve est accomplie à l'aide de raisonnements statiques.
-Cette approche a des limites…
-%mais il est possible de combiner un raisonnement statique avec une approche
-%dynamiques (comme le \inenglish{runtime assertion checking})~\acite{Geller76}.
+Généralement, une telle preuve est accomplie à l'aide de raisonnements
+statiques. Et quand un raisonnement statique n'est pas possible ou suffisant,
+nous pouvons utiliser une vérification dynamique, appelée aussi
+\inenglish{runtime assertion checking}, abbrégé RAC~\acite{Geller76}.
 
 Un {\strong langage de spécification} formelle est une notation mathématiquement
 précise pour décrire les comportements et propriétés d'un programme. Les
@@ -201,14 +201,14 @@ permettre à des outils externes, comme des assistants de preuves interactifs ou
 à des prouveurs automatiques de théorèmes, d'aider à la vérification de
 certaines spécifications.
 
-\paragraph{Spec\#} Langage Spec\#~\acite{SpecSharp} permet de faire de la
+\paragraph{Spec\#} Le langage Spec\#~\acite{SpecSharp} permet de faire de la
 programmation par contrat pour C\#~\acite{CSharp}. Ce langage est très similaire
 à ACSL, avec toutefois moins de clauses. Les préconditions sont introduites avec
 le mot-clé \code{requires}, les postconditions avec le mot-clé \code{ensures}.
 De même, les invariants sont introduits avec le mot-clé \code{invariant}. En
 plus des quantificateurs \code{forall}, \code{exists} et \code{exists unique},
 Spec\# propose \code{sum}, \code{product}, \code{min} etc. Les contraintes sont
-exprimées avec un langage proche de C\#, toujours pour ne pas pertuber
+exprimées avec un langage proche de C\#, toujours pour ne pas perturber
 l'utilisateur, mais toutes les constructions de C\# ne sont pas présentes,
 seulement un sous-ensemble.  Par ailleurs, Spec\# enrichit le langage C\# en lui
 ajoutant des constructions permettant de vérifier l'absence ou la possible
@@ -218,10 +218,12 @@ Tout comme ACSL, la vérification des contrats se fait statiquement, et non pas
 dynamiquement via un RAC. Et contrairement à JML où les contrats sont
 transformés en Java, ici ils sont transformés en Boogie~\acite{BarnettCDJL05},
 un langage intermédiaire pour encoder des conditions de vérifications pour les
-langages impératifs et objets. Boogie s'appuye sur des solveurs externes,
-notamment Z3~\acite{DeMoura2008}, pour vérifier les contrats.
+langages impératifs et orientés objets. Boogie s'appuye sur des solveurs
+externes, notamment Z3~\acite{DeMoura2008}, pour vérifier les contrats. \\
 
-\paragraph{ESC/Java} \acite{FlanaganLLNSS02}
+Chaque langage de programmation répandu a son propre langage de contrats. Se
+distinguent deux grandes familles de vérifications de contrats~: statique (à
+l'aide de prouveur maison ou externe) ou dynamique, à l'aide d'un RAC.
 
 \subsection{Test à partir de contrats}
 \label{subsection:sota:cbt}
