@@ -399,22 +399,6 @@
   year      = {2003}
 }
 
-@article{HatcliffLLMP12,
-  author    = {John Hatcliff and
-               Gary T. Leavens and
-               K. Rustan M. Leino and
-               Peter M{\"u}ller and
-               Matthew J. Parkinson},
-  title     = {{Behavioral Interface Specification Languages}},
-  journal   = {ACM Comput. Surv.},
-  volume    = {44},
-  number    = {3},
-  year      = {2012},
-  pages     = {16},
-  ee        = {http://doi.acm.org/10.1145/2187671.2187678},
-  bibsource = {DBLP, http://dblp.uni-trier.de}
-}
-
 @incollection{JML,
   author    = {Leavens, G. T. and Baker, A. L.  and Ruby, C.},
   title     = {{JML}: A Notation for Detailed Design},
@@ -425,6 +409,44 @@
   address   = {Boston},
   pages     = {175-188},
   annote    = {36 references.}
+}
+
+@article{Raghavan2005,
+  author    = {Raghavan, Arun D and Leavens, Gary T},
+  title     = {{Desugaring JML method specifications}},
+  journal   = {Department of Computer Science, Iowa State University TR\# 00-03e},
+  year      = {2005},
+  publisher = {Citeseer}
+}
+
+@inproceedings{FlanaganLLNSS02,
+  author    = {Cormac Flanagan and
+               K. Rustan M. Leino and
+               Mark Lillibridge and
+               Greg Nelson and
+               James B. Saxe and
+               Raymie Stata},
+  title     = {{Extended Static Checking for Java}},
+  booktitle = {PLDI},
+  year      = {2002},
+  pages     = {234-245},
+  ee        = {http://doi.acm.org/10.1145/512529.512558},
+  crossref  = {DBLP:conf/pldi/2002},
+  bibsource = {DBLP, http://dblp.uni-trier.de}
+}
+
+@proceedings{DBLP:conf/pldi/2002,
+  editor    = {Jens Knoop and
+               Laurie J. Hendren},
+  title     = {Proceedings of the 2002 ACM SIGPLAN Conference on Programming
+               Language Design and Implementation (PLDI), Berlin, Germany,
+               June 17-19, 2002},
+  booktitle = {PLDI},
+  publisher = {ACM},
+  year      = {2002},
+  isbn      = {1-58113-463-0},
+  ee        = {http://dl.acm.org/citation.cfm?id=512529},
+  bibsource = {DBLP, http://dblp.uni-trier.de}
 }
 
 @inproceedings{SpecSharp,
@@ -440,12 +462,88 @@
   month     = {March}
 }
 
+@inproceedings{BarnettCDJL05,
+  author    = {Michael Barnett and
+               Bor-Yuh Evan Chang and
+               Robert DeLine and
+               Bart Jacobs and
+               K. Rustan M. Leino},
+  title     = {{Boogie: A Modular Reusable Verifier for Object-Oriented
+               Programs}},
+  booktitle = {FMCO},
+  year      = {2005},
+  pages     = {364-387},
+  ee        = {http://dx.doi.org/10.1007/11804192_17},
+  crossref  = {DBLP:conf/fmco/2005},
+  bibsource = {DBLP, http://dblp.uni-trier.de}
+}
+
+@proceedings{DBLP:conf/fmco/2005,
+  editor    = {Frank S. de Boer and
+               Marcello M. Bonsangue and
+               Susanne Graf and
+               Willem P. de Roever},
+  title     = {Formal Methods for Components and Objects, 4th International
+               Symposium, FMCO 2005, Amsterdam, The Netherlands, November
+               1-4, 2005, Revised Lectures},
+  booktitle = {FMCO},
+  publisher = {Springer},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {4111},
+  year      = {2006},
+  isbn      = {3-540-36749-7},
+  bibsource = {DBLP, http://dblp.uni-trier.de}
+}
+
+@incollection{DeMoura2008,
+  author    = {De Moura, Leonardo and Bj{\o}rner, Nikolaj},
+  title     = {{Z3: An efficient SMT solver}},
+  booktitle = {Tools and Algorithms for the Construction and Analysis of Systems},
+  pages     = {337--340},
+  year      = {2008},
+  publisher = {Springer}
+}
+
 @manual{ACSL,
   author = {Baudin, P. and Cuoq, P. and Filli\^{a}tre, J.-C. and
             March\'{e}, C. and Monate, B. and Moy, Y. and Prevosto, V.},
   title  = {{ACSL: ANSI/ISO C Specification Language Version 1.7}},
   year   = {2013},
   note   = {\url{http://frama-c.com/download/acsl-implementation-Fluorine-20130601.pdf}},
+}
+
+@inproceedings{FilliatreM07,
+  author    = {Jean-Christophe Filli{\^a}tre and
+               Claude March{\'e}},
+  title     = {{The Why/Krakatoa/Caduceus Platform for Deductive Program
+               Verification}},
+  booktitle = {CAV},
+  year      = {2007},
+  pages     = {173-177},
+  ee        = {http://dx.doi.org/10.1007/978-3-540-73368-3_21},
+  crossref  = {DBLP:conf/cav/2007},
+  bibsource = {DBLP, http://dblp.uni-trier.de}
+}
+
+@proceedings{DBLP:conf/cav/2007,
+  editor    = {Werner Damm and
+               Holger Hermanns},
+  title     = {Computer Aided Verification, 19th International Conference,
+               CAV 2007, Berlin, Germany, July 3-7, 2007, Proceedings},
+  booktitle = {CAV},
+  publisher = {Springer},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {4590},
+  year      = {2007},
+  isbn      = {978-3-540-73367-6},
+  bibsource = {DBLP, http://dblp.uni-trier.de}
+}
+
+@misc{FramaC,
+  author = {{CEA} and {INRIA}},
+  title  = {{Frama-C Software Analyzers}},
+  year   = {2008},
+  url    = {http://frama-c.com/}
 }
 
 @inproceedings{Cheon02,

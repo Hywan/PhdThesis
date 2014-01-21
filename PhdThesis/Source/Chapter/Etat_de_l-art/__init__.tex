@@ -62,6 +62,7 @@ pour le Web et unifiant plusieurs théories. Chaque théorie introduit se verra
 enrichie pour la rendre compatible avec le Web.
 
 \section{\inenglish{Behavioral Interface Specification Languages}}
+\label{section:sota:bisl}
 
 Le terme {\strong spécification} signifie généralement une description précise
 d'un comportement d'un artéfact. La {\strong vérification} signifie prouver
@@ -94,6 +95,9 @@ annotations permettent de localiser plus facilement la faute. Les annotations
 font parfois parties de la grammaire du langage, ou alors, le cas échéant, elles
 sont écrites dans des {\strong commentaires}.
 
+\subsection{Langages de contrats}
+\label{subsection:sota:dbc}
+
 Les spécifications sont souvent utilisées sous la forme de {\strong
 contrats}~\acite{Liskov86, Meyer92}. Nous parlons de programmations par contrats
 ou encore de \inenglish{Design by Contract} (abbrégé DbC). Le terme {\em
@@ -109,7 +113,7 @@ tel contexte, les préconditions et postconditions portaient sur les méthodes
 (aussi appelées procédures ou routines) et les invariants sur les classes (aussi
 appelés modules). D'autres usages des contrats ont été faits hors du paradigme
 de la programmation orienté objet, par exemple avec des fonctions d'ordre
-supérieures~\acite{FindlerF02}.  Le \inenglish{Design by Contract} définit les
+supérieures~\acite{FindlerF02}. Le \inenglish{Design by Contract} définit les
 critères de conformité suivants~:
 
 \begin{itemize}
@@ -122,45 +126,108 @@ après son exécution.
 
 \end{itemize}
 
+Par extension, nous comprenons qu'il existe deux états pour le SUT~: avant
+l'exécution d'une méthode, il se trouve dans un {\strong pré-état}, et après
+l'exécution d'une méthode, il se trouve dans un {\strong post-état}. Pour les
+langages supportant les exceptions, il existe un post-état normal et un
+post-état exceptionnel.
+
 Les langages décrivant une spécification formelle à travers des contrats pour
 le comportement des programmes, mais qui sont utilisés comme annotations, sont
-appelés des {\strong langages de contrats}. Il existe
-plusieurs~\acite{HatcliffLLMP12}~:
+appelés des {\strong langages de contrats}. Il en existe
+plusieurs~\acite{HatcliffLLMP12}.
 
 \paragraph{JML} Le \inenglish{Java Modeling Language}~\acite{JML} est un langage
-de contrats pour Java~\acite{Java}. La distribuion officielle de JML fournit
-principalement deux outils~: le premier, le \inenglish{Runtime Assertion
-Checker}, sert de \inenglish{monitoring} au code Java, et le second, JMLUnit,
-s'appuyant sur le précédent, est dédié à l'intégration de JML dans le test
-unitaire de méthodes Java.
+de contrats pour Java~\acite{Java}. À la différence de Eiffel qui utilise
+\code{require} et \code{ensure}, JML utilise les mots-clés \code{requires} et
+\code{ensures} pour introduire les préconditions et les postconditions. Dans
+Eiffel, une postcondition exceptionnelle est introduite par le mot-clé
+\code{rescue} alors que dans JML, nous avons \code{signals}. Les invariants sont
+dans les deux cas introduits par le mot-clé \code{invariant}. JML propose
+également des identifiants réservés, comme \aresult, présent uniquement dans une
+postcondition normale, et qui fait référence au résultat de la méthode.  De
+même, nous trouvons la construction \aold{i}, présente uniquement dans une
+postcondition, qui fait référence à la valeur de la données $i$ dans le
+pré-état. JML propose également des constructions logiques, comme la relation
+d'implication ($\implies$), d'équivalence ($\Longleftrightarrow$) ou des
+quantificateurs comme \code{$\bslash$forall} ($\forall$) et
+\code{$\bslash$exists} ($\exists$).
 
-Le RAC de JML~\acite{Cheon02} est un outil permettant de vérifier les contrats
-JML lors de l'exécution du programme. Les contrats sont traduits en code Java.
-La proximité entre ces deux langages est la clé de la démarche. En effet, la
-syntaxe des contrats JML est similaire à celle de Java, et les mots-clés JML
-spécifiques (pour par exemple les clauses, les quantificateurs etc.) sont
-traduits par des structures Java adéquates.  Néanmoins, cette similitude a des
-limites~: certaines constructions du langage, cmomme les quantifications sur les
-objets, ne sont pas traduisibles et donc ne peuvent pas être vérifiées. Le code
-Java d'origine est ainsi enrichi par la vérification des contrats JML. Le
-binaire résultant est plus important, ce qui engendre des ralentissements à
-l'exécution du programme. Toutefois, durant son exécution, si une contrainte
-n'est pas vérifiée, une exception spécifique est déclenchée signalant le type de
-clause qui n'a pas été vérifiée (invariant, précondition etc.) ainsi que l'état
-visibile du système au moment de l'exécution.
-
+La distribution officielle de JML fournit principalement deux outils.  Le
+premier, le \inenglish{Runtime Assertion Checker}, sert de
+\inenglish{monitoring} au code Java, et le second, JMLUnit, s'appuyant sur le
+précédent, est dédié à Java. Le RAC de JML~\acite{Cheon02} est un outil
+permettant de vérifier les contrats JML lors de l'exécution du programme. Les
+contrats sont traduits en code Java~\acite{Raghavan2005}. La proximité entre ces
+deux langages est la clé de la démarche. En effet, la syntaxe des contrats JML
+est similaire à celle de Java, et les mots-clés JML spécifiques (pour par
+exemple les clauses, les quantificateurs etc.) sont traduits par des structures
+Java adéquates. Néanmoins, cette similitude a des limites~: certaines
+constructions du langage, comme les quantifications sur les objets, ne sont pas
+traduisibles et donc ne peuvent pas être vérifiées. Le code Java d'origine est
+ainsi enrichi par la vérification des contrats JML. Le binaire résultant est
+plus important, ce qui engendre des ralentissements à l'exécution. Si une
+contrainte n'est pas vérifiée, une exception spécifique est déclenchée signalant
+le type de clause qui n'a pas été vérifiée (invariant, précondition etc.) ainsi
+que l'état visibile du système au moment de l'exécution.
 L'utilisation du RAC confère un moyen direct et efficace de s'assurer que les
 contrats JML ne sont pas violés durant une exécution avec les données de
 l'exécution.
 
-\paragraph{Spec\#} Langage Spec\#~\acite{SpecSharp} permet de faire de la
-programmation par contrat pour C\#~\acite{CSharp}
-
 \paragraph{ACSL} Le \inenglish{ANSI/C Specification Language}~\acite{ACSL} est
-un langage de contrats pour C~\acite{C}.
+un langage de contrats pour C~\acite{C}, inspiré principalement du langage de
+spécification de l'outil Caduceus~\acite{FilliatreM07}, dédié à la vérification
+déductive de propriétés de comportements de programmes C. Caduceus est lui-même
+inspiré de JML. Les langages se ressemblent: les mot-clés \code{requires} et
+\code{ensures} introduisent respectivement une précondition et une
+postcondition. Les invariants sont introduits avec le mot-clé \code{invariant}.
+Plusieurs comportements peuvent être exprimés pour une même méthode avec le
+mot-clé \code{behavior}. ACSL propose d'autres clauses pour exprimer des
+lemmes, des axiomes ou des fonctions logiques.
+
+Contrairement à JML, ACSL n'utilise pas de C pour exprimer ces contraintes mais
+un langage plus simple, qui s'inspire toutefois de C (pour les opérateurs
+arithématiques, logiques, les tableaux etc.) afin de ne pas perturber
+l'utilisateur. D'autres contraintes sont présentes car intrinsèques au langage,
+comme la logique des pointeurs, et d'autres ne sont pas présentes, comme les
+exceptions.
+
+ACSL est basé sur le \inenglish{Framework for Modular Analyses of C}, abbrégé
+Frama-C~\acite{FramaC}. Cet outil propose plusieurs analyses de code C. ACSL
+utilise cet outil pour de la vérification statique. C'est la grande différence
+avec JML, qui lui repose sur un RAC, donc une vérification à l'éxécution, ce que
+ne fait pas ACSL. Des extensions à Frama-C peuvent être installées pour
+permettre à des outils externes, comme des assistants de preuves interactifs ou
+à des prouveurs automatiques de théorèmes, d'aider à la vérification de
+certaines spécifications.
+
+\paragraph{Spec\#} Langage Spec\#~\acite{SpecSharp} permet de faire de la
+programmation par contrat pour C\#~\acite{CSharp}. Ce langage est très similaire
+à ACSL, avec toutefois moins de clauses. Les préconditions sont introduites avec
+le mot-clé \code{requires}, les postconditions avec le mot-clé \code{ensures}.
+De même, les invariants sont introduits avec le mot-clé \code{invariant}. En
+plus des quantificateurs \code{forall}, \code{exists} et \code{exists unique},
+Spec\# propose \code{sum}, \code{product}, \code{min} etc. Les contraintes sont
+exprimées avec un langage proche de C\#, toujours pour ne pas pertuber
+l'utilisateur, mais toutes les constructions de C\# ne sont pas présentes,
+seulement un sous-ensemble.  Par ailleurs, Spec\# enrichit le langage C\# en lui
+ajoutant des constructions permettant de vérifier l'absence ou la possible
+présence de valeurs nulles (avec \code{!} ou \code{?}).
+
+Tout comme ACSL, la vérification des contrats se fait statiquement, et non pas
+dynamiquement via un RAC. Et contrairement à JML où les contrats sont
+transformés en Java, ici ils sont transformés en Boogie~\acite{BarnettCDJL05},
+un langage intermédiaire pour encoder des conditions de vérifications pour les
+langages impératifs et objets. Boogie s'appuye sur des solveurs externes,
+notamment Z3~\acite{DeMoura2008}, pour vérifier les contrats.
+
+\paragraph{ESC/Java} \acite{FlanaganLLNSS02}
+
+\subsection{Test à partir de contrats}
+\label{subsection:sota:cbt}
 
 L'un des intérêts et usages principaux des contrats est pour le test. En effet,
-le {\strong test à partir de contrat} (\inenglish{Contract-Based Testing},
+le {\strong test à partir de contrats} (\inenglish{Contract-Based Testing},
 abbrégé CBT) a été introduit pour exploiter les langages d'annotations afin de
 tester des programmes~:
 
@@ -186,6 +253,8 @@ un {\strong échec}.
 
 
 % …
+
+\subsection{Bilan}
 
 Cependant, la vérification dynamique souffre de deux limitations. Premièrement,
 elle consomme des cycles qui pourraient mieux être utilisés. Plus sérieusement,
