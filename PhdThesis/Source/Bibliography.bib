@@ -5,7 +5,7 @@
   classement  = {*},
   author      = {Enderlin, Ivan and Ben Othman, Abdallah and Dadeau, Fr\'ed\'eric and
                 Giorgetti, Alain},
-  title       = {{R}ealistic {D}omains for {U}nit {T}ests {G}eneration},
+  title       = {{Realistic Domains for Unit Tests Generation}},
   institution = {LIFC - Laboratoire d'{I}nformatique de l'{U}niversit\'{e} de
                 {F}ranche {C}omt\'{e}},
   type        = {Research Report},
@@ -104,10 +104,31 @@
 }
 
 @misc{PHP,
-  author = {The PHP Group},
+  author = {{The PHP Group}},
   title  = {{PHP}},
   year   = {2001},
   url    = {http://php.net/}
+}
+
+@misc{Java,
+  author = {{James Gosling and Bill Joy}},
+  title  = {{Java}},
+  year   = {1990},
+  url    = {https://java.net/}
+}
+
+@misc{CSharp,
+  author = {{Microsoft}},
+  title  = {{C\#}},
+  year   = {2001},
+  url    = {http://ecma-international.org/publications/standards/Ecma-334.htm}
+}
+
+@misc{C,
+  author = {{Dennis Ritchie}},
+  title  = {{C}},
+  year   = {1972},
+  url    = {http://open-std.org/JTC1/SC22/WG14/www/standards}
 }
 
 @article{LiskovZ74,
@@ -137,6 +158,15 @@
   ee        = {http://doi.acm.org/10.1145/2187671.2187678},
   bibsource = {DBLP, http://dblp.uni-trier.de}
 }
+
+@book{Liskov86,
+  author    = {Barbare Liskov and John Guttag},
+  title     = {{Abstraction and Specification in Program Development}},
+  year      = {1986},
+  isbn      = {0-262-12112-3},
+  publisher = {MIT Press},
+  address   = {Cambridge, MA, USA},
+} 
 
 @article{Meyer92,
   author    = {Bertrand Meyer},
@@ -205,8 +235,8 @@
 @inproceedings{CheonL02,
   author    = {Yoonsik Cheon and
                Gary T. Leavens},
-  title     = {A Simple and Practical Approach to Unit Testing: The JML
-               and JUnit Way},
+  title     = {{A Simple and Practical Approach to Unit Testing: The JML
+               and JUnit Way}},
   booktitle = {ECOOP},
   year      = {2002},
   pages     = {231-255},
@@ -256,31 +286,41 @@
   bibsource = {DBLP, http://dblp.uni-trier.de}
 }
 
-@inproceedings{BernotGM91,
-  author    = {Gilles Bernot and
-               Marie-Claude Gaudel and
-               Bruno Marre},
-  title     = {{A Formal Approach to Software Testing}},
-  booktitle = {AMAST},
-  year      = {1991},
-  pages     = {243-253},
-  crossref  = {DBLP:conf/amast/1991},
+@inproceedings{SankarH94,
+  author    = {Sriram Sankar and
+               Roger Hayes},
+  title     = {{ADL - An Interface Definition Language for Specifying and
+               Testing Software}},
+  booktitle = {Workshop on Interface Definition Languages},
+  year      = {1994},
+  pages     = {13-21},
+  ee        = {http://doi.acm.org/10.1145/185084.185096},
+  crossref  = {DBLP:conf/idl/1994},
   bibsource = {DBLP, http://dblp.uni-trier.de}
 }
 
-@proceedings{DBLP:conf/amast/1991,
-  editor    = {Maurice Nivat and
-               Charles Rattray and
-               Teodor Rus and
-               Giuseppe Scollo},
-  title     = {Algebraic Methodology and Software Technology (AMAST '91),
-               Proceedings of the Second International Conference on Methodology
-               and Software Technology, Iowa City, USA, 22-25 May 1991},
-  booktitle = {AMAST},
-  publisher = {Springer},
-  series    = {Workshops in Computing},
+@proceedings{DBLP:conf/idl/1994,
+  editor    = {Jeannette M. Wing and
+               Richard L. Wexelblat},
+  title     = {Proceedings of the Workshop on Interface Definition Languages,
+               January 20, 1994, Portland, Oregon, USA, in conjunction
+               with POPL 1994},
+  booktitle = {IDL},
+  publisher = {ACM Press},
+  year      = {1994},
+  ee        = {http://dl.acm.org/citation.cfm?id=185084},
+  bibsource = {DBLP, http://dblp.uni-trier.de}
+}
+
+@article{Jalote92,
+  author    = {Pankaj Jalote},
+  title     = {{Specification and Testing of Abstract Data Types}},
+  journal   = {Comput. Lang.},
+  volume    = {17},
+  number    = {1},
   year      = {1992},
-  isbn      = {3-540-19797-4},
+  pages     = {75-82},
+  ee        = {http://dx.doi.org/10.1016/0096-0551(92)90024-H},
   bibsource = {DBLP, http://dblp.uni-trier.de}
 }
 
@@ -293,4 +333,128 @@
   pages     = {143-152},
   ee        = {http://doi.acm.org/10.1145/271771.271803},
   bibsource = {DBLP, http://dblp.uni-trier.de}
+}
+
+@inproceedings{FindlerF02,
+  author    = {Robert Bruce Findler and
+               Matthias Felleisen},
+  title     = {{Contracts for Higher-Order Functions}},
+  booktitle = {ICFP},
+  year      = {2002},
+  pages     = {48-59},
+  ee        = {http://doi.acm.org/10.1145/581478.581484},
+  crossref  = {DBLP:conf/icfp/2002},
+  bibsource = {DBLP, http://dblp.uni-trier.de}
+}
+
+@proceedings{DBLP:conf/icfp/2002,
+  editor    = {Mitchell Wand and
+               Simon L. Peyton Jones},
+  title     = {Proceedings of the Seventh ACM SIGPLAN International Conference
+               on Functional Programming (ICFP '02), Pittsburgh, Pennsylvania,
+               USA, October 4-6, 2002},
+  booktitle = {ICFP},
+  publisher = {ACM},
+  year      = {2002},
+  isbn      = {1-58113-487-8},
+  bibsource = {DBLP, http://dblp.uni-trier.de}
+}
+
+@inproceedings{MeyerNM87,
+  author    = {Bertrand Meyer and
+               Jean-Marc Nerson and
+               Masanobu Matsuo},
+  title     = {{EIFFEL: Object-Oriented Design for Software Engineering}},
+  booktitle = {ESEC},
+  year      = {1987},
+  pages     = {221-229},
+  ee        = {http://dx.doi.org/10.1007/BFb0022115},
+  crossref  = {DBLP:conf/esec/1987},
+  bibsource = {DBLP, http://dblp.uni-trier.de}
+}
+
+@proceedings{DBLP:conf/esec/1987,
+  editor    = {Howard K. Nichols and
+               Dan Simpson},
+  title     = {ESEC '87, 1st European Software Engineering Conference,
+               Strasbourg, France, September 9-11, 1987, Proceedings},
+  booktitle = {ESEC},
+  publisher = {Springer},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {289},
+  year      = {1987},
+  isbn      = {3-540-18712-X},
+  bibsource = {DBLP, http://dblp.uni-trier.de}
+}
+
+@incollection{Aichernig03,
+  author    = {Aichernig, B. K.},
+  title     = {{Contract-Based Testing}},
+  booktitle = {Formal Methods at the Crossroads: From Panacea to Foundational Support},
+  series    = {Lecture Notes in Computer Science},
+  publisher = {Springer},
+  isbn      = {3-540-20527-6},
+  pages     = {34-48},
+  volume    = {2757},
+  year      = {2003}
+}
+
+@article{HatcliffLLMP12,
+  author    = {John Hatcliff and
+               Gary T. Leavens and
+               K. Rustan M. Leino and
+               Peter M{\"u}ller and
+               Matthew J. Parkinson},
+  title     = {{Behavioral Interface Specification Languages}},
+  journal   = {ACM Comput. Surv.},
+  volume    = {44},
+  number    = {3},
+  year      = {2012},
+  pages     = {16},
+  ee        = {http://doi.acm.org/10.1145/2187671.2187678},
+  bibsource = {DBLP, http://dblp.uni-trier.de}
+}
+
+@incollection{JML,
+  author    = {Leavens, G. T. and Baker, A. L.  and Ruby, C.},
+  title     = {{JML}: A Notation for Detailed Design},
+  bookTitle = {Behavioral Specifications of Businesses and Systems},
+  editor    = {Kilov, H. and Rumpe, B. and Simmonds, I.},
+  year      = 1999,
+  publisher = {Kluwer Academic Publishers},
+  address   = {Boston},
+  pages     = {175-188},
+  annote    = {36 references.}
+}
+
+@inproceedings{SpecSharp,
+  author    = {Barnett, M. and Leino, K. R. M. and Schulte, W.},
+  title     = {{The Spec\# Programming System: An Overview}},
+  booktitle = {Proceedings of the International Workshop on Construction and Analysis of Safe, Secure and Interoperable Smart devices (CASSIS'04)},
+  pages     = {49-69},
+  series    = {Lecture Notes in Computer Science},
+  publisher = {Springer},
+  volume    = 3362,
+  year      = 2004,
+  address   = {Marseille, France},
+  month     = {March}
+}
+
+@manual{ACSL,
+  author = {Baudin, P. and Cuoq, P. and Filli\^{a}tre, J.-C. and
+            March\'{e}, C. and Monate, B. and Moy, Y. and Prevosto, V.},
+  title  = {{ACSL: ANSI/ISO C Specification Language Version 1.7}},
+  year   = {2013},
+  note   = {\url{http://frama-c.com/download/acsl-implementation-Fluorine-20130601.pdf}},
+}
+
+@inproceedings{Cheon02,
+    author    = {Yoonsik Cheon and Gary T. Leavens},
+    title     = {{A runtime assertion checker for the Java Modeling Language
+                 (JML)}},
+    booktitle = {Proceedings of the International Conference on Software
+                 Engineering Research and Practice (SERP ’02), Las Vegas},
+    year      = {2002},
+    pages     = {322--328},
+    publisher = {CSREA Press}
 }

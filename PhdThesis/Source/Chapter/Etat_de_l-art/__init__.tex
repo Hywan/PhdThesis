@@ -27,10 +27,11 @@ manuellement, par des ingénieurs de test. Un SUT leur est fourni, ils
 l'exécutent avec des données et calculent eux-même le verdict du test. Dans le
 cas des tests automatisés, l'exécution et le calcul du verdict est fait par la
 machine. C'est le rôle qui incombe aux frameworks xUnit, comme
-JUnit~\cite{JUnit} pour Java, atoum~\cite{atoum} ou PHPUnit~\cite{PHPUnit} pour
-PHP, CUnit~\cite{CUnit} etc. Ce que font les ingénieurs de test peut se résumer
-à écrire une spécification informelle exécutable. En effet, ils transforment le
-cahier des charges en tests afin de vérifier et valider le programme.
+JUnit~\acite{JUnit} pour Java, atoum~\acite{atoum} ou PHPUnit~\acite{PHPUnit}
+pour PHP, CUnit~\acite{CUnit} pour C etc. Ce que font les ingénieurs de test
+peut se résumer à écrire une spécification informelle exécutable. En effet, ils
+transforment le cahier des charges en tests afin de vérifier et valider le
+programme.
 
 Toutefois, cela reste informelle. Et surtout, c'est une tâche laborieuse qui
 peut revenir cher \footnote{TODO, environ la moitié du prix d'un projet}. Et
@@ -40,29 +41,20 @@ programme, puis dériver, à partir de cette spécification, des tests qui soien
 exécutables et qui vont vérifier ou valider plusieurs aspects de cette
 spécification.
 
-Nous nous intéressons à des programmes écrits en PHP~\cite{PHP} pour plusieurs
-raisons. D'une part, PHP est un langage non-typé et hautement dynamique. Il nous
-apporte des problématiques encore peu ou pas abordé dans l'état de l'art actuel.
-De plus, aucun travaux ne considère PHP pour la génération de données ou la
-génération de tests. De même, aucun langage de spécification n'existait avant
-les travaux de cette thèse. Par ailleurs, plus de 85\% du Web fonctionne avec
-PHP. Cela implique qu'il y a un marché important avec d'immenses besoins~; que
-ce soit des sites de commerces\footnote{Etsy, \url{https://etsy.com/}.}, de
-banques, d'assurances, de réseaux sociaux\footnote{Facebook,
-\url{https://facebook.com/}}, de moteurs de recherche\footnote{Yahoo,
-\url{https://yahoo.com/}}, d'encyclopédie\footnote{Wikipedia,
-\url{https://wikipedia.org/}}, gouvernementaux\footnote{France, Belgique,
-Suisse, USA, Canada etc.} et d'autres.
-
-Nous avons choisi de créer un nouveau langage de spécification plutôt que de
-reprendre et améliorer un langage existant.
-%Une des raisons est la complexité des autres langages par rapport au niveau des
-%ingénieurs de tests. Nous voulions un langage simple, abordable et pragmatique.
-La raison principale est qu'il n'existe pas de langage de spécification unifiant
-plusieurs théories de l'état de l'art. Plusieurs langages ont permis à des
-théories intéressantes d'émerger, mais malheureusement, ces théories sont
-trop souvent éparpillées, et donc inutilisables par un ingénieur de test car la
-chaîne de développement deviendrait trop complexe.
+Nous nous intéressons à des programmes écrits en PHP~\acite{PHP} pour plusieurs
+raisons. D'une part, PHP est un langage non-typé, hautement dynamique et
+multi-paradigme, ce qui nous apporte des problématiques encore peu ou pas abordé
+dans l'état de l'art actuel.  De plus, aucun travaux ne considère PHP pour la
+génération de données ou la génération de tests. De même, aucun langage de
+spécification dédié à PHP n'existait avant les travaux de cette thèse. Par
+ailleurs, plus de 85\% du Web fonctionne avec PHP. Cela implique qu'il y a un
+marché important avec d'immenses besoins~; que ce soit des sites de
+commerces\footnote{Etsy, \url{https://etsy.com/}.}, de banques, d'assurances, de
+réseaux sociaux\footnote{Facebook, \url{https://facebook.com/}}, de moteurs de
+recherche\footnote{Yahoo, \url{https://yahoo.com/}},
+d'encyclopédie\footnote{Wikipedia, \url{https://wikipedia.org/}},
+gouvernementaux\footnote{France, Belgique, Suisse, USA, Canada etc.} et
+d'autres.
 
 Cette thèse s'intéresse à la conformité entre un programme et sa spécification,
 à travers la création d'un nouveau langage de spécification simple, pradgmatique
@@ -72,29 +64,118 @@ enrichie pour la rendre compatible avec le Web.
 \section{\inenglish{Behavioral Interface Specification Languages}}
 
 Le terme {\strong spécification} signifie généralement une description précise
-d'un comportement d'un artéfact, tel qu'un type abstrait~\cite{LiskovZ74}. Les
-spécifications sont souvent utilisées comme des contrats~\cite{Meyer92}. La
-{\strong vérification} signifie prouver qu'une implémentation satisfait une
-spécification particulière dans toutes les exécutions et configurations
-possibles. Généralement, une telle preuve est accomplie à l'aide de raisonnement
-statique.%, mais il est possible de combiner un raisonnement statique avec des
-%contrôles dynamiques (comme le \inenglish{runtime assertion
-%checking})~\cite{Geller76}.
+d'un comportement d'un artéfact. La {\strong vérification} signifie prouver
+qu'une implémentation (c'est~à~dire un programme) satisfait une spécification
+particulière dans toutes les exécutions et configurations possibles.
+Généralement, une telle preuve est accomplie à l'aide de raisonnements statiques.
+Cette approche a des limites…
+%mais il est possible de combiner un raisonnement statique avec une approche
+%dynamiques (comme le \inenglish{runtime assertion checking})~\acite{Geller76}.
 
-Un {\strong langage de spécification formel} est une notation mathématiquement
-précise pour décrire les propriétés prévues d'un programme. Les notations
-formelles aident à rendre les spécifications non-ambiguës, moins dépendantes des
-normes culturelles, et ainsi moins sujettes à une mauvaise interprétation. Les
-spécifications formelles peuvent aider à automatiser le test, autant pour
-calculer le verdict du test~\cite{CheonL02} que pour générer les données de
-test~\cite{BernotGM91,KorelA98}.
+Un {\strong langage de spécification} formelle est une notation mathématiquement
+précise pour décrire les comportements et propriétés d'un programme. Les
+{\strong notations formelles} aident à rendre les spécifications non-ambiguës,
+moins dépendantes des normes culturelles, et ainsi moins sujettes à une mauvaise
+interprétation. Par ailleurs, de part le fait qu'une notation est formelle, elle
+peut être exploitée par une machine pour y appliquer un traitement automatique.
+Les spécifications formelles peuvent alors aider à {\strong automatiser le
+test}, autant pour générer les données de test~\acite{BernotGM91, KorelA98,
+SankarH94, Jalote92} que pour calculer le verdict du test~\acite{CheonL02}.
+C'est dans ces deux directions que nous allons nous tourner.
 
-Les spécifications qui documentent les interfaces des parties d'un programme
-peuvent jouer un rôle central dans la programmation, décrivant les comportements
-attendus des parties d'un programme. Cette information est primordiale pour la
-maintenance, depuis que le code seul n'est pas assez expressif pour faire
-comprendre au développeur l'objectif de ce code (avec tous les tenants et les
-aboutissants).
+Les spécifications peuvent documenter les {\strong interfaces} d'un programme.
+Par interfaces, il faut comprendre les parties du programme permettant de
+manipuler les données. Nous parlons alors de {\strong langages d'annotations}.
+De tels langages peuvent jouer un rôle central dans la programmation. Par
+exemple, ils facilitent la maintenance du code, qui n'est généralement pas
+suffisament expressif pour faire comprendre au développeur ses tenants et ses
+aboutissants. Par ailleurs, lors d'une phase de \inenglish{debugging}, les
+annotations permettent de localiser plus facilement la faute. Les annotations
+font parfois parties de la grammaire du langage, ou alors, le cas échéant, elles
+sont écrites dans des {\strong commentaires}.
+
+Les spécifications sont souvent utilisées sous la forme de {\strong
+contrats}~\acite{Liskov86, Meyer92}. Nous parlons de programmations par contrats
+ou encore de \inenglish{Design by Contract} (abbrégé DbC). Le terme {\em
+contrat} est une métaphore conceptuelle avec les conditions et les obligations
+d'un contrat d'entreprise. Ce paradigme demande au développeur d'écrire une
+spécification formelle qui étend la définition classique des types
+abstraits~\acite{LiskovZ74} avec les contraintes formelles suivantes~: les
+{\strong préconditions}, les {\strong postconditions} et les {\strong
+invariants}. Ces contraintes formelles sont aussi appelées des {\strong
+clauses}. Les contrats sont apparus dans le langage Eiffel~\acite{MeyerNM87},
+qui alors se basait sur le paradigme de la programmation orienté objet. Dans un
+tel contexte, les préconditions et postconditions portaient sur les méthodes
+(aussi appelées procédures ou routines) et les invariants sur les classes (aussi
+appelés modules). D'autres usages des contrats ont été faits hors du paradigme
+de la programmation orienté objet, par exemple avec des fonctions d'ordre
+supérieures~\acite{FindlerF02}.  Le \inenglish{Design by Contract} définit les
+critères de conformité suivants~:
+
+\begin{itemize}
+
+\item si les invariants et la précondition de la méthode sont satisfaits avant
+son appel,
+
+\item alors la méthode s'engage à satisfaire les invariants et sa postcondition
+après son exécution.
+
+\end{itemize}
+
+Les langages décrivant une spécification formelle à travers des contrats pour
+le comportement des programmes, mais qui sont utilisés comme annotations, sont
+appelés des {\strong langages de contrats}. Il existe
+plusieurs~\acite{HatcliffLLMP12}~:
+
+\paragraph{JML} Le \inenglish{Java Modeling Language}~\acite{JML} est un langage
+de contrats pour Java~\acite{Java}. La distribuion officielle de JML fournit
+principalement deux outils~: le premier, le \inenglish{Runtime Assertion
+Checker}, sert de \inenglish{monitoring} au code Java, et le second, JMLUnit,
+s'appuyant sur le précédent, est dédié à l'intégration de JML dans le test
+unitaire de méthodes Java.
+
+Le RAC de JML~\acite{Cheon02} est un outil permettant de vérifier les contrats
+JML lors de l'exécution du programme. Les contrats sont traduits en code Java.
+La proximité entre ces deux langages est la clé de la démarche. En effet, la
+syntaxe des contrats JML est similaire à celle de Java, et les mots-clés JML
+spécifiques (pour par exemple les clauses, les quantificateurs etc.) sont
+traduits par des structures Java adéquates.  Néanmoins, cette similitude a des
+limites~: certaines constructions du langage, cmomme les quantifications sur les
+objets, ne sont pas traduisibles et donc ne peuvent pas être vérifiées. Le code
+Java d'origine est ainsi enrichi par la vérification des contrats JML. Le
+binaire résultant est plus important, ce qui engendre des ralentissements à
+l'exécution du programme. Toutefois, durant son exécution, si une contrainte
+n'est pas vérifiée, une exception spécifique est déclenchée signalant le type de
+clause qui n'a pas été vérifiée (invariant, précondition etc.) ainsi que l'état
+visibile du système au moment de l'exécution.
+
+L'utilisation du RAC confère un moyen direct et efficace de s'assurer que les
+contrats JML ne sont pas violés durant une exécution avec les données de
+l'exécution.
+
+\paragraph{Spec\#} Langage Spec\#~\acite{SpecSharp} permet de faire de la
+programmation par contrat pour C\#~\acite{CSharp}
+
+\paragraph{ACSL} Le \inenglish{ANSI/C Specification Language}~\acite{ACSL} est
+un langage de contrats pour C~\acite{C}.
+
+L'un des intérêts et usages principaux des contrats est pour le test. En effet,
+le {\strong test à partir de contrat} (\inenglish{Contract-Based Testing},
+abbrégé CBT) a été introduit pour exploiter les langages d'annotations afin de
+tester des programmes~:
+
+\begin{itemize}
+
+\item les invariants et les préconditions sont utilisées pour générer des
+données de tests~;
+
+\item les postconditions fournissent un oracle (partiel) capable de calculer le
+verdict du test à l'exécution.
+
+\end{itemize}
+
+Le test est un {\strong succès} si aucune clause n'est violée, sinon le test est
+un {\strong échec}.
 
 % là on enchaîne avec les annotations (car on parlait de spéc' qui document le
 % code)
@@ -112,11 +193,26 @@ la vérification dynamique fournit seulement une couverture limité~: les
 spécifications sont souvent vérifiées avec les données des exécutions courantes.
 Ainsi, la vérification dynamique résulte souvent à une détection incomplète et
 tardive (potentiellement en production) de défauts. Une façon de pallier à cette
-limitation est soit d'utiliser une approche hybrique~\cite{Flanagan06}, soit de
+limitation est soit d'utiliser une approche hybrique~\acite{Flanagan06}, soit de
 générer des données pertinentes pour tenter de couvrir tous les comportements de
 la spécification.
 
 \section{Génération de données de tests}
+
+\section{Génération de tests}
+
+\section{Synthèse}
+
+Nous avons choisi de créer un nouveau langage de spécification plutôt que de
+reprendre et améliorer un langage existant.
+%Une des raisons est la complexité des autres langages par rapport au niveau des
+%ingénieurs de tests. Nous voulions un langage simple, abordable et pragmatique.
+La raison principale est qu'il n'existe pas de langage de spécification unifiant
+plusieurs théories de l'état de l'art. Plusieurs langages ont permis à des
+théories intéressantes d'émerger, mais malheureusement, ces théories sont
+trop souvent éparpillées, et donc inutilisables par un ingénieur de test car la
+chaîne de développement deviendrait trop complexe.
+
 
 %  Intro :
 %      qu'est-ce qu'un test ?
@@ -234,9 +330,9 @@ la spécification.
 %  
 %  Les outils à étudier :
 %      Apollo (Sosym)
-%      JML
+%   x  JML
 %      JSConTest
-%      Eiffel
+%   x  Eiffel
 %      Madsen
 %      Yagg
 %      Geno
@@ -250,8 +346,8 @@ la spécification.
 %      Java PathFinder
 %      Alloy
 %      SpecExplorer
-%      Spec#
-%      ACSL
+%   x  Spec#
+%   x  ACSL
 %      AsmL
 %      Cute
 %      Kleen (?)
