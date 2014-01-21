@@ -70,8 +70,8 @@ qu'une implémentation (c'est~à~dire un programme) satisfait une spécification
 particulière dans toutes les exécutions et configurations possibles.
 Généralement, une telle preuve est accomplie à l'aide de raisonnements
 statiques. Et quand un raisonnement statique n'est pas possible ou suffisant,
-nous pouvons utiliser une vérification dynamique, appelée aussi
-\inenglish{runtime assertion checking}, abbrégé RAC~\acite{Geller76}.
+nous pouvons utiliser une {\strong validation} dynamique, appelée aussi
+\inenglish{Runtime Assertion Checking}, abbrégé RAC~\acite{Geller76}.
 
 Un {\strong langage de spécification} formelle est une notation mathématiquement
 précise pour décrire les comportements et propriétés d'un programme. Les
@@ -165,15 +165,16 @@ est similaire à celle de Java, et les mots-clés JML spécifiques (pour par
 exemple les clauses, les quantificateurs etc.) sont traduits par des structures
 Java adéquates. Néanmoins, cette similitude a des limites~: certaines
 constructions du langage, comme les quantifications sur les objets, ne sont pas
-traduisibles et donc ne peuvent pas être vérifiées. Le code Java d'origine est
-ainsi enrichi par la vérification des contrats JML. Le binaire résultant est
-plus important, ce qui engendre des ralentissements à l'exécution. Si une
-contrainte n'est pas vérifiée, une exception spécifique est déclenchée signalant
-le type de clause qui n'a pas été vérifiée (invariant, précondition etc.) ainsi
-que l'état visibile du système au moment de l'exécution.
-L'utilisation du RAC confère un moyen direct et efficace de s'assurer que les
-contrats JML ne sont pas violés durant une exécution avec les données de
-l'exécution.
+traduisibles et donc ne peuvent pas être vérifiées.
+
+Le code Java d'origine est ainsi enrichi par la vérification des contrats JML.
+Le binaire résultant est plus important, ce qui engendre des ralentissements à
+l'exécution. Si une contrainte n'est pas vérifiée, une exception spécifique est
+déclenchée signalant le type de clause qui n'a pas été vérifiée (invariant,
+précondition etc.) ainsi que l'état visibile du système au moment de
+l'exécution.  L'utilisation du RAC confère un moyen direct et efficace de
+s'assurer que les contrats JML ne sont pas violés durant une exécution avec les
+données de l'exécution.
 
 \paragraph{ACSL} Le \inenglish{ANSI/C Specification Language}~\acite{ACSL} est
 un langage de contrats pour C~\acite{C}, inspiré principalement du langage de
@@ -234,13 +235,16 @@ l'aide de prouveur maison ou externe) ou dynamique, à l'aide d'un RAC. \\
 %approche hybride~\acite{Flanagan06}, soit de générer des données pertinentes
 %pour tenter de couvrir tous les comportements de la spécification.
 
-\section{Test à partir de contrats}
-\label{section:sota:cbt}
+\subsection{Test à partir de contrats}
+\label{subsection:sota:cbt}
 
-L'un des intérêts et usages principaux des contrats est pour le test. En effet,
-le {\strong test à partir de contrats} (\inenglish{Contract-Based Testing},
-abbrégé CBT) a été introduit pour exploiter les langages
-de contrats afin de tester des programmes~\acite{Aichernig03}~:
+Jusqu'à maintenant, nous avons vu comment les contrats sont utilisés pour
+{\strong filtrer} les données manipuler par un programme ou pour vérifier que le
+programme ne produira pas d'erreur. Cependant, l'un des intérêts et usages
+principaux des contrats est pour le {\strong test}. En effet, le {\strong test à
+partir de contrats} (\inenglish{Contract-Based Testing}, abbrégé CBT) a été
+introduit pour exploiter les langages de contrats afin de tester des
+programmes~\acite{Aichernig03}~:
 
 \begin{itemize}
 
@@ -265,24 +269,82 @@ test est un test qui échoue. Dans la génération de tests, deux critères rent
 en jeu~: la pertinence des données de test, ainsi que la pertinence des tests
 par rapport à la spécification. En effet, une spécification peut décrire
 plusieurs comportements~; chaque comportement serait tester par un ou plusieurs
-tests.
+tests. Mais également, le résultat d'un test peut dépendre du pré-état du SUT.
+Il est donc intéressant d'explorer les pré-états et post-états pertinents.
 
-\subsection{Génération de données de test}
+\section{Génération de données de test}
 
-Un contrat précise le comportement d'un programme. Les programmes manipulent
-deux catégories de données~: scalaires, comme les booléens, les entiers, les
-réels, les chaînes de caractères, et non-scalaires, comme des tableaux ou des
-objets. Nous allons présenter 
+Un contrat spécifie les données manipulées par un programme. Les programmes
+manipulent deux catégories de données~: scalaires, comme les booléens, les
+entiers, les réels, les chaînes de caractères, et structurelles, comme des
+tableaux ou des objets.
 
 % dire rapidement ce que JML, ACSL etc. utilisent pour générer des données.
 % montrer les limitations.
+%    -> on est loin des préoccupations/domaines des "vrais" dév' et surtout du
+%       web
 % montrer ce qu'il se fait **en dehors** des contrats pour générer des données
 % dire que ce serait super d'avoir ça dans les contrats
 % mais comment le spécifier dans les contrats~? est-ce qu'on seulement on peut~?
 
-\subsection{Génération de tests}
+Les langages de contrats vus précédemment, comme JML, ACSL ou Spec\#, permettent
+de vérifier des données, c'est~à~dire de regarder si les données satisfont les
+clauses.
+
+JML 
+JSConTest est bien, mais il est trop limité.
+
+TestEra, Korat et UDITA, un nouvel espoire mais il faut tout écrire à la main.
+Très pratique pour générer des données mais difficile d'intégrer ça en
+annotation de programme, notamment dans un contrat.
+
+Voyons ce qu'il se fait ailleurs.
+
+\subsection{Génération de nombres}
+
+\subsection{Génération de chaînes de caractères}
+
+\paragraph{Yagg}
+
+\paragraph{Geno}
+
+\paragraph{YouGen}
+
+\paragraph{Apollo}
+
+\paragraph{@Flajolet}
+
+\paragraph{@Howden}
+
++/- conclure avec @Hennessy.
+
+\subsection{Génération de structures}
+
+\paragraph{Jartage}
+
+\paragraph{Euclide}
+
+\paragraph{InKA}
+
+\paragraph{FDCC}
+
+\paragraph{ARTOO}
+
+\paragraph{AutoTest}
+
+\paragraph{KLEE}
+
+\paragraph{EXE}
+
+\section{Génération de tests}
+
+\paragraph{Pex}
+
+\paragraph{Symstra}
 
 \section{Synthèse}
+
+Nous voyons que tout ça est éparpillé.
 
 Nous avons choisi de créer un nouveau langage de spécification plutôt que de
 reprendre et améliorer un langage existant.
@@ -373,34 +435,33 @@ chaîne de développement deviendrait trop complexe.
 %  Les outils à étudier :
 %      Apollo (Sosym)
 %   x  JML
-%      JSConTest
+%   x  JSConTest
 %   x  Eiffel
 %      Madsen
-%      Yagg
-%      Geno
-%      YouGen
-%      @Flajolet
-%      @Howden
-%      @Hennessy "Analysing the effectiveness of rule-coverage as a reduction…"
-%      Korat
-%      TestEra (pré-Korat)
-%      UDITA (post-Korat)
+%   x  Yagg
+%   x  Geno
+%   x  YouGen
+%   x  @Flajolet
+%   x  @Howden
+%   x  @Hennessy "Analysing the effectiveness of rule-coverage as a reduction…"
+%   x  Korat
+%   x  TestEra (pré-Korat)
+%   x  UDITA (post-Korat)
 %      Java PathFinder
 %      Alloy
 %      SpecExplorer
 %   x  Spec#
 %   x  ACSL
 %      AsmL
-%      Cute
-%      Kleen (?)
-%      Exe
+%   x  KLEE
+%   x  Exe
 %      Symstra
-%      Jartege
-%      Euclide
-%      InKA
-%      FDCC
-%      ARTOO
-%      AutoTest
-%      Pex
+%   x  Jartege
+%   x  Euclide
+%   x  InKA
+%   x  FDCC
+%   x  ARTOO
+%   x  AutoTest
+%   x  Pex
 %      Quickcheck
 %      JML-Testing-Tools
