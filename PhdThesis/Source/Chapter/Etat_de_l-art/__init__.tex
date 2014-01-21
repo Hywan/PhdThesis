@@ -130,7 +130,8 @@ Par extension, nous comprenons qu'il existe deux états pour le SUT~: avant
 l'exécution d'une méthode, il se trouve dans un {\strong pré-état}, et après
 l'exécution d'une méthode, il se trouve dans un {\strong post-état}. Pour les
 langages supportant les exceptions, il existe un post-état normal et un
-post-état exceptionnel.
+post-état exceptionnel. Par ailleurs, nous disons que le test est un {\strong
+succès} si aucune clause n'est violée, sinon le test est un {\strong échec}.
 
 Les langages décrivant une spécification formelle à travers des contrats pour
 le comportement des programmes, mais qui sont utilisés comme annotations, sont
@@ -223,15 +224,23 @@ externes, notamment Z3~\acite{DeMoura2008}, pour vérifier les contrats. \\
 
 Chaque langage de programmation répandu a son propre langage de contrats. Se
 distinguent deux grandes familles de vérifications de contrats~: statique (à
-l'aide de prouveur maison ou externe) ou dynamique, à l'aide d'un RAC.
+l'aide de prouveur maison ou externe) ou dynamique, à l'aide d'un RAC. \\
 
-\subsection{Test à partir de contrats}
-\label{subsection:sota:cbt}
+%La vérification dynamique souffre d'une limitation majeure. Elle fournit
+%seulement une couverture limité~: les spécifications sont souvent vérifiées avec
+%les données des exécutions courantes. Ainsi, la vérification dynamique résulte
+%souvent à une détection incomplète et tardive (potentiellement en production) de
+%défauts. Une façon de pallier à cette limitation est soit d'utiliser une
+%approche hybride~\acite{Flanagan06}, soit de générer des données pertinentes
+%pour tenter de couvrir tous les comportements de la spécification.
+
+\section{Test à partir de contrats}
+\label{section:sota:cbt}
 
 L'un des intérêts et usages principaux des contrats est pour le test. En effet,
 le {\strong test à partir de contrats} (\inenglish{Contract-Based Testing},
-abbrégé CBT) a été introduit pour exploiter les langages d'annotations afin de
-tester des programmes~:
+abbrégé CBT) a été introduit pour exploiter les langages
+de contrats afin de tester des programmes~\acite{Aichernig03}~:
 
 \begin{itemize}
 
@@ -243,34 +252,35 @@ verdict du test à l'exécution.
 
 \end{itemize}
 
-Le test est un {\strong succès} si aucune clause n'est violée, sinon le test est
-un {\strong échec}.
+Rappelons qu'un test est composé de trois parties~: un SUT, des données et un
+oracle. La première partie est présente, et les deux dernières nous sont données
+en exploitant le contrat. Nous sommes alors capable de générer des tests
+automatiquement. Comme nous sommes au niveau du code, et plus précisément, sur
+les méthodes des classes (dans un contexte orienté objet), les tests seront
+{\strong unitaires}. La plupart des outils des CBT travaillent en
+\inenglish{black-box}\footnote{TODO~: préciser ou enlever.}.
 
-% là on enchaîne avec les annotations (car on parlait de spéc' qui document le
-% code)
-% ensuite, on enchaîne sur le Design by Contract
-% on s'attarde sur ce qu'est un contrat
-% puis, on enchaîne avec le Contract-based Testing
-% il faut enfoncer le clou (réfléchir à TAROT)
+Mais un test ne montre pas l'absence d'erreur, uniquement la présence. Et un bon
+test est un test qui échoue. Dans la génération de tests, deux critères rentrent
+en jeu~: la pertinence des données de test, ainsi que la pertinence des tests
+par rapport à la spécification. En effet, une spécification peut décrire
+plusieurs comportements~; chaque comportement serait tester par un ou plusieurs
+tests.
 
+\subsection{Génération de données de test}
 
-% …
+Un contrat précise le comportement d'un programme. Les programmes manipulent
+deux catégories de données~: scalaires, comme les booléens, les entiers, les
+réels, les chaînes de caractères, et non-scalaires, comme des tableaux ou des
+objets. Nous allons présenter 
 
-\subsection{Bilan}
+% dire rapidement ce que JML, ACSL etc. utilisent pour générer des données.
+% montrer les limitations.
+% montrer ce qu'il se fait **en dehors** des contrats pour générer des données
+% dire que ce serait super d'avoir ça dans les contrats
+% mais comment le spécifier dans les contrats~? est-ce qu'on seulement on peut~?
 
-Cependant, la vérification dynamique souffre de deux limitations. Premièrement,
-elle consomme des cycles qui pourraient mieux être utilisés. Plus sérieusement,
-la vérification dynamique fournit seulement une couverture limité~: les
-spécifications sont souvent vérifiées avec les données des exécutions courantes.
-Ainsi, la vérification dynamique résulte souvent à une détection incomplète et
-tardive (potentiellement en production) de défauts. Une façon de pallier à cette
-limitation est soit d'utiliser une approche hybrique~\acite{Flanagan06}, soit de
-générer des données pertinentes pour tenter de couvrir tous les comportements de
-la spécification.
-
-\section{Génération de données de tests}
-
-\section{Génération de tests}
+\subsection{Génération de tests}
 
 \section{Synthèse}
 
@@ -285,46 +295,7 @@ trop souvent éparpillées, et donc inutilisables par un ingénieur de test car 
 chaîne de développement deviendrait trop complexe.
 
 
-%  Intro :
-%      qu'est-ce qu'un test ?
-%      tester manuellement :
-%          un humain qui écrit des tests
-%          long
-%          cher
-%          faillible
-%      un test manuel = une spéc' informelle mais exécutable
-%      idée : avoir une spéc' formelle exécutable
-%          ça veut dire quoi ?
-%          générer des tests à partir de cette spéc'
-%  
-%      pourquoi PHP ?
-%          power 85\% of the Web
-%          utiliser partout (banque, social, marché, média…)
-%          y avait aucun outil/langage de test non-manuel
-%          champs libre pour un nouveau langage de spéc'
-%  
-%      pourquoi ne pas reprendre un langage existant et l'adapter ?
-%          PHP est hautement dynamique, nouvelles problématiques (lesquelles ?)
-%          il manque un langage qui unifie les théories
-%              beaucoup de théories intéressantes
-%              mais éparpillées
-%  
-%      objectifs de cette thèse :
-%          qu'est-ce que l'on cherche à faire ?
-%              nous nous intéressons à la conformité entre le programme et sa
-%              spécification
-%  
-%          pour y arriver :
-%              faire un nouveau langage de spéc' simple, unifiant plusieurs théories
-%              améliorer chaque théorie introduite pour la rendre « compatible »
-%              avec le Web
-%  
-%              à partir duquel nous allons faire de la validation et de la vérification
-%              ça implique
-%                  d'une part, de générer des données
-%                  d'autre part, de générer des tests
-%  
-%  
+%
 %  Langage de spéc' :
 %  
 %      V&V
@@ -432,3 +403,4 @@ chaîne de développement deviendrait trop complexe.
 %      AutoTest
 %      Pex
 %      Quickcheck
+%      JML-Testing-Tools
