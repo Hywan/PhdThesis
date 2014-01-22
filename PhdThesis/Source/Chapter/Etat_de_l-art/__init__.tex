@@ -31,30 +31,35 @@ JUnit~\acite{JUnit} pour Java, atoum~\acite{atoum} ou PHPUnit~\acite{PHPUnit}
 pour PHP, CUnit~\acite{CUnit} pour C etc. Ce que font les ingénieurs de test
 peut se résumer à écrire une spécification informelle exécutable. En effet, ils
 transforment le cahier des charges en tests afin de vérifier et valider le
-programme.
-
-Toutefois, cela reste informelle. Et surtout, c'est une tâche laborieuse qui
-peut revenir cher \footnote{TODO, environ la moitié du prix d'un projet}. Et
-pourquoi ne pas écrire une spécification formelle, et la rendre exécutable~?
-C'est~à~dire d'utiliser un langage formelle pour décrire le fonctionnement du
-programme, puis dériver, à partir de cette spécification, des tests qui soient
-exécutables et qui vont vérifier ou valider plusieurs aspects de cette
-spécification.
+programme. Toutefois, cela reste informel. Et surtout, c'est une tâche
+laborieuse qui peut revenir cher \footnote{TODO, environ la moitié du prix d'un
+projet}. Et pourquoi ne pas écrire une spécification formelle, et la rendre
+exécutable~?  C'est~à~dire d'utiliser un langage formelle pour décrire le
+fonctionnement du programme, puis dériver, à partir de cette spécification, des
+tests qui soient exécutables et qui vont vérifier ou valider plusieurs aspects
+de cette spécification.
 
 Nous nous intéressons à des programmes écrits en PHP~\acite{PHP} pour plusieurs
-raisons. D'une part, PHP est un langage non-typé, hautement dynamique et
-multi-paradigme, ce qui nous apporte des problématiques encore peu ou pas abordé
-dans l'état de l'art actuel.  De plus, aucun travaux ne considère PHP pour la
-génération de données ou la génération de tests. De même, aucun langage de
-spécification dédié à PHP n'existait avant les travaux de cette thèse. Par
-ailleurs, plus de 85\% du Web fonctionne avec PHP. Cela implique qu'il y a un
-marché important avec d'immenses besoins~; que ce soit des sites de
-commerces\footnote{Etsy, \url{https://etsy.com/}.}, de banques, d'assurances, de
-réseaux sociaux\footnote{Facebook, \url{https://facebook.com/}}, de moteurs de
+raisons. Comparé à des langages plus traditionnels, comme C ou Java, les
+langages de scripts accélère le processus de développement grâce à la
+flexibilité qu'ils offrent avec le typage dynamique, faible et le mélange de
+paradigmes. Cependant, cette flexibilité rend plus difficile la compréhension du
+comportement de certains programmes, tout comme il est plus difficile de
+s'assurer que le programme n'est pas affecté par une modification. Ce type de
+langage nous apporte des problématiques encore peu ou pas abordées dans l'état
+de l'art actuel. De plus, aucun travaux ne considère PHP pour la génération de
+données ou la génération de tests. De même, aucun langage de spécification dédié
+à PHP n'existait avant les travaux de cette thèse. Par ailleurs, plus de 85\% du
+Web fonctionne avec PHP. Cela implique qu'il y a un marché important avec
+d'immenses besoins~; que ce soit des sites de commerces\footnote{Etsy,
+\url{https://etsy.com/}.}, de banques, d'assurances, de réseaux
+sociaux\footnote{Facebook, \url{https://facebook.com/}}, de moteurs de
 recherche\footnote{Yahoo, \url{https://yahoo.com/}},
 d'encyclopédie\footnote{Wikipedia, \url{https://wikipedia.org/}},
 gouvernementaux\footnote{France, Belgique, Suisse, USA, Canada etc.} et
-d'autres.
+d'autres. Nous tenons à préciser que nous nous intéressons à du test pour PHP et
+non pas du test pour le Web, à travers un client HTML. Nous considérons PHP
+uniquement, tout en orientant nos travaux vers les problématiques du Web.
 
 Cette thèse s'intéresse à la conformité entre un programme et sa spécification,
 à travers la création d'un nouveau langage de spécification simple, pradgmatique
@@ -77,12 +82,19 @@ Un {\strong langage de spécification} formelle est une notation mathématiqueme
 précise pour décrire les comportements et propriétés d'un programme. Les
 {\strong notations formelles} aident à rendre les spécifications non-ambiguës,
 moins dépendantes des normes culturelles, et ainsi moins sujettes à une mauvaise
-interprétation. Par ailleurs, de part le fait qu'une notation est formelle, elle
-peut être exploitée par une machine pour y appliquer un traitement automatique.
-Les spécifications formelles peuvent alors aider à {\strong automatiser le
-test}, autant pour générer les données de test~\acite{BernotGM91, KorelA98,
-SankarH94, Jalote92} que pour calculer le verdict du test~\acite{CheonL02}.
-C'est dans ces deux directions que nous allons nous tourner.
+interprétation. Les langages de spécifications sont conçus pour adresser des
+problèmes généraux ou spécialisés. Les langages de spécifications généraux, tel
+que Z~\acite{Spivey89} ou OCL~\acite{RichtersG98} ne sont pas conçus pour une
+méthodologie particulière ou des outils de vérifications. Cependant, les
+langages de spécifications sont très souvent spécialisés, en fonction du type de
+langage qu'ils visent~: typage statique et fort, ou dynamique et faible, orienté
+objet ou fonctionnel etc. Par ailleurs, de part le fait qu'une notation est
+formelle, elle peut être exploitée par une machine pour y appliquer un
+traitement automatique.  Les spécifications formelles peuvent alors aider à
+{\strong automatiser le test}, autant pour générer les données de
+test~\acite{BernotGM91, KorelA98, SankarH94, Jalote92} que pour calculer le
+verdict du test~\acite{CheonL02}.  C'est dans ces deux directions que nous
+allons nous tourner.
 
 Les spécifications peuvent documenter les {\strong interfaces} d'un programme.
 Par interfaces, il faut comprendre les parties du programme permettant de
@@ -130,8 +142,9 @@ Par extension, nous comprenons qu'il existe deux états pour le SUT~: avant
 l'exécution d'une méthode, il se trouve dans un {\strong pré-état}, et après
 l'exécution d'une méthode, il se trouve dans un {\strong post-état}. Pour les
 langages supportant les exceptions, il existe un post-état normal et un
-post-état exceptionnel. Par ailleurs, nous disons que le test est un {\strong
-succès} si aucune clause n'est violée, sinon le test est un {\strong échec}.
+post-état exceptionnel, dans le cas où une exception a été levée. Par ailleurs,
+nous disons que le test est un {\strong succès} si aucune clause n'est violée,
+sinon le test est un {\strong échec}.
 
 Les langages décrivant une spécification formelle à travers des contrats pour
 le comportement des programmes, mais qui sont utilisés comme annotations, sont
@@ -223,20 +236,23 @@ un langage intermédiaire pour encoder des conditions de vérifications pour les
 langages impératifs et orientés objets. Boogie s'appuye sur des solveurs
 externes, notamment Z3~\acite{DeMoura2008}, pour vérifier les contrats. \\
 
-Chaque langage de programmation répandu a son propre langage de contrats. Se
-distinguent deux grandes familles de vérifications de contrats~: statique (à
-l'aide de prouveur maison ou externe) ou dynamique, à l'aide d'un RAC. \\
+Chaque langage de programmation répandu a son propre langage de contrats,
+excepté PHP. Se distinguent deux grandes familles de vérifications de contrats~:
+statique, à l'aide de prouveur maison ou externe, ou dynamique, à l'aide d'un
+RAC.
 
-%La vérification dynamique souffre d'une limitation majeure. Elle fournit
-%seulement une couverture limité~: les spécifications sont souvent vérifiées avec
-%les données des exécutions courantes. Ainsi, la vérification dynamique résulte
-%souvent à une détection incomplète et tardive (potentiellement en production) de
-%défauts. Une façon de pallier à cette limitation est soit d'utiliser une
-%approche hybride~\acite{Flanagan06}, soit de générer des données pertinentes
-%pour tenter de couvrir tous les comportements de la spécification.
+Notons que pour un langage a typage dynamique et faible, même un contrat très
+simple qui spécifie le typage des données, peut être utile, comme démontré dans
+le travail sur les types graduels~\acite{SiekT07}.
 
 \subsection{Test à partir de contrats}
 \label{subsection:sota:cbt}
+
+Il existe plusieurs approches pour générer des tests, présentant différents
+niveaux d'automatisation (manuellle, semi-automatique ou automatique), et
+différents niveaux de connaissance du programme qui est testé (complète,
+partielle ou inconnue, respectivement \inenglish{white-box},
+\inenglish{grey-box} ou \inenglish{black-box}).
 
 Jusqu'à maintenant, nous avons vu comment les contrats sont utilisés pour
 {\strong filtrer} les données manipuler par un programme ou pour vérifier que le
@@ -248,31 +264,140 @@ programmes~\acite{Aichernig03}~:
 
 \begin{itemize}
 
-\item les invariants et les préconditions sont utilisées pour générer des
-données de tests~;
+\item les invariants et les préconditions sont utilisées pour {\strong générer
+des données} de tests~;
 
-\item les postconditions fournissent un oracle (partiel) capable de calculer le
-verdict du test à l'exécution.
+\item les postconditions {\strong fournissent un oracle} (partiel) capable de
+calculer le verdict du test à l'exécution.
 
 \end{itemize}
 
 Rappelons qu'un test est composé de trois parties~: un SUT, des données et un
 oracle. La première partie est présente, et les deux dernières nous sont données
-en exploitant le contrat. Nous sommes alors capable de générer des tests
-automatiquement. Comme nous sommes au niveau du code, et plus précisément, sur
-les méthodes des classes (dans un contexte orienté objet), les tests seront
-{\strong unitaires}. La plupart des outils des CBT travaillent en
-\inenglish{black-box}\footnote{TODO~: préciser ou enlever.}.
+en exploitant le contrat. À partir d'une spécification formelle, sous la forme
+d'un contrat, nous sommes capable de générer des tests automatiquement. Comme
+nous sommes au niveau du code, et plus précisément, sur les méthodes des classes
+(dans un contexte orienté objet), les tests seront {\strong unitaires}. La
+plupart des outils des CBT travaillent en \inenglish{black-box}\footnote{TODO~:
+préciser ou enlever.}.
 
-Mais un test ne montre pas l'absence d'erreur, uniquement la présence. Et un bon
-test est un test qui échoue. Dans la génération de tests, deux critères rentrent
-en jeu~: la pertinence des données de test, ainsi que la pertinence des tests
-par rapport à la spécification. En effet, une spécification peut décrire
-plusieurs comportements~; chaque comportement serait tester par un ou plusieurs
-tests. Mais également, le résultat d'un test peut dépendre du pré-état du SUT.
-Il est donc intéressant d'explorer les pré-états et post-états pertinents.
+Mais «~un test montre la présence, jamais l'absence d'une erreur~» (Edsger
+W.~Dijkstra dans~\acite{Buxton70}). Et un bon test est un test qui échoue. Dans
+la génération de tests, deux critères rentrent en jeu~: la pertinence des
+données de test, ainsi que la pertinence des tests par rapport à la
+spécification. En effet, une spécification peut décrire plusieurs
+comportements~; chaque comportement serait tester par un ou plusieurs tests.
+Mais également, le résultat d'un test peut dépendre du pré-état du SUT.  Il est
+donc intéressant d'explorer les pré-états et post-états pertinents.
+
+%La vérification dynamique souffre d'une limitation majeure. Elle fournit
+%seulement une couverture limité~: les spécifications sont souvent vérifiées avec
+%les données des exécutions courantes. Ainsi, la vérification dynamique résulte
+%souvent à une détection incomplète et tardive (potentiellement en production) de
+%défauts. Une façon de pallier à cette limitation est soit d'utiliser une
+%approche hybride~\acite{Flanagan06}, soit de générer des données pertinentes
+%pour tenter de couvrir tous les comportements de la spécification.
 
 \section{Génération de données de test}
+
+Il existe plusieurs techniques pour générer des données de tests unitaires. Soit
+basées sur la résolution de contraintes (comme TestEra, Korat ou UDITA), ou
+l'exécution symbolique de code (comme Symstra, CUTE, DART ou Java PathFinder).
+
+\paragraph{TestEra} L'outil TestEra~\acite{MarinovK01} est un langage
+d'annotation de code Java. Ses préconditions, postconditions et invariants
+expriment des contraintes avec le langage Alloy~\acite{Jackson02}. Alloy est un
+langage de spécification déclaratif pour exprimer des contraintes structurelles
+complexes. Son objectif étant d'instancier des micro-modèles, à l'aide de son
+propre analyseur Alcoa~\acite{JacksonSS00}. TestEra passe des invariants
+accompagnés de préconditions à l'analyseur d'Alloy, qui va lui générer plusieurs
+instances de modèles satisfaisants cette spécification. Ensuite, TestEra va
+concrétiser ces instances une par une, afin de produire des données valides en
+Java. Ces dernières sont utilisées en tant que données de tests, c'est~à~dire
+qu'elles vont servir à exécuter le SUT. Ensuite, TestEra regarde les sorties
+produites par le SUT ainsi que son post-état, qui sont abstraits pour se ramener
+au formalisme d'Alloy afin d'y être confrontés à la postcondition et aux
+invariants. Si cette dernière vérification échoue, un contre-exemple est
+produit. Sinon, le processus itère à l'instance suivante.
+
+\paragraph{Korat} L'outil Korat~\acite{BoyapatiKM02} est la suite de TestEra.
+Son objectif est de générer des structures de données complexes
+non-isomorphiques de taille finie. Korat demande à l'utilisateur d'écrire un
+prédicat en Java (appelé \code{repOK}), qui va valider ou invalider les
+structures générées. Il y a plusieurs avantages à cette démarche~: l'utilisateur
+est familier avec le langage puisqu'il l'utilise pour développer, il y a
+plusieurs outils et environnements de développement qui peuvent aider à la
+rédaction ou l'analyse de ce prédicat, et enfin, le prédicat peut
+potentiellement déjà exister dans le programme. Korat va ensuite générer des
+structures à partir des entrées de ce prédicat. Pour cela, Korat va analyser le
+prédicat et indexer quels sont les accès aux méthodes et attributs sur la
+structure qui influencent la décision du prédicat. Korat va ensuite jouer sur
+ces méthodes et attributs afin de générer plusieurs structures candidates.
+Korat demande également à l'utilisateur décrire une méthode de
+\inenglish{finitization} qui précise la taille et la nature des données portées
+par la structure. L'idée est de préciser à Korat dans quelle mesure il peut
+modifier la structure pour générer de nouvelles structures candidates. Cette
+technique assure qu'il y a un ensemble fini de structures candidates qui vont
+être sélectionnées. Le programme Java contient des contrats écrits en JML. Les
+prédicats de Korat sont appelés depuis JML et la postcondition fournit l'oracle
+du test. Les tests sont alors exécutés sur un programme Java enrichie.
+
+Korat se démarque de TestEra en proposant ses propres algorithmes de génération
+de données candidates à partir de prédicats Java. Cette approche demande un
+effort supplémentaire à l'utilisateur, car en plus d'écrire des contrats en JML,
+il doit écrire une méthode pour un prédicat et une autre pour une
+\inenglish{finitization}. Notons que cet effort est partiellement compensé par
+le fait que, d'une part, écrire des spécifications est une bonne pratique, et
+que d'autre part, l'utilisateur connaît déjà le langage dans lequel écrire ces
+méthodes et que les prédicats lui seront très propablement utiles dans son
+programme.
+
+\paragraph{UDITA} Le langage UDITA~\acite{GligoricGJKKM10} étend le langage Java
+afin de lui permettre de générer un ensemble fini de structures de données
+complexes. UDITA est la suite de Korat. Nous retrouvons la démarche de demander
+à l'utilisateur décrire lui-même des méthodes de génération de données mais les
+contrats ont totallement disparu. UDITA ajoute à Java deux extensions~: des
+primitives de choix non-déterministes et une primitive pour restreindre ces
+choix. Ces constructions sont familiaires aux utilisateurs de vérificateur de
+modèle comme Java PathFinder~\acite{VisserHBPL03}, sur lequel il s'appuye. UDITA
+est d'ailleurs intégré au framework Java PathFinder en tant qu'extension. Grâce
+aux points de choix non-déterministes, l'utilisateur n'écrit qu'une seule
+méthode de génération de données, et UDITA est capable d'en générer plusieurs.
+L'outil propose aussi à l'utilisateur des générateurs basiques, comme un
+générateur de booléens, d'entiers, de nouveaux objets ou d'objets déjà créés.
+Ces deux derniers permettent à l'utilisateur de créer des structures de données
+récursives ou liées. En plus d'une méthode de génération de données, UDITA
+demande à l'utilisateur d'écrire un filtre, notion identique aux prédicats de
+Korat, si ce n'est qu'UDITA ne va pas s'en servir pour la génération de données,
+mais uniquement pour filtrer les données générées~: chaque donnée qui passe le
+filtre sera mise de côté pour servir de données de test.
+
+Contrairement à Korat, UDITA ne demande pas de méthode de
+\inenglish{finitization}, mais s'appuye sur ces points de choix
+non-déterministes pour explorer l'espace de la structure tout en restant
+borné~\acite{Marinov03, SullivanYCKJ04}. L'efficacité de la méthode s'appuye
+sur les choix retardés~\acite{NollS07}, c'est~à~dire sur des évaluations
+non-déterministes tardives~\acite{FischerKS09}. \\
+
+UDITA nous permet de faire la transition de la technique boîte-noire vers
+boîte-blanche. C'est~à~dire que nous allons nous éloigner de la spécification
+pour nous rapprocher du code. D'autres travaux ont été réalisés afin de générer
+des données de test, soit avec des techniques statiques, dynamiques ou hybrides.
+
+\paragraph{EXE} \acite{CadarGPDE08}
+
+\paragraph{KLEE} \acite{CadarDE08}
+
+\paragraph{CUTE} \acite{SenMA05}
+
+\paragraph{DART}
+
+\paragraph{Pex} \acite{HalleuxT08}
+
+
+
+
+\vspace{5em}
 
 Un contrat spécifie les données manipulées par un programme. Les programmes
 manipulent deux catégories de données~: scalaires, comme les booléens, les
@@ -286,6 +411,8 @@ tableaux ou des objets.
 % montrer ce qu'il se fait **en dehors** des contrats pour générer des données
 % dire que ce serait super d'avoir ça dans les contrats
 % mais comment le spécifier dans les contrats~? est-ce qu'on seulement on peut~?
+
+
 
 Les langages de contrats vus précédemment, comme JML, ACSL ou Spec\#, permettent
 de vérifier des données, c'est~à~dire de regarder si les données satisfont les
@@ -320,8 +447,6 @@ Voyons ce qu'il se fait ailleurs.
 
 \subsection{Génération de structures}
 
-\paragraph{Jartage}
-
 \paragraph{Euclide}
 
 \paragraph{InKA}
@@ -332,13 +457,23 @@ Voyons ce qu'il se fait ailleurs.
 
 \paragraph{AutoTest}
 
-\paragraph{KLEE}
-
-\paragraph{EXE}
-
 \section{Génération de tests}
 
-\paragraph{Pex}
+\paragraph{Jartege} L'outil Jartege~\acite{Oriat05} est un générateur de tests
+aléatoires pour des programmes écrits en Java. Jartege sélectionne aléatoirement
+des méthodes à exécuter. Chaque méthode est annoté par un contrat JML. Les
+valeurs des paramètres de ces méthodes sont également générer aléatoirement à
+partir de la précondition. Cette dernière sert également de filtre pour
+sélectionner les méthodes à exécuter. Les contrats sont également utilisés pour
+connaître la conformité du programme par rapport aux postconditions. La
+vérifications des contraintes est ainsi conjointe à la création des séquences de
+test.
+
+Jartege produit des séquences de test d'une certaine taille et un nombre de
+séquences, fixés par l'utilisateur. Par ailleurs, Jartege permet à l'utilisateur
+de fournir une fonction qui détermine la probabilité de créer un nouvel objet ou
+d'en réutiliser un déjà existant. Selon les structures de données manipulées,
+cette fonction permettra de détecter plus ou moins d'erreurs.
 
 \paragraph{Symstra}
 
