@@ -379,20 +379,86 @@ borné~\acite{Marinov03, SullivanYCKJ04}. L'efficacité de la méthode s'appuye
 sur les choix retardés~\acite{NollS07}, c'est~à~dire sur des évaluations
 non-déterministes tardives~\acite{FischerKS09}. \\
 
+%%% Dire aussi qu'avec TestEra et Korat, on a encore une notion de contrats.
+%%% Avec UDITA, la pré et la post se retrouvent un peu dans les 2 méthodes
+%%% Bref, on demande à l'utilisateur de fournir quelque chose
+%%%
+%%% Avec ce qui va suivre, on regarde le code pour générer les données.
+%%% Il y a des techniques avancées, super~!
+%%%
+%%% Mais on va gagner quoi~? Juste trouver les erreurs aux runtimes…
+%%% Même si on couvre tous le code (parler de la couverture~!)
+%%%     qui nous dit que le programme fait la bonne chose~?
+%%%
+%%% Il faut mélanger les spéc/contrats avec ses techniques de génération de
+%%% données.
+%%%
+%%% Parler du Search-based Testing~?
+%%% Parler du random (trouver des réf', voir ICTSS'11 peut-être).
+
+
+
 UDITA nous permet de faire la transition de la technique boîte-noire vers
 boîte-blanche. C'est~à~dire que nous allons nous éloigner de la spécification
 pour nous rapprocher du code. D'autres travaux ont été réalisés afin de générer
 des données de test, soit avec des techniques statiques, dynamiques ou hybrides.
 
-\paragraph{EXE} \acite{CadarGPDE08}
+\paragraph{EXE} \inenglish{EXecution generated Executions}, abbrégé
+EXE~\acite{CadarGPDE06, CadarGPDE08}, est un outil d'exécution symbolique pour
+programmes C.  Au lieu d'exécuter le programme avec des valeurs construites
+manuellement ou aléatoirement, EXE va exécuter le programme, préalablement
+instrumenté, de manière symbolique. Durant cette exécution symbolique, EXE va
+analyser et indexer toutes les contraintes sur les entrées symboliques (comme
+les paramètres des fonctions) et ainsi calculer tous les chemins possibles dans
+le programme.  Si EXE rencontre une instruction contenant une valeur symbolique,
+alors il va analyser son environnement et générer de nouvelles contraintes.
+Quand des embranchements sont rencontrés (comme une condition par exemple), EXE
+va dupliquer les exécutions et les contraindre à emprunter chaque chemin de
+l'embranchement (pour une condition, ce sera un chemin à vrai et un à faux).
+Quand EXE arrive à la fin d'un chemin ou qu'il trouve une erreur, alors il va
+automatiquement générer des données de tests à partir des contraintes récoltées.
+EXE est accompagné de STP~\acite{GaneshD07}, un solveur de constraintes maison
+conçu à l'origine pour EXE. C'est grâce à ce solveur que les valeurs vont être
+concrétisées et utilisées comme données de tests sur le programme
+non-instrumenté. Les mêmes chemins seront empruntés et les mêmes erreurs seront
+trouvées, mais avec des valeurs concrètes, donc exploitables par le développeur.
 
-\paragraph{KLEE} \acite{CadarDE08}
+\paragraph{DART} \inenglish{Directed Automated Random Testing}, abbrégé
+DART~\acite{GodefroidKS05}, est également un outil de génération de données de
+test à partir de l'analyse du programme. DART opère en trois étapes. Il
+commence par extraire les interfaces du programme pour connaître ses
+entrées. Ensuite il va générer aléatoirement des données pour ses entrées, et
+l'exécuter. Et enfin, il analyse le comportement du programme pendant son
+exécution pour détecter quels sont les chemins ou zones qui n'ont pas été
+atteints. Cette analyse va permettre de guider la génération des nouvelles
+entrées pour la prochaine exécution.
+
+DART et EXE ont une approche similaire pour l'analyse des chemins. À chaque
+embranchement du programme, DART va extraire des contraintes symboliques. Pour
+générer les données de tests suivantes, il prendra la négation des contraintes
+une par une, générer de nouvelles valeurs et le processus continue. Toutefois,
+DART ne sait gérer que les contraintes sur les entiers alors qu'EXE sait gérer
+des contraintes sur les entiers, les tableaux, les vecteurs de bits, le
+transtypage, les opérations arithmétiques etc.
+
+\paragraph{KLEE} L'outil KLEE~\acite{CadarDE08} est la suite d'EXE. Ses auteurs
+font le constat suivant~: malgré le fait que les travaux sur l'exécution
+symbolique sont encourageants, les outils ne sont toujours pas capables de
+passer à l'échelle. En effet, le nombre de chemins dans les programmes sont
+exponentiels, et les techniques d'exécutions symboliques n'arrivent plus à
+résoudre toutes les contraintes générées. De même, l'exécution symbolique ne
+prenait pas en compte l'environnement du programme, comme l'OS, le réseau ou
+l'utilisateur. Ce sont ces deux problèmes qu'adresse KLEE grâce à de la
+réduction et simplifications de contraintes, des améliorations sur l'exploration
+des chemins et des optimisations de la réprésentation de l'environnement.
+
+KLEE utilise toujours STP comme solveur de contraintes.
 
 \paragraph{CUTE} \acite{SenMA05}
 
-\paragraph{DART}
-
 \paragraph{Pex} \acite{HalleuxT08}
+
+\paragraph{ARTOO}
 
 
 
@@ -452,8 +518,6 @@ Voyons ce qu'il se fait ailleurs.
 \paragraph{InKA}
 
 \paragraph{FDCC}
-
-\paragraph{ARTOO}
 
 \paragraph{AutoTest}
 
