@@ -28,10 +28,16 @@ open:
 	@open -g -F Dist/PhdThesis.pdf
 
 clean:
+	@find Dist -type f \
+		-not -name '.*' \
+		-not -name '*.tex' | xargs rm -f
+
+distclean:
 	@find Dist -type f -not -name '.*' | xargs rm -f
 
 reload: tex open
 
 c: clean
+dc: distclean
 o: open
 r: reload
