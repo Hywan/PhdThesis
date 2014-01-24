@@ -1,0 +1,51 @@
+%%
+\pgfsetcolor{black}
+  % Edge: spc -> sc
+  \draw [->] (214.78bp,59.894bp) .. controls (205.06bp,50.738bp) and (193.31bp,39.671bp)  .. (176.16bp,23.511bp);
+  % Edge: ac -> spc
+  \draw [->] (178.06bp,134.27bp) .. controls (186.2bp,126.37bp) and (197.6bp,115.31bp)  .. (215.31bp,98.128bp);
+  % Edge: ac -> sdc
+  \draw [->] (155.94bp,134.27bp) .. controls (147.8bp,126.37bp) and (136.4bp,115.31bp)  .. (118.69bp,98.128bp);
+  % Edge: spc -> pc
+  \draw [->] (247.93bp,59.894bp) .. controls (254.69bp,51.104bp) and (262.81bp,40.553bp)  .. (275.91bp,23.511bp);
+  % Edge: sdc -> dc
+  \draw [->] (86.072bp,59.894bp) .. controls (79.311bp,51.104bp) and (71.195bp,40.553bp)  .. (58.085bp,23.511bp);
+  % Edge: sdc -> sc
+  \draw [->] (118.11bp,59.894bp) .. controls (127.26bp,50.738bp) and (138.33bp,39.671bp)  .. (154.49bp,23.511bp);
+  % Node: ac
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (167bp,146bp) node {All-$G$ Coverage};
+\end{scope}
+  % Node: dc
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (50bp,12bp) node {Domain Coverage};
+\end{scope}
+  % Node: pc
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (284bp,12bp) node {Predicate Coverage};
+\end{scope}
+  % Node: sdc
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (100bp,79bp) node {\begin{tabular}{c}Clause + Domain \\ Coverage\end{tabular}};
+\end{scope}
+  % Node: sc
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (165bp,12bp) node {Clause Coverage};
+\end{scope}
+  % Node: spc
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (234bp,79bp) node {\begin{tabular}{c}Clause + Predicate \\ Coverage\end{tabular}};
+\end{scope}
+%

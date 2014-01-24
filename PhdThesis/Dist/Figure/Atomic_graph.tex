@@ -1,0 +1,62 @@
+%%
+\pgfsetcolor{black}
+  % Edge: v_1 -> v_2
+  \draw [->] (36.353bp,72bp) .. controls (49.177bp,72bp) and (66.892bp,72bp)  .. (91.7bp,72bp);
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (64bp,81.5bp) node {$R$};
+  % Edge: v_4 -> v_5
+  \draw [->] (232.16bp,72bp) .. controls (246.5bp,72bp) and (267.19bp,72bp)  .. (293.99bp,72bp);
+  \draw (263bp,82.5bp) node {$T_E$};
+  % Edge: v_2 -> v_6
+  \draw [->] (124.52bp,61.323bp) .. controls (130.84bp,56.604bp) and (138.59bp,51.188bp)  .. (146bp,47bp) .. controls (159.15bp,39.57bp) and (174.57bp,32.774bp)  .. (196.84bp,23.882bp);
+  \draw (162bp,57.5bp) node {$\neg T_C$};
+  % Edge: v_2 -> v_3
+  \draw [->] (124.52bp,82.677bp) .. controls (130.84bp,87.396bp) and (138.59bp,92.812bp)  .. (146bp,97bp) .. controls (159.15bp,104.43bp) and (174.57bp,111.23bp)  .. (196.84bp,120.12bp);
+  \draw (162bp,120.5bp) node {$E$};
+  % Edge: v_2 -> v_4
+  \draw [->] (128.3bp,72bp) .. controls (144.08bp,72bp) and (167.64bp,72bp)  .. (195.95bp,72bp);
+  \draw (162bp,82.5bp) node {$T_C$};
+  % Node: v_4
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (214bp,72bp) ellipse (18bp and 18bp);
+  \draw (214bp,72bp) node {$v_4$};
+\end{scope}
+  % Node: v_5
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw [state,accepting] (330bp,90bp) -- (294bp,90bp) -- (294bp,54bp) -- (330bp,54bp) -- cycle;
+  \draw (312bp,72bp) node {$v_5$};
+\end{scope}
+  % Node: v_6
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (214bp,18bp) ellipse (18bp and 18bp);
+  \draw (214bp,18bp) node {$v_6$};
+\end{scope}
+  % Node: v_1
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw [state,initial] (18bp,72bp) ellipse (18bp and 18bp);
+  \draw (18bp,72bp) node {$v_1$};
+\end{scope}
+  % Node: v_2
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (110bp,72bp) ellipse (18bp and 18bp);
+  \draw (110bp,72bp) node {$v_2$};
+\end{scope}
+  % Node: v_3
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw [state,accepting] (214bp,126bp) ellipse (18bp and 18bp);
+  \draw (214bp,126bp) node {$v_3$};
+\end{scope}
+%
