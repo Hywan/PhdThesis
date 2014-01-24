@@ -13,20 +13,22 @@ Informellement, nous pouvons voir un test comme étant composé de trois parties
 
 \begin{enumerate}
 
-\item un Système Sous Test (\inenglish{System Under Test}, abbrégé SUT)~;
+\item un Système Sous Test (\inenglish{System Under Test}, abbrégé {\strong
+SUT})~;
 
-\item des données pour exécuter ce SUT~;
+\item des {\strong données de test} pour exécuter ce SUT~;
 
-\item un oracle, capable de nous calculer le verdict du test~: est-ce l'état
-du SUT après son exécution est celui attendu ou non~?
+\item un {\strong oracle}, capable de nous calculer le verdict du test~: est-ce
+que le produit de l'exécution et l'état du SUT après son exécution sont ceux
+attendus ou non~?
 
 \end{enumerate}
 
 Aujourd'hui, dans le monde industriel, la majorité des tests sont écrits
-manuellement, par des ingénieurs de test. Un SUT leur est fourni, ils
-l'exécutent avec des données et calculent eux-même le verdict du test. Dans le
-cas des tests automatisés, l'exécution et le calcul du verdict est fait par la
-machine. C'est le rôle qui incombe aux frameworks xUnit, comme
+{\strong manuellement}, par des ingénieurs de test. Un SUT leur est fourni, ils
+l'exécutent avec des données de test et calculent eux-même le verdict du test.
+Dans le cas des tests {\strong automatisés}, l'exécution et le calcul du verdict
+est fait par la machine. C'est le rôle qui incombe aux frameworks xUnit, comme
 JUnit~\acite{JUnit} pour Java, atoum~\acite{atoum} ou PHPUnit~\acite{PHPUnit}
 pour PHP, CUnit~\acite{CUnit} pour C etc. Ce que font les ingénieurs de test
 peut se résumer à écrire une spécification informelle exécutable. En effet, ils
@@ -34,37 +36,38 @@ transforment le cahier des charges en tests afin de vérifier et valider le
 programme. Toutefois, cela reste informel. Et surtout, c'est une tâche
 laborieuse qui peut revenir cher \footnote{TODO, environ la moitié du prix d'un
 projet}. Et pourquoi ne pas écrire une spécification formelle, et la rendre
-exécutable~?  C'est~à~dire d'utiliser un langage formelle pour décrire le
+exécutable~?  C'est~à~dire d'utiliser un langage formel pour décrire le
 fonctionnement du programme, puis dériver, à partir de cette spécification, des
 tests qui soient exécutables et qui vont vérifier ou valider plusieurs aspects
-de cette spécification.
+de cette spécification. \\
 
 Nous nous intéressons à des programmes écrits en PHP~\acite{PHP} pour plusieurs
-raisons. Comparé à des langages plus traditionnels, comme C ou Java, les
-langages de scripts accélère le processus de développement grâce à la
+raisons. Comparés à des langages plus traditionnels, comme C ou Java, les
+langages de scripts accélèrent le processus de développement grâce à la
 flexibilité qu'ils offrent avec le typage dynamique, faible et le mélange de
 paradigmes. Cependant, cette flexibilité rend plus difficile la compréhension du
 comportement de certains programmes, tout comme il est plus difficile de
-s'assurer que le programme n'est pas affecté par une modification. Ce type de
-langage nous apporte des problématiques encore peu ou pas abordées dans l'état
-de l'art actuel. De plus, aucun travaux ne considère PHP pour la génération de
-données ou la génération de tests. De même, aucun langage de spécification dédié
-à PHP n'existait avant les travaux de cette thèse. Par ailleurs, plus de 85\% du
-Web fonctionne avec PHP. Cela implique qu'il y a un marché important avec
-d'immenses besoins~; que ce soit des sites de commerces\footnote{Etsy,
-\url{https://etsy.com/}.}, de banques, d'assurances, de réseaux
-sociaux\footnote{Facebook, \url{https://facebook.com/}.}, de moteurs de
-recherche\footnote{Yahoo, \url{https://yahoo.com/}.},
-d'encyclopédie\footnote{Wikipedia, \url{https://wikipedia.org/}.},
-gouvernementaux\footnote{France, Belgique, Suisse, USA, Canada etc.} et
-d'autres. Nous tenons à préciser que nous nous intéressons à du test pour PHP et
-non pas du test pour le Web, à travers un client HTML. Nous considérons PHP
-uniquement, tout en orientant nos travaux vers les problématiques du Web.
+s'assurer que le programme n'est pas affecté par une modification (nous parlons
+de {\strong régressions}). Ce type de langage nous apporte des problématiques
+encore peu ou pas abordées dans l'état de l'art actuel. De plus, aucun travaux
+ne considère PHP pour la génération de données de test ou la génération de
+tests. De même, aucun langage de spécification dédié à PHP n'existait avant les
+travaux de cette thèse. Par ailleurs, plus de 85\% du Web fonctionne avec PHP.
+Cela implique qu'il y a un marché important avec d'immenses besoins~; que ce
+soit des sites de commerces\footnote{Etsy, \url{https://etsy.com/}.}, de
+banques, d'assurances, de réseaux sociaux\footnote{Facebook,
+\url{https://facebook.com/}.}, de moteurs de recherche\footnote{Yahoo,
+\url{https://yahoo.com/}.}, d'encyclopédie\footnote{Wikipedia,
+\url{https://wikipedia.org/}.}, gouvernementaux\footnote{France, Belgique,
+Suisse, USA, Canada etc.} et d'autres. Nous tenons à préciser que nous nous
+intéressons à du test pour PHP et non pas du test pour le Web à travers un
+client HTML comme un navigateur. Nous considérons PHP uniquement, tout en
+orientant nos travaux vers les problématiques du Web. \\
 
 Cette thèse s'intéresse à la conformité entre un programme et sa spécification,
-à travers la création d'un nouveau langage de spécification simple, pradgmatique
+à travers la création d'un nouveau langage de spécification simple, pragmatique
 pour le Web et unifiant plusieurs théories. Chaque théorie introduit se verra
-enrichie pour la rendre compatible avec le Web.
+enrichie pour la rendre compatible avec les besoins liés au Web.
 
 \section{\inenglish{Behavioral Interface Specification Languages}}
 \label{section:sota:bisl}
@@ -79,23 +82,24 @@ nous pouvons utiliser une {\strong validation} dynamique, pour tester
 l'implémentation. Une validation dynamique est aussi appelée \inenglish{Runtime
 Assertion Checking}, abbrégé RAC~\acite{Geller76}.
 
-Un {\strong langage de spécification} formelle est une notation mathématiquement
+Un {\strong langage de spécification} formel est une notation mathématiquement
 précise pour décrire les comportements et propriétés d'un programme. Les
 {\strong notations formelles} aident à rendre les spécifications non-ambiguës,
 moins dépendantes des normes culturelles, et ainsi moins sujettes à une mauvaise
 interprétation. Les langages de spécifications sont conçus pour adresser des
-problèmes généraux ou spécialisés. Les langages de spécifications généraux, tel
-que Z~\acite{Spivey89} ou OCL~\acite{RichtersG98} ne sont pas conçus pour une
+problèmes généraux ou spécialisés. Les langages de spécifications généraux, tels
+que Z~\acite{Spivey89} ou OCL~\acite{RichtersG98}, ne sont pas conçus pour une
 méthodologie particulière ou des outils de vérifications. Cependant, les
 langages de spécifications sont très souvent spécialisés, en fonction du type de
 langage qu'ils visent~: typage statique et fort, ou dynamique et faible, orienté
-objet ou fonctionnel etc. Par ailleurs, de part le fait qu'une notation est
-formelle, elle peut être exploitée par une machine pour y appliquer un
-traitement automatique.  Les spécifications formelles peuvent alors aider à
-{\strong automatiser le test}, autant pour générer les données de
-test~\acite{BernotGM91, KorelA98, SankarH94, Jalote92} que pour calculer le
-verdict du test~\acite{CheonL02}.  C'est dans ces deux directions que nous
-allons nous tourner.
+objet ou fonctionnel etc.
+
+Par ailleurs, de part le fait qu'une notation est formelle, elle peut être
+exploitée par une machine pour y appliquer un traitement automatique.  Les
+spécifications formelles peuvent alors aider à {\strong automatiser le test},
+autant pour générer les données de test~\acite{BernotGM91, KorelA98, SankarH94,
+Jalote92} que pour calculer le verdict du test~\acite{CheonL02}.  C'est dans ces
+deux directions que nous allons nous tourner.
 
 Les spécifications peuvent documenter les {\strong interfaces} d'un programme.
 Par interfaces, il faut comprendre les parties du programme permettant de
@@ -144,14 +148,13 @@ Par extension, nous comprenons qu'il existe deux états pour le SUT~: avant
 l'exécution d'une méthode, il se trouve dans un {\strong pré-état}, et après
 l'exécution d'une méthode, il se trouve dans un {\strong post-état}. Pour les
 langages supportant les exceptions, il existe un post-état normal et un
-post-état exceptionnel, dans le cas où une exception a été levée. Par ailleurs,
-nous disons que le test est un {\strong succès} si aucune clause n'est violée,
-sinon le test est un {\strong échec}.
+post-état exceptionnel, dans le cas où une exception ait été levée. Par
+ailleurs, nous disons que le test est un {\strong succès} si aucune clause n'est
+violée, sinon le test est un {\strong échec}.
 
-Les langages décrivant une spécification formelle à travers des contrats pour
-le comportement des programmes, mais qui sont utilisés comme annotations, sont
-appelés des {\strong langages de contrats}. Il en existe
-plusieurs~\acite{HatcliffLLMP12}.
+Les langages décrivant une spécification formelle à travers des contrats pour le
+comportement des programmes, et utilisés comme annotations, sont appelés des
+{\strong langages de contrats}. Il en existe plusieurs~\acite{HatcliffLLMP12}.
 
 \paragraph{JML} Le \inenglish{Java Modeling Language}~\acite{JML} est un langage
 de contrats pour Java~\acite{Java}. À la différence de Eiffel qui utilise
@@ -174,7 +177,7 @@ premier, le \inenglish{Runtime Assertion Checker}, sert de
 \inenglish{monitoring} au programme Java, et le second, JMLUnit, s'appuyant sur
 le précédent, est dédié à Java. Le RAC de JML~\acite{Cheon02} est un outil
 permettant de vérifier les contrats JML lors de l'exécution du programme. Les
-contrats sont traduits en code Java~\acite{Raghavan2005}. La proximité entre ces
+contrats JML sont traduits en Java~\acite{Raghavan2005}. La proximité entre ces
 deux langages est la clé de la démarche. En effet, la syntaxe des contrats JML
 est similaire à celle de Java, et les mots-clés JML spécifiques (pour par
 exemple les clauses, les quantificateurs etc.) sont traduits par des structures
@@ -183,13 +186,13 @@ constructions du langage, comme les quantifications sur les objets, ne sont pas
 traduisibles et donc ne peuvent pas être vérifiées.
 
 Le programme Java d'origine est ainsi enrichi par la vérification des contrats
-JML. Le binaire résultant est plus important, ce qui engendre des
-ralentissements à l'exécution. Si une contrainte n'est pas vérifiée, une
-exception spécifique est déclenchée signalant le type de clause qui n'a pas été
-vérifiée (invariant, précondition etc.) ainsi que l'état visibile du système au
-moment de l'exécution.  L'utilisation du RAC confère un moyen direct et efficace
-de s'assurer que les contrats JML ne sont pas violés durant une exécution avec
-les données de l'exécution.
+JML. Un inconvénient est que le binaire résultant est plus important, ce qui
+engendre des ralentissements à l'exécution. En revanche, si une contrainte n'est
+pas vérifiée, une exception spécifique est déclenchée signalant le type de
+clause qui n'a pas été vérifiée (invariant, précondition etc.) ainsi que l'état
+visibile du système au moment de l'exécution. L'utilisation du RAC confère un
+moyen direct et efficace de s'assurer que les contrats JML ne sont pas violés
+durant une exécution avec les données de l'exécution.
 
 \paragraph{ACSL} Le \inenglish{ANSI/C Specification Language}~\acite{ACSL} est
 un langage de contrats pour C~\acite{C}, inspiré principalement du langage de
@@ -202,8 +205,8 @@ Plusieurs comportements peuvent être exprimés pour une même méthode avec le
 mot-clé \code{behavior}. ACSL propose d'autres clauses pour exprimer des
 lemmes, des axiomes ou des fonctions logiques.
 
-Contrairement à JML, ACSL n'utilise pas de C pour exprimer ces contraintes mais
-un langage plus simple, qui s'inspire toutefois de C (pour les opérateurs
+Contrairement à JML, ACSL n'utilise pas de C pour exprimer ces con\-train\-tes
+mais un langage plus simple, qui s'inspire toutefois de C (pour les opérateurs
 arithématiques, logiques, les tableaux etc.) afin de ne pas perturber
 l'utilisateur. D'autres contraintes sont présentes car intrinsèques au langage,
 comme la logique des pointeurs, et d'autres ne sont pas présentes, comme les
