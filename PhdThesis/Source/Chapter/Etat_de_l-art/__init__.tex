@@ -236,30 +236,7 @@ dynamiquement via un RAC. Et contrairement à JML où les contrats sont
 transformés en Java, ici ils sont transformés en Boogie~\acite{BarnettCDJL05},
 un langage intermédiaire pour encoder des conditions de vérifications pour les
 langages impératifs et orientés objets. Boogie s'appuye sur des solveurs
-externes, notamment Z3~\acite{DeMoura2008}, pour vérifier les contrats.
-
-\paragraph{JSConTest} Le langage JSConTest~\acite{HeideggerT12} permet d'annoter
-des programmes Javascript avec des contrats. Javascript est un langage a typage
-non-déclaré.  C'est pourquoi JSConTest propose que le contrat ne contienne que
-la signature de la fonction annotée, soit ses entrées et sa sortie,
-respectivement une précondition et une postcondition. JSConTest ne permet pas
-d'exprimer d'invariants ni de comportements. Le fait de préciser les types
-permet à JSConTest de réduire l'effort d'inférence en se limitant à un minimum
-de fonctions à analyser. Les résultats de l'inférence servent à guider la
-génération aléatoire de données de test. Le langage permettant d'exprimer la
-signature est enrichi de quelques constructions également pour guider la
-génération aléatoire. Un RAC permet d'exécuter les tests et d'en calculer le
-verdict.
-
-JSConTest, contrairement à JML ou UDITA, demande très peu d'effort à
-l'utilisateur. Les auteurs pensent qu'écrire la signature ne peut pas être
-négatif pour le développeur, surtout dans un langage où les types ne sont pas
-déclarés. Cependant, le niveau d'expressivité sur les préconditions et
-postconditions restent très faible. En revanche, comme démontré dans le travail
-sur les types graduels~\acite{SiekT07}, pour un langage a typage dynamique et
-faible comme Javascript ou PHP, même un contrat très simple qui spécifie le
-typage des données peut être très utile et offrir de bons résultats, notamment
-dans la détection de régressions. \\
+externes, notamment Z3~\acite{DeMoura2008}, pour vérifier les contrats. \\
 
 Se distinguent deux grandes familles de vérifications de contrats~: statique, à
 l'aide de prouveurs maisons et externes, ou dynamique, à l'aide d'un RAC.
@@ -403,31 +380,36 @@ Contrairement à Korat, UDITA ne demande pas de méthode de
 non-déterministes pour explorer l'espace de la structure tout en restant
 borné~\acite{Marinov03, SullivanYCKJ04}. L'efficacité de la méthode s'appuye
 sur les choix retardés~\acite{NollS07}, c'est~à~dire sur des évaluations
-non-déterministes tardives~\acite{FischerKS09}. \\
+non-déterministes tardives~\acite{FischerKS09}.
 
-%%% Dire aussi qu'avec TestEra et Korat, on a encore une notion de contrats.
-%%% Avec UDITA, la pré et la post se retrouvent un peu dans les 2 méthodes
-%%% Bref, on demande à l'utilisateur de fournir quelque chose
-%%%
-%%% Avec ce qui va suivre, on regarde le code pour générer les données.
-%%% Il y a des techniques avancées, super~!
-%%%
-%%% Mais on va gagner quoi~? Juste trouver les erreurs aux runtimes…
-%%% Même si on couvre tous le code (parler de la couverture~!)
-%%%     qui nous dit que le programme fait la bonne chose~?
-%%%
-%%% Il faut mélanger les spéc/contrats avec ses techniques de génération de
-%%% données.
-%%%
-%%% Parler du Search-based Testing~?
-%%% Parler du random (trouver des réf', voir ICTSS'11 peut-être).
+\paragraph{JSConTest} Le langage JSConTest~\acite{HeideggerT12} permet d'annoter
+des programmes Javascript avec des contrats. Javascript est un langage a typage
+non-déclaré.  C'est pourquoi JSConTest propose que le contrat ne contienne que
+la signature de la fonction annotée, soit ses entrées et sa sortie,
+respectivement une précondition et une postcondition. JSConTest ne permet pas
+d'exprimer d'invariants ni de comportements. Le fait de préciser les types
+permet à JSConTest de réduire l'effort d'inférence en se limitant à un minimum
+de fonctions à analyser. Les résultats de l'inférence servent à guider la
+génération aléatoire de données de test. Le langage permettant d'exprimer la
+signature est enrichi de quelques constructions également pour guider la
+génération aléatoire. Un RAC permet d'exécuter les tests et d'en calculer le
+verdict.
 
-
+JSConTest, contrairement à JML ou UDITA, demande très peu d'effort à
+l'utilisateur. Les auteurs pensent qu'écrire la signature ne peut pas être
+négatif pour le développeur, surtout dans un langage où les types ne sont pas
+déclarés. Cependant, le niveau d'expressivité sur les préconditions et
+postconditions restent très faible. En revanche, comme démontré dans le travail
+sur les types graduels~\acite{SiekT07}, pour un langage a typage dynamique et
+faible comme Javascript ou PHP, même un contrat très simple qui spécifie le
+typage des données peut être très utile et offrir de bons résultats, notamment
+dans la détection de régressions. \\
 
 UDITA nous permet de faire la transition de la technique boîte-noire vers
 boîte-blanche. C'est~à~dire que nous allons quitter de la spécification pour
-nous positionner sur le code. D'autres travaux ont été réalisés afin de générer
-des données de test, soit avec des techniques statiques, dynamiques ou hybrides.
+nous positionner sur le code. Cette technique demande peu ou pas d'efforts à
+l'utilisateur. Des travaux ont été réalisés dans ce sens pour générer des
+données de test avec des techniques statiques, dynamiques ou hybrides.
 
 \paragraph{EXE} \inenglish{EXecution generated Executions}, abbrégé
 EXE~\acite{CadarGPDE06, CadarGPDE08}, est un outil d'exécution symbolique pour
@@ -492,14 +474,28 @@ aux contrats et que nous prenons du recul, nous remarquons que l'exécution
 symbolique ne permet pas de vérifier qu'un programme fait bien ce que nous
 souhaitons. Les erreurs à l'exécution (comme des pointeurs nuls, des
 dépassements de tableaux, de tampons etc.) seront détectées, mais rien ne nous
-assure que le programme est correct par rapport à une spécification. Nous
-retombons sur nos interrogations de la pertinence des tests~: la couverture de
-code~\acite{MillerM63, Myers04} à elle seule n'est pas suffisante.
+assure que le programme est correct par rapport à une spécification.
+
+Cela nécessite de revoir ce que nous attendons d'un test. Soit il permet de
+valider un programme, c'est~à~dire de s'assurer qu'il ne produira pas d'erreurs
+à l'exécution (sous la condition que toutes les erreurs sont atteintes~!), soit
+il permet de vérifier un programme, c'est~à~dire de s'assurer qu'il est conforme
+à une spécification. Dans le premier cas, une «~bonne~» suite de tests devrait
+explorer tous les chemins de notre programme, et donc assurer une couverture de
+code~\acite{MillerM63, Myers04} maximale. Dans le second cas, une «~bonne~»
+suite de tests devrait, en plus, couvrir la spécification sous tous ses angles.
 
 %%% Il faut mélanger les spéc/contrats avec ses techniques de génération de
 %%% données.
 %%%
 %%% Parler du Search-based Testing~?
+%%% Parler du random (trouver des réf', voir ICTSS'11 peut-être).
+
+%%% Il faut mélanger les spéc/contrats avec ses techniques de génération de
+%%% données.
+%%%
+%%% Parler du Search-based Testing~?
+%%% Parler des travaux de Vallerio Senni~?
 %%% Parler du random (trouver des réf', voir ICTSS'11 peut-être).
 
 
