@@ -238,8 +238,8 @@ un langage intermédiaire pour encoder des conditions de vérifications pour les
 langages impératifs et orientés objets. Boogie s'appuye sur des solveurs
 externes, notamment Z3~\acite{DeMoura2008}, pour vérifier les contrats.
 
-\paragraph{JSConTest} Le langage JSConTest~\acite{} permet d'annoter des
-programmes Javascript avec des contrats. Javascript est un langage a typage
+\paragraph{JSConTest} Le langage JSConTest~\acite{HeideggerT12} permet d'annoter
+des programmes Javascript avec des contrats. Javascript est un langage a typage
 non-déclaré.  C'est pourquoi JSConTest propose que le contrat ne contienne que
 la signature de la fonction annotée, soit ses entrées et sa sortie,
 respectivement une précondition et une postcondition. JSConTest ne permet pas
@@ -495,7 +495,7 @@ souhaitons. Les erreurs à l'exécution (comme des pointeurs nuls, des
 dépassements de tableaux, de tampons etc.) seront détectées, mais rien ne nous
 assure que le programme est correct par rapport à une spécification. Nous
 retombons sur nos interrogations de la pertinence des tests~: la couverture de
-code à elle seule n'est pas suffisante.
+code~\acite{MillerM63, Myers04} à elle seule n'est pas suffisante.
 
 %%% Il faut mélanger les spéc/contrats avec ses techniques de génération de
 %%% données.
