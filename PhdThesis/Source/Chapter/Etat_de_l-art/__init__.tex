@@ -274,13 +274,6 @@ contrats.
 \subsection{Test à partir de contrats}
 \label{subsection:sota:cbt}
 
-Il existe plusieurs approches pour générer des tests, présentant différents
-niveaux d'automatisation (manuellle, semi-automatique ou automatique), et
-différents niveaux de connaissance du programme qui est testé (complète,
-partielle ou inconnue, respectivement \inenglish{white-box},
-\inenglish{grey-box} ou \inenglish{black-box}).\footnote{TODO~: expliquer le
-black-box and co.}
-
 Jusqu'à maintenant, nous avons vu comment les contrats sont utilisés pour
 {\strong filtrer} les données manipuler par un programme ou pour vérifier que le
 programme ne produira pas d'erreur. Cependant, l'un des intérêts et usages
@@ -327,9 +320,15 @@ comportements de la spécification.
 
 \section{Génération de données de test}
 
-Il existe plusieurs techniques pour générer des données de tests unitaires. Soit
-basées sur la résolution de contraintes (comme TestEra, Korat ou UDITA), ou
-l'exécution symbolique de code (comme Symstra, EXE, DART, KLEE ou CUTE).
+Il existe plusieurs approches pour générer des tests, présentant différents
+niveaux d'automatisation (manuellle, semi-automatique ou automatique), et
+différents niveaux de connaissance du programme qui est testé (complète,
+partielle ou inconnue, respectivement \inenglish{white-box},
+\inenglish{grey-box} ou \inenglish{black-box}).\footnote{TODO~: expliquer le
+black-box and co.} Et orthogonalement, il existe plusieurs techniques pour
+générer des données de tests unitaires. Soit basées sur la résolution de
+contraintes (comme TestEra, Korat ou UDITA), ou l'exécution symbolique de code
+(comme Symstra, EXE, DART, KLEE ou CUTE).
 
 \paragraph{TestEra} L'outil TestEra~\acite{MarinovK01} est un langage
 d'annotation de code Java. Ses préconditions, postconditions et invariants
