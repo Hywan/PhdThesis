@@ -231,26 +231,29 @@ contrats et le programme, et les deux dernières nous sont données en exploitan
 le contrat. À partir d'une spécification formelle, sous la forme d'un contrat,
 nous sommes capable de générer des tests automatiquement. Comme nous sommes au
 niveau du code source du programme, et plus précisément, sur les méthodes des
-classes (dans un contexte orienté objet), les tests seront {\strong unitaires}.
-La plupart des outils de CBT travaillent en
-\inenglish{black-box}\footnote{TODO~: préciser ou enlever.}. \\
+classes (dans un contexte orienté objet), les tests seront {\strong unitaires}. \\
 
-«~Un test montre la présence, jamais l'absence d'une erreur~» (Edsger
-W.~Dijkstra dans~\acitep{Buxton70}). Et un bon test est un test qui échoue.
-Néanmoins, il existe plusieurs métriques pour qualifier un test. 
+Le test à partir de contrat répond au constat suivant. La validation dynamique
+souffre d'une limitation majeure. Elle fournit des résultats limités~: les
+spécifications sont souvent vérifiées avec les données des exécutions courantes
+et rarement de manière exhaustive. Ainsi, la validation dynamique résulte
+souvent à une détection incomplète et tardive (potentiellement en production) de
+défauts. Et pourtant, «~un test montre la présence, jamais l'absence d'une
+erreur~» (Edsger W.~Dijkstra dans~\acitep{Buxton70}). Et un bon test est un test
+qui échoue.  Pour savoir ce qu'est un «~bon test~», il existe plusieurs
+métriques pour qualifier un test~: les critères de couverture de
+code~\acite{MillerM63, Myers04, GargantiniGM12}.  Si plusieurs tests remplissent
+les critères les plus élevés de la couverture de code, alors une importante
+partie des erreurs serait détectée. Toutefois, il faut être conscient que ces
+critères ne sont pas exhaustives. En effet, ce n'est parce qu'un test à activer
+tous les chemins que toutes les erreurs ont été évitées. De plus, des erreurs
+peuvent se cacher dans l'environnement d'exécution du programme. Notons que si
+nous travaillons en boîte-noire, ces critères ne sont pas appliquables, et nous
+pouvons uniquement nous référer aux postconditions des contrats.
 
-% Mais quelle métrique avons-nous pour qualifier un test~? CODE COVERAGE~!
-% Est-ce que c'est toujours possible~? Ça dépend si on est en black-box,
-% grey-box ou white-box.
-
-La vérification dynamique souffre d'une limitation majeure. Elle fournit des
-résultats limités~: les spécifications sont souvent vérifiées avec les données
-des exécutions courantes et rarement de manière exhaustive. Ainsi, la
-vérification dynamique résulte souvent à une détection incomplète et tardive
-(potentiellement en production) de défauts. Une façon de pallier à cette
-limitation est soit d'utiliser une approche hybride~\acite{Flanagan06}, soit de
-générer des données de tests pertinentes pour tenter de couvrir tous les
-comportements de la spécification.
+Une façon de pallier à ces limitations est de générer des données de tests les
+plus pertinentes possible afin de tenter de couvrir tous les comportements de la
+spécification. C'est un des grands défis du test à partir de contrat.
 
 \section{Génération de tests}
 
@@ -258,11 +261,10 @@ Il existe plusieurs approches pour générer des tests, présentant différents
 niveaux d'automatisation (manuellle, semi-automatique ou automatique), et
 différents niveaux de connaissance du programme qui est testé (complète,
 partielle ou inconnue, respectivement \inenglish{white-box},
-\inenglish{grey-box} ou \inenglish{black-box}).\footnote{TODO~: expliquer le
-black-box and co.} Et orthogonalement, il existe plusieurs techniques pour
-générer des données de tests unitaires. Soit basées sur la résolution de
-contraintes (comme TestEra, Korat ou UDITA), ou l'exécution symbolique de code
-(comme Symstra, EXE, DART, KLEE ou CUTE).
+\inenglish{grey-box} ou \inenglish{black-box}). Et orthogonalement, il existe
+plusieurs techniques pour générer des données de tests unitaires. Soit basées
+sur la résolution de contraintes (comme TestEra, Korat ou UDITA), ou l'exécution
+symbolique de code (comme Symstra, EXE, DART, KLEE ou CUTE).
 
 \paragraph{TestEra} L'outil TestEra~\acite{MarinovK01} est un langage
 d'annotation de code Java. Ses préconditions, postconditions et invariants
@@ -364,9 +366,10 @@ dans la détection de régressions. \\
 
 UDITA nous permet de faire la transition de la technique boîte-noire vers
 boîte-blanche. C'est~à~dire que nous allons quitter de la spécification pour
-nous positionner sur le code. Cette technique demande peu ou pas d'efforts à
-l'utilisateur. Des travaux ont été réalisés dans ce sens pour générer des
-données de test avec des techniques statiques, dynamiques ou hybrides.
+nous positionner sur le code source du programme. Cette technique demande peu ou
+pas d'efforts à l'utilisateur. Des travaux ont été réalisés dans ce sens pour
+générer des données de test avec des techniques statiques, dynamiques ou
+hybrides.
 
 \paragraph{EXE} \inenglish{EXecution generated Executions}, abbrégé
 EXE~\acite{CadarGPDE06, CadarGPDE08}, est un outil d'exécution symbolique pour

@@ -71,3 +71,15 @@ Utiliser le style “thloria”, ou trouver un style. Demander à Christophe Guy
 Voir HAL pour des exemples de thèses (TEL = Thèse En Ligne)
 Voir la thèse d'Helena.
 
+
+
+
+
+Nouvelle intro : dire pourquoi on écrit un état de l'art, qu'est-ce qu'on en
+attend, à quoi va-t-on arriver ?
+
+Référence pour le code coverage ÷ Meyers, The Art of Software Testing. Ou voir
+les références à l'intérieur.
+
+Dire qu'on connait les property-based testing et autre, jutse pour supprimer
+2.1.2.
