@@ -2,3 +2,72 @@
 \label{chapter:introduction}
 
 \minitoc
+
+Les travaux présentés dans cette thèse sont liés à des activités relatives à la
+validation et à la vérification de programmes PHP à travers un nouveau langage
+de spécification accompagné de ses outils. Ces activités s'articulent autour de
+trois axes majeurs~: langage de spécification, génération de données et
+génération automatique de tests.
+
+Informellement, nous pouvons voir un test comme étant composé de trois parties~:
+
+\begin{enumerate}
+
+\item un Système Sous Test (\inenglish{System Under Test}, abbrégé {\strong
+SUT})~;
+
+\item des {\strong données de test} pour exécuter ce SUT~;
+
+\item un {\strong oracle}, capable de nous calculer le verdict du test~: est-ce
+que le produit de l'exécution et l'état du SUT après son exécution sont ceux
+attendus ou non~?
+
+\end{enumerate}
+
+Aujourd'hui, dans le monde industriel, la majorité des tests sont écrits
+{\strong manuellement}, par des ingénieurs de test. Un SUT leur est fourni, ils
+l'exécutent avec des données de test et calculent eux-même le verdict du test.
+Dans le cas des tests {\strong automatisés}, l'exécution et le calcul du verdict
+est fait par la machine. C'est le rôle qui incombe aux frameworks xUnit, comme
+JUnit~\acite{JUnit} pour Java, atoum~\acite{atoum} ou PHPUnit~\acite{PHPUnit}
+pour PHP, CUnit~\acite{CUnit} pour C etc. Ce que font les ingénieurs de test
+peut se résumer à écrire une spécification informelle exécutable. En effet, ils
+transforment le cahier des charges en tests afin de vérifier et valider le
+programme. Toutefois, cela reste informel. Et surtout, c'est une tâche
+laborieuse qui peut revenir cher \footnote{TODO, environ la moitié du prix d'un
+projet}. Et pourquoi ne pas écrire une spécification formelle, et la rendre
+exécutable~?  C'est~à~dire d'utiliser un langage formel pour décrire le
+fonctionnement du programme, puis dériver, à partir de cette spécification, des
+tests qui soient exécutables et qui vont vérifier ou valider plusieurs aspects
+de cette spécification. \\
+
+Nous nous intéressons à des programmes écrits en PHP~\acite{PHP} pour plusieurs
+raisons. Comparés à des langages plus traditionnels, comme C ou Java, les
+langages de scripts accélèrent le processus de développement grâce à la
+flexibilité qu'ils offrent avec le typage dynamique, faible et le mélange de
+paradigmes. Cependant, cette flexibilité rend plus difficile la compréhension du
+comportement de certains programmes, tout comme il est plus difficile de
+s'assurer que le programme n'est pas affecté par une modification (nous parlons
+de {\strong régressions}). Ce type de langage nous apporte des problématiques
+encore peu ou pas abordées dans l'état de l'art actuel. De plus, aucun travaux
+ne considère PHP pour la génération de données de test ou la génération de
+tests. De même, aucun langage de spécification dédié à PHP n'existait avant les
+travaux de cette thèse. Par ailleurs, plus de 85\% du Web fonctionne avec PHP.
+Cela implique qu'il y a un marché important avec d'immenses besoins~; que ce
+soit des sites de commerces\footnote{Etsy, \url{https://etsy.com/}.}, de
+banques, d'assurances, de réseaux sociaux\footnote{Facebook,
+\url{https://facebook.com/}.}, de moteurs de recherche\footnote{Yahoo,
+\url{https://yahoo.com/}.}, d'encyclopédie\footnote{Wikipedia,
+\url{https://wikipedia.org/}.}, gouvernementaux\footnote{France, Belgique,
+Suisse, USA, Canada etc.} et d'autres. Nous tenons à préciser que nous nous
+intéressons à du test pour PHP et non pas du test pour le Web à travers un
+client HTML comme un navigateur. Nous considérons PHP uniquement, tout en
+orientant nos travaux vers les problématiques du Web. \\
+
+Cette thèse s'intéresse à la conformité entre un programme et sa spécification,
+à travers la création d'un nouveau langage de spécification simple, pragmatique
+pour le Web et unifiant plusieurs théories. Chaque théorie introduit se verra
+enrichie pour la rendre compatible avec les besoins liés au Web.
+
+\section{Contributions}
+\label{section:introduction:contributions}
