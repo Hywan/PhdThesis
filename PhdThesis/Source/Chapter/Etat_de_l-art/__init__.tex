@@ -160,7 +160,7 @@ lemmes, des axiomes ou des fonctions logiques.
 
 Contrairement à JML, ACSL n'utilise pas de C pour exprimer ces con\-train\-tes
 mais un langage plus simple, qui s'inspire toutefois de C (pour les opérateurs
-arithématiques, logiques, les tableaux etc.) afin de ne pas perturber
+arithmétiques, logiques, les tableaux etc.) afin de ne pas perturber
 l'utilisateur. D'autres contraintes sont présentes car intrinsèques au langage,
 comme la logique des pointeurs, et d'autres ne sont pas présentes, comme les
 exceptions.
@@ -245,11 +245,11 @@ métriques pour qualifier un test~: les critères de couverture de
 code~\acite{MillerM63, Myers04, GargantiniGM12}.  Si plusieurs tests remplissent
 les critères les plus élevés de la couverture de code, alors une importante
 partie des erreurs serait détectée. Toutefois, il faut être conscient que ces
-critères ne sont pas exhaustives. En effet, ce n'est parce qu'un test à activer
-tous les chemins que toutes les erreurs ont été évitées. De plus, des erreurs
-peuvent se cacher dans l'environnement d'exécution du programme. Notons que si
-nous travaillons en boîte-noire, ces critères ne sont pas appliquables, et nous
-pouvons uniquement nous référer aux postconditions des contrats.
+critères ne sont pas exhaustives. En effet, ce n'est pas parce qu'un test à
+activer tous les chemins que toutes les erreurs ont été évitées. De plus, des
+erreurs peuvent se cacher dans l'environnement d'exécution du programme. Notons
+que si nous travaillons en boîte-noire, ces critères ne sont pas appliquables,
+et nous pouvons uniquement nous référer aux postconditions des contrats.
 
 Une façon de pallier à ces limitations est de générer des données de tests les
 plus pertinentes possible afin de tenter de couvrir tous les comportements de la
@@ -263,8 +263,27 @@ différents niveaux de connaissance du programme qui est testé (complète,
 partielle ou inconnue, respectivement \inenglish{white-box},
 \inenglish{grey-box} ou \inenglish{black-box}). Et orthogonalement, il existe
 plusieurs techniques pour générer des données de tests unitaires. Soit basées
-sur la résolution de contraintes (comme TestEra, Korat ou UDITA), ou l'exécution
-symbolique de code (comme Symstra, EXE, DART, KLEE ou CUTE).
+sur la résolution de contraintes (comme JML-Testing-Tools, TestEra, Korat ou
+UDITA), ou l'exécution symbolique de code (comme EXE, DART, KLEE ou CUTE).
+
+\paragraph{JML-Testing-Tools} Des outils supplémentaires ont été ajoutés à JML,
+notamment JML-Testing-Tools~\acite{BouquetDLU05} qui est un animateur
+symbolique. C'est une extension de BZ-Testing-Tools~\acite{Ambert02}, un
+ensemble d'outils d'animation et de génération automatique de programme
+B~\acite{Abrial05}, Z~\acite{Spivey89} ou de spécifications
+Statechart~\acite{Harel87}, alors étendu pour supporter le paradigme objet de
+Java. L'outil se base sur une spécification JML ainsi que sur un programme Java
+pour l'animer~: il va faire une analyse symbolique du programme, proposer des
+données à l'utilisateur qu'il va choisir, et décider du pas d'exécution
+(symbolique) suivant. À chaque pas, de nouvelles contraintes apparaissent et
+disparaissent, permettant de maintenir un environnement d'exécution (toujours
+symbolique). L'utilisateur peut revenir sur chaque point de choix qu'il a fait.
+Si une clause d'une spécification est violée durant l'animation, un
+contre-exemple pourra être produit. Enfin, à n'importe quel moment,
+l'utilisateur est capable d'enregistrer l'état de l'exécution en tant que réel
+programme Java qui pourra être exécuter pour produire une donnée de test
+concrète. C'est une manière simple pour l'utilisateur d'explorer ses
+spécifications et de produire des données de tests sur mesures.
 
 \paragraph{TestEra} L'outil TestEra~\acite{MarinovK01} est un langage
 d'annotation de code Java. Ses préconditions, postconditions et invariants
@@ -295,7 +314,7 @@ structures à partir des entrées de ce prédicat. Pour cela, Korat va analyser 
 prédicat et indexer quels sont les accès aux méthodes et attributs sur la
 structure qui influencent la décision du prédicat. Korat va ensuite jouer sur
 ces méthodes et attributs afin de générer plusieurs structures candidates.
-Korat demande également à l'utilisateur décrire une méthode de
+Korat demande également à l'utilisateur d'écrire une méthode de
 \inenglish{finitization} qui précise la taille et la nature des données portées
 par la structure. L'idée est de préciser à Korat dans quelle mesure il peut
 modifier la structure pour générer de nouvelles structures candidates. Cette
@@ -317,7 +336,7 @@ programme.
 \paragraph{UDITA} Le langage UDITA~\acite{GligoricGJKKM10} étend le langage Java
 afin de lui permettre de générer un ensemble fini de structures de données
 complexes. UDITA est la suite de Korat. Nous retrouvons la démarche de demander
-à l'utilisateur décrire lui-même des méthodes de génération de données mais les
+à l'utilisateur d'écrire lui-même des méthodes de génération de données mais les
 contrats ont totallement disparu. UDITA ajoute à Java deux extensions~: des
 primitives de choix non-déterministes et une primitive pour restreindre ces
 choix. Ces constructions sont familiaires aux utilisateurs de vérificateur de
@@ -365,9 +384,9 @@ typage des données peut être très utile et offrir de bons résultats, notamme
 dans la détection de régressions. \\
 
 UDITA nous permet de faire la transition de la technique boîte-noire vers
-boîte-blanche. C'est~à~dire que nous allons quitter de la spécification pour
-nous positionner sur le code source du programme. Cette technique demande peu ou
-pas d'efforts à l'utilisateur. Des travaux ont été réalisés dans ce sens pour
+boîte-blanche. C'est~à~dire que nous allons quitter la spécification pour nous
+positionner sur le code source du programme. Cette technique demande peu ou pas
+d'efforts à l'utilisateur. Des travaux ont été réalisés dans ce sens pour
 générer des données de test avec des techniques statiques, dynamiques ou
 hybrides.
 
@@ -420,30 +439,17 @@ l'utilisateur. Ce sont ces deux problèmes qu'adresse KLEE grâce à de la
 réduction et simplifications de contraintes, des améliorations sur l'exploration
 des chemins et des optimisations de la réprésentation de l'environnement.
 
-KLEE utilise toujours STP comme solveur de contraintes.
-
-\paragraph{CUTE} \acite{SenMA05}
-
-\paragraph{Pex} \acite{HalleuxT08}
-
-\paragraph{ARTOO} \acite{CiupaLOM08} \\
+KLEE utilise toujours STP comme solveur de contraintes. \\
 
 Nous voyons qu'il existe de nombreuses techniques avancées pour la génération de
-données de test à partir d'exécution symbolique. Toutefois, si nous repensons
-aux contrats et que nous prenons du recul, nous remarquons que l'exécution
-symbolique ne permet pas de vérifier qu'un programme fait bien ce que nous
-souhaitons. Les erreurs à l'exécution (comme des pointeurs nuls, des
-dépassements de tableaux, de tampons etc.) seront détectées, mais rien ne nous
-assure que le programme est correct par rapport à une spécification.
-
-Cela nécessite de revoir ce que nous attendons d'un test. Soit il permet de
-valider un programme, c'est~à~dire de s'assurer qu'il ne produira pas d'erreurs
-à l'exécution (sous la condition que toutes les erreurs sont atteintes~!), soit
-il permet de vérifier un programme, c'est~à~dire de s'assurer qu'il est conforme
-à une spécification. Dans le premier cas, une «~bonne~» suite de tests devrait
-explorer tous les chemins de notre programme, et donc assurer une couverture de
-code~\acite{MillerM63, Myers04} maximale. Dans le second cas, une «~bonne~»
-suite de tests devrait, en plus, couvrir la spécification sous tous ses angles.
+données de test à partir d'exécution symbolique (nous pouvons citer
+CUTE~\acite{SenMA05}, Pex~\acite{HalleuxT08} ou ARTOO~\acite{CiupaLOM08} qui
+sont aussi des travaux du même genre). Toutefois, si nous repensons aux contrats
+et que nous prenons du recul, nous remarquons que l'exécution symbolique ne
+permet pas de vérifier qu'un programme fait bien ce que nous souhaitons. Les
+erreurs à l'exécution (comme des pointeurs nuls, des dépassements de tableaux,
+de tampons etc.) seront détectées, mais rien ne nous assure que le programme est
+correct par rapport à une spécification.
 
 %%% Il faut mélanger les spéc/contrats avec ses techniques de génération de
 %%% données.
