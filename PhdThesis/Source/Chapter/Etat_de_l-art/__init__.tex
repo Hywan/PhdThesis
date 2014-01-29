@@ -285,6 +285,22 @@ programme Java qui pourra être exécuter pour produire une donnée de test
 concrète. C'est une manière simple pour l'utilisateur d'explorer ses
 spécifications et de produire des données de tests sur mesures.
 
+\paragraph{Jartege} L'outil Jartege~\acite{Oriat05} est un générateur de tests
+aléatoires pour des programmes écrits en Java. Jartege sélectionne aléatoirement
+des méthodes à exécuter. Chaque méthode est annoté par un contrat JML. Les
+valeurs des paramètres de ces méthodes sont également générer aléatoirement à
+partir de la précondition. Cette dernière sert également de filtre pour
+sélectionner les méthodes à exécuter. Les contrats sont également utilisés pour
+connaître la conformité du programme par rapport aux postconditions. La
+vérifications des contraintes est ainsi conjointe à la création des séquences de
+test.
+
+Jartege produit des séquences de test d'une certaine taille et un nombre de
+séquences, fixés par l'utilisateur. Par ailleurs, Jartege permet à l'utilisateur
+de fournir une fonction qui détermine la probabilité de créer un nouvel objet ou
+d'en réutiliser un déjà existant. Selon les structures de données manipulées,
+cette fonction permettra de détecter plus ou moins d'erreurs.
+
 \paragraph{TestEra} L'outil TestEra~\acite{MarinovK01} est un langage
 d'annotation de code Java. Ses préconditions, postconditions et invariants
 expriment des contraintes avec le langage Alloy~\acite{Jackson02}. Alloy est un
@@ -454,20 +470,13 @@ correct par rapport à une spécification.
 %%% Il faut mélanger les spéc/contrats avec ses techniques de génération de
 %%% données.
 %%%
-%%% Parler du Search-based Testing~?
+
+
+\section{Génération de données}
+
+
+
 %%% Parler du random (trouver des réf', voir ICTSS'11 peut-être).
-
-%%% Il faut mélanger les spéc/contrats avec ses techniques de génération de
-%%% données.
-%%%
-%%% Parler du Search-based Testing~?
-%%% Parler des travaux de Vallerio Senni~?
-%%% Parler du random (trouver des réf', voir ICTSS'11 peut-être).
-%%% Citer Fréd'.
-
-
-
-\vspace{5em}
 
 %Un contrat spécifie les données manipulées par un programme. Les programmes
 %manipulent deux catégories de données~: scalaires, comme les booléens, les
@@ -511,24 +520,6 @@ correct par rapport à une spécification.
 %\paragraph{FDCC}
 %
 %\paragraph{AutoTest}
-
-\section{Génération de données de tests}
-
-\paragraph{Jartege} L'outil Jartege~\acite{Oriat05} est un générateur de tests
-aléatoires pour des programmes écrits en Java. Jartege sélectionne aléatoirement
-des méthodes à exécuter. Chaque méthode est annoté par un contrat JML. Les
-valeurs des paramètres de ces méthodes sont également générer aléatoirement à
-partir de la précondition. Cette dernière sert également de filtre pour
-sélectionner les méthodes à exécuter. Les contrats sont également utilisés pour
-connaître la conformité du programme par rapport aux postconditions. La
-vérifications des contraintes est ainsi conjointe à la création des séquences de
-test.
-
-Jartege produit des séquences de test d'une certaine taille et un nombre de
-séquences, fixés par l'utilisateur. Par ailleurs, Jartege permet à l'utilisateur
-de fournir une fonction qui détermine la probabilité de créer un nouvel objet ou
-d'en réutiliser un déjà existant. Selon les structures de données manipulées,
-cette fonction permettra de détecter plus ou moins d'erreurs.
 
 \paragraph{Symstra}
 
