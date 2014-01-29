@@ -211,7 +211,7 @@ Jusqu'à maintenant, nous avons vu comment les contrats sont utilisés pour
 {\strong filtrer} les données manipuler par un programme ou pour vérifier que le
 programme ne produira pas d'erreur. Cependant, l'un des intérêts et usages
 principaux des contrats est pour le {\strong test}. En effet, le {\strong test à
-partir de contrats} (\inenglish{Contract-Based Testing}, abbrégé CBT) a été
+partir de contrats} (\inenglish{Contract-based Testing}, abbrégé CbT) a été
 introduit pour exploiter les langages de contrats afin de tester des
 programmes~\acite{Aichernig03}~:
 
@@ -284,22 +284,6 @@ l'utilisateur est capable d'enregistrer l'état de l'exécution en tant que rée
 programme Java qui pourra être exécuter pour produire une donnée de test
 concrète. C'est une manière simple pour l'utilisateur d'explorer ses
 spécifications et de produire des données de tests sur mesures.
-
-\paragraph{Jartege} L'outil Jartege~\acite{Oriat05} est un générateur de tests
-aléatoires pour des programmes écrits en Java. Jartege sélectionne aléatoirement
-des méthodes à exécuter. Chaque méthode est annoté par un contrat JML. Les
-valeurs des paramètres de ces méthodes sont également générer aléatoirement à
-partir de la précondition. Cette dernière sert également de filtre pour
-sélectionner les méthodes à exécuter. Les contrats sont également utilisés pour
-connaître la conformité du programme par rapport aux postconditions. La
-vérifications des contraintes est ainsi conjointe à la création des séquences de
-test.
-
-Jartege produit des séquences de test d'une certaine taille et un nombre de
-séquences, fixés par l'utilisateur. Par ailleurs, Jartege permet à l'utilisateur
-de fournir une fonction qui détermine la probabilité de créer un nouvel objet ou
-d'en réutiliser un déjà existant. Selon les structures de données manipulées,
-cette fonction permettra de détecter plus ou moins d'erreurs.
 
 \paragraph{TestEra} L'outil TestEra~\acite{MarinovK01} est un langage
 d'annotation de code Java. Ses préconditions, postconditions et invariants
@@ -474,54 +458,73 @@ correct par rapport à une spécification.
 
 \section{Génération de données}
 
+La manière dont Praspel, notre contribution, spécifie les données se situe entre
+JSConTest et JML. Nous exprimons beaucoup plus que les types usuels mais nous
+n'exprimons pas des contraintes sous forme logique. Nous sommes alors
+intéressés par la génération (et validation) de données au sens large. Cette
+section va s'intéresser aux travaux concernant la génération de chaînes de
+caractères ainsi que de tableaux, qui sont des types très utilisés au sein de
+programmes Web.
 
+\subsection{Génération aléatoire}
 
-%%% Parler du random (trouver des réf', voir ICTSS'11 peut-être).
+\subsection{Génération de chaînes de caractères}
 
-%Un contrat spécifie les données manipulées par un programme. Les programmes
-%manipulent deux catégories de données~: scalaires, comme les booléens, les
-%entiers, les réels, les chaînes de caractères, et structurelles, comme des
-%tableaux ou des objets.
-%
-%% dire rapidement ce que JML, ACSL etc. utilisent pour générer des données.
-%% montrer les limitations.
-%%    -> on est loin des préoccupations/domaines des "vrais" dév' et surtout du
-%%       web
-%% montrer ce qu'il se fait **en dehors** des contrats pour générer des données
-%% dire que ce serait super d'avoir ça dans les contrats
-%% mais comment le spécifier dans les contrats~? est-ce qu'on seulement on peut~?
-%
-%Voyons ce qu'il se fait ailleurs.
-%
-%\subsection{Génération de nombres}
-%
-%\subsection{Génération de chaînes de caractères}
-%
-%\paragraph{Yagg}
-%
-%\paragraph{Geno}
-%
-%\paragraph{YouGen}
-%
-%\paragraph{Apollo}
-%
-%\paragraph{@Flajolet}
-%
-%\paragraph{@Howden}
-%
-%+/- conclure avec @Hennessy.
-%
-%\subsection{Génération de structures}
-%
-%\paragraph{Euclide}
-%
-%\paragraph{InKA}
-%
-%\paragraph{FDCC}
-%
-%\paragraph{AutoTest}
+Les chaînes de caractères sont intensivement utilisées dans des programmes Web.
+Leurs formes sont très différentes, cela va d'une adresse email à des langages
+comme XML ou JSON, en passant par des requêtes SQL etc. La façon la plus
+répandue dans l'industrie pour représenter une donnée textuelle est d'utiliser
+une expression régulière ou une grammaire algébrique, soit d'une manière
+générale, à partir d'une grammaire~\acite{Chomsky56}. Une grammaire est exprimée
+à partir d'un {\strong langage de description} qui déclare des {\strong lexèmes}
+(unité lexicale atomique d'un langage) et des {\strong règles}, exprimant
+l'enchaînement des lexèmes les uns par rapport aux autres.
 
-\paragraph{Symstra}
+L'idée commune que nous retrouvons dans la majorité des travaux est d'explorer
+ces règles afin de générer une donnée valide. Ce domaine s'appelle le
+\inenglish{Grammar-based Testing}, abbrégé GbT.
+
+\paragraph{Yagg} \acite{CoppitL05}
+
+\paragraph{Geno} \acite{LammelS06}
+
+\paragraph{YouGen} \acite{HoffmanLSW11}
+
+\paragraph{Apollo}
+
+\paragraph{@Flajolet} \acite{FlajoletZC94}
+
+\paragraph{@Howden} \acite{Howden86}
+
++/- conclure avec @Hennessy~\acite{HennessyP08}.
+
+\subsection{Génération de tableaux}
+
+\subsection{Génération d'objets}
+
+\paragraph{Jartege} L'outil Jartege~\acite{Oriat05} est un générateur de tests
+aléatoires pour des programmes écrits en Java. Jartege sélectionne aléatoirement
+des méthodes à exécuter. Chaque méthode est annoté par un contrat JML. Les
+valeurs des paramètres de ces méthodes sont également générer aléatoirement à
+partir de la précondition. Cette dernière sert également de filtre pour
+sélectionner les méthodes à exécuter. Les contrats sont également utilisés pour
+connaître la conformité du programme par rapport aux postconditions. La
+vérifications des contraintes est ainsi conjointe à la création des séquences de
+test.
+
+Jartege produit des séquences de test d'une certaine taille et un nombre de
+séquences, fixés par l'utilisateur. Par ailleurs, Jartege permet à l'utilisateur
+de fournir une fonction qui détermine la probabilité de créer un nouvel objet ou
+d'en réutiliser un déjà existant. Selon les structures de données manipulées,
+cette fonction permettra de détecter plus ou moins d'erreurs.
+
+\paragraph{Euclide}
+
+\paragraph{InKA}
+
+\paragraph{FDCC}
+
+\paragraph{AutoTest}
 
 \section{Synthèse}
 
