@@ -466,51 +466,81 @@ section va s'intéresser aux travaux concernant la génération de chaînes de
 caractères ainsi que de tableaux, qui sont des types très utilisés au sein de
 programmes Web.
 
-\subsection{Génération aléatoire}
+\paragraph{Génération aléatoire} Beaucoup de travaux et d'outils considèrent la
+génération de données aléatoires comme efficace. Elle permet de très rapidement
+explorer un modèle, une spécification ou une structure de code à moindre coût.
+Le \inenglish{fuzzing}~\acite{GodefroidLM12} est une technique s'appuyant sur
+ces deux aspects~: beaucoup de données générées différentes très rapidement.
+Malgré ses limitations évidentes (un test d'égalité entre deux entiers générés
+aléatoirement a une probabilité très faible d'être validé), la génération
+aléatoire est souvent un moyen de «~déblayer le terrain~» et de répérer les
+points non triviaux à tester du programme. C'est pourquoi plusieurs outils
+considèrent une approche hybride~: d'abord de l'aléatoire pour élimiter les cas
+triviaux et éviter l'utilisation systématique de techniques de résolutions plus
+gourmandes. D'autres techniques vont guider l'aléatoire afin de conserver un
+certain degré de non-déterminisme tout en respectant par exemple des critères de
+couverture.
 
-\subsection{Génération de chaînes de caractères}
-
-Les chaînes de caractères sont intensivement utilisées dans des programmes Web.
-Leurs formes sont très différentes, cela va d'une adresse email à des langages
-comme XML ou JSON, en passant par des requêtes SQL etc. La façon la plus
-répandue dans l'industrie pour représenter une donnée textuelle est d'utiliser
-une expression régulière ou une grammaire algébrique, soit d'une manière
-générale, à partir d'une grammaire~\acite{Chomsky56}. Une grammaire est exprimée
-à partir d'un {\strong langage de description} qui déclare des {\strong lexèmes}
-(unité lexicale atomique d'un langage) et des {\strong règles}, exprimant
-l'enchaînement des lexèmes les uns par rapport aux autres.
+\paragraph{Génération de chaînes de caractères} Les chaînes de caractères sont
+intensivement utilisées dans des programmes Web.  Leurs formes sont très
+différentes, cela va d'une adresse email à des langages comme XML ou JSON, en
+passant par des requêtes SQL etc. La façon la plus répandue dans l'industrie
+pour représenter une donnée textuelle est d'utiliser une expression régulière ou
+une grammaire algébrique, soit d'une manière générale, à partir d'une
+grammaire~\acite{Chomsky56}. Une grammaire est exprimée à partir d'un {\strong
+langage de description} qui déclare des {\strong lexèmes} (unité lexicale
+atomique d'un langage) et des {\strong règles}, exprimant l'enchaînement des
+lexèmes les uns par rapport aux autres.
 
 L'idée commune que nous retrouvons dans la majorité des travaux est d'explorer
 ces règles afin de générer une donnée valide. Ce domaine s'appelle le
 \inenglish{Grammar-based Testing}, abbrégé GbT.
 
-\paragraph{Yagg} \acite{CoppitL05}
+\inenglish{yet another generator-generator}, abbrégé yagg~\acite{CoppitL05} est
+un outil de génération de données textuelles complexes à partir d'une grammaire
+décrite avec une syntaxe très similaire à LEX~\acite{Lesk75} et
+YACC~\acite{Johnson75}, des outils d'analyses syntaxique et lexicale très
+largement utilisés. Ce choix de syntaxe est montré comme plus attractif et plus
+efficace pour les utilisateurs comparé à TestEra a besoin équivalent. Quand est
+traité le problème de générations de données structurelles complexes, notamment
+avec des grammaires, la question de la combinatoire se pose forcément. Certains
+opérateurs de répétitions de séquences de lexèmes, comme \code{+} (une ou
+plusieurs fois) ou \code{*} (zéro ou plusieurs fois) n'ont pas de bornes
+supérieures. Afin d'éviter la génération d'énormes données ou de données
+explosives, yagg propose de borner ces opérateurs. D'autant plus que yagg a une
+approche exhaustive, c'est~à~dire qu'il va énumérer toutes les séquences
+possibles de lexèmes.  Les lexèmes sont exprimés avec un sous-langage des
+expressions régulières qui ajoute des constructions comme l'alternance
+équivalente ou des générateurs d'équivalence.  Ce choix sert également à borner
+les valeurs possibles des lexèmes.
 
-\paragraph{Geno} \acite{LammelS06}
+L'outil Geno~\acite{LammelS06} propose une solution au problème de l'explosion
+combinatoire lors de la génération de données textuelles complexes. Certains
+travaux proposes des critères de couverture sur les grammaires. D'autres propose
+d'annoter des grammaires avec par exemple des poids probabilistes afin de guider
+l'exploration de la grammaire. Geno propose à l'utilisateur d'annoter une
+grammaire avec des mots-clés afin de guider la génération. Ces mots-clés sont
+une abstraction de choix probabilistes, {\em a priori} plus simples et concrets.
+Ces mots-clés sont traités de façon à conserver une certaine exhaustivité dans
+les résutlats. Similairement, l'outil YouGen~\acite{HoffmanLSW11} propose à
+l'utilisateur d'ajouter des \inenglish{tags} pour borner l'exploration de
+plusieurs règles en appliquant des réductions \inenglish{pair-wise}.
 
-\paragraph{YouGen} \acite{HoffmanLSW11}
+La plupart des techniques ayant une approche aléatoire ou exhaustive bornée se
+basent respectivement sur les travaux de \acitei{FlajoletZC94} et
+\acitei{Howden86}.
 
-\paragraph{Apollo}
+\paragraph{Génération de tableaux}
 
-\paragraph{@Flajolet} \acite{FlajoletZC94}
-
-\paragraph{@Howden} \acite{Howden86}
-
-+/- conclure avec @Hennessy~\acite{HennessyP08}.
-
-\subsection{Génération de tableaux}
-
-\subsection{Génération d'objets}
-
-\paragraph{Jartege} L'outil Jartege~\acite{Oriat05} est un générateur de tests
-aléatoires pour des programmes écrits en Java. Jartege sélectionne aléatoirement
-des méthodes à exécuter. Chaque méthode est annoté par un contrat JML. Les
-valeurs des paramètres de ces méthodes sont également générer aléatoirement à
-partir de la précondition. Cette dernière sert également de filtre pour
-sélectionner les méthodes à exécuter. Les contrats sont également utilisés pour
-connaître la conformité du programme par rapport aux postconditions. La
-vérifications des contraintes est ainsi conjointe à la création des séquences de
-test.
+\paragraph{Génération d'objets} L'outil Jartege~\acite{Oriat05} est un
+générateur de tests aléatoires pour des programmes écrits en Java. Jartege
+sélectionne aléatoirement des méthodes à exécuter. Chaque méthode est annoté par
+un contrat JML. Les valeurs des paramètres de ces méthodes sont également
+générer aléatoirement à partir de la précondition. Cette dernière sert également
+de filtre pour sélectionner les méthodes à exécuter. Les contrats sont également
+utilisés pour connaître la conformité du programme par rapport aux
+postconditions. La vérifications des contraintes est ainsi conjointe à la
+création des séquences de test.
 
 Jartege produit des séquences de test d'une certaine taille et un nombre de
 séquences, fixés par l'utilisateur. Par ailleurs, Jartege permet à l'utilisateur
