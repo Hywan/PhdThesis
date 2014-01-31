@@ -46,11 +46,12 @@ commentaires}. Dans le cas où nous travaillons en boîte-noire
 (\inenglish{black-box}), c'est~à~dire où nous n'avons pas ou partiellement
 d'accès au code source, les annotations peuvent parfois être externes au
 programme, par exemple sur un langage de définition d'interface
-(\inenglish{Interface Definition Language}, abbrégé IDL). La différence entre
-boîte-noire et boîte-blanche peut parfois être plus subtile~\acite{Gaudel11}.
-Nous considérons que nous sommes en boîte-noire quand nous n'exploitons pas la
-structure du code, basiquement le contenu des fonctions et méthodes, sinon, nous
-sommes en boîte-blanche.
+(\inenglish{Interface Definition Language}, abbrégé IDL) ou sur un modèle, ce
+qui nous rapprocherait du \inenglish{Model-based Testing}, abbrégé
+MbT~\acite{Utting07}. La différence entre boîte-noire et boîte-blanche peut
+parfois être plus subtile~\acite{Gaudel11}.  Nous considérons que nous sommes en
+boîte-noire quand nous n'exploitons pas la structure du code, basiquement le
+contenu des fonctions et méthodes, sinon, nous sommes en boîte-blanche.
 
 \subsection{Langages de contrats}
 \label{subsection:sota:dbc}
@@ -71,7 +72,7 @@ les préconditions et postconditions portaient sur les méthodes (aussi appelée
 procédures ou routines) et les invariants sur les classes (aussi appelés
 modules). D'autres usages des contrats ont été faits hors du paradigme de la
 programmation orienté objet, par exemple avec des fonctions d'ordre
-supérieures~\acite{FindlerF02}. Le \inenglish{Design by Contract} définit les
+supérieur~\acite{FindlerF02}. Le \inenglish{Design by Contract} définit les
 critères de conformité suivants~:
 
 \begin{itemize}
@@ -88,9 +89,9 @@ Par extension, nous comprenons qu'il existe deux états pour le SUT~: avant
 l'exécution d'une méthode, il se trouve dans un {\strong pré-état}, et après
 l'exécution d'une méthode, il se trouve dans un {\strong post-état}. Pour les
 langages supportant les exceptions, il existe un post-état normal et un
-post-état exceptionnel, dans le cas où une exception ait été levée. Par
-ailleurs, nous disons que le test est un {\strong succès} si aucune clause n'est
-violée, sinon le test est un {\strong échec}.
+post-état exceptionnel dans le cas où une exception ait été levée. Par ailleurs,
+nous disons que le test est un {\strong succès} si aucune clause n'est violée,
+sinon le test est un {\strong échec}.
 
 Les langages décrivant une spécification formelle à travers des contrats pour le
 comportement des programmes, et utilisés comme annotations, sont appelés des
@@ -221,22 +222,23 @@ niveau du code source du programme, et plus précisément, sur les méthodes des
 classes (dans un contexte orienté objet), les tests seront {\strong unitaires}. \\
 
 Le test à partir de contrat répond au constat suivant. La validation dynamique
-souffre d'une limitation majeure. Elle fournit des résultats limités~: les
+souffre d'une limitation majeure~: elle fournit des résultats limités. Les
 spécifications sont souvent vérifiées avec les données des exécutions courantes
 et rarement de manière exhaustive. Ainsi, la validation dynamique résulte
 souvent à une détection incomplète et tardive (potentiellement en production) de
 défauts. Et pourtant, «~un test montre la présence, jamais l'absence d'une
 erreur~» (Edsger W.~Dijkstra dans~\acitep{Buxton70}). Et un bon test est un test
 qui échoue.  Pour savoir ce qu'est un «~bon test~», il existe plusieurs
-métriques pour qualifier un test~: les critères de couverture de
-code~\acite{MillerM63, Myers04, GargantiniGM12}.  Si plusieurs tests remplissent
+métriques pour le qualifier~: les critères de couverture de
+code~\acite{MillerM63, Myers04, GargantiniGM12}. Si plusieurs tests remplissent
 les critères les plus élevés de la couverture de code, alors une importante
 partie des erreurs serait détectée. Toutefois, il faut être conscient que ces
-critères ne sont pas exhaustives. En effet, ce n'est pas parce qu'un test à
-activer tous les chemins que toutes les erreurs ont été évitées. De plus, des
-erreurs peuvent se cacher dans l'environnement d'exécution du programme. Notons
-que si nous travaillons en boîte-noire, ces critères ne sont pas appliquables,
-et nous pouvons uniquement nous référer aux postconditions des contrats.
+critères ne sont pas non plus exhaustives. En effet, ce n'est pas parce qu'un
+test à activer tous les chemins que toutes les erreurs ont été évitées. De plus,
+des erreurs peuvent se cacher dans l'environnement d'exécution du programme.
+Notons que si nous travaillons en boîte-noire, ces critères ne sont pas
+appliquables, et nous pouvons uniquement nous référer aux postconditions des
+contrats.
 
 Une façon de pallier à ces limitations est de générer des données de tests les
 plus pertinentes possible afin de tenter de couvrir tous les comportements de la

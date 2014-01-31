@@ -19,7 +19,7 @@ rapidement, qui permettent d'éprouver le programme. Malgré ses limitations
 probabilité très faible d'être validé), la génération aléatoire est souvent un
 moyen de «~déblayer le terrain~» et de répérer les points non triviaux à tester
 du programme. C'est pourquoi plusieurs outils considèrent une approche hybride~:
-utiliser de l'aléatoire pour élimiter les cas triviaux et éviter l'utilisation
+utiliser de l'aléatoire pour éliminer les cas triviaux et éviter l'utilisation
 systématique de techniques de résolutions plus gourmandes. D'autres techniques
 vont guider l'aléatoire afin de conserver un certain degré de non-déterminisme
 tout en respectant par exemple des critères de couverture.
@@ -31,8 +31,8 @@ passant par des requêtes SQL etc. La façon la plus répandue dans l'industrie
 pour représenter une donnée textuelle est d'utiliser une expression régulière ou
 une grammaire algébrique, soit d'une manière générale, une
 grammaire~\acite{Chomsky56}. Une grammaire est exprimée à partir d'un {\strong
-langage de description} qui déclare des {\strong lexèmes} (unité lexicale
-atomique d'un langage) et des {\strong règles}, exprimant l'enchaînement
+langage de description} qui déclare des {\strong lexèmes}, unités lexicales
+atomiques d'un langage, et des {\strong règles} exprimant l'enchaînement
 possible des lexèmes les uns par rapport aux autres.
 
 L'idée commune que nous retrouvons dans la majorité des travaux est d'explorer
@@ -72,21 +72,52 @@ réductions \inenglish{pair-wises}.
 
 La plupart des techniques ayant une approche aléatoire ou exhaustive bornée se
 basent respectivement sur les travaux de \acitei{FlajoletZC94} et
-\acitei{Howden86}.
+\acitei{Howden86}. La démarche est très souvent similaire~: à partir d'une
+grammaire, nous sommes capable de générer une données. Mais des annotations sont
+ajoutées pour guider cette génération afin d'obtenir des données plus réalistes
+selon le contexte d'utilisation. Ces outils demandent toujours une intervention
+du développeur mais ces interventions tendent à devenir de plus en plus simples.
 
-\paragraph{Génération de tableaux} Les tableaux, ou d'une manière plus générale
-les structures, sont aussi très utilisés dans le Web pour représenter toutes
-sortes de collections, ou organiser de manière structurelles des informations.
+\paragraph{Génération de structures} Les structures, comme les tableaux, sont
+aussi très utilisés dans le Web pour représenter toutes sortes de collections ou
+organiser de manière structurelles des informations. Dans la même lignée que
+TestEra, CUTE ou encore PathCrawler~\acite{WilliamsMMR05}, nous trouvons,
+Euclide~\acite{Gotlieb09} qui est outil de test à partir de contraintes
+exprimées en ACSL. Euclide mélange trois aspects~: analyse structurelle du code
+source du programme, production de contre-exemples et preuve partielle du
+programme. L'objectif est de mélanger les techniques pour dépasser la limite de
+chacune et ainsi, de générer des données permettant de satisfaire plus de
+critères de couverture de code.
 
-Euclide~\acite{Gotlieb09} est un outil de test à partir de contraintes exprimées
-en ACSL.
+{\scshape fdcc}~\acite{BardinG12} est un solveur pour les tableaux avec
+contraintes sur des domaines finis. Les auteurs font le constat que les tableaux
+sont omniprésents dans les outils de vérifications, mais que des approches
+efficaces pour les traiter sont assez rares dans la programmation par
+contraintes. Les auteurs proposent alors une approche combinant deux solveurs,
+l'un raisonnant de manière symbolique (pour connaître les accès, les écritures
+et la taille des tableaux), l'autre manipulant des contraintes sur les domaines
+finis. La partie originale et difficile est la communication bi-directionnelle
+entre ces deux outils.
 
-{\scshape fdcc}~\acite{BardinG12}
+Mentionnons aussi l'outil Minion~\acite{GentJM06} qui fait un constat et une
+approche similaire à {\scshape fdcc}~: les auteurs préfèrent coupler des
+solutions ensemble et les faire communiquer. Les résultats sont très
+encourageants~: comme pour {\scshape fdcc}, le solveur converge beaucoup plus
+rapidement et est capable de répondre à plus de problèmes. La partie délicate
+est toujours de filtrer et transformer les problèmes pour que les différents
+solveurs puissent commniquer entre eux.
 
-\paragraph{Génération d'objets} L'outil Jartege~\acite{Oriat05} est un
+\paragraph{Génération d'objets} Un objet est un aggrégat de plusieurs données
+placées sur des attributs de classe.  Il existe deux approches majeures pour
+générer des objets~: soit prendre les attributs un par un et leur générer une
+donnée (par exemple avec un invariant de classe si des contrats sont présents),
+ou alors d'appeler les méthodes sur une instance d'une classe afin de construire
+un objet plus réaliste.
+
+Un exemple de cette seconde approche est l'outil Jartege~\acite{Oriat05}, un
 générateur de tests aléatoires pour des programmes écrits en Java. Jartege
-sélectionne aléatoirement des méthodes à exécuter. Chaque méthode est annoté par
-un contrat JML. Les valeurs des paramètres de ces méthodes sont également
+sélectionne aléatoirement des méthodes à exécuter.  Chaque méthode est annoté
+par un contrat JML. Les valeurs des paramètres de ces méthodes sont également
 générer aléatoirement à partir de la précondition. Cette dernière sert également
 de filtre pour sélectionner les méthodes à exécuter. Les contrats sont également
 utilisés pour connaître la conformité du programme par rapport aux
@@ -97,9 +128,10 @@ Jartege produit des séquences de test d'une certaine taille et un nombre de
 séquences, fixés par l'utilisateur. Par ailleurs, Jartege permet à l'utilisateur
 de fournir une fonction qui détermine la probabilité de créer un nouvel objet ou
 d'en réutiliser un déjà existant. Selon les structures de données manipulées,
-cette fonction permettra de détecter plus ou moins d'erreurs.
+cette fonction permettra de détecter plus ou moins d'erreurs. \\
 
-\paragraph{AutoTest}
+Nous voyons que les outils se mélangent de plus en plus afin d'obtenir des
+données plus pertinentes et plus rapidement.
 
 \section{Synthèse}
 

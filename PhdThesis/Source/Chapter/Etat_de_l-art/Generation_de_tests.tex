@@ -18,7 +18,7 @@ B~\acite{Abrial05}, Z~\acite{Spivey89} ou de spécifications
 Statechart~\acite{Harel87}, alors étendu pour supporter le paradigme objet de
 Java. L'outil se base sur une spécification JML ainsi que sur un programme Java
 pour l'animer~: il va faire une analyse symbolique du programme, proposer des
-données à l'utilisateur qu'il va choisir, et décider du pas d'exécution
+données à l'utilisateur qu'il va lui-même choisir, et décider du pas d'exécution
 (symbolique) suivant. À chaque pas, de nouvelles contraintes apparaissent et
 disparaissent, permettant de maintenir un environnement d'exécution (toujours
 symbolique). L'utilisateur peut revenir sur chaque point de choix qu'il a fait.
@@ -105,8 +105,8 @@ sur les choix retardés~\acite{NollS07}, c'est~à~dire sur des évaluations
 non-déterministes tardives~\acite{FischerKS09}.
 
 \paragraph{JSConTest} Le langage JSConTest~\acite{HeideggerT12} permet d'annoter
-des programmes Javascript avec des contrats. Javascript est un langage a typage
-non-déclaré.  C'est pourquoi JSConTest propose que le contrat ne contienne que
+des programmes Javascript avec des contrats. Javascript est un langage à typage
+non-déclaré. C'est pourquoi JSConTest propose que le contrat ne contienne que
 la signature de la fonction annotée, soit ses entrées et sa sortie,
 respectivement une précondition et une postcondition. JSConTest ne permet pas
 d'exprimer d'invariants ni de comportements. Le fait de préciser les types
@@ -122,7 +122,7 @@ l'utilisateur. Les auteurs pensent qu'écrire la signature ne peut pas être
 négatif pour le développeur, surtout dans un langage où les types ne sont pas
 déclarés. Cependant, le niveau d'expressivité sur les préconditions et
 postconditions restent très faible. En revanche, comme démontré dans le travail
-sur les types graduels~\acite{SiekT07}, pour un langage a typage dynamique et
+sur les types graduels~\acite{SiekT07}, pour un langage à typage dynamique et
 faible comme Javascript ou PHP, même un contrat très simple qui spécifie le
 typage des données peut être très utile et offrir de bons résultats, notamment
 dans la détection de régressions. \\
@@ -186,15 +186,11 @@ des chemins et des optimisations de la réprésentation de l'environnement.
 KLEE utilise toujours STP comme solveur de contraintes. \\
 
 Nous voyons qu'il existe de nombreuses techniques avancées pour la génération de
-données de test à partir d'exécution symbolique (nous pouvons citer
+données de test à partir d'exécution symbolique. Nous pouvons citer
 CUTE~\acite{SenMA05}, Pex~\acite{HalleuxT08} ou ARTOO~\acite{CiupaLOM08} qui
-sont aussi des travaux du même genre). Toutefois, si nous repensons aux contrats
+sont aussi des travaux du même genre. Toutefois, si nous repensons aux contrats
 et que nous prenons du recul, nous remarquons que l'exécution symbolique ne
 permet pas de vérifier qu'un programme fait bien ce que nous souhaitons. Les
 erreurs à l'exécution (comme des pointeurs nuls, des dépassements de tableaux,
 de tampons etc.) seront détectées, mais rien ne nous assure que le programme est
 correct par rapport à une spécification.
-
-%%% Il faut mélanger les spéc/contrats avec ses techniques de génération de
-%%% données.
-%%%
