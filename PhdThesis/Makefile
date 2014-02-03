@@ -24,6 +24,10 @@ dots:
 		echo -e '\b, ok'; \
 	done
 
+dot:
+	@dot2tex -tmath --codeonly --autosize $(FILE) \
+		> Dist/Figure/`basename $(FILE:%.dot=%.tex)`
+
 open:
 	@open -g -F Dist/PhdThesis.pdf
 

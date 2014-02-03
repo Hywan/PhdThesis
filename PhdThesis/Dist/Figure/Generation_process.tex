@@ -1,0 +1,48 @@
+%%
+\pgfsetcolor{black}
+  % Edge: predicate -> sample
+  \draw [->] (65.611bp,106.7bp) .. controls (76.63bp,96.676bp) and (89.06bp,84.423bp)  .. (106.78bp,65.525bp);
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (95.76bp,103.82bp) node {invalide};
+  % Edge: predicate -> pred
+  \draw [->] (61.536bp,153.21bp) .. controls (71.781bp,163.45bp) and (83.721bp,175.39bp)  .. (101.96bp,193.63bp);
+  \draw (64.076bp,183.75bp) node {valide};
+  % Edge: sample -> predicate
+  \draw [->] (98.062bp,56.974bp) .. controls (87.043bp,66.997bp) and (74.613bp,79.25bp)  .. (56.896bp,98.148bp);
+  \draw (93.914bp,87.857bp) node {candidate};
+  % Edge: pred -> sample
+  \draw [->] (127.67bp,183.12bp) .. controls (127.67bp,154.24bp) and (127.67bp,113.61bp)  .. (127.67bp,72.148bp);
+  \draw (109.67bp,132.74bp) node {invalide};
+  % Edge: pred -> out
+  \draw [->] (153.21bp,193.81bp) .. controls (163.45bp,183.57bp) and (175.39bp,171.63bp)  .. (193.63bp,153.39bp);
+  \draw (155.75bp,163.27bp) node {valide};
+  % Node: sample
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw [state,initial] (128bp,36bp) ellipse (36bp and 36bp);
+  \draw (127.67bp,36bp) node {$\code{sample}$};
+\end{scope}
+  % Node: pred
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw [state] (128bp,219bp) ellipse (36bp and 36bp);
+  \draw (127.67bp,219.35bp) node {\apred{p}};
+\end{scope}
+  % Node: predicate
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw [state] (36bp,128bp) ellipse (36bp and 36bp);
+  \draw (36bp,127.67bp) node {$\code{predicate}$};
+\end{scope}
+  % Node: out
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw [state,accepting] (219bp,128bp) ellipse (36bp and 36bp);
+  \draw (219.35bp,127.67bp) node {retenue};
+\end{scope}
+%

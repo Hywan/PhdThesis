@@ -1,0 +1,16 @@
+digraph {
+    layout=circo;
+    node [shape=circle, width=1];
+
+    sample    -> predicate [label=" ", texlbl="candidate"];
+    predicate -> pred      [label=" ", texlbl="valide"   ];
+    predicate -> sample    [label=" ", texlbl="invalide" ];
+    pred      -> out       [label=" ", texlbl="valide"   ];
+    pred      -> sample    [label=" ", texlbl="invalide" ];
+    out       -> sample    [style=invis                  ];
+
+    sample    [style="state,initial", label=" ", texlbl="$\code{sample}$"];
+    predicate [style="state", label=" ", texlbl="$\code{predicate}$"     ];
+    pred      [style="state", label=" ", texlbl="\apred{p}"              ];
+    out       [style="state,accepting", label=" ", texlbl="retenue"      ];
+}
