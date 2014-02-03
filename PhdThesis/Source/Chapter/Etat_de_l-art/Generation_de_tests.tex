@@ -134,7 +134,7 @@ d'efforts à l'utilisateur. Des travaux ont été réalisés dans ce sens pour
 générer des données de test avec des techniques statiques, dynamiques ou
 hybrides.
 
-\paragraph{EXE} \inenglish{EXecution generated Executions}, abbrégé
+\paragraph{EXE} \inenglish{EXecution generated Executions}, abrégé
 EXE~\acite{CadarGPDE06, CadarGPDE08}, est un outil d'exécution symbolique pour
 programmes C.  Au lieu d'exécuter le programme avec des valeurs construites
 manuellement ou aléatoirement, EXE va exécuter le programme, préalablement
@@ -154,15 +154,15 @@ concrétisées et utilisées comme données de tests sur le programme
 non-instrumenté. Les mêmes chemins seront empruntés et les mêmes erreurs seront
 trouvées, mais avec des valeurs concrètes, donc exploitables par le développeur.
 
-\paragraph{DART} \inenglish{Directed Automated Random Testing}, abbrégé
+\paragraph{DART} \inenglish{Directed Automated Random Testing}, abrégé
 DART~\acite{GodefroidKS05}, est également un outil de génération de données de
-test à partir de l'analyse du programme. DART opère en trois étapes. Il
-commence par extraire les interfaces du programme pour connaître ses
-entrées. Ensuite il va générer aléatoirement des données pour ses entrées, et
-l'exécuter. Et enfin, il analyse le comportement du programme pendant son
-exécution pour détecter quels sont les chemins ou zones qui n'ont pas été
-atteints. Cette analyse va permettre de guider la génération des nouvelles
-entrées pour la prochaine exécution.
+test à partir de l'analyse du programme. DART opère en trois étapes. Il commence
+par extraire les interfaces du programme pour connaître ses entrées. Ensuite il
+va générer aléatoirement des données pour ses entrées, et l'exécuter. Et enfin,
+il analyse le comportement du programme pendant son exécution pour détecter
+quels sont les chemins ou zones qui n'ont pas été atteints. Cette analyse va
+permettre de guider la génération des nouvelles entrées pour la prochaine
+exécution.
 
 DART et EXE ont une approche similaire pour l'analyse des chemins. À chaque
 embranchement du programme, DART va extraire des contraintes symboliques. Pour

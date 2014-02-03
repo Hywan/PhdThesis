@@ -10,7 +10,7 @@ statiques, c'est~à~dire uniquement par analyse du programme. Et quand un
 raisonnement statique n'est pas possible ou suffisant, nous pouvons utiliser une
 {\strong validation} dynamique, pour tester l'implémentation, c'est~à~dire que
 nous allons exécuter le programme. Une validation dynamique est aussi appelée
-\inenglish{Runtime Assertion Checking}, abbrégé RAC~\acite{Geller76}.
+\inenglish{Runtime Assertion Checking}, abrégé RAC~\acite{Geller76}.
 
 Un {\strong langage de spécification} formel est une notation mathématiquement
 précise pour décrire les comportements et propriétés d'un programme. Les
@@ -46,8 +46,8 @@ commentaires}. Dans le cas où nous travaillons en boîte-noire
 (\inenglish{black-box}), c'est~à~dire où nous n'avons pas ou partiellement
 d'accès au code source, les annotations peuvent parfois être externes au
 programme, par exemple sur un langage de définition d'interface
-(\inenglish{Interface Definition Language}, abbrégé IDL) ou sur un modèle, ce
-qui nous rapprocherait du \inenglish{Model-based Testing}, abbrégé
+(\inenglish{Interface Definition Language}, abrégé IDL) ou sur un modèle, ce qui
+nous rapprocherait du \inenglish{Model-based Testing}, abrégé
 MbT~\acite{Utting07}. La différence entre boîte-noire et boîte-blanche peut
 parfois être plus subtile~\acite{Gaudel11}.  Nous considérons que nous sommes en
 boîte-noire quand nous n'exploitons pas la structure du code, basiquement le
@@ -58,9 +58,9 @@ contenu des fonctions et méthodes, sinon, nous sommes en boîte-blanche.
 
 Les spécifications sont souvent utilisées sous la forme de {\strong
 contrats}~\acite{Liskov86, Meyer92}. Nous parlons de programmations par contrats
-ou encore de \inenglish{Design by Contract} (abbrégé DbC). Le terme {\em
-contrat} est une métaphore conceptuelle avec les conditions et les obligations
-d'un contrat d'entreprise. Ce paradigme demande au développeur d'écrire une
+ou encore de \inenglish{Design by Contract} (abrégé DbC). Le terme {\em contrat}
+est une métaphore conceptuelle avec les conditions et les obligations d'un
+contrat d'entreprise. Ce paradigme demande au développeur d'écrire une
 spécification formelle qui étend la définition classique des types
 abstraits~\acite{LiskovZ74} avec les contraintes formelles suivantes~: des
 {\strong préconditions}, des {\strong postconditions} et des {\strong
@@ -153,7 +153,7 @@ l'utilisateur. D'autres contraintes sont présentes car intrinsèques au langage
 comme la logique des pointeurs, et d'autres ne sont pas présentes, comme les
 exceptions.
 
-ACSL est basé sur le \inenglish{Framework for Modular Analyses of C}, abbrégé
+ACSL est basé sur le \inenglish{Framework for Modular Analyses of C}, abrégé
 Frama-C~\acite{FramaC}. Cet outil propose plusieurs analyses de programmes C.
 ACSL utilise cet outil pour de la vérification statique. C'est la grande
 différence avec JML, qui lui repose sur un RAC, donc une vérification à
@@ -199,7 +199,7 @@ Jusqu'à maintenant, nous avons vu comment les contrats sont utilisés pour
 {\strong filtrer} les données manipuler par un programme ou pour vérifier que le
 programme ne produira pas d'erreur. Cependant, l'un des intérêts et usages
 principaux des contrats est pour le {\strong test}. En effet, le {\strong test à
-partir de contrats} (\inenglish{Contract-based Testing}, abbrégé CbT) a été
+partir de contrats} (\inenglish{Contract-based Testing}, abrégé CbT) a été
 introduit pour exploiter les langages de contrats afin de tester des
 programmes~\acite{Aichernig03}~:
 
