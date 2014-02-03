@@ -6,30 +6,30 @@ d'un comportement d'un artéfact. La {\strong vérification} signifie prouver
 qu'une implémentation (c'est~à~dire un programme) satisfait une spécification
 particulière dans toutes les exécutions et configurations possibles.
 Généralement, une telle preuve est accomplie à l'aide de raisonnements
-statiques, c'est~à~dire uniquement par analyse du programme. Et quand un
+statiques, c'est~à~dire uniquement par analyse du programme. Quand un
 raisonnement statique n'est pas possible ou suffisant, nous pouvons utiliser une
 {\strong validation} dynamique, pour tester l'implémentation, c'est~à~dire que
 nous allons exécuter le programme. Une validation dynamique est aussi appelée
 \inenglish{Runtime Assertion Checking}, abrégé RAC~\acite{Geller76}.
 
-Un {\strong langage de spécification} formel est une notation mathématiquement
-précise pour décrire les comportements et propriétés d'un programme. Les
-{\strong notations formelles} aident à rendre les spécifications non-ambiguës,
-moins dépendantes des normes culturelles, et ainsi moins sujettes à une mauvaise
-interprétation. Les langages de spécifications sont conçus pour adresser des
-problèmes généraux ou spécialisés. Les langages de spécifications généraux, tels
-que Z~\acite{Spivey89} ou OCL~\acite{RichtersG98}, ne sont pas conçus pour une
+Un {\strong langage de spécification} formel est une notation précise pour
+décrire les comportements et propriétés d'un programme. Les {\strong notations
+formelles} aident à rendre les spécifications non-ambiguës, moins dépendantes
+des normes culturelles, et ainsi moins sujettes à une mauvaise interprétation.
+Les langages de spécification sont conçus pour répondre à des problèmes généraux
+ou spécialisés. Les langages de spécifications généraux, tels que
+Z~\acite{Spivey89} ou OCL~\acite{RichtersG98}, ne sont pas conçus pour une
 méthodologie particulière ou des outils de vérifications. Cependant, les
 langages de spécifications sont très souvent spécialisés, en fonction du type de
 langage qu'ils visent~: typage statique et fort, ou dynamique et faible, orienté
 objet ou fonctionnel etc.
 
-Par ailleurs, de part le fait qu'une notation est formelle, elle peut être
-exploitée par une machine pour y appliquer un traitement automatique.  Les
-spécifications formelles peuvent alors aider à {\strong automatiser le test},
-autant pour générer les données de test~\acite{BernotGM91, KorelA98, SankarH94,
-Jalote92} que pour calculer le verdict du test~\acite{CheonL02}.  C'est dans ces
-deux directions que nous allons nous tourner.
+Par ailleurs, comme une notation est formelle, elle peut être exploitée par une
+machine pour y appliquer un traitement automatique.  Les spécifications
+formelles peuvent alors aider à {\strong automatiser le test}, autant pour
+générer les données de test~\acite{BernotGM91, KorelA98, SankarH94, Jalote92}
+que pour calculer le verdict du test~\acite{CheonL02}. C'est dans ces deux
+directions que nous allons nous tourner\footnote{TODO: en introduction}.
 
 Les spécifications peuvent documenter les {\strong interfaces} d'un programme.
 Par interfaces, il faut comprendre les parties du programme permettant de
@@ -40,7 +40,7 @@ suffisament expressif pour faire comprendre au développeur ses tenants et ses
 aboutissants. Par ailleurs, lors d'une phase de \inenglish{debugging}, les
 annotations permettent de localiser plus facilement la faute. Dans le cas où
 nous travaillons en boîte-blanche (\inenglish{white-box}), c'est~à~dire où nous
-avons accès au code source du programme, les annotations peuvent faire parties
+avons accès au code source du programme, les annotations peuvent faire partie
 de la grammaire du langage, ou alors, elles sont écrites dans des {\strong
 commentaires}. Dans le cas où nous travaillons en boîte-noire
 (\inenglish{black-box}), c'est~à~dire où nous n'avons pas ou partiellement
@@ -57,7 +57,7 @@ contenu des fonctions et méthodes, sinon, nous sommes en boîte-blanche.
 \label{subsection:sota:dbc}
 
 Les spécifications sont souvent utilisées sous la forme de {\strong
-contrats}~\acite{Liskov86, Meyer92}. Nous parlons de programmations par contrats
+contrats}~\acite{Liskov86, Meyer92}. Nous parlons de programmation par contrats
 ou encore de \inenglish{Design by Contract} (abrégé DbC). Le terme {\em contrat}
 est une métaphore conceptuelle avec les conditions et les obligations d'un
 contrat d'entreprise. Ce paradigme demande au développeur d'écrire une
@@ -135,32 +135,32 @@ visibile du système au moment de l'exécution. L'utilisation du RAC confère un
 moyen direct et efficace de s'assurer que les contrats JML ne sont pas violés
 durant une exécution avec les données de l'exécution.
 
-\paragraph{ACSL} Le \inenglish{ANSI/C Specification Language}~\acite{ACSL} est
-un langage de contrats pour C~\acite{C}, inspiré principalement du langage de
-spécification de l'outil Caduceus~\acite{FilliatreM07}, dédié à la vérification
-déductive de propriétés de comportements de programmes C. Caduceus est lui-même
-inspiré de JML. Les langages se ressemblent: les mot-clés \code{requires} et
-\code{ensures} introduisent respectivement une précondition et une
-postcondition. Les invariants sont introduits avec le mot-clé \code{invariant}.
-Plusieurs comportements peuvent être exprimés pour une même méthode avec le
-mot-clé \code{behavior}. ACSL propose d'autres clauses pour exprimer des
-lemmes, des axiomes ou des fonctions logiques.
+\paragraph{ACSL} Le \inenglish{ANSI/ISO C Specification Language}~\acite{ACSL}
+est un langage de contrats pour C~\acite{C}, inspiré principalement du langage
+de spécification de l'outil Caduceus~\acite{FilliatreM07}, dédié à la
+vérification déductive de propriétés de comportements de programmes C. Caduceus
+est lui-même inspiré de JML. Les langages se ressemblent: les mot-clés
+\code{requires} et \code{ensures} introduisent respectivement une précondition
+et une postcondition. Les invariants sont introduits avec le mot-clé
+\code{invariant}.  Plusieurs comportements peuvent être exprimés pour une même
+méthode avec le mot-clé \code{behavior}. ACSL propose d'autres clauses pour
+exprimer des lemmes, des axiomes ou des fonctions logiques.
 
-Contrairement à JML, ACSL n'utilise pas de C pour exprimer ces con\-train\-tes
-mais un langage plus simple, qui s'inspire toutefois de C (pour les opérateurs
-arithmétiques, logiques, les tableaux etc.) afin de ne pas perturber
-l'utilisateur. D'autres contraintes sont présentes car intrinsèques au langage,
-comme la logique des pointeurs, et d'autres ne sont pas présentes, comme les
-exceptions.
+Contrairement à JML qui utilise Java pour exprimer ces contraintes, ACSL
+n'utilise pas de C mais un langage plus simple, qui s'inspire toutefois de C
+(pour les opérateurs arithmétiques, logiques, les tableaux etc.) afin de ne pas
+perturber l'utilisateur. D'autres contraintes sont présentes car intrinsèques au
+langage, comme la logique des pointeurs, et d'autres ne sont pas présentes,
+comme les exceptions.
 
-ACSL est basé sur le \inenglish{Framework for Modular Analyses of C}, abrégé
-Frama-C~\acite{FramaC}. Cet outil propose plusieurs analyses de programmes C.
-ACSL utilise cet outil pour de la vérification statique. C'est la grande
-différence avec JML, qui lui repose sur un RAC, donc une vérification à
-l'éxécution, ce que ne fait pas ACSL. Des extensions à Frama-C peuvent être
-installées pour permettre à des outils externes, comme des assistants de preuves
-interactifs ou à des prouveurs automatiques de théorèmes, d'aider à la
-vérification de certaines spécifications.
+Les outils d'ACSL sont basés sur le \inenglish{Framework for Modular Analyses of
+C}, abrégé Frama-C~\acite{FramaC}. Ce dernier propose plusieurs analyses de
+programmes C. Les outils d'ACSL l'utilisent pour de la vérification statique.
+C'est la grande différence avec JML, qui lui repose sur un RAC, donc une
+vérification à l'exécution, ce que ne fait pas ACSL. Des extensions à Frama-C
+peuvent être installées pour permettre à des outils externes, comme des
+assistants de preuve interactifs ou des prouveurs automatiques de théorèmes,
+d'aider à la vérification de certaines spécifications.
 
 \paragraph{Spec\#} Le langage Spec\#~\acite{SpecSharp} permet de faire de la
 programmation par contrat pour C\#~\acite{CSharp}. Ce langage est très similaire
@@ -178,12 +178,12 @@ présence de valeurs nulles (avec \code{!} ou \code{?}).
 Tout comme ACSL, la vérification des contrats se fait statiquement, et non pas
 dynamiquement via un RAC. Et contrairement à JML où les contrats sont
 transformés en Java, ici ils sont transformés en Boogie~\acite{BarnettCDJL05},
-un langage intermédiaire pour encoder des conditions de vérifications pour les
+un langage intermédiaire pour encoder des conditions de vérification pour les
 langages impératifs et orientés objets. Boogie s'appuye sur des solveurs
 externes, notamment Z3~\acite{DeMoura2008}, pour vérifier les contrats. \\
 
-Se distinguent deux grandes familles de vérifications de contrats~: statique, à
-l'aide de prouveurs maisons et externes, ou dynamique, à l'aide d'un RAC.
+Se distinguent deux grandes familles de vérification de contrats~: statique, à
+l'aide de prouveurs maisons et externes, ou dynamique, à l'aide d'un RAC. \\
 
 Presque chaque langage de programmation répandu a son propre langage de
 contrats. Cette approche est en général bien acceptée par les développeurs car
@@ -205,7 +205,7 @@ programmes~\acite{Aichernig03}~:
 
 \begin{itemize}
 
-\item les invariants et les préconditions sont utilisées pour {\strong générer
+\item les invariants et les préconditions sont utilisés pour {\strong générer
 des données} de test~;
 
 \item les postconditions {\strong fournissent un oracle} capable de calculer le
@@ -240,6 +240,6 @@ Notons que si nous travaillons en boîte-noire, ces critères ne sont pas
 appliquables, et nous pouvons uniquement nous référer aux postconditions des
 contrats.
 
-Une façon de pallier à ces limitations est de générer des données de tests les
+Une façon de pallier ces limitations est de générer des données de tests les
 plus pertinentes possible afin de tenter de couvrir tous les comportements de la
 spécification. C'est un des grands défis du test à partir de contrat.

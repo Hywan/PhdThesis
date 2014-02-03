@@ -106,7 +106,7 @@ non-déterministes tardives~\acite{FischerKS09}.
 
 \paragraph{JSConTest} Le langage JSConTest~\acite{HeideggerT12} permet d'annoter
 des programmes Javascript avec des contrats. Javascript est un langage à typage
-non-déclaré. C'est pourquoi JSConTest propose que le contrat ne contienne que
+non déclaré. C'est pourquoi JSConTest propose que le contrat ne contienne que
 la signature de la fonction annotée, soit ses entrées et sa sortie,
 respectivement une précondition et une postcondition. JSConTest ne permet pas
 d'exprimer d'invariants ni de comportements. Le fait de préciser les types
@@ -114,14 +114,14 @@ permet à JSConTest de réduire l'effort d'inférence en se limitant à un minim
 de fonctions à analyser. Les résultats de l'inférence servent à guider la
 génération aléatoire de données de test. Le langage permettant d'exprimer la
 signature est enrichi de quelques constructions également pour guider la
-génération aléatoire. Un RAC permet d'exécuter les tests et d'en calculer le
-verdict.
+génération aléatoire. Un outil permet d'exécuter les tests et d'en calculer le
+verdict grâce à un RAC.
 
 JSConTest, contrairement à JML ou UDITA, demande très peu d'effort à
 l'utilisateur. Les auteurs pensent qu'écrire la signature ne peut pas être
 négatif pour le développeur, surtout dans un langage où les types ne sont pas
 déclarés. Cependant, le niveau d'expressivité sur les préconditions et
-postconditions restent très faible. En revanche, comme démontré dans le travail
+postconditions reste très faible. En revanche, comme démontré dans le travail
 sur les types graduels~\acite{SiekT07}, pour un langage à typage dynamique et
 faible comme Javascript ou PHP, même un contrat très simple qui spécifie le
 typage des données peut être très utile et offrir de bons résultats, notamment
