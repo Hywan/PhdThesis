@@ -1,16 +1,20 @@
 digraph {
-    layout=circo;
-    node [shape=circle, width=1];
+    graph [rankdir=TB];
+    node [style="state", label=" ", width=1.3];
 
-    sample    -> predicate [label=" ", texlbl="candidate"];
-    predicate -> pred      [label=" ", texlbl="valide"   ];
-    predicate -> sample    [label=" ", texlbl="invalide" ];
-    pred      -> out       [label=" ", texlbl="valide"   ];
-    pred      -> sample    [label=" ", texlbl="invalide" ];
-    out       -> sample    [style=invis                  ];
+    in        -> variable  [label=" ", texlbl="$\tau = 1$"                                         ];
+    variable  -> sample    [label=" ", texlbl="$V \neq \emptyset \land v = \mathrm{pop}(V)$"       ];
+    variable  -> out       [label=" ", texlbl="$V = \emptyset$"                                    ];
+    sample    -> predicate [label=" ", texlbl="$\tau \leq \tau_\mathrm{max} \land \tau = \tau + 1$"];
+    predicate -> sample    [label=" ", texlbl="invalide"                                           ];
+    predicate -> pred      [label=" ", texlbl="valide"                                             ];
+    pred      -> sample    [label=" ", texlbl="invalide"                                           ];
+    pred      -> variable  [label=" ", texlbl="valide"                                             ];
 
-    sample    [style="state,initial", label=" ", texlbl="$\code{sample}$"];
-    predicate [style="state", label=" ", texlbl="$\code{predicate}$"     ];
-    pred      [style="state", label=" ", texlbl="\apred{p}"              ];
-    out       [style="state,accepting", label=" ", texlbl="retenue"      ];
+    in        [style=invis                      ];
+    variable  [texlbl="\code{pick}"             ];
+    sample    [texlbl="\code{sample}"           ];
+    predicate [texlbl="\code{predicate}"        ];
+    pred      [texlbl="\apred{p}"               ];
+    out       [style="state,accepting", width=.5];
 }

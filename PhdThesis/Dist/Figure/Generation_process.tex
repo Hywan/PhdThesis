@@ -1,48 +1,64 @@
 %%
 \pgfsetcolor{black}
   % Edge: predicate -> sample
-  \draw [->] (65.611bp,106.7bp) .. controls (76.63bp,96.676bp) and (89.06bp,84.423bp)  .. (106.78bp,65.525bp);
+  \draw [->] (120.21bp,128.3bp) .. controls (120.93bp,141.11bp) and (121.91bp,158.82bp)  .. (123.29bp,183.65bp);
   \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
   \pgfsetstrokecolor{strokecol}
-  \draw (95.76bp,103.82bp) node {invalide};
+  \draw (145.25bp,156bp) node {invalide};
   % Edge: predicate -> pred
-  \draw [->] (61.536bp,153.21bp) .. controls (71.781bp,163.45bp) and (83.721bp,175.39bp)  .. (101.96bp,193.63bp);
-  \draw (64.076bp,183.75bp) node {valide};
+  \draw [->] (126.28bp,92.049bp) .. controls (131.66bp,80.444bp) and (139.91bp,65.191bp)  .. (150.25bp,54bp) .. controls (155.38bp,48.45bp) and (161.55bp,43.335bp)  .. (176.35bp,33.076bp);
+  \draw (169.25bp,64bp) node {valide};
+  % Edge: variable -> sample
+  \draw [->] (182.52bp,293.75bp) .. controls (160.85bp,289.64bp) and (136.79bp,280.78bp)  .. (123.25bp,262bp) .. controls (116.72bp,252.93bp) and (115.93bp,240.87bp)  .. (118.89bp,220.13bp);
+  \draw (173.75bp,250bp) node {$V \neq \emptyset \land v = \mathrm{pop}(V)$};
   % Edge: sample -> predicate
-  \draw [->] (98.062bp,56.974bp) .. controls (87.043bp,66.997bp) and (74.613bp,79.25bp)  .. (56.896bp,98.148bp);
-  \draw (93.914bp,87.857bp) node {candidate};
+  \draw [->] (77.438bp,200.09bp) .. controls (51.749bp,196.89bp) and (21.831bp,188.16bp)  .. (5.2523bp,166bp) .. controls (-14.205bp,140bp) and (26.8bp,125.69bp)  .. (75.05bp,116.4bp);
+  \draw (56.752bp,156bp) node {$\tau \leq \tau_\mathrm{max} \land \tau = \tau + 1$};
   % Edge: pred -> sample
-  \draw [->] (127.67bp,183.12bp) .. controls (127.67bp,154.24bp) and (127.67bp,113.61bp)  .. (127.67bp,72.148bp);
-  \draw (109.67bp,132.74bp) node {invalide};
-  % Edge: pred -> out
-  \draw [->] (153.21bp,193.81bp) .. controls (163.45bp,183.57bp) and (175.39bp,171.63bp)  .. (193.63bp,153.39bp);
-  \draw (155.75bp,163.27bp) node {valide};
-  % Node: sample
+  \draw [->] (202.63bp,36.349bp) .. controls (202.45bp,65.472bp) and (198.58bp,125.02bp)  .. (172.25bp,166bp) .. controls (168.7bp,171.52bp) and (163.95bp,176.46bp)  .. (150.54bp,187.01bp);
+  \draw (220.25bp,110bp) node {invalide};
+  % Edge: pred -> variable
+  \draw [->] (215.1bp,35.383bp) .. controls (225.5bp,49.55bp) and (239.64bp,71.004bp)  .. (247.25bp,92bp) .. controls (269.59bp,153.64bp) and (263.57bp,172.61bp)  .. (268.25bp,238bp) .. controls (269.01bp,248.64bp) and (272.66bp,252.29bp)  .. (268.25bp,262bp) .. controls (266.07bp,266.81bp) and (262.86bp,271.22bp)  .. (251.73bp,282.18bp);
+  \draw (283.25bp,156bp) node {valide};
+  % Edge: in -> variable
+  \draw [->] (228.25bp,371.65bp) .. controls (228.25bp,358.82bp) and (228.25bp,341.11bp)  .. (228.25bp,316.3bp);
+  \draw (246.25bp,344bp) node {$\tau = 1$};
+  % Edge: variable -> out
+  \draw [->] (228.25bp,279.76bp) .. controls (228.25bp,265.98bp) and (228.25bp,246.4bp)  .. (228.25bp,220.13bp);
+  \draw (247.75bp,250bp) node {$V = \emptyset$};
+  % Node: predicate
 \begin{scope}
   \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
   \pgfsetstrokecolor{strokecol}
-  \draw [state,initial] (128bp,36bp) ellipse (36bp and 36bp);
-  \draw (127.67bp,36bp) node {$\code{sample}$};
+  \draw [state] (119bp,110bp) ellipse (47bp and 18bp);
+  \draw (119.25bp,110bp) node {\code{predicate}};
 \end{scope}
   % Node: pred
 \begin{scope}
   \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
   \pgfsetstrokecolor{strokecol}
-  \draw [state] (128bp,219bp) ellipse (36bp and 36bp);
-  \draw (127.67bp,219.35bp) node {\apred{p}};
+  \draw [state] (202bp,18bp) ellipse (47bp and 18bp);
+  \draw (202.25bp,18bp) node {\apred{p}};
 \end{scope}
-  % Node: predicate
+  % Node: sample
 \begin{scope}
   \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
   \pgfsetstrokecolor{strokecol}
-  \draw [state] (36bp,128bp) ellipse (36bp and 36bp);
-  \draw (36bp,127.67bp) node {$\code{predicate}$};
+  \draw [state] (124bp,202bp) ellipse (47bp and 18bp);
+  \draw (124.25bp,202bp) node {\code{sample}};
+\end{scope}
+  % Node: variable
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw [state] (228bp,298bp) ellipse (47bp and 18bp);
+  \draw (228.25bp,298bp) node {\code{pick}};
 \end{scope}
   % Node: out
 \begin{scope}
   \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
   \pgfsetstrokecolor{strokecol}
-  \draw [state,accepting] (219bp,128bp) ellipse (36bp and 36bp);
-  \draw (219.35bp,127.67bp) node {retenue};
+  \draw [state,accepting] (228bp,202bp) ellipse (18bp and 18bp);
+  \draw (228.25bp,202bp) node {$ $};
 \end{scope}
 %
