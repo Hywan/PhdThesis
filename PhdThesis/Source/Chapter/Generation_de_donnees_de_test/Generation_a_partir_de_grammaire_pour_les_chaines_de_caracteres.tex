@@ -16,12 +16,12 @@ pour générer des données valides.
 \subsection{Langage de description de grammaire}
 \label{subsection:data:pp}
 
-Une grammaire est constituée de lexèmes, unités atomiques lexicales d'une
-langue, et de règles exprimant l'enchaînement possible des lexèmes les uns par
-rapport aux autres. Le langage \inenglish{PHP Parser}, abrégé PP, est utilisé
-pour exprimer des grammaires \inenglish{top-down} et algébriques. La syntaxe est
-principalement inspirée de YACC~\acite{Johnson75} et JavaCC avec l'ajout de
-nouvelles constructions.
+Une grammaire est constituée de {\strong lexèmes}, unités atomiques lexicales
+d'une langue, et de {\strong règles} exprimant l'enchaînement possible des
+lexèmes les uns par rapport aux autres. Le langage \inenglish{PHP Parser},
+abrégé PP, est utilisé pour exprimer des grammaires \inenglish{top-down} et
+algébriques. La syntaxe est principalement inspirée de YACC~\acite{Johnson75} et
+JavaCC avec l'ajout de nouvelles constructions.
 
 La déclaration d'un lexème est de la forme suivante~:
 
@@ -32,12 +32,13 @@ La déclaration d'un lexème est de la forme suivante~:
 où \code{name} représente son nom, \code{value} sa valeur exprimée avec une
 expression régulière, et \code{ns\_source} et \code{ns\_dest} sont des espaces
 de nom optionnels. Les expressions régulières sont écrites en utilisant la
-syntaxe standard des PCRE~\acite{Hazel05}, très expressive et largement utilisés
-et supportés (par exemple dans PHP, Javascript, Perl, Python, Apache, KDE etc.).
-Les espaces de noms servent à représenter des sous-ensembles disjoints de
-lexèmes pour la phases d'analyse lexicale. Une déclaration \code{\%skip} est
-similaire à une déclaration \code{\%token} excepté qu'elle représente un lexème
-à «~sauter~», c'est~à~dire à ne pas retenir dans la séquence de lexèmes.
+syntaxe standard des PCRE~\acite{Hazel05}, très expressives, largement utilisées
+et supportées (par exemple dans PHP, Javascript, Perl, Python, Apache, KDE
+etc.). Les espaces de noms servent à représenter des sous-ensembles disjoints de
+lexèmes pour la phase d'analyse lexicale (détaillée ci-après). Une déclaration
+\code{\%skip} est similaire à une déclaration \code{\%token} excepté qu'elle
+représente un lexème à «~sauter~», c'est~à~dire à ne pas retenir dans la
+séquence de lexèmes.
 
 \begin{figure}
 
@@ -62,7 +63,7 @@ tag: \\
       ::lt:: ::slash:: ::name[0]:: ::gt:: \\
     ) \\
 #attributes: \\
-    ( <name> ( ::equal:: <value> )? )*
+    ( <name> ::equal:: <value> )*
 \end{bigpre}
 
 \caption{\label{figure:data:xml} Grammaire simplifiée d'un document XML.}
@@ -78,10 +79,10 @@ atomique (\code{<aTag />}), composite (contenant d'autres balises) ou contenant
 du texte (\code{<aTag>with text</aTag>}). Un nom de règle (\code{xml},
 \code{tag} ou \code{attribute} dans la Figure~\ref{figure:data:xml}) est suivi
 du symbole \code{:}, puis d'une nouvelle ligne, immédiatement suivie par une
-{\strong déclaration de règle}, préfixée par des caractères blancs (espaces ou
-tabulations). Les lexèmes peuvent être référencés en utilisant deux types de
-constructions. La construction \code{::token::} signifie que le lexème ne sera
-pas conservé à la fin du processus de compilation (détaillé ci-après),
+{\strong déclaration de règle}, préfixée par des caractères blancs horizontaux
+(espaces ou tabulations). Les lexèmes peuvent être référencés en utilisant deux
+types de constructions. La construction \code{::token::} signifie que le lexème
+ne sera pas conservé à la fin du processus de compilation (détaillé ci-après),
 contrairement à la construction \code{<token>}. La construction \code{rule()}
 représente un appel à une règle.  Les opérations de répétition sont classiques:
 \code{\{$x$, $y$\}} pour répéter le motif $x$ à $y$ fois, \code{?} est identique
@@ -91,43 +92,167 @@ disjonctions sont représentées par le symbole \code{\mvert} et le groupement p
 de règle) est utile pour la fin du processus de compilation.
 
 Si un lexème est suivi de \code{[$i$]} avec $i \geq 0$, nous avons une
-unification. Une unification pour les lexèmes implique que tous les
-\code{token[$i$]} avec le même $i$ ont la même valeur localement à la règle.
-Remarquons la présence d'une unification de lexème dans la
-Figure~\ref{figure:data:xml}~: \code{name[0]} indique que la balise d'ouverture
-et de fermeture doivent avoir le même nom.
+unification. C'est une nouvelle construction. Une unification pour les lexèmes
+implique que tous les \code{token[$i$]} avec le même $i$ ont la même valeur
+localement à la règle.  Remarquons la présence d'une unification de lexème dans
+la Figure~\ref{figure:data:xml}~: \code{name[0]} indique que la balise
+d'ouverture et de fermeture doivent avoir le même nom. Ainsi, la donnée
+\code{<foo>…</foo>} sera considérée comme valide, alors que \code{<foo>…</bar>}
+sera considérée comme invalide. Un autre usage courant est la gestion des
+guillemets représenté par le lexème \code{\%token quote '|"}, soit un guillemet simple, soit
+un double. Ainsi, \code{"…"} comme \code{'…'} doivent être valides, alors que
+\code{"…'} ou \code{'…"} devront être invalides. Pour cela, nous écrirons par
+exemple \code{quote[1]} dans une règle.
 
 Si un espace de nom source n'est pas précisé, alors il prendra la valeur
 \code{default}, qui est l'espace de nom par défaut. L'espace de nom de
 destination peut être de la forme spéciale \code{\_\_shift\_\_ * $j$}, avec $j
 \geq 1$, pour revenir $j$ espaces de nom en arrière. En effet, il est parfois
 possible d'accéder à un lexème depuis plusieurs espaces de nom différents. Cette
-forme spéciale répond à cette problématique.
+forme spéciale répond à cette problématique. \\
 
-\subsection{Compilateur de compilateur}
+Nous trouverons la grammaire du langage PP en langage PP dans la
+Figure~\ref{figure:appendices:grammar_of_pp} à la
+page~\pageref{figure:appendices:grammar_of_pp}.
+
+\subsection{Compilateur de compilateur $LL(\star)$}
 \label{subsection:data:compiler-compiler}
 
 Le fonctionnement schématique d'un compilateur est présenté dans la
-Figure~\ref{figure:data:compiler}
+Figure~\ref{figure:data:compiler}. À partir d'un {\strong mot} (d'une donnée
+textuelle), nous allons extraire une {\strong séquence} de lexèmes grâce à
+l'analyseur lexical. Ensuite, cette séquence sera {\strong dérivée} grâce à
+l'analyseur syntaxique pour savoir si elle est valide ou non.
 %
 \begin{figure}
 
 \fig{\textwidth}{!}{Compiler.tex}
 
-\caption{\label{figure:data:compiler} Foobar.}
+\caption{\label{figure:data:compiler} Fonctionnement d'un compilateur~: un mot
+est transformé en séquence de lexèmes grâce à une analyse lexicale. Et cette
+séquence est validée ou invalidée grâce à une analyse syntaxique.}
 
 \end{figure}
 %
+L'analyseur lexicale va appliquer, dans l'ordre de déclaration, tous les lexèmes
+de l'espace de nom courant sur le début du mot jusqu'à trouver un lexème valide
+(reconnaissant le début du mot). Le début du mot reconnu est supprimé pour être
+ajouté à la suite de la séquence, avec des données supplémentaires (espace de
+nom, numéro de lignes, de colonnes etc.). L'espace de nom est actualisé et
+l'analyseur recommence jusqu'à atteindre la fin du mot. Si aucun lexème ne
+permet de reconnaître le début du mot, alors une erreur sera levée.
 
-L'objectif de l'analyse est de produire un \inenglish{abstract syntax tree}
-(AST) pour des données syntaxiquement correctes.
+\begin{example}[Analyse lexicale de \code{<a x="y"><b /><c>foo</c></a>}]
+\label{example:data:lexical_analyze}
+
+Avec la grammaire de la Figure~\ref{figure:data:xml}, l'analyse lexicale de la
+donnée~:
+%
+$$\code{<a x="y"><b /><c>foo</c></a>}$$
+%
+produit la séquence suivante~:
+\begin{center}
+\begin{tabular}{rlllr}
+   & espace de nom  & lexème       & valeur     & position \\
+0  & \code{default} & \code{lt}    & \code{<}   & 0 \\
+1  & \code{in\_tag} & \code{name}  & \code{a}   & 1 \\
+2  & \code{in\_tag} & \code{name}  & \code{x}   & 3 \\
+3  & \code{in\_tag} & \code{equal} & \code{=}   & 4 \\
+4  & \code{in\_tag} & \code{value} & \code{"y"} & 5 \\
+5  & \code{in\_tag} & \code{gt}    & \code{>}   & 8 \\
+6  & \code{default} & \code{lt}    & \code{<}   & 9 \\
+7  & \code{in\_tag} & \code{name}  & \code{b}   & 10 \\
+8  & \code{in\_tag} & \code{slash} & \code{/}   & 12 \\
+9  & \code{in\_tag} & \code{gt}    & \code{>}   & 13 \\
+10 & \code{default} & \code{lt}    & \code{<}   & 14 \\
+11 & \code{in\_tag} & \code{name}  & \code{c}   & 15 \\
+12 & \code{in\_tag} & \code{gt}    & \code{>}   & 16 \\
+13 & \code{default} & \code{text}  & \code{foo} & 17 \\
+14 & \code{default} & \code{lt}    & \code{<}   & 20 \\
+15 & \code{in\_tag} & \code{slash} & \code{/}   & 21 \\
+16 & \code{in\_tag} & \code{name}  & \code{c}   & 22 \\
+17 & \code{in\_tag} & \code{gt}    & \code{>}   & 23 \\
+18 & \code{default} & \code{lt}    & \code{<}   & 24 \\
+19 & \code{in\_tag} & \code{slash} & \code{/}   & 25 \\
+20 & \code{in\_tag} & \code{name}  & \code{a}   & 26 \\
+21 & \code{in\_tag} & \code{gt}    & \code{>}   & 27 \\
+22 & \code{default} & \code{EOF}   & \code{}    & 29
+\end{tabular}
+\end{center}
+
+\end{example}
+
+L'analyseur syntaxique prend la suite en dérivant la séquence par rapport à la
+grammaire. Cela consiste à dépiler les lexèmes de la séquence un par un et de
+regarder si nous pouvons explorer les règles.
+
+\begin{example}[Analyse syntaxique de \code{<a x="y"><b /><c>foo</c></a>}]
+\label{example:data:syntactic_analyze}
+
+Nous allons illustrer l'analyse syntaxique de la séquence obtenue dans
+l'Exem\-ple~\ref{example:data:lexical_analyze}.
+
+\begin{enumerate}
+
+\item Nous allons dépiler le premier lexème~: \code{lt}. La règle \code{xml} est
+composée de une ou plusieurs règles \code{tag}. La règle \code{tag} commence par
+un lexème \code{lt}. Nous avons une correspondance, nous continuons.
+
+\item Le deuxième lexème est \code{name}. La règle \code{tag} se poursuit avec
+le lexème \code{name}, nous avons une correspondance. Le lexème \code{name}
+porte une unification. Le prochain lexème \code{name} pour cette règle devra
+avoir comme valeur \code{a}.
+
+\item Nous continuons avec le troisième lexème de la séquence~: \code{x}. La
+règle \code{tag} poursuit avec un appel à la règle \code{attributes} qui
+commence avec le lexème \code{name}. Encore une fois, nous avons une
+correspondance.
+
+\item[4-5.] Pareil pour le quatrième et cinquième lexèmes.
+
+\item[6.] Le sixième lexème est \code{gt}. La règle \code{attributes} demande à
+soit avoir un nouvel attribut, soit nous avons atteint la fin de la règle, ce
+qui est notre cas. Donc nous revenons dans la règle \code{tag}. Nous arrivons
+dans une disjonction~: le premier élément ne peut pas dériver \code{gt} (il
+attend \code{slash}), mais le second élément le permet. Nous avons une
+correspondance.
+
+\item[…] Nous passons au lexème suivant dans la séquence. Et ainsi de suite,
+jusqu'à atteindre la fin de la séquence.
+
+\end{enumerate}
+
+\end{example}
+
+Si nous ne pouvons plus dériver la séquence, nous allons revenir en arrière
+(cette étape s'appelle le \inenglish{backtracking}) de $k$-lexèmes jusqu'à
+retomber sur un point de choix (une disjonction ou une répétition). Dans notre
+cas, $k$ est infixé, nous disons que nous revenons en arrière de
+$\star$-lexèmes, soit de autant de lexèmes que nécessaires. \\
+
+La séquence est construite en analysant la donnée textuelle de gauche à droite
+(\inenglish{{\strong L}eft to right}) et la séquence est dérivée en utilisant
+toujours le lexème le plus à gauche de la séquence (\inenglish{{\strong
+L}eftmost derivation}), nous avons donc un compilateur $LL(\star)$. \\
+
+Une fois que la donnée a été validée par l'analyseur syntaxique, le compilateur
+est capable de produire un AST, pour \inenglish{Abstract Syntax Tree}, soit un
+arbre de syntaxe abstrait. Les constructions \code{\#node} dans la grammaire
+permettent de forcer la création d'un nœud dont les enfants seront les lexèmes
+déclarés avec la syntaxe \code{<token>} (l'autre construction
+—~\code{::token::}~— n'autorise pas les lexèmes à apparaître dans l'arbre).
+
+\begin{example}[Arbre de syntaxe abstrait de la donnée \code{<a x="y"><b
+/><c>foo</c></a>}]
+\label{example:data:ast}
 
 
-Avec le langage PP, nous proposons un compilateur de compilateur LL(*) associé
-qui permet d'exploiter la description de grammaire afin de produire un analyseur
-lexical et syntaxique.
 
-Quand le compilateur analyse une donnée, il commence par…
+\end{example}
+
+Nous parlons de {\strong compilateur de compilateur} car la grammaire est tout
+d'abord transformée en compilateur, c'est à dire en un analyseur lexical et un
+syntaxique. La grammaire nous évite d'avoir à écrire un compilateur à la main.
 
 \subsubsection{Utiliser PP avec le domaine réaliste \code{Grammar}}
 
