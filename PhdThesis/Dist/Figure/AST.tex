@@ -1,0 +1,100 @@
+%%
+\pgfsetcolor{black}
+  % Edge: composite -> attributes
+  \draw [->] (186.68bp,144.41bp) .. controls (180.33bp,135.87bp) and (172.46bp,125.28bp)  .. (159.23bp,107.47bp);
+  % Edge: composite -> textual
+  \draw [->] (227.25bp,148.32bp) .. controls (252.46bp,137.01bp) and (289.58bp,120.36bp)  .. (326.7bp,103.7bp);
+  % Edge: textual -> c
+  \draw [->] (355bp,71.697bp) .. controls (355bp,63.983bp) and (355bp,54.712bp)  .. (355bp,36.104bp);
+  % Edge: attributes -> y
+  \draw [->] (147bp,71.697bp) .. controls (147bp,63.983bp) and (147bp,54.712bp)  .. (147bp,36.104bp);
+  % Edge: composite -> a
+  \draw [->] (170.75bp,148.32bp) .. controls (145.54bp,137.01bp) and (108.42bp,120.36bp)  .. (71.303bp,103.7bp);
+  % Edge: composite -> atomic
+  \draw [->] (211.32bp,144.41bp) .. controls (217.67bp,135.87bp) and (225.54bp,125.28bp)  .. (238.77bp,107.47bp);
+  % Edge: attributes -> x
+  \draw [->] (125.2bp,74.326bp) .. controls (110.08bp,64.152bp) and (89.759bp,50.472bp)  .. (64.773bp,33.655bp);
+  % Edge: root -> composite
+  \draw [->] (199bp,215.7bp) .. controls (199bp,207.98bp) and (199bp,198.71bp)  .. (199bp,180.1bp);
+  % Edge: textual -> foo
+  \draw [->] (376.8bp,74.326bp) .. controls (391.92bp,64.152bp) and (412.24bp,50.472bp)  .. (437.23bp,33.655bp);
+  % Edge: atomic -> b
+  \draw [->] (251bp,71.697bp) .. controls (251bp,63.983bp) and (251bp,54.712bp)  .. (251bp,36.104bp);
+  % Node: a
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw [accepting] (43bp,90bp) ellipse (43bp and 18bp);
+  \draw (43bp,90bp) node {\code{(name, a)}};
+\end{scope}
+  % Node: c
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw [accepting] (355bp,18bp) ellipse (43bp and 18bp);
+  \draw (355bp,18bp) node {\code{(name, c)}};
+\end{scope}
+  % Node: b
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw [accepting] (251bp,18bp) ellipse (43bp and 18bp);
+  \draw (251bp,18bp) node {\code{(name, c)}};
+\end{scope}
+  % Node: composite
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw [state] (199bp,162bp) ellipse (43bp and 18bp);
+  \draw (199bp,162bp) node {\code{\#composite}};
+\end{scope}
+  % Node: textual
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw [state] (355bp,90bp) ellipse (43bp and 18bp);
+  \draw (355bp,90bp) node {\code{\#textual}};
+\end{scope}
+  % Node: atomic
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw [state] (251bp,90bp) ellipse (43bp and 18bp);
+  \draw (251bp,90bp) node {\code{\#atomic}};
+\end{scope}
+  % Node: x
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw [accepting] (43bp,18bp) ellipse (43bp and 18bp);
+  \draw (43bp,18bp) node {\code{(name, x)}};
+\end{scope}
+  % Node: y
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw [accepting] (147bp,18bp) ellipse (43bp and 18bp);
+  \draw (147bp,18bp) node {\code{(value, \aquote{y})}};
+\end{scope}
+  % Node: attributes
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw [state] (147bp,90bp) ellipse (43bp and 18bp);
+  \draw (147bp,90bp) node {\code{\#attributes}};
+\end{scope}
+  % Node: foo
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw [accepting] (459bp,18bp) ellipse (43bp and 18bp);
+  \draw (459bp,18bp) node {\code{(text, foo)}};
+\end{scope}
+  % Node: root
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw [state] (199bp,234bp) ellipse (43bp and 18bp);
+  \draw (199bp,234bp) node {\code{\#root}};
+\end{scope}
+%

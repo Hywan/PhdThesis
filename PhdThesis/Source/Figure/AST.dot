@@ -1,0 +1,21 @@
+digraph {
+    node [style="state", width=1.2];
+
+    root       -> composite;
+    composite  -> {a attributes atomic textual};
+    attributes -> {x y};
+    atomic     -> b;
+    textual    -> {c foo};
+
+    root       [label=" ", texlbl="\code{\#root}"                                ];
+    composite  [label=" ", texlbl="\code{\#composite}"                           ];
+    a          [label=" ", texlbl="\code{(name, a)}", style="accepting"          ];
+    attributes [label=" ", texlbl="\code{\#attributes}"                          ];
+    x          [label=" ", texlbl="\code{(name, x)}", style="accepting"          ];
+    y          [label=" ", texlbl="\code{(value, \aquote{y})}", style="accepting"];
+    atomic     [label=" ", texlbl="\code{\#atomic}"                              ];
+    b          [label=" ", texlbl="\code{(name, c)}", style="accepting"          ];
+    textual    [label=" ", texlbl="\code{\#textual}"                             ];
+    c          [label=" ", texlbl="\code{(name, c)}", style="accepting"          ];
+    foo        [label=" ", texlbl="\code{(text, foo)}", style="accepting"        ];
+}

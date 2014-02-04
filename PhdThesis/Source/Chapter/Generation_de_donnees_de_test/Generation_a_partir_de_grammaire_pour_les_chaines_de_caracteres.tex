@@ -228,27 +228,31 @@ Si nous ne pouvons plus dériver la séquence, nous allons revenir en arrière
 (cette étape s'appelle le \inenglish{backtracking}) de $k$-lexèmes jusqu'à
 retomber sur un point de choix (une disjonction ou une répétition). Dans notre
 cas, $k$ est infixé, nous disons que nous revenons en arrière de
-$\star$-lexèmes, soit de autant de lexèmes que nécessaires. \\
+$\star$-lexèmes, soit de autant de lexèmes que nécessaires.
 
 La séquence est construite en analysant la donnée textuelle de gauche à droite
 (\inenglish{{\strong L}eft to right}) et la séquence est dérivée en utilisant
 toujours le lexème le plus à gauche de la séquence (\inenglish{{\strong
-L}eftmost derivation}), nous avons donc un compilateur $LL(\star)$. \\
+L}eftmost derivation}), nous avons donc un compilateur $LL(\star)$.
 
 Une fois que la donnée a été validée par l'analyseur syntaxique, le compilateur
 est capable de produire un AST, pour \inenglish{Abstract Syntax Tree}, soit un
 arbre de syntaxe abstrait. Les constructions \code{\#node} dans la grammaire
 permettent de forcer la création d'un nœud dont les enfants seront les lexèmes
 déclarés avec la syntaxe \code{<token>} (l'autre construction
-—~\code{::token::}~— n'autorise pas les lexèmes à apparaître dans l'arbre).
+—~\code{::token::}~— n'autorise pas les lexèmes à apparaître dans l'arbre). La
+Figure~\ref{figure:data:ast} montre l'AST résultant des
+Exemples~\ref{example:data:lexical_analyze} et
+\ref{example:data:syntactic_analyze}. \\
 
-\begin{example}[Arbre de syntaxe abstrait de la donnée \code{<a x="y"><b
-/><c>foo</c></a>}]
-\label{example:data:ast}
+\begin{figure}
 
+\fig{\textwidth}{!}{AST.tex}
 
+\caption{\label{figure:data:ast} Arbre de syntaxe abstrait de la donnée \code{<a x="y"><b
+/><c>foo</c></a>}.}
 
-\end{example}
+\end{figure}
 
 Nous parlons de {\strong compilateur de compilateur} car la grammaire est tout
 d'abord transformée en compilateur, c'est à dire en un analyseur lexical et un
