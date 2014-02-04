@@ -1,68 +1,68 @@
 \section{Génération à partir de grammaire pour les chaînes de caractères}
 \label{section:data:strings}
 
-Les grammaires sont utilisées pour représenter, et par conséquent au moins à
-valider, des données textuelles complexes. Ce qui fait que les grammaires
-semblent être un bon candidat pour être une base d'un domaine réaliste. Nous
-allons en premier lieu nous concentrer sur la première caractéristique des
+Une grammaire est utilisée pour représenter des données textuelles complexes.  À
+l'aide d'un compilateur, nous allons nous assurer qu'une donnée (textuelle) est
+conforme à une grammaire. C'est une propriété sur deux d'un domaine réaliste~:
+ce qui fait des grammaires de bonnes candidates pour être une base d'un domaine
+réaliste.
+
+Nous allons en premier lieu nous concentrer sur la première caractéristique des
 domaines réalistes, à savoir la prédicabilité, et présenter un langage simple de
 description de grammaire ainsi que son interprétation avec un compilateur de
-compilateur dédié.
+compilateur dédié. Ensuite, nous allons voir comment exploiter une grammaire
+pour générer des données valides.
 
 \subsection{Langage de description de grammaire}
 \label{subsection:data:pp}
 
-Le langage \inenglish{PHP Parser}, (abrégé PP) est utilisé pour exprimer
-simplement des grammaires \inenglish{top-down} et algébriques. La syntaxe est
-principalement inspiré de JavaCC avec l'ajout de nouvelles constructions.
-L'objectif de l'analyse est de produire un \inenglish{abstract syntax tree}
-(AST) pour des données syntaxiquement correctes.
+Une grammaire est constituée de lexèmes, unités atomiques lexicales d'une
+langue, et de règles exprimant l'enchaînement possible des lexèmes les uns par
+rapport aux autres. Le langage \inenglish{PHP Parser}, abrégé PP, est utilisé
+pour exprimer des grammaires \inenglish{top-down} et algébriques. La syntaxe est
+principalement inspirée de YACC~\acite{Johnson75} et JavaCC avec l'ajout de
+nouvelles constructions.
 
-La déclaration d'un lexème est de la forme~:
+La déclaration d'un lexème est de la forme suivante~:
 
 \begin{pre}
 %token ns_source:name value -> ns_dest
 \end{pre}
 %
 où \code{name} représente son nom, \code{value} sa valeur exprimée avec une
-expression régulière, et \code{ns\_source} et \code{ns\_dest} sont des noms
-d'espace de nom optionnels. Les expressions régulières sont écrites en utilisant
-la syntaxe standard des PCRE, très expressive et largement utilisés et supportés
-(par exemple dans PHP, Javascript, Perl, Python, Apache, KDE etc.). Les espaces
-de noms servent à représenter des sous-ensembles disjoints de lexèmes pour la
-phases d'analyse lexicale. Une déclaration \code{\%skip} est similaire à une
-déclaration \code{\%token} excepté qu'elle reprénsete un lexème à sauter.
+expression régulière, et \code{ns\_source} et \code{ns\_dest} sont des espaces
+de nom optionnels. Les expressions régulières sont écrites en utilisant la
+syntaxe standard des PCRE~\acite{Hazel05}, très expressive et largement utilisés
+et supportés (par exemple dans PHP, Javascript, Perl, Python, Apache, KDE etc.).
+Les espaces de noms servent à représenter des sous-ensembles disjoints de
+lexèmes pour la phases d'analyse lexicale. Une déclaration \code{\%skip} est
+similaire à une déclaration \code{\%token} excepté qu'elle représente un lexème
+à «~sauter~», c'est~à~dire à ne pas retenir dans la séquence de lexèmes.
 
 \begin{figure}
 
 \begin{bigpre}
-%skip   space           \(\bslash\)s \\
-%token  lt              <        -> in_tag \\
-%token  text            [^<]* \\
-\\
+%skip          space    \(\bslash\)s \\
+%token         lt       <        -> in_tag \\
+%token         text     [^<]* \\
 %skip   in_tag:space    \(\bslash\)s \\
+%token  in_tag:name     \(\bslash\)w+ \\
 %token  in_tag:slash    / \\
-%token  in_tag:tagname  [^>]+ \\
-%token  in_tag:equal    = \\
-%token  in_tag:value    ".*?(?<!\(\bslash\bslash\bslash\))" \\
 %token  in_tag:gt       >        -> default \\
+%token  in_tag:equal    = \\
+%token  in_tag:value    ".*?(?<!\(\bslash\bslash\))" \\
 \\
 xml: \\
-    tag()+ \\
-\\
+    tag()+ #root \\
 tag: \\
-    ::lt:: <tagname[0]> \\
+    ::lt:: <name[0]> attributes() \\
     ( \\
-      ::slash:: ::gt:: \\
-    | attribute()* ::gt:: ( inner() | tag() )* \\
-      ::lt:: ::slash:: <tagname[0]> ::gt:: \\
+      ::slash:: ::gt:: #atomic \\
+    | ::gt:: ( <text> #textual | tag() #composite )* \\
+      ::lt:: ::slash:: ::name[0]:: ::gt:: \\
     ) \\
-\\
-attribute: \\
-    <name> ( ::equal:: <value> )? \\
-\\
-inner: \\
-    <text>
+#attributes: \\
+    ( <name> ( ::equal:: <value> )? )*
 \end{bigpre}
 
 \caption{\label{figure:data:xml} Grammaire simplifiée d'un document XML.}
@@ -76,28 +76,52 @@ l'intérieur d'une balise. La règle \code{xml} décrit un document XML comme un
 séquence de balises, chaque balise ayant potentiellement des attributs et étant
 atomique (\code{<aTag />}), composite (contenant d'autres balises) ou contenant
 du texte (\code{<aTag>with text</aTag>}). Un nom de règle (\code{xml},
-\code{tag}, \code{attribute} etc. dans la Figure~\ref{figure:data:xml}) est
-suivi du symbole \code{:}, puis d'une nouvelle ligne, immédiatement suivie par
-une {\strong déclaration de règle}, préfixée par des caractères blancs (espaces
-ou tabulations). Les lexèmes peuvent être référencés en utilisant deux types de
+\code{tag} ou \code{attribute} dans la Figure~\ref{figure:data:xml}) est suivi
+du symbole \code{:}, puis d'une nouvelle ligne, immédiatement suivie par une
+{\strong déclaration de règle}, préfixée par des caractères blancs (espaces ou
+tabulations). Les lexèmes peuvent être référencés en utilisant deux types de
 constructions. La construction \code{::token::} signifie que le lexème ne sera
-pas conservé dans l'AST, il sera consommé, contrairement à la construction
-\code{<token>}. La construction \code{rule()} représente un appel à une règle.
-Les opérations de répétition sont classiques: \code{\{$x$, $y$\}} pour répéter
-le motif $x$ à $y$ fois, \code{?} est identique à \code{\{0, 1\}}, \code{+} à
-\code{\{1, \}}, \code{*} à \code{\{0, \}}. Les disjonctions sont représentées
-par le symbole \code{\mvert} et le groupement par \code{(} et \code{)}. La
-construction \code{\#node} permet d'identifier un nœud dans l'AST.
+pas conservé à la fin du processus de compilation (détaillé ci-après),
+contrairement à la construction \code{<token>}. La construction \code{rule()}
+représente un appel à une règle.  Les opérations de répétition sont classiques:
+\code{\{$x$, $y$\}} pour répéter le motif $x$ à $y$ fois, \code{?} est identique
+à \code{\{0, 1\}}, \code{+} à \code{\{1, \}}, \code{*} à \code{\{0, \}}. Les
+disjonctions sont représentées par le symbole \code{\mvert} et le groupement par
+\code{(} et \code{)}. La construction \code{\#node} (parfois utilisé comme nom
+de règle) est utile pour la fin du processus de compilation.
 
-De plus, si un lexème est suivi de \code{[$i$]} avec $i \geq 0$, nous avons une
+Si un lexème est suivi de \code{[$i$]} avec $i \geq 0$, nous avons une
 unification. Une unification pour les lexèmes implique que tous les
 \code{token[$i$]} avec le même $i$ ont la même valeur localement à la règle.
 Remarquons la présence d'une unification de lexème dans la
-Figure~\ref{figure:data:xml}~: \code{tagname[0]} indique que la balise
-d'ouverture et de fermeture doivent avoir le même nom.
+Figure~\ref{figure:data:xml}~: \code{name[0]} indique que la balise d'ouverture
+et de fermeture doivent avoir le même nom.
 
-\subsubsection{Compilateur de compilateur}
+Si un espace de nom source n'est pas précisé, alors il prendra la valeur
+\code{default}, qui est l'espace de nom par défaut. L'espace de nom de
+destination peut être de la forme spéciale \code{\_\_shift\_\_ * $j$}, avec $j
+\geq 1$, pour revenir $j$ espaces de nom en arrière. En effet, il est parfois
+possible d'accéder à un lexème depuis plusieurs espaces de nom différents. Cette
+forme spéciale répond à cette problématique.
+
+\subsection{Compilateur de compilateur}
 \label{subsection:data:compiler-compiler}
+
+Le fonctionnement schématique d'un compilateur est présenté dans la
+Figure~\ref{figure:data:compiler}
+%
+\begin{figure}
+
+\fig{\textwidth}{!}{Compiler.tex}
+
+\caption{\label{figure:data:compiler} Foobar.}
+
+\end{figure}
+%
+
+L'objectif de l'analyse est de produire un \inenglish{abstract syntax tree}
+(AST) pour des données syntaxiquement correctes.
+
 
 Avec le langage PP, nous proposons un compilateur de compilateur LL(*) associé
 qui permet d'exploiter la description de grammaire afin de produire un analyseur
