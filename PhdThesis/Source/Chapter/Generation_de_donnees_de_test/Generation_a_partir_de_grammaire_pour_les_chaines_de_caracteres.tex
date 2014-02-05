@@ -321,7 +321,7 @@ fréquence d'apparition des lexèmes, la quantité de séquences etc.
 Cet algorithme permet de générer des séquences de lexèmes de taille $n$ fixe.
 Chaque séquence est générée aléatoirement et avec une distribution uniforme
 parmi toutes les séquences possibles de taille $n$. Afin d'assurer cette
-uniformité, nous allons nous baser sur les travaux de \acitep{FlajoletZC94}. Les
+uniformité, nous allons nous baser sur les travaux de \acitei{FlajoletZC94}. Les
 auteurs proposent une méthode de calcul récursive pour compter le nombre de
 sous-structures de taille $n$. Ce dénombrement va nous permettre de calculer des
 fonctions de répartition pour guider l'algorithme dans l'exploration des règles
@@ -340,20 +340,20 @@ de générer. Ainsi~:
     \\
 %
 \psi(n, e_1 \cdot \dotso \cdot e_k) & =
-    \sum_{\gamma \in \Gamma_k^n}
-    \prod_{\alpha = 1}^k
+    \sum_{\gamma \,\in\, \Gamma_k^n}
+    \prod_{\alpha \,=\, 1}^k
     \psi(\gamma_\alpha, e_\alpha)
     \\
 %
 \psi(n, e_1 \,\vert\, \dots \,\vert\, e_k) & =
-    \sum_{\alpha = 1}^k
+    \sum_{\alpha \,=\, 1}^k
     \psi(n, e_\alpha)
     \\
 %
 \psi(n, e^{\{x, y\}}) & =
     \sum_{\alpha = x}^y
-    \sum_{\gamma \in \Gamma_\alpha^n}
-    \prod_{\beta = 1}^\alpha
+    \sum_{\gamma \,\in\, \Gamma_\alpha^n}
+    \prod_{\beta \,=\, 1}^\alpha
     \psi(\gamma_\beta, e)
     &
     \text{avec $0 \leq x \leq y$}
@@ -377,7 +377,7 @@ La concaténation, représentée par l'opérateur $\cdot$, somme la distribution
 $n$ parmi toutes les sous-structures. La disjonction, représentée par
 l'opérateur $\vert$, somme la taille des sous-structures de taille $n$. Et
 enfin, une répétition, représentée par $\{x, y\}$, est une disjonction de
-concaténations (en effet, $e^{\{2,4\}} \Leftrightarrow ee \,\vert\, eee
+concaténations (en effet, $e^{\{2,4\}} \Longleftrightarrow ee \,\vert\, eee
 \,\vert\, eeee$). Quand $y$ est non-défini (avec \code{*} et \code{+}), il est
 borné à $n$.
 
@@ -386,28 +386,28 @@ borné à $n$.
 Soit la grammaire suivante~:
 
 \begin{pre}
-f: \\
-    <a> g() \\
-g: \\
-    ( <b> <c> | <d> | f() )\{1,3\}
+f: <a> g() \\
+g: ( <b> <c> | <d> | f() )\{1,3\}
 \end{pre}
 
 Nous voulons compter le nombre de sous-structures possibles de taille 5. Nous
 commençons avec $f(5)$ qui signifie~: le nombre de sous-structures de taille 5
 que peut produire la règle \code{f}. Cette règle commence par un lexème
-\code{a}, donc le reste de la séquence, donné par la règle \code{g}, devra faire
+\code{a}, donc le reste de la séquence (donné par la règle \code{g}) devra faire
 une taille de 4. Nous calculons alors $g(4)$. La règle \code{g} est une
 répétition $r \in [1; 3]$ d'une disjonction. Avec $r = 1$, le seul moyen d'avoir
 une sous-structure de taille 4 et de passer par \code{f}, donc nous devons
-calculer $f(4)$. Avec $r = 2$, nous pouvons avoir \code{bcbc}, \code{bc} puis
-$f(2)$, \code{d} puis $f(3)$ etc. Nous arrivons au tableau suivant (les détails
-pour chaque concaténation, disjonction et répétition ne sont pas indiqués)~:
+calculer $f(4)$. Avec $r = 2$, nous pouvons avoir \code{<b> <c> <b> <c>}, ou
+\code{<b> <c>} puis $f(2)$, ou \code{<d>} puis $f(3)$ etc. Nous arrivons au
+tableau de la Figure~\ref{figure:data:random_tabular}.
+
+\begin{figure}
 
 \begin{center}
 \begin{tabular}{lcccccccccccccc}
-  & \code{f:} & $\dots$ & \code{g:} & \code{(} &
-    \code{<b> <c>} & \code{|} & \code{<d>} & \code{|} & \code{f()} & \code{)} &
-    \multicolumn{3}{c}{\code{\{1, 3\}}} \\
+$n$ & \code{f:} & $\dots$ & \code{g:} & \code{(} &
+  \code{<b> <c>} & \code{|} & \code{<d>} & \code{|} & \code{f()} & \code{)} &
+  \multicolumn{3}{c}{\code{\{1, 3\}}} \\
 \hline
 \hline
 
@@ -426,30 +426,19 @@ pour chaque concaténation, disjonction et répétition ne sont pas indiqués)~:
 \end{tabular}
 \end{center}
 
-%  On est sur $g(3)$, c'est une répétition.
-%  g(3) = 8, donc 8 sous-structures de taille 3.
-%  Quelle répétition choisir~: 1, 2 ou 3~?
-%  On prend notre fonction de répartition.
-%  On arrive à 2.
-%  Donc on doit répéter 2~fois. Comment répartir 3 lexèmes sur 2 répétitions~? (2,
-%  1) et (1, 2). Lequel choisir~? Aléatoirement et uniformément.
-%  On prend (2, 1).
-%  Sur la première répétition (r = 1), on a donc 2 lexèmes à distribuer.
-%  La disjonction peut produire m sous-structures de taille 2. La disjonction a
-%  trois branches~: bc, d ou f(). On réparti 2 parmis 3. On choisi aléatoirement
-%  parmi ceux qui sont possibles. La première branche peut produire …
-%  sous-structures, la deuxième … et la troisième …. On a donc nos probabilités~:
-%  …/…, …/… et …/…. C'est une nouvelle fonction de répartition.
+\caption{\label{figure:data:random_tabular} Bla bla.}
 
-Maintenant, nous explorons. Imaginons que nous sommes sur l'exploration de la
-règle \code{g} avec $n = 3$~: nous avons une répétition $r$ entre 1 et 3. Nous
-savons grâce à notre fonction $\psi$ que $g(3) = 8$, c'est~à~dire que \code{g}
-peut produire 8 sous-structures de taille 3. Pour choisir une valeur
-aléatoirement et uniformément pour $r$, nous devons utiliser notre fonction de
-répartition, donnée par les résultats de fonction $\psi$. Pour cela, nous
-choisissons un entier $i \in [1; 8]$ aléatoirement et uniformément. Disons que
-$i = 5$. Notre fonction de répartition nous dit alors que $r = 2$~:
-\drawfig{6.5cm}{!}{}{
+\end{figure}
+
+Maintenant, nous sommes outillés pour explorer la grammaire. Imaginons que nous
+sommes sur l'exploration de la règle \code{g} avec $n = 3$. Nous avons une
+répétition $r \in [1; 3]$. Nous savons grâce à notre fonction $\psi$ que $g(3) =
+8$, c'est~à~dire que \code{g} peut produire 8 sous-structures de taille 3.  Pour
+choisir une valeur aléatoirement et uniformément pour $r$, nous devons utiliser
+notre fonction de répartition, donnée par les résultats de la fonction $\psi$.
+Pour cela, nous choisissons un entier $i \in [1; 8]$ aléatoirement et
+uniformément.  Disons que $i = 5$. Notre fonction de répartition nous dit alors
+que $r = 2$~: \drawfig{6.5cm}{!}{}{
 
   \draw[->] (-.1,   0) -- (7, 0) node[anchor=north] {$r$};
   \draw[->] (  0, -.1) -- (0, 5) node[anchor=east]  {$n$};
@@ -473,31 +462,26 @@ $i = 5$. Notre fonction de répartition nous dit alors que $r = 2$~:
       (0, 0) (1, 3) (3, 3.95) (5, 1) (6, 0)
   };
 
-  \draw (3, -1) node {$\afrac{\uparrow}{i}$};
+  \draw (2.5, -1) node {$\afrac{\uparrow}{i}$};
 
-} Donc nous allons répéter notre disjonction 2 fois. Nous sommes sur $g$ avec
-une taille de 3, donc nous avons 3 lexèmes à répartir sur 2 répétitions. Nous
+}
+%
+Donc nous allons répéter notre disjonction 2 fois. Nous sommes sur $g$ avec une
+taille de 3, donc nous avons 3 lexèmes à répartir sur 2 répétitions. Nous
 utilisons la fonction $\Gamma$ pour calculer cette répartition~: $\Gamma_2^3 =
-((2, 1), (1, 2)$, c'est~à~dire que nous allons utiliser soit 2 lexèmes lors de
-la répétition $r = 1$ et 1 lexème pour $r = 2$, soit l'inverse. Nous choisissons
-$j \in [1; 2]$ aléatoirement et uniformément. Disons que $j = 1$, donc nous
+((2, 1), (1, 2))$ (tous les $k$-uplets contenant un 0 ont été supprimés car
+c'est impossible de distribuer 0 lexème dans une répétition). Nous allons
+utiliser soit 2 lexèmes lors de la répétition $r = 1$ et 1 lexème pour $r = 2$,
+soit l'inverse. Nous choisissons un entier $j \in [1; 2]$ aléatoirement et
+uniformément pour sélectionner le $k$-upplet. Disons que $j = 1$, donc nous
 allons utiliser $(2, 1)$.
 
-Pour la première répétition $r = 1$, nous avons 2 lexèmes à distribuer. La
-disjonction peut produire
-
-%\begin{align*}
-%f(5) =\, & 1 \,.\, g(4) \\
-%g(4) =\, & ( 0 + 0 + f(4) )\,+ \\
-%         & ( 0 + 0 + f(3) ) \,.\, ( 0 + 1 + f(1) )\,+ \\
-%         & ( 1 + 0 + f(2) ) \,.\, ( 1 + 0 + f(2) )\,+ \\
-%         & ( 0 + 1 + f(1) ) \,.\, ( 0 + 0 + f(3) )\,+ \\
-%         & ( 1 + 0 + f(2) ) \,.\, ( 0 + 1 + f(1) ) \,.\, ( 0 + 1 + f(1) )\,+ \\
-%         & ( 0 + 1 + f(1) ) \,.\, ( 1 + 0 + f(2) ) \,.\, ( 0 + 1 + f(1) )\,+ \\
-%         & ( 0 + 1 + f(1) ) \,.\, ( 0 + 1 + f(1) ) \,.\, ( 1 + 0 + f(2) ) \\
-%f(4) =\, & 1 . g(3) \\
-%g(3) =\, & \dots
-%\end{align*}
+Pour la première répétition $r = 1$, nous avons $n = 2$ lexèmes à distribuer. La
+disjonction peut produire 2 sous-structures. Nous avons besoin de calculer une
+nouvelle fonction de répartition. La disjonction a trois branches~: la première
+peut produire 1 sous-structure, la deuxième 0 et la dernière 1 sous-structure.
+La probabilité de parcourir la première branche ou la dernière branche est de
+$\tfrac{1}{2}$. Et ainsi de suite.
 
 \end{example}
 
