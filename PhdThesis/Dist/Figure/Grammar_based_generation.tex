@@ -1,0 +1,54 @@
+%%
+\pgfsetcolor{black}
+  % Edge: grammar -> sequence
+  \draw [->] (69.556bp,72bp) .. controls (105.93bp,72bp) and (163.92bp,72bp)  .. (212.79bp,72bp);
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (117bp,82.5bp) node {génération};
+  % Edge: sequence -> result
+  \draw [->] (273.31bp,72bp) .. controls (311.93bp,72bp) and (379.86bp,72bp)  .. (431.73bp,72bp);
+  \draw (377bp,81.5bp) node {concrétisation};
+  % Edge: sequenceX -> resultX
+  \draw [->] (322.17bp,18bp) .. controls (356.21bp,18bp) and (394.47bp,18bp)  .. (431.9bp,18bp);
+  % Edge: grammarX -> sequenceX
+  \draw [->] (62.09bp,18bp) .. controls (85.245bp,18bp) and (120.45bp,18bp)  .. (163.8bp,18bp);
+  % Node: grammar
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw [state] (35bp,72bp) ellipse (35bp and 18bp);
+  \draw (35bp,72bp) node {grammaire};
+\end{scope}
+  % Node: resultX
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (459bp,18bp) node {abcdef};
+\end{scope}
+  % Node: sequence
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw [state] (243bp,72bp) ellipse (30bp and 18bp);
+  \draw (243bp,72bp) node {séquence};
+\end{scope}
+  % Node: result
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw [state,accepting] (459bp,72bp) ellipse (27bp and 18bp);
+  \draw (459bp,72bp) node {mot};
+\end{scope}
+  % Node: grammarX
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (35bp,18bp) node {PP};
+\end{scope}
+  % Node: sequenceX
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (243bp,18bp) node {[[a $\mapsto \dots$], [bc $\mapsto \dots$], $\dots$]};
+\end{scope}
+%

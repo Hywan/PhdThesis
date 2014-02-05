@@ -1,0 +1,22 @@
+digraph {
+    graph [rankdir=LR];
+    node  [style="state"];
+
+    subgraph {
+        grammarX  -> sequenceX;
+        sequenceX -> resultX;
+    }
+
+    subgraph {
+        grammar  -> sequence [label=" ", texlbl="génération"    ];
+        sequence -> result   [label=" ", texlbl="concrétisation"];
+    }
+
+    grammarX  [shape=plaintext, label=" ", texlbl="PP"                                                             ];
+    sequenceX [shape=plaintext, width=2.2, label=" ", texlbl="[[a $\mapsto \dots$], [bc $\mapsto \dots$], $\dots$]"];
+    resultX   [shape=plaintext, label=" ", texlbl="abcdef"                                                         ];
+
+    grammar  [label=" ", texlbl="grammaire"                   ];
+    sequence [label=" ", texlbl="séquence"                    ];
+    result   [style="state,accepting", label=" ", texlbl="mot"];
+}

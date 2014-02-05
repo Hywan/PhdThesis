@@ -250,8 +250,8 @@ des lexèmes déclarés avec la syntaxe \code{<token>} (l'autre construction,
 \code{::token::}, n'autorise pas les lexèmes à apparaître dans l'arbre). La
 Figure~\ref{figure:data:ast} montre l'AST résultant des
 Exemples~\ref{example:data:lexical_analyze} et
-\ref{example:data:syntactic_analyze}. \\
-
+\ref{example:data:syntactic_analyze}.
+%
 \begin{figure}
 
 \fig{\textwidth}{!}{AST.tex}
@@ -260,6 +260,12 @@ Exemples~\ref{example:data:lexical_analyze} et
 /><c>foo</c></a>}.}
 
 \end{figure}
+%
+Un AST est une structure récursive. Nous pouvons lui appliquer un {\strong
+visiteur}~\acite{design-patterns}. Ce \inenglish{design-pattern} permet à
+l'utilisateur d'appliquer des traitements supplémentaires~: des contraintes qui
+ne peuvent pas être représenter par la grammaire, comme par exemple une
+vérification de typage. \\
 
 Nous parlons de {\strong compilateur de compilateur} car la grammaire est tout
 d'abord transformée en compilateur, c'est à dire en un analyseur lexical et un
@@ -269,8 +275,6 @@ Ce compilateur de compilateur $LL(\star)$ nous permet de valider une donnée
 textuelle complexe. Ainsi, nous respectons la première caractéristique d'un
 domaine réaliste~: la prédicabilité. Les sections suivantes illustrent plusieurs
 algorithmes de générations à partir d'une grmmaire.
-
-
 
 %\subsubsection{Utiliser PP avec le domaine réaliste \code{Grammar}}
 %
@@ -289,20 +293,39 @@ Nous décrivons maintenant l'utilisation de grammaire pour la génération de
 données textuelles complexes, afin d'assurer la caractéristique de générabilité
 des domaines réalistes.
 
-Nous proposons pour le domaine réaliste \code{Grammar} trois algorithmes
-différents~: un génération aléatoire uniforme, un 
+Nous proposons trois algorithmes de générations différents~: aléatoire et
+uniforme, exhaustive bornée et enfin basée sur la couverture. Le principe de
+ces algorithmes est résumé dans la Figure~\ref{figure:data:grammar}.
+%
+\begin{figure}
 
-\subsubsection{Génération isotropique de lexèmes}
-\label{subsection:data:isotropic_generation}
+\fig{\textwidth}{!}{Grammar_based_generation.tex}
+
+\caption{\label{figure:data:grammar} Principe des algorithmes de générations de
+données~: à partir d'une grammaire est extraite une séquence de lexème qui est
+ensuite concrétisée vers un mot.}
+
+\end{figure}
+%
+Ils vont générer différentes séquences de lexèmes à partir d'une grammaire, pour
+ensuite les concrétiser vers une donnée textuelle. L'algorithme de
+concrétisation est présenté en dernier.
+
+Pour générer des séquences de lexèmes, les algorithmes vont explorer les règles
+de la grammaire selon différentes contraintes~: la taille de la séquence, la
+fréquence d'apparition des lexèmes, la quantité de séquences etc.
 
 \subsubsection{Génération aléatoire et uniforme}
 \label{subsection:data:random_uniform_generation}
 
-Sans autre critère de génération que la grammaire et la taille de la donnée à
-générer, la génération aléatoire et uniforme peut être retenue comme stratégie.
-Nous attentions que le choix soit non-biaisé, avec une distribution des
-probabilités qui soit uniforme parmis toutes les données générées possibles.
-Pour un…
+Cet algorithme permet de générer des séquences de lexèmes de taille $n$ fixe.
+Chaque séquence est générée aléatoirement et avec une distribution uniforme
+parmi toutes les séquences possibles de taille $n$. Afin d'assurer cette
+uniformité, nous allons nous baser sur les travaux de \acitep{FlajoletZC94}. Les
+auteurs proposent une méthode de calcul récursive pour compter le nombre de
+sous-structures de taille $n$. Ce dénombrement va nous permettre de calculer des
+fonctions de répartition pour guider l'algorithme dans l'exploration des règles
+à chaque point de choix rencontré.
 
 À chaque construction du langage PP est associée une fonction de dénombrement
 $\psi$ qui compte le nombre de sous-structures de taille $n$ qu'il est possible
@@ -322,7 +345,7 @@ de générer. Ainsi~:
     \psi(\gamma_\alpha, e_\alpha)
     \\
 %
-\psi(n, e_1 \vert \dots \vert e_k) & =
+\psi(n, e_1 \,\vert\, \dots \,\vert\, e_k) & =
     \sum_{\alpha = 1}^k
     \psi(n, e_\alpha)
     \\
@@ -339,29 +362,129 @@ de générer. Ainsi~:
 
 Dans la première formule, $\delta_i^j$ est le symbole de Kronecker, définie
 comme 1 si $i = j$, 0 sinon. $\Gamma_k^n$ désigne l'ensemble des $k$-uplets dont
-la somme des éléments est $n$. Par exemple, $\Gamma_3^2 = \{(2, 0, 0), (1, 1,
-0), (1, 0, 1), (0, 2, 0), (0, 1, 1), (0, 0, 2)\}$. Pour chaque $k$-uplet
-$\gamma$ et chaque $\alpha$ dans $\{1, \dotso, k\}$, $\gamma_\alpha$ désigne le
-$\alpha$\textsuperscript{ième} élément de $\gamma$. Pour chaque opérateur:
+la somme des éléments est égale à $n$. Pour chaque $k$-uplet $\gamma$ et chaque
+$\alpha \in [1; k]$, $\gamma_\alpha$ désigne le $\alpha$\textsuperscript{ième}
+élément de $\gamma$.
+%
+Par exemple~:
+%
+$$\Gamma_3^2 = \{(2, 0, 0), (1, 1, 0), (1, 0, 1), (0, 2, 0), (0, 1, 1), (0, 0,
+2)\}$$
+%
+et pour le premier $k$-uplet, $\gamma_1 = 2$ et $\gamma_2 = \gamma_3 = 0$.
 
-\begin{itemize}
+La concaténation, représentée par l'opérateur $\cdot$, somme la distribution de
+$n$ parmi toutes les sous-structures. La disjonction, représentée par
+l'opérateur $\vert$, somme la taille des sous-structures de taille $n$. Et
+enfin, une répétition, représentée par $\{x, y\}$, est une disjonction de
+concaténations (en effet, $e^{\{2,4\}} \Leftrightarrow ee \,\vert\, eee
+\,\vert\, eeee$). Quand $y$ est non-défini (avec \code{*} et \code{+}), il est
+borné à $n$.
 
-\item la concaténation $\cdot$ somme la distribution de $n$ parmis toutes les
-sous-constructions~;
+\begin{example}[Exploration aléatoire et uniforme]
 
-\item la disjonction $\vert$ somme les sous-constructions de taille $n$~;
+Soit la grammaire suivante~:
 
-\item la répétition $\{x, y\}$ est une disjonction de concaténations.
+\begin{pre}
+f: \\
+    <a> g() \\
+g: \\
+    ( <b> <c> | <d> | f() )\{1,3\}
+\end{pre}
 
-\end{itemize}
+Nous voulons compter le nombre de sous-structures possibles de taille 5. Nous
+commençons avec $f(5)$ qui signifie~: le nombre de sous-structures de taille 5
+que peut produire la règle \code{f}. Cette règle commence par un lexème
+\code{a}, donc le reste de la séquence, donné par la règle \code{g}, devra faire
+une taille de 4. Nous calculons alors $g(4)$. La règle \code{g} est une
+répétition $r \in [1; 3]$ d'une disjonction. Avec $r = 1$, le seul moyen d'avoir
+une sous-structure de taille 4 et de passer par \code{f}, donc nous devons
+calculer $f(4)$. Avec $r = 2$, nous pouvons avoir \code{bcbc}, \code{bc} puis
+$f(2)$, \code{d} puis $f(3)$ etc. Nous arrivons au tableau suivant (les détails
+pour chaque concaténation, disjonction et répétition ne sont pas indiqués)~:
+
+\begin{center}
+\begin{tabular}{crr}
+  & $f$ & $g$ \\
+\hline
+\hline
+5 & 24  & 73 \\
+4 &  8  & 24 \\
+3 &  3  &  8 \\
+2 &  1  &  3 \\
+1 &  0  &  1
+\end{tabular}
+\end{center}
+
+Maintenant, nous explorons. Imaginons que nous sommes sur l'exploration de la
+règle \code{g} avec $n = 3$, pour nous intéresser au calcul de la fonction de
+répartition d'une répétition. Nous savons que $g(3) = 8$. Nous tirons un nombre
+$i \in [0; 8]$ aléatoirement et uniformément. Nous avons tiré $i = 5$. Notre
+fonction $\psi$ nous permet de calculer la fonction de répartition suivante~:
+%
+\drawfig{6.5cm}{!}{}{
+
+  \draw[->] (-.1,   0) -- (7, 0) node[anchor=north] {$r$};
+  \draw[->] (  0, -.1) -- (0, 5) node[anchor=east]  {$n$};
+
+  \draw (1, 0) node[anchor=north] {1}
+        (3, 0) node[anchor=north] {2}
+        (5, 0) node[anchor=north] {3};
+
+  \draw (0, 1) node[anchor=east] {1}
+        (0, 2) node[anchor=east] {2}
+        (0, 3) node[anchor=east] {3}
+        (0, 4) node[anchor=east] {4};
+
+  \draw[thick] (0, 3) -- (2, 3)
+               (2, 4) -- (4, 4)
+               (4, 1) -- (6, 1)
+               (2, 0) -- (2, 4)
+               (4, 0) -- (4, 4)
+               (6, 0) -- (6, 1);
+
+  \draw (3, -1) node {$\afrac{\uparrow}{i}$};
+
+}
+%
+Pour $i = 5$, nous savons qu'il faut au maximum 2 répétitions de notre
+disjonction dans \code{g} pour produire 3 lexèmes. Nous devons répartir 3 sur la
+première et deuxième répétition~: soit 2 et 1, ou 1 et 2. Ce choix se fait
+aléatoirement. Disons que nous répartissons 2 lexèmes pour la première
+répétition, et 1 lexème pour la seconde répétition. La première répétition nous
+permet de produire \code{bc}, et la seconde nous permet de produire \code{d}.
+
+Autrement dit, si nous avons par exemple une disjonction entre deux branches,
+que la somme des sous-structures est 100, que la première branche peut produire
+30 sous-structures et que la seconde 70, alors la probabilité d'explorer la
+première branche est $\tfrac{3}{10}$ et celle de la seconde branche est
+$\tfrac{7}{10}$.
+
+%\begin{align*}
+%f(5) =\, & 1 \,.\, g(4) \\
+%g(4) =\, & ( 0 + 0 + f(4) )\,+ \\
+%         & ( 0 + 0 + f(3) ) \,.\, ( 0 + 1 + f(1) )\,+ \\
+%         & ( 1 + 0 + f(2) ) \,.\, ( 1 + 0 + f(2) )\,+ \\
+%         & ( 0 + 1 + f(1) ) \,.\, ( 0 + 0 + f(3) )\,+ \\
+%         & ( 1 + 0 + f(2) ) \,.\, ( 0 + 1 + f(1) ) \,.\, ( 0 + 1 + f(1) )\,+ \\
+%         & ( 0 + 1 + f(1) ) \,.\, ( 1 + 0 + f(2) ) \,.\, ( 0 + 1 + f(1) )\,+ \\
+%         & ( 0 + 1 + f(1) ) \,.\, ( 0 + 1 + f(1) ) \,.\, ( 1 + 0 + f(2) ) \\
+%f(4) =\, & 1 . g(3) \\
+%g(3) =\, & \dots
+%\end{align*}
+
+\end{example}
 
 Pour explorer une règle, nous utilisons des poids représentant le nombre de
 sous-structures pour chaque sous-règle. Alors, nous choisissons uniformément et
 aléatoirement un nombre pour sélectionner la prochaine sous-règle à explorer en
 fonction de son poids.
 
+
+Parler de la programmation récursive.
+
 \subsubsection{Génération exhaustive bornée}
-\label{subsection:data:bounded_exaustive_generation}
+\label{subsection:data:bounded_exhaustive_generation}
 
 \begin{align*}
 %
@@ -449,3 +572,6 @@ fonction de son poids.
     \bigoplus_{i = x}^y \phi(p, \underbrace{e \cdot \dotso \cdot e}_i)
 %
 \end{align*}
+
+\subsubsection{Génération isotropique de lexèmes}
+\label{subsection:data:isotropic_generation}
