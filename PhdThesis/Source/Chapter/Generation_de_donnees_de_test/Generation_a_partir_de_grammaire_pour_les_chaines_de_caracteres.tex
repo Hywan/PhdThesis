@@ -404,24 +404,51 @@ $f(2)$, \code{d} puis $f(3)$ etc. Nous arrivons au tableau suivant (les détails
 pour chaque concaténation, disjonction et répétition ne sont pas indiqués)~:
 
 \begin{center}
-\begin{tabular}{crr}
-  & $f$ & $g$ \\
+\begin{tabular}{lcccccccccccccc}
+  & \code{f:} & $\dots$ & \code{g:} & \code{(} &
+    \code{<b> <c>} & \code{|} & \code{<d>} & \code{|} & \code{f()} & \code{)} &
+    \multicolumn{3}{c}{\code{\{1, 3\}}} \\
 \hline
 \hline
-5 & 24  & 73 \\
-4 &  8  & 24 \\
-3 &  3  &  8 \\
-2 &  1  &  3 \\
-1 &  0  &  1
+
+& & & & & & & & & & $r = $ & 1 & 2 & 3 \\
+
+\hline
+
+5 & 24 & & 73 & 24 & 0 & & 0 & & - & & (24, & 28, & 21)\\
+4 & 8  & & 24 & 8  & 0 & & 0 & & - & & (8, & 10, & 6) \\
+3 & 3  & & 8  & 3  & 0 & & 0 & & - & & (3, & 4, & 1) \\
+2 & 1  & & 3  & 2  & 1 & & 0 & & - & & (2, & 1, & -) \\
+1 & 0  & & 1  & 1  & 0 & & 1 & & - & & (1, & -, & -) \\
+
+\hline
+
 \end{tabular}
 \end{center}
 
+%  On est sur $g(3)$, c'est une répétition.
+%  g(3) = 8, donc 8 sous-structures de taille 3.
+%  Quelle répétition choisir~: 1, 2 ou 3~?
+%  On prend notre fonction de répartition.
+%  On arrive à 2.
+%  Donc on doit répéter 2~fois. Comment répartir 3 lexèmes sur 2 répétitions~? (2,
+%  1) et (1, 2). Lequel choisir~? Aléatoirement et uniformément.
+%  On prend (2, 1).
+%  Sur la première répétition (r = 1), on a donc 2 lexèmes à distribuer.
+%  La disjonction peut produire m sous-structures de taille 2. La disjonction a
+%  trois branches~: bc, d ou f(). On réparti 2 parmis 3. On choisi aléatoirement
+%  parmi ceux qui sont possibles. La première branche peut produire …
+%  sous-structures, la deuxième … et la troisième …. On a donc nos probabilités~:
+%  …/…, …/… et …/…. C'est une nouvelle fonction de répartition.
+
 Maintenant, nous explorons. Imaginons que nous sommes sur l'exploration de la
-règle \code{g} avec $n = 3$, pour nous intéresser au calcul de la fonction de
-répartition d'une répétition. Nous savons que $g(3) = 8$. Nous tirons un nombre
-$i \in [0; 8]$ aléatoirement et uniformément. Nous avons tiré $i = 5$. Notre
-fonction $\psi$ nous permet de calculer la fonction de répartition suivante~:
-%
+règle \code{g} avec $n = 3$~: nous avons une répétition $r$ entre 1 et 3. Nous
+savons grâce à notre fonction $\psi$ que $g(3) = 8$, c'est~à~dire que \code{g}
+peut produire 8 sous-structures de taille 3. Pour choisir une valeur
+aléatoirement et uniformément pour $r$, nous devons utiliser notre fonction de
+répartition, donnée par les résultats de fonction $\psi$. Pour cela, nous
+choisissons un entier $i \in [1; 8]$ aléatoirement et uniformément. Disons que
+$i = 5$. Notre fonction de répartition nous dit alors que $r = 2$~:
 \drawfig{6.5cm}{!}{}{
 
   \draw[->] (-.1,   0) -- (7, 0) node[anchor=north] {$r$};
@@ -442,23 +469,22 @@ fonction $\psi$ nous permet de calculer la fonction de répartition suivante~:
                (2, 0) -- (2, 4)
                (4, 0) -- (4, 4)
                (6, 0) -- (6, 1);
+  \draw[ultra thick] plot [smooth] coordinates{
+      (0, 0) (1, 3) (3, 3.95) (5, 1) (6, 0)
+  };
 
   \draw (3, -1) node {$\afrac{\uparrow}{i}$};
 
-}
-%
-Pour $i = 5$, nous savons qu'il faut au maximum 2 répétitions de notre
-disjonction dans \code{g} pour produire 3 lexèmes. Nous devons répartir 3 sur la
-première et deuxième répétition~: soit 2 et 1, ou 1 et 2. Ce choix se fait
-aléatoirement. Disons que nous répartissons 2 lexèmes pour la première
-répétition, et 1 lexème pour la seconde répétition. La première répétition nous
-permet de produire \code{bc}, et la seconde nous permet de produire \code{d}.
+} Donc nous allons répéter notre disjonction 2 fois. Nous sommes sur $g$ avec
+une taille de 3, donc nous avons 3 lexèmes à répartir sur 2 répétitions. Nous
+utilisons la fonction $\Gamma$ pour calculer cette répartition~: $\Gamma_2^3 =
+((2, 1), (1, 2)$, c'est~à~dire que nous allons utiliser soit 2 lexèmes lors de
+la répétition $r = 1$ et 1 lexème pour $r = 2$, soit l'inverse. Nous choisissons
+$j \in [1; 2]$ aléatoirement et uniformément. Disons que $j = 1$, donc nous
+allons utiliser $(2, 1)$.
 
-Autrement dit, si nous avons par exemple une disjonction entre deux branches,
-que la somme des sous-structures est 100, que la première branche peut produire
-30 sous-structures et que la seconde 70, alors la probabilité d'explorer la
-première branche est $\tfrac{3}{10}$ et celle de la seconde branche est
-$\tfrac{7}{10}$.
+Pour la première répétition $r = 1$, nous avons 2 lexèmes à distribuer. La
+disjonction peut produire
 
 %\begin{align*}
 %f(5) =\, & 1 \,.\, g(4) \\
