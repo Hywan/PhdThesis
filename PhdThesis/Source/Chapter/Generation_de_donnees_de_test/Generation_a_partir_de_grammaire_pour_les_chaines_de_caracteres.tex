@@ -751,17 +751,44 @@ Soit l'expression régulière suivante~:
 
 $$\code{([ae]+|[x-y]!)\{1,3\}}$$
 
-\begin{tabular}{ll}
+Nous allons parcourir cette expression comme si c'était un arbre, et à chaque
+point de choix, nous allons faire un tirage aléatoire uniforme pour continuer
+notre parcours~:
 
-\code{\ingray{([ae]+|[x-y]!)}\{1,3\}} & bla bla \\
-\code{([ae]+|[x-y]!)\ingray{([ae]+|[x-y]!)}} & bla bla \\
-\code{([ae]+)\ingray{([ae]+|[x-y]!)}} & bla bla \\
-\code{[ae][ae]\ingray{([ae]+|[x-y]!)}} & bla bla \\
-\code{e[ae]\ingray{([ae]+|[x-y]!)}} & bla bla \\
-\code{ea\ingray{([ae]+|[x-y]!)}} & bla bla \\
-\code{\ingray{ea}([x-y]!)} & bla bla \\
-\code{eay!} & bla bla
+\noindent
+\begin{tabularx}{\textwidth}{XX}
 
-\end{tabular}
+\code{\ingray{([ae]+|[w-z]!)}\{1,3\}} &
+    nous tirons le nombre de répétitions $r_1 \in [1; 3]$, disons $r_1 = 2$~; \\
+
+\code{([ae]+|[w-z]!)\ingray{([ae]+|[w-z]!)}} &
+    nous traitons la première répétition qui est une disjonction, nous traitons
+    la branche $d_1 \in [1; 2]$, disons $d_1 = 1$~; \\
+
+\code{([ae]+)\ingray{([ae]+|[w-z]!)}} &
+    nous avons une répétition $r_2 \in [1; +\infty[$, disons $r_2 = 2$~; \\
+
+\code{[ae]\ingray{[ae]([ae]+|[w-z]!)}} &
+    nous avons une classe de caractères, c'est équivalent ici à une disjonction
+    entre \code{a} et \code{e}, nous choisissons \code{e}~;\\
+
+\code{\ingray{e}[ae]\ingray{([ae]+|[w-z]!)}} &
+    nous traitons la seconde répétition de $r_2$ et nous choisissons \code{a}~; \\
+
+\code{\ingray{ea}([ae]+|[w-z]!)} & 
+    nous traitons la seconde répétition de $r_1$ qui est une disjonction, nous
+    traitons la branche $d_2 \in [1; 2]$, disons $d_2 = 2$~; \\
+
+\code{\ingray{ea}([w-z]\ingray{!})} &
+    nous avons une classe de caractères qui est une plage entre \code{w} et
+    \code{z}, nous choisissons \code{y}~; \\
+
+\code{eay!} &
+    nous finissons avec la concaténation, que nous avons déjà appliqué tout le
+    long de cet exemple.
+
+\end{tabularx}
+
+Chaque tirage a été fait aléatoirement et uniformément, mais localement.
 
 \end{example}
