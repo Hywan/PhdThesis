@@ -22,7 +22,7 @@ d'une langue, et de {\strong règles} exprimant l'enchaînement possible des
 lexèmes les uns par rapport aux autres. Le langage \inenglish{PHP Parser},
 abrégé PP, est utilisé pour exprimer des grammaires \inenglish{top-down} et
 algébriques. La syntaxe est principalement inspirée de YACC~\acite{Johnson75} et
-JavaCC avec l'ajout de nouvelles constructions.
+JavaCC~\acite{javacc} avec l'ajout de nouvelles constructions.
 
 La déclaration d'un lexème est de la forme suivante~:
 
@@ -40,15 +40,13 @@ lexèmes pour la phase d'analyse lexicale (détaillée ci-après). Une déclarat
 \code{\%skip} est similaire à une déclaration \code{\%token} excepté qu'elle
 représente un lexème à «~sauter~», c'est~à~dire à ne pas retenir pour la suite.
 Typiquement les espaces dans une expression arithmétique n'ont pas d'importance,
-nous pouvons les sauter.
-
-Si un espace de nom source n'est pas précisé, alors il prendra la valeur
-\code{default}, qui est l'espace de nom par défaut. L'espace de nom de
-destination peut être de la forme spéciale \code{\_\_shift\_\_ * $j$}, avec $j
-\geq 1$, ou simplement \code{\_\_shift\_\_} (équivalent à avoir $j = 1$), pour
-revenir $j$ espaces de nom en arrière. En effet, il est parfois possible
-d'accéder à un lexème depuis plusieurs espaces de nom différents. Cette forme
-spéciale répond à cette problématique. \\
+nous pouvons les sauter. Si un espace de nom source n'est pas précisé, alors il
+prendra la valeur \code{default}, qui est l'espace de nom par défaut. L'espace
+de nom de destination peut être de la forme spéciale \code{\_\_shift\_\_ * $j$},
+avec $j \geq 1$, ou simplement \code{\_\_shift\_\_} (équivalent à avoir $j =
+1$), pour revenir $j$ espaces de nom en arrière. En effet, il est parfois
+possible d'accéder à un lexème depuis plusieurs espaces de nom différents. Cette
+forme spéciale répond à cette problématique. \\
 
 \begin{figure}
 
@@ -106,15 +104,15 @@ processus de compilation.
 Si un lexème est suivi de \code{[$i$]} avec $i \geq 0$, nous avons une
 unification. C'est une nouvelle construction. Une unification pour les lexèmes
 implique que tous les \code{token[$i$]} avec le même $i$ ont la même valeur
-localement à la règle.  Remarquons la présence d'une unification de lexème dans
+localement à la règle.  Remarquons la présence d'une unification de lexèmes dans
 la Figure~\ref{figure:data:xml}~: \code{name[0]} indique que les balises
 d'ouverture et de fermeture doivent avoir le même nom. Ainsi, la donnée
 \code{<foo>…</foo>} sera considérée comme valide, alors que \code{<foo>…</bar>}
 sera considérée comme invalide. Un autre usage courant est la gestion des
-guillemets représenté par le lexème \code{\%token quote '|"}, soit un guillemet simple, soit
-un double. Ainsi, \code{"…"} comme \code{'…'} doivent être valides, alors que
-\code{"…'} ou \code{'…"} devront être invalides. Pour cela, nous écrirons par
-exemple \code{quote[1]} dans une règle.
+guillemets représenté par le lexème \code{\%token quote '|"}, soit un guillemet
+simple, soit un double. Ainsi, \code{"…"} comme \code{'…'} doivent être valides,
+alors que \code{"…'} ou \code{'…"} devront être invalides. Pour cela, nous
+écrirons par exemple \code{quote[1]} dans une règle.
 
 Nous trouverons la grammaire du langage PP en langage PP dans la
 Figure~\ref{figure:appendices:grammar_of_pp} à la
@@ -128,6 +126,8 @@ Figure~\ref{figure:data:compiler}. À partir d'un {\strong mot} (d'une donnée
 textuelle), nous allons extraire une {\strong séquence} de lexèmes grâce à
 l'analyseur {\strong lexical}. Ensuite, cette séquence sera {\strong dérivée}
 grâce à l'analyseur {\strong syntaxique} pour savoir si elle est valide ou non.
+Un \inenglish{Abstract Syntax Tree}, abrégé AST, sera produit (détailé
+ci-après).
 %
 \begin{figure}
 
@@ -246,8 +246,8 @@ Une fois que la donnée a été validée par l'analyseur syntaxique, le compilat
 est capable de produire un AST, pour \inenglish{Abstract Syntax Tree}, soit un
 arbre de syntaxe abstrait. Les constructions \code{\#node} dans la grammaire
 permettent de forcer la création d'un nœud dont les enfants seront des nœuds ou
-des lexèmes déclarés avec la syntaxe \code{<token>} (l'autre construction,
-\code{::token::}, n'autorise pas les lexèmes à apparaître dans l'arbre). La
+des lexèmes déclarés avec la syntaxe \code{<token>} (l'autre construction
+\code{::token::} n'autorise pas les lexèmes à apparaître dans l'arbre). La
 Figure~\ref{figure:data:ast} montre l'AST résultant des
 Exemples~\ref{example:data:lexical_analyze} et
 \ref{example:data:syntactic_analyze}.
@@ -264,7 +264,7 @@ Exemples~\ref{example:data:lexical_analyze} et
 Un AST est une structure récursive. Nous pouvons lui appliquer un {\strong
 visiteur}~\acite{design-patterns}. Ce \inenglish{design-pattern} permet à
 l'utilisateur d'appliquer des traitements supplémentaires~: des contraintes qui
-ne peuvent pas être représenter par la grammaire, comme par exemple une
+ne peuvent pas être représentées par la grammaire, comme par exemple une
 vérification de typage. \\
 
 Nous parlons de {\strong compilateur de compilateur} car la grammaire est tout
@@ -274,17 +274,7 @@ syntaxique. La grammaire nous évite d'avoir à écrire un compilateur à la mai
 Ce compilateur de compilateur $LL(\star)$ nous permet de valider une donnée
 textuelle complexe. Ainsi, nous respectons la première caractéristique d'un
 domaine réaliste~: la prédicabilité. Les sections suivantes illustrent plusieurs
-algorithmes de générations à partir d'une grmmaire.
-
-%\subsubsection{Utiliser PP avec le domaine réaliste \code{Grammar}}
-%
-%Une grammaire et sa technique classique de compilation associée permet d'assurer
-%la caractéristique de prédicabilité d'un domaine réaliste, en vérifiant qu'une
-%donnée est correctement structurée par rapport à une grammaire…
-%
-%\begin{pre}
-%@requires payload: grammar('Json.pp');
-%\end{pre}
+algorithmes de générations à partir d'une grammaire.
 
 \subsection{Algorithmes de génération de données à partir de grammaires}
 \label{subsection:data:algorithms}
@@ -377,9 +367,9 @@ La concaténation, représentée par l'opérateur $\cdot$, somme la distribution
 $n$ parmi toutes les sous-structures. La disjonction, représentée par
 l'opérateur $\vert$, somme la taille des sous-structures de taille $n$. Et
 enfin, une répétition, représentée par $\{x, y\}$, est une disjonction de
-concaténations (en effet, $e^{\{2,4\}} \Longleftrightarrow ee \,\vert\, eee
-\,\vert\, eeee$). Quand $y$ est non-défini (avec \code{*} et \code{+}), il est
-borné à $n$.
+concaténations (en effet, $e^{\{2,4\}} \Longleftrightarrow e \cdot e \,\vert\, e
+\cdot e \cdot e \,\vert\, e \cdot e \cdot e \cdot e$). Quand $y$ est non-défini
+(avec \code{*} et \code{+}), il est borné à $n$.
 
 \begin{example}[Exploration aléatoire et uniforme]
 \label{example:data:random_uniform_generation}
@@ -477,20 +467,20 @@ obtenons $r = 2$.
 %
 %}
 %
-Donc nous allons répéter notre disjonction 2 fois. Nous sommes sur \code{g} avec
-une taille de 3, donc nous avons 3 lexèmes à répartir sur 2 répétitions. Nous
+Donc nous allons répéter notre disjonction 2~fois. Nous sommes sur \code{g} avec
+une taille de 3, donc nous avons 3~lexèmes à répartir sur 2~répétitions. Nous
 utilisons la fonction $\Gamma$ pour calculer cette répartition~: $\Gamma_2^3 =
-((2, 1), (1, 2))$ (tous les $k$-uplets contenant un 0 ont été supprimés car
+\{(2, 1), (1, 2)\}$ (tous les $k$-uplets contenant un 0 ont été supprimés car
 c'est impossible de distribuer 0 lexème dans une répétition). Nous allons
-utiliser soit 2 lexèmes lors de la répétition $r = 1$ et 1 lexème pour $r = 2$,
+utiliser soit 2~lexèmes lors de la répétition $r = 1$ et 1 lexème pour $r = 2$,
 soit l'inverse. Nous choisissons un entier $j \in [1; 2]$ aléatoirement et
-uniformément pour sélectionner le $k$-upplet. Disons que $j = 1$, donc nous
+uniformément pour sélectionner le $k$-uplet. Disons que $j = 1$, donc nous
 allons utiliser $(2, 1)$.
 
 Pour la première répétition $r = 1$, nous avons $n = 2$ lexèmes à distribuer. La
-disjonction peut produire 2 sous-structures. Nous avons besoin de calculer une
+disjonction peut produire 2~sous-structures. Nous avons besoin de calculer une
 nouvelle fonction de répartition. La disjonction a trois branches~: la première
-peut produire 1 sous-structure, la deuxième 0 et la dernière 1 sous-structure.
+peut produire 1~sous-structure, la deuxième 0 et la dernière 1 sous-structure.
 La probabilité de parcourir la première branche ou la dernière branche est de
 $\tfrac{1}{2}$. Et ainsi de suite.
 
