@@ -14,9 +14,9 @@ digraph {
 
     wordX     [shape=plaintext, label=" ", texlbl="abcdef"                                                         ];
     sequenceX [shape=plaintext, width=2.2, label=" ", texlbl="[[a $\mapsto \dots$], [bc $\mapsto \dots$], $\dots$]"];
-    resultX   [shape=plaintext, label=" ", texlbl="valide/invalide"                                                ];
+    resultX   [shape=plaintext, label=" ", texlbl="\begin{tikzpicture}[node distance=2cm] \node [state, scale=.3] (foo1) {}; \node [state, scale=.3, below left of=foo1] (foo2) {}; \node [state, scale=.3, below right of=foo1] (foo3) {}; \node [state, scale=.3, below left of=foo3] (foo4) {}; \node [state, scale=.3, below right of=foo3] (foo5) {}; \draw [thick] (foo1) -- (foo2) (foo1) -- (foo3) (foo3) -- (foo4) (foo3) -- (foo5); \end{tikzpicture}"];
 
-    word     [label=" ", texlbl="mot"                              ];
-    sequence [label=" ", texlbl="séquence"                         ];
-    result   [style="state,accepting", label=" ", texlbl="résultat"];
+    word     [label=" ", texlbl="mot"                         ];
+    sequence [label=" ", texlbl="séquence"                    ];
+    result   [style="state,accepting", label=" ", texlbl="AST"];
 }

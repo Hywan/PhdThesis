@@ -93,6 +93,8 @@
 \def\lor{\vee}
 \def\mvert{$\;\;|\;\;$}
 \def\union{\cup}
+\newcommand{\afrac}[2]{\genfrac{}{}{0pt}{0}{#1}{#2}}
+\newcommand{\amultiset}[1]{\{\!\!\{#1\}\!\!\}}
 
 % Language.
 \newcommand{\inenglish}[1]{\foreignlanguage{english}{\em #1}}
@@ -102,10 +104,13 @@
 \newcommand{\acitep}[1]{\citealp{#1}}  % plain citation
 \newcommand{\acitei}[1]{\citet{#1}}    % inline citation
 
+% Color
+\definecolor{light-gray}{gray}{0.8}
+\newcommand{\ingray}[1]{\textcolor{light-gray}{#1}}
+
 % Others.
 \def\aand{\code{and}\xspace}
 \def\aor{\code{or}\xspace}
 \def\atsign{\code{@}\xspace}
 \def\bslash{\symbol{`\\}}
 \newcommand{\aquote}[1]{"#1"}
-\newcommand{\afrac}[2]{\genfrac{}{}{0pt}{0}{#1}{#2}}

@@ -1,54 +1,54 @@
 %%
 \pgfsetcolor{black}
   % Edge: word -> sequence
-  \draw [->] (54.363bp,72bp) .. controls (85.385bp,72bp) and (137.18bp,72bp)  .. (182.95bp,72bp);
+  \draw [->] (54.363bp,77bp) .. controls (85.385bp,77bp) and (137.18bp,77bp)  .. (182.95bp,77bp);
   \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
   \pgfsetstrokecolor{strokecol}
-  \draw (94bp,81.5bp) node {lexicale};
+  \draw (94bp,86.5bp) node {lexicale};
   % Edge: wordX -> sequenceX
-  \draw [->] (54.363bp,18bp) .. controls (72.785bp,18bp) and (98.534bp,18bp)  .. (133.95bp,18bp);
+  \draw [->] (54.363bp,20bp) .. controls (72.785bp,20bp) and (98.534bp,20bp)  .. (133.95bp,20bp);
   % Edge: sequence -> result
-  \draw [->] (243.13bp,72bp) .. controls (281.77bp,72bp) and (350.03bp,72bp)  .. (402.69bp,72bp);
-  \draw (340bp,82.5bp) node {syntaxique};
+  \draw [->] (243.23bp,77bp) .. controls (279.74bp,77bp) and (342.2bp,77bp)  .. (391.74bp,77bp);
+  \draw (340bp,87.5bp) node {syntaxique};
   % Edge: sequenceX -> resultX
-  \draw [->] (292.29bp,18bp) .. controls (320.62bp,18bp) and (351.91bp,18bp)  .. (387.72bp,18bp);
+  \draw [->] (292.29bp,20bp) .. controls (321.55bp,20bp) and (353.58bp,20bp)  .. (388.28bp,20bp);
   % Node: word
 \begin{scope}
   \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
   \pgfsetstrokecolor{strokecol}
-  \draw [state] (27bp,72bp) ellipse (27bp and 18bp);
-  \draw (27bp,72bp) node {mot};
+  \draw [state] (27bp,77bp) ellipse (27bp and 18bp);
+  \draw (27bp,77bp) node {mot};
 \end{scope}
   % Node: resultX
 \begin{scope}
   \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
   \pgfsetstrokecolor{strokecol}
-  \draw (431bp,18bp) node {valide/invalide};
+  \draw (419bp,20bp) node {\begin{tikzpicture}[node distance=2cm] \node [state, scale=.3] (foo1) {}; \node [state, scale=.3, below left of=foo1] (foo2) {}; \node [state, scale=.3, below right of=foo1] (foo3) {}; \node [state, scale=.3, below left of=foo3] (foo4) {}; \node [state, scale=.3, below right of=foo3] (foo5) {}; \draw [thick] (foo1) -- (foo2) (foo1) -- (foo3) (foo3) -- (foo4) (foo3) -- (foo5); \end{tikzpicture}};
 \end{scope}
   % Node: sequence
 \begin{scope}
   \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
   \pgfsetstrokecolor{strokecol}
-  \draw [state] (213bp,72bp) ellipse (30bp and 18bp);
-  \draw (213bp,72bp) node {séquence};
+  \draw [state] (213bp,77bp) ellipse (30bp and 18bp);
+  \draw (213bp,77bp) node {séquence};
 \end{scope}
   % Node: result
 \begin{scope}
   \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
   \pgfsetstrokecolor{strokecol}
-  \draw [state,accepting] (431bp,72bp) ellipse (28bp and 18bp);
-  \draw (431bp,72bp) node {résultat};
+  \draw [state,accepting] (419bp,77bp) ellipse (27bp and 18bp);
+  \draw (419bp,77bp) node {AST};
 \end{scope}
   % Node: sequenceX
 \begin{scope}
   \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
   \pgfsetstrokecolor{strokecol}
-  \draw (213bp,18bp) node {[[a $\mapsto \dots$], [bc $\mapsto \dots$], $\dots$]};
+  \draw (213bp,20bp) node {[[a $\mapsto \dots$], [bc $\mapsto \dots$], $\dots$]};
 \end{scope}
   % Node: wordX
 \begin{scope}
   \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
   \pgfsetstrokecolor{strokecol}
-  \draw (27bp,18bp) node {abcdef};
+  \draw (27bp,20bp) node {abcdef};
 \end{scope}
 %

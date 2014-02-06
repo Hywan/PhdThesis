@@ -289,7 +289,7 @@ algorithmes de générations à partir d'une grmmaire.
 \subsection{Algorithmes de génération de données à partir de grammaires}
 \label{subsection:data:algorithms}
 
-Nous décrivons maintenant l'utilisation de grammaire pour la génération de
+Nous décrivons maintenant l'utilisation de grammaires pour la génération de
 données textuelles complexes, afin d'assurer la caractéristique de générabilité
 des domaines réalistes.
 
@@ -360,7 +360,7 @@ de générer. Ainsi~:
 %
 \end{align*}
 
-Dans la première formule, $\delta_i^j$ est le symbole de Kronecker, définie
+Dans la première formule, $\delta_i^j$ est le symbole de Kronecker, défini
 comme 1 si $i = j$, 0 sinon. $\Gamma_k^n$ désigne l'ensemble des $k$-uplets dont
 la somme des éléments est égale à $n$. Pour chaque $k$-uplet $\gamma$ et chaque
 $\alpha \in [1; k]$, $\gamma_\alpha$ désigne le $\alpha$\textsuperscript{ième}
@@ -382,6 +382,7 @@ concaténations (en effet, $e^{\{2,4\}} \Longleftrightarrow ee \,\vert\, eee
 borné à $n$.
 
 \begin{example}[Exploration aléatoire et uniforme]
+\label{example:data:random_uniform_generation}
 
 Soit la grammaire suivante~:
 
@@ -393,13 +394,13 @@ g: ( <b> <c> | <d> | f() )\{1,3\}
 Nous voulons compter le nombre de sous-structures possibles de taille 5. Nous
 commençons avec $f(5)$ qui signifie~: le nombre de sous-structures de taille 5
 que peut produire la règle \code{f}. Cette règle commence par un lexème
-\code{a}, donc le reste de la séquence (donné par la règle \code{g}) devra faire
-une taille de 4. Nous calculons alors $g(4)$. La règle \code{g} est une
+\code{<a>}, donc le reste de la séquence (donné par la règle \code{g}) devra
+faire une taille de 4. Nous calculons alors $g(4)$. La règle \code{g} est une
 répétition $r \in [1; 3]$ d'une disjonction. Avec $r = 1$, le seul moyen d'avoir
 une sous-structure de taille 4 et de passer par \code{f}, donc nous devons
 calculer $f(4)$. Avec $r = 2$, nous pouvons avoir \code{<b> <c> <b> <c>}, ou
-\code{<b> <c>} puis $f(2)$, ou \code{<d>} puis $f(3)$ etc. Nous arrivons au
-tableau de la Figure~\ref{figure:data:random_tabular}.
+\code{<b> <c>} puis $f(2)$, ou \code{<d>} puis $f(3)$ etc. Nous arrivons
+finalement au tableau de la Figure~\ref{figure:data:random_tabular}.
 
 \begin{figure}
 
@@ -418,56 +419,66 @@ $n$ & \code{f:} & $\dots$ & \code{g:} & \code{(} &
 5 & 24 & & 73 & 24 & 0 & & 0 & & - & & (24, & 28, & 21)\\
 4 & 8  & & 24 & 8  & 0 & & 0 & & - & & (8, & 10, & 6) \\
 3 & 3  & & 8  & 3  & 0 & & 0 & & - & & (3, & 4, & 1) \\
-2 & 1  & & 3  & 2  & 1 & & 0 & & - & & (2, & 1, & -) \\
-1 & 0  & & 1  & 1  & 0 & & 1 & & - & & (1, & -, & -) \\
+2 & 1  & & 3  & 2  & 1 & & 0 & & - & & (2, & 1, & 0) \\
+1 & 0  & & 1  & 1  & 0 & & 1 & & - & & (1, & 0, & 0) \\
 
 \hline
 
 \end{tabular}
 \end{center}
 
-\caption{\label{figure:data:random_tabular} Bla bla.}
+\caption{\label{figure:data:random_tabular} Tableau récapitulatif des résultats
+de la fonction $\psi$. La première colonne montre les valeurs possibles de $n$.
+La deuxième colonne montre les résultats pour $f(n)$. Ensuite, nous avons les
+résultats pour $g(n)$, avec le détail~: pour la disjonction, pour chaque branche
+de la disjonction, et ensuite pour la répétition avec $r = 1$, 2 et 3.}
 
 \end{figure}
 
 Maintenant, nous sommes outillés pour explorer la grammaire. Imaginons que nous
 sommes sur l'exploration de la règle \code{g} avec $n = 3$. Nous avons une
 répétition $r \in [1; 3]$. Nous savons grâce à notre fonction $\psi$ que $g(3) =
-8$, c'est~à~dire que \code{g} peut produire 8 sous-structures de taille 3.  Pour
-choisir une valeur aléatoirement et uniformément pour $r$, nous devons utiliser
-notre fonction de répartition, donnée par les résultats de la fonction $\psi$.
-Pour cela, nous choisissons un entier $i \in [1; 8]$ aléatoirement et
-uniformément.  Disons que $i = 5$. Notre fonction de répartition nous dit alors
-que $r = 2$~: \drawfig{6.5cm}{!}{}{
+8$, c'est~à~dire que \code{g} peut produire 8 sous-structures de taille 3. Il
+faut choisir aléatoirement et uniformément une valeur pour $r$, grâce aux
+probabilités données par la fonction $\psi$~:
 
-  \draw[->] (-.1,   0) -- (7, 0) node[anchor=north] {$r$};
-  \draw[->] (  0, -.1) -- (0, 5) node[anchor=east]  {$n$};
+$$
+p(r = 1) = \frac{3}{8} \qquad
+p(r = 2) = \frac{4}{8} \qquad
+p(r = 3) = \frac{1}{8}
+$$
 
-  \draw (1, 0) node[anchor=north] {1}
-        (3, 0) node[anchor=north] {2}
-        (5, 0) node[anchor=north] {3};
-
-  \draw (0, 1) node[anchor=east] {1}
-        (0, 2) node[anchor=east] {2}
-        (0, 3) node[anchor=east] {3}
-        (0, 4) node[anchor=east] {4};
-
-  \draw[thick] (0, 3) -- (2, 3)
-               (2, 4) -- (4, 4)
-               (4, 1) -- (6, 1)
-               (2, 0) -- (2, 4)
-               (4, 0) -- (4, 4)
-               (6, 0) -- (6, 1);
-  \draw[ultra thick] plot [smooth] coordinates{
-      (0, 0) (1, 3) (3, 3.95) (5, 1) (6, 0)
-  };
-
-  \draw (2.5, -1) node {$\afrac{\uparrow}{i}$};
-
-}
+Ensuite, nous choisissons un entier $i \in [1; 8]$ aléatoirement et
+uniformément. Disons que $i = 5$. Nous appliquons nos probabilités et nous
+obtenons $r = 2$.
 %
-Donc nous allons répéter notre disjonction 2 fois. Nous sommes sur $g$ avec une
-taille de 3, donc nous avons 3 lexèmes à répartir sur 2 répétitions. Nous
+%\drawfig{6.5cm}{!}{}{
+%
+%  \draw[->] (-.1,   0) -- (7, 0) node[anchor=north] {$r$};
+%  \draw[->] (  0, -.1) -- (0, 5) node[anchor=east]  {$n$};
+%
+%  \draw (1, 0) node[anchor=north] {1}
+%        (3, 0) node[anchor=north] {2}
+%        (5, 0) node[anchor=north] {3};
+%
+%  \draw (0, 1) node[anchor=east] {1}
+%        (0, 2) node[anchor=east] {2}
+%        (0, 3) node[anchor=east] {3}
+%        (0, 4) node[anchor=east] {4};
+%
+%  \draw[thick] (0, 3) -- (2, 3)
+%               (2, 4) -- (4, 4)
+%               (4, 1) -- (6, 1)
+%               (2, 0) -- (2, 4)
+%               (4, 0) -- (4, 4)
+%               (6, 0) -- (6, 1);
+%
+%  \draw (3, -1) node {$\afrac{\uparrow}{i}$};
+%
+%}
+%
+Donc nous allons répéter notre disjonction 2 fois. Nous sommes sur \code{g} avec
+une taille de 3, donc nous avons 3 lexèmes à répartir sur 2 répétitions. Nous
 utilisons la fonction $\Gamma$ pour calculer cette répartition~: $\Gamma_2^3 =
 ((2, 1), (1, 2))$ (tous les $k$-uplets contenant un 0 ont été supprimés car
 c'est impossible de distribuer 0 lexème dans une répétition). Nous allons
@@ -485,32 +496,48 @@ $\tfrac{1}{2}$. Et ainsi de suite.
 
 \end{example}
 
-Pour explorer une règle, nous utilisons des poids représentant le nombre de
-sous-structures pour chaque sous-règle. Alors, nous choisissons uniformément et
-aléatoirement un nombre pour sélectionner la prochaine sous-règle à explorer en
-fonction de son poids.
-
-
-Parler de la programmation récursive.
+Cet algorithme est efficace pour nous calculer des petites séquences de taille
+fixe avec beaucoup de diversités dans les résultats (puisqu'aléatoire).
+Toutefois, l'étape du dénombrement avec la fonction $\psi$ est exponentielle. Et
+malgré l'utilisation d'heuristiques inspirées de la programme dynamique, pour
+une valeur de $n > 10$, au moins 2~heures de calculs sont nécessaires. Ce
+problème ne concerne que la première étape, car la seconde étape, quand à elle,
+est très rapide~: la génération d'une séquence est la plus rapide de tous les
+algorithmes.
 
 \subsubsection{Génération exhaustive bornée}
 \label{subsection:data:bounded_exhaustive_generation}
 
+Cet algorithme permet de générer toutes les séquences de lexèmes dont la taille
+est au maximum $n$. C'est une génération exhaustive bornée. Des
+expériences~\acite{MarinovK01, SullivanYCKJ04} ont montré que générer énormément
+de données de façon exhaustive peut être efficace pour détecter des erreurs car
+toutes les données sont testées.
+
+À chaque construction du langage PP est associée une fonction $\beta$ qui va
+nous calculer la prochaine séquence. Cet algorithme se comporte comme un
+itérateur sur tous les éléments du multi-ensemble construits avec la fonction
+$\beta$. Un multi-ensemble, noté avec $\amultiset{A}$, est un ensemble avec des
+répétitions~: en effet, rien ne nous assure que la grammaire ne puisse pas
+produire au moins deux séquences identiques mais par des dérivations/chemins
+différents. Pour simplifier l'écriture de la fonction $\beta$, nous considérons
+que la grammaire PP est en forme normale de Chomsky~\acite{Chomsky56}. Ainsi~:
+
 \begin{align*}
 %
 \beta(1, e) & =
-    \{\code{sample($e$)}\}
+    \amultiset{e}
     &
     \text{si $e$ est un lexème}
     \\
 %
 \beta(n, e) & =
-    \{\}
+    \amultiset{}
     &
     \text{si $n \neq 1$}
     \\
 %
-\beta(n, e_1 \vert e_2) & =
+\beta(n, e_1 \,\vert\, e_2) & =
     \beta(n, e_1) \union \beta(n, e_2)
     \\
 %
@@ -532,7 +559,7 @@ Parler de la programmation récursive.
     \\
 %
 \beta(n, e^0) & =
-    \{\}
+    \amultiset{}
     \\
 %
 \beta(n, e^1) & =
@@ -546,13 +573,90 @@ Parler de la programmation récursive.
 %
 \end{align*}
 
+Les opérateurs $\union$ et $\Union$ correspondent à l'union des multi-ensembles.
+Quand $y$ est non-défini (avec \code{*} et \code{+}), il est borné à $n$.
+
+\begin{example}[Exploration exhaustive bornée]
+\label{example:data:bounded_exhaustive_generation}
+
+Soit la même grammaire que dans
+l'Exemple~\ref{example:data:random_uniform_generation}, à savoir~:
+
+\begin{pre}
+f: <a> g() \\
+g: ( <b> <c> | <d> | f() )\{1,3\}
+\end{pre}
+
+Nous allons dérouler l'algorithme pour $n = 10$. Nous commençons par explorer
+la règle \code{f}. Nous produisons \code{<a>}, puis nous explorons la règle
+\code{g} qui propose une répétition d'une disjonction.  Nous commençons par la
+borne inférieure de la répétition puis la première branche de la disjonction,
+soit \code{<b> <c>}. La première séquence est donc~: \code{<a> <b> <c>}. La
+séquence suivante revient au dernier point de choix pour prendre le chemin
+suivant, à savoir la deuxième branche de la disjonction. La deuxième séquence
+est donc~: \code{<a> <d>}. Nous continuons avec le troisième point de choix de
+la disjonction qui est la règle \code{f}. Nous reprenons un chemin équivalent~:
+\code{<a>} puis \code{g}. Nous explorons à nouveau notre répétition, nous
+choisissons la borne inférieure et le premier élément de la disjonction. La
+troisième séquence est donc~: \code{<a> <a> <b> <c>}. Les séquences sont~:
+
+\begin{enumerate}
+\setcounter{enumi}{4}
+
+\item \code{<a> <a> <d>}
+
+\item \code{<a> <a> <a> <b> <c>}
+
+\item \code{<a> <a> <a> <d>}
+
+\item \code{<a> <a> <a> <a> <b> <c>}
+
+\item[…] …
+
+\item[12150.] \code{<a> <a> <a> <a> <a> <a> <a> <a> <a> <d>}
+
+\end{enumerate}
+
+\end{example}
+
+Cet algorithme est rapide pour calculer des petites séquences et l'exhaustivité
+est très efficace pour détecter des erreurs. Toutefois, le nombre de séquences
+générables est exponentielle par rapport $n$ mais l'unité reste la seconde et
+non pas l'heure comme avec l'algorithme précédent.
+
 \subsubsection{Génération basée sur la couverture}
 \label{subsection:data:coverage_based_generation}
+
+Cet algorithme essaye de réduire l'explosition combinatoire de l'algorithme
+précédent. Il va générer des séquences en respectant deux critères de
+couvertures sur la grammaire~:
+%
+\begin{itemize}
+
+\item une règle est dit couverte si et seulement toutes ses sous-règles ont été
+couvertes~;
+
+\item un lexème est dit couvert si il a été utilisé avec succès dans une
+séquence.
+
+\end{itemize}
+%
+Pour assurer une diversité dans les séquences générées, les points de choix sont
+résolus aléatoirement parmi les sous-règles non-couvertes. Une heuristique est
+utilisée pour borner les répétitions afin de réduire encore l'explosion
+combinatoire et garantir la terminaison de l'algorithme. L'opérateur \code{*}
+est borné à 0, 1 et 2, \code{+} est déplié 1 ou 2~fois, et $\{x, y\}$ est
+déplié $x$, $x + 1$, $y - 1$ et $y$~fois.
+
+À chaque construction du langage PP est associée une fonction $\phi$ qui va nous
+calculer la prochaine séquence. Cette fonction prend en argument $p$, qui est le
+préfixe de la séquene déjà produite (vide au départ). Cet algorithme se comporte
+comme un itérateur Ainsi~:
 
 \begin{align*}
 %
 \phi(p, e) & =
-    [\code{sample($e$)}]
+    [e]
     &
     \text{si $e$ est un lexème}
     \\
@@ -583,5 +687,81 @@ Parler de la programmation récursive.
 %
 \end{align*}
 
-\subsubsection{Génération isotropique de lexèmes}
+Une séquence vide est représentée par $[]$. L'opérateur $\oplus$ désigne un
+choix entre plusieurs appels récursifs de la fonction.
+
+\begin{example}[Exploration basée sur la couverture]
+\label{example:data:coverage_based_generation}
+
+Soit la même grammaire que dans les exemples précédents, à savoir~:
+
+\begin{pre}
+f: <a> g() \\
+g: ( <b> <c> | <d> | f() )\{1,3\}
+\end{pre}
+
+Nous commençons par explorer la règle \code{f}. Nous produisons \code{<a>} avant
+d'explorer la règle \code{g}. Là, nous choisissons aléatoirement de répéter
+3~fois la disjonction. La première fois, nous choisissons le lexème \code{<d>}.
+La seconde fois, nous avons le choix entre \code{<b> <c>} ou \code{f}
+(\code{<d>} ayant déjà été couvert, nous ne voulons pas le choisir). Nous
+choisissons \code{<b> <c>}. Enfin, à la troisième répétition, il ne sert plus
+qu'un choix pour la disjonction~: nous explorons \code{f} à nouveau. Nous
+produisons \code{<a>} et nous continuons dans \code{g}. Là, tout a été couvert,
+nous choisissions alors aléatoirement une répétition (disons 1), puis \code{<a>}
+dans la disjonction. La séquence \code{<a> <d> <b> <c> <a> <d>} couvre toutes
+les règles et tous les lexèmes de la grammaire.
+
+\end{example}
+
+Cet algorithme est rapide pour des séquences de taille moyenne ou grande. La
+diversité entre les séquences générées est dû au choix aléatoire sur les points
+de choix. Il génère peu de données mais il couvre toutes les règles et tous les
+lexèmes. Enfin, contrairement aux algorithmes précédents, nous ne pouvons pas
+contrôler la taille de la séquence.
+
+\subsubsection{Concrétisation~: génération isotropique de lexèmes}
 \label{subsection:data:isotropic_generation}
+
+Les trois algorithmes génèrent des séquences de lexèmes, mais nous n'avons pas
+de données concrètes. Pour cela, nous devons transformer les lexèmes en données
+afin de produit un mot.
+
+Nous rappelons que les lexèmes sont exprimés avec des expressions régulières au
+format PCRE. Nous avons écrit la grammaire des PCRE avec PP. Ainsi, nous
+analysons une expression régulière avec cette grammaire, le compilateur de
+compilateur nous produit un AST que nous allons parcourir pour générer une
+donnée. Ce processus est détaillé dans la Figure~\ref{figure:data:regex}.
+%
+\begin{figure}
+
+\fig{\textwidth}{!}{Regex_to_word.tex}
+
+\caption{\label{figure:data:regex} Fonctionnement de la concrétisation.}
+
+\end{figure}
+%
+L'algorithme de génération est isotropique~: c'est à dire qu'il est aléatoire et
+uniforme mais l'uniformité est locale à un point de choix, et non pas parmi
+toutes les sous-structures possibles.
+
+\begin{example}[Génération isotropique]
+
+Soit l'expression régulière suivante~:
+
+$$\code{([ae]+|[x-y]!)\{1,3\}}$$
+
+\begin{tabular}{ll}
+
+\code{\ingray{([ae]+|[x-y]!)}\{1,3\}} & bla bla \\
+\code{([ae]+|[x-y]!)\ingray{([ae]+|[x-y]!)}} & bla bla \\
+\code{([ae]+)\ingray{([ae]+|[x-y]!)}} & bla bla \\
+\code{[ae][ae]\ingray{([ae]+|[x-y]!)}} & bla bla \\
+\code{e[ae]\ingray{([ae]+|[x-y]!)}} & bla bla \\
+\code{ea\ingray{([ae]+|[x-y]!)}} & bla bla \\
+\code{\ingray{ea}([x-y]!)} & bla bla \\
+\code{eay!} & bla bla
+
+\end{tabular}
+
+\end{example}
