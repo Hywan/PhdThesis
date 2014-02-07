@@ -43,16 +43,14 @@ gardes pour activer la transition.}
 
 \end{figure}
 %
-
 Sur ce domaine réaliste, nous allons utiliser sa propriété de générabilité, soit
 appeler sa méthode \code{sample}. Au sein d'un domaine réaliste, quand une
 donnée est générée, elle est aussitôt confrontée à sa propriété de
 prédicabilité, soit sa méthode \code{predicate}, afin de savoir si la donnée est
-valide ou non.
-
-Si la précondition a des prédicats (avec la construction \apred{p}), alors ces
-derniers seront évalués avec les données fraîchement générées. Si un prédicat a
-besoin de plusieurs variables, alors son évaluation sera repoussée à plus tard.
+valide ou non. Si la précondition a des prédicats (avec la construction
+\apred{p}), alors ces derniers seront évalués avec les données fraîchement
+générées. Si un prédicat a besoin de plusieurs variables, alors son évaluation
+sera repoussée à plus tard.
 
 Si pendant ce cycle, la propriété de prédicabilité d'un domaine réaliste ou
 qu'un prédicat invalide une donnée, nous parlons de {\strong rejet}. Et suite à
@@ -61,7 +59,7 @@ re-générations $\tau$ est fixé afin d'éviter des générations et des rejets
 boucle. À chaque génération, $\tau$ est incrémenté de 1. La valeur de
 $\tau_\mathrm{max}$ est paramétrable. \\
 
-Mais il n'y a pas que le choix d'un domaine réaliste parmis une disjonction qui
+Mais il n'y a pas que le choix d'un domaine réaliste parmi une disjonction qui
 est pseudo-aléatoire. Par défaut, un domaine réaliste génère une donnée de
 manière pseudo-aléatoire.  Si nous écrivons \code{boundinteger(7, 42)}, alors un
 entier de l'intervalle 7 à 42 sera généré pseudo-aléatoirement. Nous avons
@@ -79,11 +77,11 @@ rapidement des problèmes. Le nombre de valeurs possibles pour \code{string('a',
 de \code{a} à \code{z} en minuscules d'une longueur de 10, est de $26^{10}$,
 soit environ $1.412e^{14}$ données. La probabilité qu'une de ces données détecte
 une erreur dans notre programme est extrairement faible. C'est un problème
-inhérent à l'approche pseudo-aléatoire. Toutefois, l'ensemble des valeurs
+inhérent à l'approche pseudo-aléatoire. Cependant, l'ensemble des valeurs
 générables peut être considérablement réduit si la donnée est mieux spécifiée
 (représentée). Plus la donnée pourra être spécifiée avec précisions, plus nous
 devrions être capables de générer des données pertinentes, c'est~à~dire capables
 de détecter des erreurs. \\
 
 Dans les sections suivantes, nous allons nous intéresser à mieux spécifier et
-mieux générer des tableaux et des chaînes caractères.
+mieux générer des tableaux, des chaînes caractères et des objets.

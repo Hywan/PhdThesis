@@ -4,7 +4,7 @@
 Les sections précédentes expliquaient comment générer des données scalaires,
 telles que des booléens, des entiers, réels ou chaînes, et aussi des données
 plus complexes, telles que des tableaux. Nous allons décrire comment générer des
-objets, puisque le paradigme le plus utilisé en PHP est l'objet.
+objets, puisque le paradigme le plus utilisé en PHP est l'objet. \\
 
 Un objet est une aggrégation d'attributs et de méthodes. Les deux sont annotés
 par des contrats Praspel, respectivement par la clause \ainvariant et les autres
@@ -17,13 +17,13 @@ arguments du constructeur sont générées grâce à sa précondition. Les valeu
 attributs sont générées grâce aux invariants. Si un argument du constructeur ou
 un attribut est lui-même un objet, ce processus est répété récursivement. Nous
 contournons l'encapsulation pour accéder aux attributs protégés et privés ou aux
-méthodes, en instrumentant le code source.
+méthodes en instrumentant le code source.
 
 Afin de gérer les références circulaires (par exemple quand un premier objet a
 un attribut qui pointe sur un deuxième objet, qui a lui-même un attribut qui
-pointe vers le premier objet), nous appliquons une stratégie inspirée
-de~\ref{???}. Cette stratégie consiste à enregistrer les objets créés dans un
-groupe. Quand un objet est demandé, nous avons le choix entre en générer un
-nouveau ou en choisir un dans le groupe. Ce choix est dynamiquement réalisé en
-fonction de l'état du groupe: plus il contient d'objets, moins il y aura de
-nouveaux objets générés.
+pointe vers le premier objet), nous appliquons une stratégie inspirée de
+Jartege~\acite{Oriat05} et UDITA~\acite{GligoricGJKKM10}. Cette stratégie
+consiste à enregistrer les objets créés dans un groupe. Quand un objet est
+demandé, nous avons le choix entre en générer un nouveau ou en choisir un dans
+le groupe. Ce choix est dynamiquement réalisé en fonction de l'état du groupe:
+plus il contient d'objets, moins il y aura de nouveaux objets générés.
