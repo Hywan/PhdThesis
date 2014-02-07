@@ -475,7 +475,7 @@ c'est impossible de distribuer 0 lexème dans une répétition). Nous allons
 utiliser soit 2~lexèmes lors de la répétition $r = 1$ et 1 lexème pour $r = 2$,
 soit l'inverse. Nous choisissons un entier $j \in [1; 2]$ aléatoirement et
 uniformément pour sélectionner le $k$-uplet. Disons que $j = 1$, donc nous
-allons utiliser $(2, 1)$.
+allons utiliser le $k$-uplet $(2, 1)$.
 
 Pour la première répétition $r = 1$, nous avons $n = 2$ lexèmes à distribuer. La
 disjonction peut produire 2~sous-structures. Nous avons besoin de calculer une
@@ -492,7 +492,7 @@ Toutefois, l'étape du dénombrement avec la fonction $\psi$ est exponentielle. 
 malgré l'utilisation d'heuristiques inspirées de la programme dynamique, pour
 une valeur de $n > 10$, au moins 2~heures de calculs sont nécessaires. Ce
 problème ne concerne que la première étape, car la seconde étape, quand à elle,
-est très rapide~: la génération d'une séquence est la plus rapide de tous les
+est très rapide~: l'exploration d'une séquence est la plus rapide de tous les
 algorithmes.
 
 \subsubsection{Génération exhaustive bornée}
@@ -507,7 +507,7 @@ toutes les données sont testées.
 À chaque construction du langage PP est associée une fonction $\beta$ qui va
 nous calculer la prochaine séquence. Cet algorithme se comporte comme un
 itérateur sur tous les éléments du multi-ensemble construits avec la fonction
-$\beta$. Un multi-ensemble, noté avec $\amultiset{A}$, est un ensemble avec des
+$\beta$. Un multi-ensemble, noté $\amultiset{A}$, est un ensemble avec des
 répétitions~: en effet, rien ne nous assure que la grammaire ne puisse pas
 produire au moins deux séquences identiques mais par des dérivations/chemins
 différents. Pour simplifier l'écriture de la fonction $\beta$, nous considérons
@@ -577,8 +577,8 @@ f: <a> g() \\
 g: ( <b> <c> | <d> | f() )\{1,3\}
 \end{pre}
 
-Nous allons dérouler l'algorithme pour $n = 10$. Nous commençons par explorer
-la règle \code{f}. Nous produisons \code{<a>}, puis nous explorons la règle
+Nous allons dérouler l'algorithme pour $n = 10$. Nous commençons par explorer la
+règle \code{f}. Nous produisons \code{<a>}, puis nous explorons la règle
 \code{g} qui propose une répétition d'une disjonction.  Nous commençons par la
 borne inférieure de la répétition puis la première branche de la disjonction,
 soit \code{<b> <c>}. La première séquence est donc~: \code{<a> <b> <c>}. La
@@ -588,7 +588,8 @@ est donc~: \code{<a> <d>}. Nous continuons avec le troisième point de choix de
 la disjonction qui est la règle \code{f}. Nous reprenons un chemin équivalent~:
 \code{<a>} puis \code{g}. Nous explorons à nouveau notre répétition, nous
 choisissons la borne inférieure et le premier élément de la disjonction. La
-troisième séquence est donc~: \code{<a> <a> <b> <c>}. Les séquences sont~:
+troisième séquence est donc~: \code{<a> <a> <b> <c>}. Les séquences suivantes
+sont~:
 
 \begin{enumerate}
 \setcounter{enumi}{4}
@@ -611,8 +612,8 @@ troisième séquence est donc~: \code{<a> <a> <b> <c>}. Les séquences sont~:
 
 Cet algorithme est rapide pour calculer des petites séquences et l'exhaustivité
 est très efficace pour détecter des erreurs. Toutefois, le nombre de séquences
-générables est exponentielle par rapport $n$ mais l'unité reste la seconde et
-non pas l'heure comme avec l'algorithme précédent.
+générables est exponentielle par rapport $n$ mais l'unité de temps de calculs
+reste la seconde et non pas l'heure comme avec l'algorithme précédent.
 
 \subsubsection{Génération basée sur la couverture}
 \label{subsection:data:coverage_based_generation}
@@ -626,17 +627,17 @@ couvertures sur la grammaire~:
 \item une règle est dit couverte si et seulement toutes ses sous-règles ont été
 couvertes~;
 
-\item un lexème est dit couvert si il a été utilisé avec succès dans une
+\item un lexème est dit couvert s'il a été utilisé avec succès dans une
 séquence.
 
 \end{itemize}
 %
 Pour assurer une diversité dans les séquences générées, les points de choix sont
 résolus aléatoirement parmi les sous-règles non-couvertes. Une heuristique est
-utilisée pour borner les répétitions afin de réduire encore l'explosion
-combinatoire et garantir la terminaison de l'algorithme. L'opérateur \code{*}
-est borné à 0, 1 et 2, \code{+} est déplié 1 ou 2~fois, et $\{x, y\}$ est
-déplié $x$, $x + 1$, $y - 1$ et $y$~fois.
+utilisée pour borner les répétitions afin de réduire encore plus l'explosion
+combinatoire et aussi garantir la terminaison de l'algorithme. L'opérateur
+\code{*} est borné à 0, 1 et 2, \code{+} est déplié 1 ou 2~fois, et $\{x, y\}$
+est déplié $x$, $x + 1$, $y - 1$ et $y$~fois.
 
 À chaque construction du langage PP est associée une fonction $\phi$ qui va nous
 calculer la prochaine séquence. Cette fonction prend en argument $p$, qui est le
@@ -677,8 +678,8 @@ comme un itérateur Ainsi~:
 %
 \end{align*}
 
-Une séquence vide est représentée par $[]$. L'opérateur $\oplus$ désigne un
-choix entre plusieurs appels récursifs de la fonction.
+Une séquence vide est représentée par $[]$. Les opérateurs $\oplus$ et
+$\bigoplus$ désignent un choix entre plusieurs appels récursifs de la fonction.
 
 \begin{example}[Exploration basée sur la couverture]
 \label{example:data:coverage_based_generation}
@@ -695,12 +696,13 @@ d'explorer la règle \code{g}. Là, nous choisissons aléatoirement de répéter
 3~fois la disjonction. La première fois, nous choisissons le lexème \code{<d>}.
 La seconde fois, nous avons le choix entre \code{<b> <c>} ou \code{f}
 (\code{<d>} ayant déjà été couvert, nous ne voulons pas le choisir). Nous
-choisissons \code{<b> <c>}. Enfin, à la troisième répétition, il ne sert plus
-qu'un choix pour la disjonction~: nous explorons \code{f} à nouveau. Nous
-produisons \code{<a>} et nous continuons dans \code{g}. Là, tout a été couvert,
-nous choisissions alors aléatoirement une répétition (disons 1), puis \code{<a>}
-dans la disjonction. La séquence \code{<a> <d> <b> <c> <a> <d>} couvre toutes
-les règles et tous les lexèmes de la grammaire.
+choisissons \code{<b> <c>}. Enfin, à la troisième répétition, il n'y a plus
+qu'un seul choix n'ayant pas été couvert dans la disjonction~: nous explorons
+\code{f} à nouveau. Nous produisons \code{<a>} et nous continuons dans \code{g}.
+Là, tout a été couvert, nous choisissions alors aléatoirement une répétition
+(disons 1~fois), puis \code{<a>} dans la disjonction. L'unique séquence
+\code{<a> <d> <b> <c> <a> <d>} couvre toutes les règles et tous les lexèmes de
+la grammaire.
 
 \end{example}
 
@@ -710,7 +712,7 @@ de choix. Il génère peu de données mais il couvre toutes les règles et tous 
 lexèmes. Enfin, contrairement aux algorithmes précédents, nous ne pouvons pas
 contrôler la taille de la séquence.
 
-\subsubsection{Concrétisation~: génération isotropique de lexèmes}
+\subsubsection{Concrétisation aléatoire isotropique de lexèmes}
 \label{subsection:data:isotropic_generation}
 
 Les trois algorithmes génèrent des séquences de lexèmes, mais nous n'avons pas
@@ -725,25 +727,32 @@ donnée. Ce processus est détaillé dans la Figure~\ref{figure:data:regex}.
 %
 \begin{figure}
 
-\fig{\textwidth}{!}{Regex_to_word.tex}
+\fig{11.7cm}{!}{Regex_to_word.tex}
 
-\caption{\label{figure:data:regex} Fonctionnement de la concrétisation.}
+\caption{\label{figure:data:regex} Fonctionnement de la concrétisation~: à
+partir d'une expression régulière et de la grammaire des PCRE, l'analyseur
+lexical puis syntaxique nous génère un AST. Sur ce dernier, nous appliquons un
+visiteur qui calcule une génération aléatoire isotropique afin d'obtenir une
+donnée valide correspondant à l'expression régulière de départ.}
 
 \end{figure}
 %
-L'algorithme de génération est isotropique~: c'est à dire qu'il est aléatoire et
-uniforme mais l'uniformité est locale à un point de choix, et non pas parmi
-toutes les sous-structures possibles.
+L'algorithme de génération est aléatoire isotropique~\acite{Sawyer78}~: c'est à
+dire qu'il est aléatoire et uniforme mais l'uniformité est locale à un point de
+choix, et non pas parmi toutes les sous-structures possibles. C'est une approche
+nettement plus naïve qu'avec les algorithmes précédents, mais la phase de
+concrétisation n'a pas beaucoup d'importance~: il est juste nécessaire d'obtenir
+un mot valide.
 
-\begin{example}[Génération isotropique]
+\begin{example}[Génération aléatoire isotropique]
 
 Soit l'expression régulière suivante~:
 
 $$\code{([ae]+|[x-y]!)\{1,3\}}$$
 
-Nous allons parcourir cette expression comme si c'était un arbre, et à chaque
-point de choix, nous allons faire un tirage aléatoire uniforme pour continuer
-notre parcours~:
+Nous allons parcourir cette expression comme si nous parcourions son AST, et à
+chaque point de choix, nous allons faire un tirage aléatoire uniforme pour
+continuer notre parcours~:
 
 \noindent
 \begin{tabularx}{\textwidth}{XX}
@@ -774,16 +783,19 @@ notre parcours~:
     \code{z}, nous choisissons \code{y}~; \\
 
 \code{eay!} &
-    nous finissons avec la concaténation, que nous avons déjà appliqué tout le
+    nous finissons avec la concaténation, que nous avons déjà appliquée tout le
     long de cet exemple.
 
 \end{tabularx}
-
+%
 Chaque tirage a été fait aléatoirement et uniformément, mais localement.
 
 \end{example}
 
-Nous n'avons vu que très peu de constructions qu'offre la syntaxe PCRE. Mais il
+Chaque opérateur non-boré, comme \code{*} ou \code{+}, est borné à un entier
+arbitraire, par défaut 7.
+
+Nous n'avons vu que très peu de constructions qu'offre la syntaxe PCRE, mais il
 est possible d'exprimer des plages de caractères comme \code{[a-zA-Z0-9]} qui
 signifie tous les caractères entre \code{a} et \code{z}, entre \code{A} et
 \code{Z}, mais aussi entre \code{0} et \code{9}. Nous avons des caractères
@@ -797,9 +809,9 @@ y a aussi des conditions, de la récursivité etc. Le langage est très riche.
 
 \subsubsection{Domaines réalistes \code{Grammar} et \code{Regex}}
 
-Grâce aux quatres algorithmes précédents, nous avons notre propriété de
-générabilité d'un domaine réaliste. Nous ajoutons à la bibliothèque standard le
-domaine réaliste~:
+Les quatres algorithmes précédents complètent les caractéristiques d'un domaine
+réaliste en assurant la générabilité. Nous pouvons alors ajouter à la
+bibliothèque standard le domaine réaliste~:
 %
 $$\code{grammar($F$, $L$)}$$
 %
@@ -809,13 +821,13 @@ peu de données différentes, relativement vite et couvrant toute la
 grammaire\footnote{TODO~: chercher un ou deux articles faisant le parallèle
 entre couverture de grammaire et de code (structurel).}. Bien sûr, il est
 possible de modifier l'algorithme à utiliser pour la génération, et dans ce cas,
-$L$ représentera la taile de la séquence souhaitée.
+$L$ représentera la taille de la séquence souhaitée.
 
 \begin{example}[Utilisation du domaine réaliste \code{Grammar}]
 
 La précondition du contrat suivant spécifie que l'argument \code{\$payload} de
-la fonction \code{handleRequest} doit être au format XML et doit retourner un
-booléen~:
+la fonction \code{handle\-Re\-quest} doit être au format XML et doit retourner
+un booléen~:
 
 \begin{pre}
 /** \\
@@ -827,9 +839,9 @@ function handleRequest ( \$payload ) { … }
 
 \end{example}
 
-Toutefois, l'expérience nous a montré que une majorité de développeurs préfère
+Toutefois, l'expérience nous a montrés qu'une majorité de développeurs préfère
 écrire des expressions régulières plutôt que des grammaires. En effet, ils
-utilisent les PCRE quasiment quotidiennement, et ils n'ont pas l'effort
+utilisent les PCRE quasi-quotidiennement, et ils n'ont pas l'effort
 d'apprentissage du langage PP. De plus, cela correspond plus à leurs besoins
 quotidiens. C'est pourquoi nous ajoutons à la bibliothèque standard le domaine
 réaliste~:
@@ -837,11 +849,11 @@ réaliste~:
 $$\code{re\-gex($R$)}$$
 %
 où $R$ est une expression régulière. Ce domaine réaliste utilise une génération
-isotropique. Ce domaine réaliste est tellement utilisé que Praspel propose un
-sucre syntaxique pour l'utiliser encore plus rapidement. Une expression
-régulière doit être encadrée de délimiteurs, par exemple \code{/}, et peut-être
-suivie d'options (un caractère active une option). Le sucre syntaxique de
-Praspel impose le délimiteur \code{/}.
+aléatoire isotropique. Ce domaine réaliste est tellement utilisé que Praspel
+propose un sucre syntaxique pour l'utiliser encore plus rapidement. Une
+expression régulière doit être encadrée de délimiteurs, par exemple \code{/}, et
+peut-être suivie d'options (un caractère active une option). Le sucre syntaxique
+de Praspel impose le délimiteur \code{/}.
 
 \begin{example}[Utilisation du domaine réaliste \code{Regex}]
 
