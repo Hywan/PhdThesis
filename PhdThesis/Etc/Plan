@@ -83,3 +83,49 @@ les références à l'intérieur.
 
 Dire qu'on connait les property-based testing et autre, jutse pour supprimer
 2.1.2.
+
+
+
+
+Pour JTT, dire que ce qui est intéressant c'est la représentation du système bla
+bla. Et ouvrir avec un article avec Dadeau et Peureux à CSTVA, qui était la
+suite (ça irait dans une section pour le grey-box, avec JSConTest). Et comparer
+avec Praspel.
+
+Ajouter la fameuse figure avec les 3 axes de la classification des tests.
+
+Mieux amener les choses, donner une vue d'ensemble de l'état de l'art, pourquoi
+on en parle ?
+Donner plus de réf' à certains endroits, quitte à citer plusieurs fois la même
+réf'. Exemple avec Aichernig 2003.
+
+Ajouter un paragraphe sur Eiffel.
+
+Dire que les langages de spéc' sont en adéquation avec les langages de
+programmation. Ça nous aide à justifier Praspel.
+
+Ressortir aussi les définitions du white-box, black-box etc.
+
+
+
+2.1 devient Langages de contrats
+2.1.1 disparaît
+2.1.2 disparaît
+2.2 devient contract-based testing
+        on décrit les objectifs de tests
+            critère de sélection de tests
+2.3. toujours génération de données
+       mais c'est orthogonale : technique de génération (aléatoire, solver)
+       et données à générer (integers, strings, arrays etc.)
+       et objectifs (couverture aux limites etc.)
+
+dans 2.1, tout va dans l'intro, sauf 2.1.1.
+
+
+Dire en intro de l'état de l'art qu'il existe d'autres travaux (sur Appolo par
+exemple) pour PHP, mais que ce n'est pas ce qu'on fait.  PHP tire tout : on
+regarde ce qu'il se fait autour, on veut faire un langage de spéc', on apprend
+avec ce qu'il y a autour. Et dans les autres langages de contrats, c'est plus ou
+moins bien exploités (on compare des choses, des behaviors etc.), nous on
+choisit de faire ça etc. Dans la synthèse, dire ce qui est important dans un
+langage de contrat.

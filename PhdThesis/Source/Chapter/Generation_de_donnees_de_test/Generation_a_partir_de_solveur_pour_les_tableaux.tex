@@ -1,2 +1,233 @@
 \section{Génération à partir de solveur pour les tableaux}
 \label{section:data:arrays}
+
+\subsection{Étude des contraintes les plus utilisées}
+
+L'idée principale est d'étudier plusieurs projets PHP afin de déterminer quelles
+sont les contraintes sur les tableaux les plus utilisées. Pour cela, nous avons
+sélectionnés 61~projets PHP sur plusieurs plateformes, comme
+Github\footnote{\url{http://github.com/}} ou
+Sourceforge\footnote{\url{http://sourceforge.net/}}, à partir de leur
+popularité, leur impact sur l'industrie et leur complexité. Tous ces projets
+représentent 28~066 fichiers, soit 5~220~547~lignes de code. Dans ces lignes de
+code, nous avons compter le nombre d'occurences de chaque fonction de tableaux
+disponible dans la bibliothèque standard de PHP. La
+Figure~\ref{figure:data:collecting_informations} présente ces résultats~: les
+fonctions sont triés par leur nombre d'occurences $n$.
+%
+\begin{figure}
+
+{
+\Huge
+
+\drawfig{\textwidth}{!}{}{
+
+  \tikzset{
+     ultra thick/.style={line width=9pt}
+  }
+
+  \draw[->] (-.1,   0) -- (46, 0) node[anchor=north] {fonction};
+  \draw[->] (  0, -.1) -- (0, 33) node[anchor=east] {$n$};
+
+  \draw (1, 0) node[anchor=north] {\rotatebox{90}{…}};
+
+  \draw[ultra thick] (2, 0) -- (2, 0.245);
+  \draw (2, 0) node[anchor=north] {\rotatebox{90}{\code{array\_diff\_key}}};
+  \draw[ultra thick] (3, 0) -- (3, 0.2475);
+  \draw (3, 0) node[anchor=north] {\rotatebox{90}{\code{array\_fill\_keys}}};
+  \draw[ultra thick] (4, 0) -- (4, 0.265);
+  \draw (4, 0) node[anchor=north] {\rotatebox{90}{\code{array\_intersect}}};
+  \draw[ultra thick] (5, 0) -- (5, 0.2825);
+  \draw (5, 0) node[anchor=north] {\rotatebox{90}{\code{array\_change\_key\_case}}};
+  \draw[ultra thick] (6, 0) -- (6, 0.295);
+  \draw (6, 0) node[anchor=north] {\rotatebox{90}{\code{array\_intersect\_key}}};
+  \draw[ultra thick] (7, 0) -- (7, 0.3125);
+  \draw (7, 0) node[anchor=north] {\rotatebox{90}{\code{array\_fill}}};
+  \draw[ultra thick] (8, 0) -- (8, 0.39);
+  \draw (8, 0) node[anchor=north] {\rotatebox{90}{\code{asort}}};
+  \draw[ultra thick] (9, 0) -- (9, 0.435);
+  \draw (9, 0) node[anchor=north] {\rotatebox{90}{\code{array\_splice}}};
+  \draw[ultra thick] (10, 0) -- (10, 0.475);
+  \draw (10, 0) node[anchor=north] {\rotatebox{90}{\code{prev}}};
+  \draw[ultra thick] (11, 0) -- (11, 0.58);
+  \draw (11, 0) node[anchor=north] {\rotatebox{90}{\code{array\_flip}}};
+  \draw[ultra thick] (12, 0) -- (12, 0.645);
+  \draw (12, 0) node[anchor=north] {\rotatebox{90}{\code{array\_combine}}};
+  \draw[ultra thick] (13, 0) -- (13, 0.65);
+  \draw (13, 0) node[anchor=north] {\rotatebox{90}{\code{array\_diff}}};
+  \draw[ultra thick] (14, 0) -- (14, 0.6525);
+  \draw (14, 0) node[anchor=north] {\rotatebox{90}{\code{array\_reverse}}};
+  \draw[ultra thick] (15, 0) -- (15, 0.7225);
+  \draw (15, 0) node[anchor=north] {\rotatebox{90}{\code{range}}};
+  \draw[ultra thick] (16, 0) -- (16, 0.7575);
+  \draw (16, 0) node[anchor=north] {\rotatebox{90}{\code{ksort}}};
+  \draw[ultra thick] (17, 0) -- (17, 0.7875);
+  \draw (17, 0) node[anchor=north] {\rotatebox{90}{\code{array\_filter}}};
+  \draw[ultra thick] (18, 0) -- (18, 1.0075);
+  \draw (18, 0) node[anchor=north] {\rotatebox{90}{\code{array\_unshift}}};
+  \draw[ultra thick] (19, 0) -- (19, 1.0675);
+  \draw (19, 0) node[anchor=north] {\rotatebox{90}{\code{array\_search}}};
+  \draw[ultra thick] (20, 0) -- (20, 1.285);
+  \draw (20, 0) node[anchor=north] {\rotatebox{90}{\code{array\_push}}};
+  \draw[ultra thick] (21, 0) -- (21, 1.3425);
+  \draw (21, 0) node[anchor=north] {\rotatebox{90}{\code{array\_slice}}};
+  \draw[ultra thick] (22, 0) -- (22, 1.5725);
+  \draw (22, 0) node[anchor=north] {\rotatebox{90}{\code{array\_unique}}};
+  \draw[ultra thick] (23, 0) -- (23, 1.6425);
+  \draw (23, 0) node[anchor=north] {\rotatebox{90}{\code{sort}}};
+  \draw[ultra thick] (24, 0) -- (24, 1.76);
+  \draw (24, 0) node[anchor=north] {\rotatebox{90}{\code{array\_map}}};
+  \draw[ultra thick] (25, 0) -- (25, 2.175);
+  \draw (25, 0) node[anchor=north] {\rotatebox{90}{\code{array\_values}}};
+  \draw[ultra thick] (26, 0) -- (26, 2.2325);
+  \draw (26, 0) node[anchor=north] {\rotatebox{90}{\code{sizeof}}};
+  \draw[ultra thick] (27, 0) -- (27, 2.3225);
+  \draw (27, 0) node[anchor=north] {\rotatebox{90}{\code{compact}}};
+  \draw[ultra thick] (28, 0) -- (28, 2.4125);
+  \draw (28, 0) node[anchor=north] {\rotatebox{90}{\code{array\_pop}}};
+  \draw[ultra thick] (29, 0) -- (29, 2.5225);
+  \draw (29, 0) node[anchor=north] {\rotatebox{90}{\code{key}}};
+  \draw[ultra thick] (30, 0) -- (30, 2.64);
+  \draw (30, 0) node[anchor=north] {\rotatebox{90}{\code{extract}}};
+  \draw[ultra thick] (31, 0) -- (31, 2.685);
+  \draw (31, 0) node[anchor=north] {\rotatebox{90}{\code{next}}};
+  \draw[ultra thick] (32, 0) -- (32, 3.42);
+  \draw (32, 0) node[anchor=north] {\rotatebox{90}{\code{array\_shift}}};
+  \draw[ultra thick] (33, 0) -- (33, 3.585);
+  \draw (33, 0) node[anchor=north] {\rotatebox{90}{\code{reset}}};
+  \draw[ultra thick] (34, 0) -- (34, 3.7175);
+  \draw (34, 0) node[anchor=north] {\rotatebox{90}{\code{current}}};
+  \draw[ultra thick] (35, 0) -- (35, 3.8325);
+  \draw (35, 0) node[anchor=north] {\rotatebox{90}{\code{end}}};
+  \draw[ultra thick] (36, 0) -- (36, 5.365);
+  \draw (36, 0) node[anchor=north] {\rotatebox{90}{\code{array\_keys}}};
+  \draw[ultra thick] (37, 0) -- (37, 7.6975);
+  \draw (37, 0) node[anchor=north] {\rotatebox{90}{\code{list}}};
+  \draw[ultra thick] (38, 0) -- (38, 8.0875);
+  \draw (38, 0) node[anchor=north] {\rotatebox{90}{\code{array\_key\_exists}}};
+  \draw[ultra thick] (39, 0) -- (39, 8.3475);
+  \draw (39, 0) node[anchor=north] {\rotatebox{90}{\code{array\_merge}}};
+  \draw[ultra thick] (40, 0) -- (40, 9);
+  \draw (40, 0) node[anchor=north] {\rotatebox{90}{\code{each}}};
+  \draw[ultra thick] (41, 0) -- (41, 12.025);
+  \draw (41, 0) node[anchor=north] {\rotatebox{90}{\code{in\_array}}};
+  \draw[ultra thick] (42, 0) -- (42, 19.485);
+  \draw (42, 0) node[anchor=north] {\rotatebox{90}{\code{is\_array}}};
+  \draw[ultra thick] (43, 0) -- (43, 29.6475);
+  \draw (43, 0) node[anchor=north] {\rotatebox{90}{\code{count}}};
+
+  \draw (0, 0) node[anchor=east] {0};
+  \draw (0, 2.5) node[anchor=east] {1000};
+  \draw (0, 5) node[anchor=east] {2000};
+  \draw (0, 7.5) node[anchor=east] {3000};
+  \draw (0, 10) node[anchor=east] {4000};
+  \draw (0, 12.5) node[anchor=east] {5000};
+  \draw (0, 15) node[anchor=east] {6000};
+  \draw (0, 17.5) node[anchor=east] {7000};
+  \draw (0, 20) node[anchor=east] {8000};
+  \draw (0, 22.5) node[anchor=east] {9000};
+  \draw (0, 25) node[anchor=east] {10000};
+  \draw (0, 27.5) node[anchor=east] {11000};
+  \draw (0, 30) node[anchor=east] {12000};
+
+}
+}
+
+\caption{\label{figure:data:collecting_informations} Résultats de l'étude de
+plusieurs projets PHP pour connaître les contraintes les plus populaires sur les
+tableaux.}
+
+\end{figure}
+%
+Les trois fonctions les plus utilisées sont \code{count()},
+\code{array\_key\_exists()} et \code{in\_array()}. La fonction \code{count()}
+compte le nombre d'éléments contenus dans un tableau, la fonction
+\code{array\_key\_exists()} vérifie si une clé est présente dans un tableau
+(indépendamment de la valeur associée, c'est~à~dire que cette fonction retourne
+\code{true} même si la valeur est \code{null}), et enfin, la fontion
+\code{in\_array()} vérifie si une valeur est présente dans le tableau. Toutes
+fonctions travaillent sur un seul tableau à la fois. Cette étude suggère que
+nous pouvons considérer ces fonctions booléennes sans effet de bord comme les
+{\em conditions} les plus fréquentes sur les tableaux.
+
+\subsection{Conditions sur les tableaux}
+
+Nous étendons la syntaxe d'une déclaration de tableau~:
+%
+$$\code{a: array($D$, $L$)}$$
+%
+dans Praspel avec les conditions sur les tableaux suivantes.
+
+Une condition sur une paire est de la forme~:
+%
+$$\code{a[$K$]: $V$}$$
+%
+où $K$ et $V$ sont des disjonctions de domaines réalistes. La condition signifie
+que les paires contituées de toutes les clés de $K$ et au moins une valeur
+dans $V$ sont présentes dans le tableau \code{a}. $K$ accepte seulement les
+domaines réalistes qui implémentent les interfaces \code{Constant},
+\code{Interval} et \code{Enumerable}. Cette condition est équivalente à utiliser
+les fonctions \code{array\_key\_exists()} et \code{in\_array()} combinées.
+
+Si nous voulons exprimer une contrainte seulement sur $K$, nous pouvons utiliser
+le symbole \code{\_}. La condition~:
+%
+$$\code{a[$K$]: \_}$$
+%
+signifie que toutes les clés de $K$ doivent être présentes dans le tableau
+\code{a}. Cette condition est équivalente à utiliser la fonction
+\code{array\_key\_exists} avec toutes les clés de $K$ en conjonction.
+
+De même, la condition~:
+%
+$$\code{a[\_]: $V$}$$
+%
+signifie que toutes les valeurs de $V$ doivent être présentes dans le tableau
+\code{a}. Cette condition est équivalente à utiliser la fonction
+\code{in\_array} avec toutes les valeurs de $V$ en conjonction.
+
+Au lieu d'utiliser le symbole \code{:}, nous pouvons utiliser le symbole
+\code{!:} pour exprimer la négation. La condition \code{a[$K$]!: $V$} signifie
+que toutes les clés de $K$ ont une valeur dans \code{a} et que cette valeur
+n'est pas dans $V$. Le fonctionnement est similaire avec le symbole \code{\_}.
+Par exemple, la condition \code{a[$K$]!: \_} signifie qu'aucune clé de $K$
+n'apparaît dans \code{a}.
+
+Les clés des tableaux sont toujours uniques, but pas les valeurs. Nous pouvons
+exprimer la condition d'unicité sur les valeurs en écrivant~:
+%
+$$\code{a is unique}$$
+%
+Dans ce cas, nous ne pouvons pas avoir deux fois la même valeur dans le tableau
+\code{a}.
+
+\begin{example}[Array conditions]
+Pour illustrer toutes les sortes de conditions, nous allons utiliser l'exmple
+suivante qui utilise \code{a}:
+
+\begin{pre}
+length: 0..5 or 10 \\
+a     : array([to string('a', 'e', 1)], length) \\
+a[0]  : 'b' or 'd' \\
+a is unique
+\end{pre}
+
+\end{example}
+
+\subsection{Solveur de contraintes}
+
+\subsubsection{Variables}
+
+\subsubsection{Contraintes de cardinalité}
+
+\subsubsection{Contraintes sur la taille du tableau}
+
+\subsubsection{Contraintes sur les domaines et co-domaines}
+
+\subsubsection{Contraintes sur les paires}
+
+\subsubsection{Contraintes sur les clés et les valeurs}
+
+\subsubsection{Propagation et consistence}
+
+\subsubsection{\inenglish{Labelling}}
