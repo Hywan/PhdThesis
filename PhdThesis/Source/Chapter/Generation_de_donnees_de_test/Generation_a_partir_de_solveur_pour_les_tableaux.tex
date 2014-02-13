@@ -1,6 +1,15 @@
 \section{Génération à partir de solveur pour les tableaux}
 \label{section:data:arrays}
 
+Les tableaux sont utilisés pour représenter toutes sortes de collections en PHP.
+Nous parlons de tableaux associatifs, ou encore \inenglish{hashmaps}, car ils
+sont constituées de paires clé-valeur.
+
+Nous allons tout d'abord étudier plusieurs projets PHP pour connaître les
+contraintes les plus utilisées sur les tableaux. Ensuite, nous allons étendre
+Praspel pour introduire des conditions sur les tableaux. Enfin, nous verrons
+comment ces conditions sont traduites en contraintes pour notre propre solveur.
+
 \subsection{Étude des contraintes les plus utilisées}
 
 L'idée principale est d'étudier plusieurs projets PHP afin de déterminer quelles
@@ -20,7 +29,7 @@ fonctions sont triés par leur nombre d'occurences $n$.
 {
 \Huge
 
-\drawfig{\textwidth}{!}{}{
+\drawfig{!}{11cm}{}{
 
   \tikzset{
      ultra thick/.style={line width=9pt}
@@ -104,15 +113,15 @@ fonctions sont triés par leur nombre d'occurences $n$.
   \draw[ultra thick] (37, 0) -- (37, 7.6975);
   \draw (37, 0) node[anchor=north] {\rotatebox{90}{\code{list}}};
   \draw[ultra thick] (38, 0) -- (38, 8.0875);
-  \draw (38, 0) node[anchor=north] {\rotatebox{90}{\code{array\_key\_exists}}};
+  \draw (38, 0) node[anchor=north] {\rotatebox{90}{\code{array\_merge}}};
   \draw[ultra thick] (39, 0) -- (39, 8.3475);
-  \draw (39, 0) node[anchor=north] {\rotatebox{90}{\code{array\_merge}}};
+  \draw (39, 0) node[anchor=north] {\rotatebox{90}{\code{is\_array}}};
   \draw[ultra thick] (40, 0) -- (40, 9);
   \draw (40, 0) node[anchor=north] {\rotatebox{90}{\code{each}}};
   \draw[ultra thick] (41, 0) -- (41, 12.025);
   \draw (41, 0) node[anchor=north] {\rotatebox{90}{\code{in\_array}}};
   \draw[ultra thick] (42, 0) -- (42, 19.485);
-  \draw (42, 0) node[anchor=north] {\rotatebox{90}{\code{is\_array}}};
+  \draw (42, 0) node[anchor=north] {\rotatebox{90}{\code{array\_key\_exists}}};
   \draw[ultra thick] (43, 0) -- (43, 29.6475);
   \draw (43, 0) node[anchor=north] {\rotatebox{90}{\code{count}}};
 
@@ -146,9 +155,9 @@ compte le nombre d'éléments contenus dans un tableau, la fonction
 (indépendamment de la valeur associée, c'est~à~dire que cette fonction retourne
 \code{true} même si la valeur est \code{null}), et enfin, la fontion
 \code{in\_array()} vérifie si une valeur est présente dans le tableau. Toutes
-fonctions travaillent sur un seul tableau à la fois. Cette étude suggère que
-nous pouvons considérer ces fonctions booléennes sans effet de bord comme les
-{\em conditions} les plus fréquentes sur les tableaux.
+ces fonctions travaillent sur un seul tableau à la fois. Cette étude suggère que
+nous pouvons considérer ces fonctions booléennes sans effet de bord en tant que
+conditions les plus fréquentes sur les tableaux.
 
 \subsection{Conditions sur les tableaux}
 
@@ -156,29 +165,26 @@ Nous étendons la syntaxe d'une déclaration de tableau~:
 %
 $$\code{a: array($D$, $L$)}$$
 %
-dans Praspel avec les conditions sur les tableaux suivantes.
-
-Une condition sur une paire est de la forme~:
+dans Praspel avec les conditions sur les tableaux suivantes. Une condition sur
+une paire est de la forme~:
 %
 $$\code{a[$K$]: $V$}$$
 %
 où $K$ et $V$ sont des disjonctions de domaines réalistes. La condition signifie
-que les paires contituées de toutes les clés de $K$ et au moins une valeur
-dans $V$ sont présentes dans le tableau \code{a}. $K$ accepte seulement les
-domaines réalistes qui implémentent les interfaces \code{Constant},
-\code{Interval} et \code{Enumerable}. Cette condition est équivalente à utiliser
-les fonctions \code{array\_key\_exists()} et \code{in\_array()} combinées.
-
-Si nous voulons exprimer une contrainte seulement sur $K$, nous pouvons utiliser
-le symbole \code{\_}. La condition~:
+que les paires contituées de toutes les clés de $K$ et au moins une valeur dans
+$V$ sont présentes dans le tableau \code{a}. $K$ accepte seulement les domaines
+réalistes qui implémentent les interfaces \code{Constant}, \code{Interval} et
+\code{Enumerable}. Cette condition est équivalente à utiliser les fonctions
+\code{array\_key\_exists()} et \code{in\_array()} combinées. Si nous voulons
+exprimer une contrainte seulement sur $K$, nous pouvons utiliser le symbole
+\code{\_}. La condition~:
 %
 $$\code{a[$K$]: \_}$$
 %
 signifie que toutes les clés de $K$ doivent être présentes dans le tableau
 \code{a}. Cette condition est équivalente à utiliser la fonction
-\code{array\_key\_exists} avec toutes les clés de $K$ en conjonction.
-
-De même, la condition~:
+\code{array\_key\_exists} avec toutes les clés de $K$ en conjonction. De même,
+la condition~:
 %
 $$\code{a[\_]: $V$}$$
 %
@@ -190,10 +196,11 @@ Au lieu d'utiliser le symbole \code{:}, nous pouvons utiliser le symbole
 \code{!:} pour exprimer la négation. La condition \code{a[$K$]!: $V$} signifie
 que toutes les clés de $K$ ont une valeur dans \code{a} et que cette valeur
 n'est pas dans $V$. Le fonctionnement est similaire avec le symbole \code{\_}.
-Par exemple, la condition \code{a[$K$]!: \_} signifie qu'aucune clé de $K$
+Par exemple, la condition \code{a[$K$]!: \_} signifie que toutes les clés de $K$
+ont une valeur qui n'est pas dans \code{\_} (rien), donc qu'aucune clé de $K$
 n'apparaît dans \code{a}.
 
-Les clés des tableaux sont toujours uniques, but pas les valeurs. Nous pouvons
+Les clés des tableaux sont toujours uniques, mais pas les valeurs. Nous pouvons
 exprimer la condition d'unicité sur les valeurs en écrivant~:
 %
 $$\code{a is unique}$$
@@ -201,9 +208,10 @@ $$\code{a is unique}$$
 Dans ce cas, nous ne pouvons pas avoir deux fois la même valeur dans le tableau
 \code{a}.
 
-\begin{example}[Array conditions]
-Pour illustrer toutes les sortes de conditions, nous allons utiliser l'exmple
-suivante qui utilise \code{a}:
+\begin{example}[Conditions sur un tableau]
+\label{example:data:array_conditions}
+Pour illustrer toutes les sortes de conditions, nous allons utiliser l'exemple
+suivant qui utilise \code{a}:
 
 \begin{pre}
 length: 0..5 or 10 \\
@@ -216,18 +224,157 @@ a is unique
 
 \subsection{Solveur de contraintes}
 
+Sur une conjonction de conditions sur un tableau \code{a}, nous proposons
+d'invoquer un solveur de contraintes pour construire un tableau satisfaisant
+toutes ces conditions. Cette partie explique comment les conditions sur les
+tableaux sont transformées en contraintes pour le solveur. Une de ces conditions
+est supposée être une déclaration de tableau de la forme \code{a: array($D$,
+$L$)}, où $D$ est en forme normale. C'est~à~dire que $D$ est une liste de $p$
+constructions \code{from $F_i$ to $T_i$} avec $1 \leq i \leq p$, et $L$ est une
+disjonction de domaines réalistes $L_1, \dots, L_m$ héritant du domaine réaliste
+\code{Integer} et étant positifs ou nuls.
+
+Dans l'Exemple~\ref{example:data:array_conditions}, $p = 1$, $m = 2$, $L_1 =
+[\code{0..5}]$ et $L_2 = \{\code{10}\}$. Dans la description du tableau, aucun
+domaine n'a été déclaré. Dans ce cas, le domaine réaliste \code{integerpp(0, 1)}
+est utilisé par défaut~: il représente un entier auto-incrémenté commençant à 0
+et avec un pas de 1, soit \code{0}, \code{1}, \code{2}, \code{3} etc. Dans cet
+exemple, $F_1 = \code{integerpp(0, 1)}$ et $T_1 = \code{string('a', 'e', 1)}$.
+
+Afin d'éviter tout risque de confusion, précisons qu'une disjonction de domaines
+domaines \code{$D_1$ or $\dots$ or $D_n$} sera souvent identifié comme
+l'ensemble $D_1 \union \dots \union D_n$.
+
 \subsubsection{Variables}
+
+Les variables de contraintes sont:
+%
+\begin{enumerate}
+
+\item la taille du tableau, notée $S$, qui est un entier positif ou nul~;
+
+\item les ensembles $X$ et $Y$ qui sont respectivement le domaine du tableau
+(l'ensemble des clés) et le co-domaine (l'ensemble des valeurs)~;
+
+\item le contenu du tableau, noté $H$, qui est une fonction totale de $X$ vers
+$Y$ (totale car les clés sont uniques)~;
+
+\item les domaines réalistes $X_1, \dots, X_p$ (respectivement $Y_1, \dots,
+Y_p)$ qui sont des sous-ensembles des domaines réalistes $F_1, \dots, F_p$
+(respectivement $T_1, \dots, T_p$), compatibles avec toutes les conditions sur
+le tableau.
+
+\end{enumerate}
+
+Nous sommes essentiellement intéressés par trouver le contenu de $X$ et les
+valeurs de la fonction $H$. Les autres variables sont seulement introduites pour
+simplifier l'expression des contraintes.
+
+Quand $x \in X$ est vraie, $H(x) = y$ signifie que la paire $(x, y)$ est dans le
+tableau. Nous étendons $H$ aux sous-ensembles de $X$ par la fonction $\hat{H}$
+définie par $\hat{H}(E) = \{H(x) \;\mathrm{tel~que}\; x \in E\}$ pour
+n'importe quel sous-ensemble $E$ de $X$.
 
 \subsubsection{Contraintes de cardinalité}
 
+Soit $\mathrm{card}(E)$ représentant la cardinalité de l'ensemble fini $E$. Les
+contraintes~:
+%
+$$\mathrm{card}(X) = S \quad\mathrm{et}\quad S \geq 0$$
+%
+expriment que la taille du tableau est son nombre de clés et que ce nombre est
+positif ou nul. Par défaut, il n'y a pas de contrainte d'unicité sur les
+co-domaines, donc nous avons seulement la contrainte~:
+%
+$$\mathrm{card}(Y) \leq \mathrm{card}(X)$$
+%
+Cependant, en présence de la condition \code{a is unique}, cette contrainte
+devient~:
+%
+$$\mathrm{card}(Y) = \mathrm{card}(X)$$
+
 \subsubsection{Contraintes sur la taille du tableau}
+
+Pendant la propagation des contraintes, le solveur peut raffiner les domaines
+réalistes $L_1, \dots, L_m$, représentant les valeurs possibles pour la taille du
+tableau $S$. Cette taille appartient à un de ses domaines réalistes, nous avons
+donc la contrainte suivante~:
+%
+$$S \in L_1 \union \dots \union L_m$$
+
+Dans l'Exemple~\ref{example:data:array_conditions}, nous avons $L_1 \subseteq
+[\code{0..5}]$ et $L_2 \subseteq \{\code{10}\}$. La taille $S$ est contrainte
+par $S \in L_1 \union L_2$.
 
 \subsubsection{Contraintes sur les domaines et co-domaines}
 
+Le domaine $X$ est le co-domaine $Y$ de $H$ sont reliés par la contrainte~:
+%
+$$Y = \hat{H}(X)$$
+
+Nous attendons du solveur qu'il nous propose une solution pour le domaine $X$
+(respectivement le co-domaine $Y$) sous la forme d'une disjonction de domaines
+réalistes \code{$X_1$ or $\dots$ or $X_p$} (respectivement \code{$Y_1$ or
+$\dots$ or $Y_p$}, compatibles avec toutes les conditions sur le tableau. Nous
+devrions avoir les égalités $X = \Union_{1 \;\leq\; i \leq p} X_i$ et $Y =
+\Union_{1 \;\leq\; i \leq p} Y_i$, ainsi que les inclusions $X_i \subseteq F_i$
+et $Y_i \subseteq T_i$ pour $1 \leq i \leq p$. La paire $(X_i, Y_i)$ devrait
+aussi satisfaire la contrainte $\hat{H}(X_i) = Y_i$, c'est~à~dire que $Y_i$ est
+le co-domaine de la restriction de $H$ à $X_i$ ($\subseteq X$).
+
 \subsubsection{Contraintes sur les paires}
+
+Pour chaque condition \code{a[$K$]: $V$}, où $K$ et $V$ sont des disjonctions de
+domaines réalistes, nous introduisons les contraintes~:
+%
+$$K \subseteq X \quad\mathrm{et}\quad \hat{H}(K) \subseteq V$$
+%
+Une condition négative sur une paire \code{a[$K$]!: $V$} est traduire en
+contraintes~:
+%
+$$K \subseteq X \quad\mathrm{et}\quad \hat{H}(K) \intersection V = \emptyset$$
+
+Pour la condition \code{a[0]: 'b' or 'c'} dans
+l'Exemple~\ref{example:data:array_conditions}, nous avons $K = \{\code{0}\}$ et
+$V = \{\code{'b'}, \code{'c'}\}$. Les contraintes sont $\{\code{0}\} \subseteq
+X$ et $\hat{H}(\{\code{0}\}) \subseteq \{\code{'b'}, \code{'c'}\}$.
 
 \subsubsection{Contraintes sur les clés et les valeurs}
 
+La condition \code{a[$K$]: \_} est traduite en contrainte $K \subseteq X$ et sa
+négation \code{a[$K$]!: \_} en contrainte $K \intersection X = \emptyset$. La
+condition \code{a[\_]: $V$} est traduite en contrainte $V \subseteq Y$ et sa
+négation \code{a[\_]!: $V$} en contrainte $V \intersection Y = \emptyset$.
+
 \subsubsection{Propagation et consistence}
 
+La propagation des contraintes utilise un algorithme AC3~\acite{Mackworth77}
+implémenté en PHP. Nous avons donc cinq sortes de domaines réalistes
+implémentant les interfaces \code{Constant}, \code{Interval}, \code{Nonconvex},
+\code{Finite} et \code{Enumerable}. Pour chaque sorte de domaine réaliste, nous
+avons implémenté une ou des méthodes de raffinement pour permettre la réduction
+du domaine. Par exemple, \code{Nonconvex} attend une méthode \code{discredit}
+pour supprimer une valeur du domaine, \code{Interval} attend les méthodes
+\code{reduceRightTo} et \code{reduceLeftTo} etc. La consistence vérifie
+également qu'il n'y a pas de domaine réaliste vide pour les quatres variables
+$S$, $H$, $X$ et $Y$, mais pas pour $X_i$ et $Y_i$. L'objectif est de détecter
+les inconsistences au plus tôt.
+
 \subsubsection{\inenglish{Labelling}}
+
+Le \inenglish{labelling} (étiquetage) est le processus qui trouve une valeur
+pour chaque variable. Afin de faire converger le solveur rapidement vers une
+solution, nous utilisons une heuristique qui consiste à choisir une valeur pour
+la variable $S$ en premier. Cette approche permet de déplier les quantificateurs
+$\forall$ et $\exists$ (puisque $F_i$ et $T_i$ sont énumérables, nous ne
+manipulons que des ensembles finis). Ensuite, le solveur essaye de calculer les
+ensembles $X_i$ et $Y_i$. Nous utilisons un générateur pseudo-aléatoire pour
+générer une valeur dans le domaine réaliste, pour sélectionner un domaine
+réaliste dans une disjonction etc. La valeur générée est ensuite propagée. Si
+une inconsistence est détectée, nous ajoutons une nouvelle contrainte pour
+discréditer cette valeur, puis nous en générons une nouvelle. Par exemple, si $S
+= 5$ conduit à une inconsistence, nous ajoutons la contrainte $S \neq 5$. La
+nouvelle contrainte est supprimée pendant l'étape de \inenglish{backtracking}.
+
+Quand toutes les variables sont étiquetées, c'est~à~dire que chacune a une valeur
+valide, le solveur retourne la solution.
