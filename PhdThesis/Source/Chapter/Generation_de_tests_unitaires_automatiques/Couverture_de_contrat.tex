@@ -123,7 +123,7 @@ Un {\strong contrat atomique} est un contrat composé uniquement des clauses
 \adefault, \ie aucun sous-contrat, et n'est par conséquent pas décomposable en
 contrat pour plus. Un contrat atomique en forme normale adopte la forme générale
 suivante~:
-
+%
 \begin{pre}
 \arequires  \(R\); \\
 \aensures   \(E\); \\
@@ -185,7 +185,7 @@ Section~\ref{subsection:test:atomic_graph}.
 
 Le graphe résultat est $G' = (V \union \{v'\}, D', i, N, E, U)$ avec le nouveau
 sommet $v' \notin V$, et~:
-
+%
 \begin{equation*}
 \centering
 \begin{aligned}
@@ -212,7 +212,7 @@ quand il y a deux clauses \athrowable (dans la figure, $v'$ est noté $v_7$).
 
 Maintenant, nous considérions le cas d'un contrat contenant exactement une
 clause \abehavior. Soit $C$ le contrat~:
-
+%
 \begin{pre}
 \arequires \(R\); \\
 \abehavior \(\alpha\) \{ \(B\) \}
@@ -295,8 +295,8 @@ $$G = (
 avec
 %
 $$D = \{(v_1, I, i_M)\} \union
-      \{(n, I, v_2) \vert n \in N_M\} \union
-      \{(e, I, v_3) \vert e \in E_M\}$$
+      \{(n, I, v_2) \;\vert\; n \in N_M\} \union
+      \{(e, I, v_3) \;\vert\; e \in E_M\}$$
 
 Il contient trois sommets supplémentaires et plusieurs nouveaux arcs, dont la
 signification est que l'invariant $I$ doit être satisfait avant et après

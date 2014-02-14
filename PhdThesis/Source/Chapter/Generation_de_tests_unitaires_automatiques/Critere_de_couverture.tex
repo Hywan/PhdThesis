@@ -1,2 +1,283 @@
 \section{Critère de couverture}
 \label{section:test:criteria}
+
+Nous définissons maintenant les critères de couverture pour les contrats comme
+des propriétés sur les ensembles de chemins du graphe associé à un contrat
+Praspel annotant une méthode PHP. Mais tout d'abord, nous rappelons les
+définitions d'un chemin, d'un cas de test et d'une suite de test pour notre
+contexte.
+
+Tout au long de cette partie, nous considérons une méthode PHP \code{f} et nous
+représentons par $G(\code{f})$ ou $G$ son contrat $(V, D, i, N, E, U)$, comme
+défini dans la Section~\ref{section:test:contract}.
+
+\subsection{Définitions}
+
+Un {\em chemin} est une séquence de transitions consécutives séparées par des
+points. Deux transitions $(v, \alpha, w)$ et $(x, \beta, y)$ sont consécutives
+si et seulement $w = x$. Nous disons qu'un sommet $v$ {\em est dans} le chemin
+$p$ s'il contient une certaine transition $(v, \alpha, w)$ ou $(w, \alpha, v)$.
+
+Nous associons deux sortes de chemins à un contrat $G = (V, D, i, N, E, U)$. Une
+{\em route} de $G$ est un chemin dont les transitions sont dans $D$. Maintenant,
+considérons n'importe quelle route $r$ de $G$, et remplaçons n'importe quelle
+transition $(v, e, w)$ dans $r$, où $e$ est une expresssion, par le chemin $(v,
+\varepsilon, i_H) \cdot q \cdot (n_H, \varepsilon, w)$, où $q$ est un chemin de
+$i_H$ à $n_H$ du graphe d'expression $H = (V_H, D_H, i_H, n_H)$ associé à $e$.
+Le résultat est appelé un {\em sentier} de $r$. Un sentier d'un graphe de
+contrat $G$ est n'importe quel sentier obtenu depuis une route de $G$.
+
+Un {\em test unitaire} pour une méthode PHP \code{f} est un ensemble de données
+(appelées entrées), c'est~à~dire l'ensemble des valeurs pour les arguments de
+\code{f}. Un {\em cas de test} est une paire $(s, t)$ composée d'un état $s$ (le
+contexte dans lequel est exécuté le test) et un test unitaire $t$. Pour
+construire l'état $s$, nous avons deux approches~:
+%
+\begin{enumerate}
+
+\item créer un objet et invoquer ses méthodes afin de changer son état~; ou
+
+\item instrumenter le code pour détourner l'encapsulation et définir l'état de
+l'objet directement.
+
+\end{enumerate}
+%
+Une {\em suite de tests} est un ensemble de cas de test.
+
+Quand nous exécutons un cas de test, nous sommes capable de calculer l'ensemble
+des chemins traversés dans le graphe de contrat $G$.
+
+Nous représentons par $s'$ l'état après l'exécution du test, par $r$ la valeur
+retournée par la méthode invoquée et par $e$ l'exception levée. Remarquons que
+si le la méthode lève une exception, alors $r$ est indéfinie. À l'inverse, si la
+méthode termine normalement (c'est~à~dire sans levée d'exception), $e$ est
+considérée comme indéfinie.
+
+Afin de calculer les chemins (autant les routes que les sentiers) d'un contrat
+qui sont activés par un test $(s, t)$, nous explorons le contrat $G(\code{f})$
+et nous collectons les chemins en évaluant les étiquettes des transitions tout
+en respectant le test~:
+%
+\begin{itemize}
+
+\item si la transition est étiquetée par une expression $R$ (respectivement
+$I$) provenant d'une précondition (respectivement d'un invariant évalué dans le
+pré-état), la transition est activée si et seulement si $R$ (respectivement $I$)
+est vraie dans le pré-état $s$ du test~;
+
+\item si la transition est étiquetée par une expression $E$ provenant d'une
+post-condition (normale ou exceptionnelle), la transition est activée si et
+seulement $E$ est vraie, quand \aresult est remplacée par la valeur retournée
+$r$, les sous-expressions \aold{\empty} sont remplacées par leur valeur dans le
+pré-état $s$, et les autres sous-expressions sont évaluées dans le post-état
+$s'$~;
+
+\item si la transition est étiquetée par une expression $I$ provenant d'un
+invariant évalué dans le post-état, la transition est activée si et seulement si
+$I$ est vraie dans le post-état $s'$~;
+
+\item si la transition est étiquetée par une déclaration de domaines réalistes
+\code{$i$: $d$}, la transition est activée si et seulement si la valeur courante
+de $i$ appartient à un des domaines réalistes dans la disjonction $d$ (grâce à
+la caractéristique de prédicabilité). Quand cette déclaration provient d'une
+précondition (c'est~à~dire dans un graphe d'expression d'une précondition), la
+valeur de $i$ est choisie dans le pré-état $s$ du test si $i$ est un attribut de
+classe, ou dans les arguments de la méthode si $i$ set un argument de la
+méthode. Quand la déclaration est exprimée dans une postcondition (normale ou
+exceptionnelle), la valeur de $i$ est choisie dans le post-état $s'$~;
+
+\item si la transition est étiquetée par un prédicat, la transition est activée
+si et seulement le prédicat est satisfait avec l'état courant du système ($s$
+dans le cas d'une précondition, $s'$ pour un prédicat \inenglish{before-after},
+c'est~à~dire contenu dans une postcondition, dont les expressions \aold{\empty}
+sont évaluées dans le pré-état $s$)~;
+
+\item si la transition est étiquetée par une classe d'exception $T_C$, alors la
+transition est activée si et seulement si l'exception levée $e$ n'est pas
+indéfinie et est une instance de $T_C$.
+
+\end{itemize}
+
+Jusqu'à maintenant, nous avons seulement considéré les chemins de $G(\code{f})$
+(routes et sentiers) démarrant depuis l'état initial de $G(\code{f})$ et
+terminant dans un de ses états finaux (soit normal soit exceptionel). Par
+exemple, dans la Figure~\ref{figure:test:throwable_graph}, nous voyons qu'il est
+possible d'activer plusieurs chemins en même temps, quand $T_{C_1}$ étend
+$T_{C_2}$ et qu'une exception de classe $T_{C_1}$ est levée. Nous représentons
+par $R_\code{f}(S)$ l'ensemble des chemins de $G(\code{f})$ activés par une
+suite de test $S$. Similairement, nous représentons par $T_\code{f}(S)$ les
+sentiers de $G(\code{f})$ activé par une suite de test $S$ et traversant des
+graphes d'expression imbriquées dans $G(\code{f})$.
+
+Nous définissons mainteannt les critères de couverture sur les contrats que nous
+proposons, à partir des graphes de contrats.
+
+Les exemples suivantes sont basés sur le contrat de la
+Figure~\ref{figure:test:irc} pour la méthode \code{compute} avec deux arguments:
+\code{server} qui doit être une classe de type
+\code{\bslash{}Irc\bslash{}Server} et \code{buffer} qui doit contenir un message
+IRC.
+%
+\begin{figure}
+
+\begin{bigpre}
+/** \\
+ * \arequires server: class('\(\bslash\)Irc\(\bslash\)Server'); \\
+ * \abehavior message \{ \\
+ *     \arequires buffer: /^privmessage .+/ or /^message .+/; \\
+ *     \aensures  \aresult: 1..; \\
+ * \} \\
+ * \abehavior ping \{ \\
+ *     \arequires buffer: /^ping\$/ and \\
+ *               \(\bslash\)pred('\$server->bufferState   >= 0 or \\
+ *                      network\_buffer\_state() >  0'); \\
+ *     \aensures  \aresult: 1..; \\
+ * \} \\
+ * \adefault \{ \\
+ *     \athrowable \(\bslash\)Irc\(\bslash\)Exception\(\bslash\)MalformedMessage e \\
+ *                    with e->code: 400..491; \\
+ * \} \\
+ */ \\
+public static function compute ( \$server, \$buffer ) \{ … \}
+\end{bigpre}
+
+\caption{\label{figure:test:irc} Example d'un contrat et d'une méthode
+manipulant un flux IRC.}
+
+\end{figure}
+%
+Nous avons deux comportements, un pour un message privé ou public (représenté
+par une expression régulière à travers le domaine réaliste \code{regex} et son
+sucre syntaxique) et un pour un «~ping~». Dans le dernier comportement, la
+précondition a un prédicat pour spécifier que le réseau est dans un état
+spécifique. Enfin, le comportement par défaut spécifie qu'une exception de type
+\code{\bslash{}Irc\bslash{}Exception\bslash{}MalformedMessage} doit être levée
+si le tampon n'est ni un message ni un ping. De plus, le code d'une exception
+doit être un entier entre 400 et 491.
+
+\subsection{Critère de Clause}
+
+Le Critère de Clause vise à couvrir la structure d'un contrat. Ainsi, le Critère
+de Clause est satisfait par une suite de test $S$ d'une méthode \code{f} si tous
+les états $V \bslash U$ d'un graphe de contrat $G(\code{f}) = (V, D, i, N, E,
+U)$ d'une méthode \code{f} sont dans la route de $R_\code{f}(S)$.
+
+\begin{example}[Suite de test satisfaisant le Critère de Clause]
+
+Les cas de test suivants couvrent toutes les clauses. La syntaxe
+\code{object($c$)} représente une instance valide d'une classe $c$. La suite
+de test $\{t_1, t_2, t_3\}$ avec~:
+%
+\begin{itemize}
+
+\item[$(t_1)$] \code{compute(object(\bslash{}Irc\bslash{}Server), 'message foobar')}~;
+
+\item[$(t_2)$] \code{compute(object(\bslash{}Irc\bslash{}Server), 'ping')}~;
+
+\item[$(t_3)$] \code{compute(object(\bslash{}Irc\bslash{}Server), 'xyz')}.
+
+\end{itemize}
+%
+satisfait le Critère de Couverture de Clause.
+
+\end{example}
+
+\subsection{Critère de Domaine}
+
+Le Critère de Domaine rafine le Critère de Clause en considérant la déclaration
+de domaines réalistes à l'intérieur des graphes d'expression. Plus formellement,
+le Critère de Domaine est satisfait par une suite de test $S$ pour une méthode
+\code{f} si toutes les transitions de la forme \code{$i$: $d$} dans le graphe de
+contrat $G(\code{f})$ (qui sont contenus dans les graphes d'expressions
+étiquetant les transitions de $G(\code{f})$ et contenant le nœud $\mathit{dom}$)
+apparaît dans au moins un sentier dans $T_\code{f}(S)$.
+
+\begin{example}[Suite de test satisfaisant le Critère de Domaine]
+
+La suite de test $\{t_1, t_2, t_4\}$ avec~:
+%
+\begin{itemize}
+
+\item[$(t_4)$] \code{compute(object(\bslash{}Irc\bslash{}Server), 'privmessage foobar')}.
+
+\end{itemize}
+%
+satisfait le Critère de Couverture de Domaine: les deux déclarations de domaines
+réalistes de la variable \code{server} sont couverts.
+
+\end{example}
+
+\subsection{Critère de Prédicat}
+
+Similairement au Critère de Domaine, le Critère de Prédicat s'applique aux
+prédicats dans les graphes d'expression, et vise à tous les couvrir. Plus
+formellement, le Critère de Prédicat est satisfait par une suite de test $S$
+pour une méthode \code{f} si toutes les transitions qui ne sont pas de la forme
+\code{$i$: $d$} dans le graphe de contrat $G(\code{f})$ (qui sont contenu dans
+les graphes d'expressions étiquetant les transitions de $G(\code{f})$ et
+contenant le nœud $\mathit{pred}$ apparaîssent dans au moins un sentier dans
+$T_\code{f}(S)$.
+
+\begin{example}[Suite de test satisfaisant le Critère de Prédicat]
+
+La suite de test $\{t_5, t_6\}$ avec~:
+%
+\begin{itemize}
+
+\item[$(t_5)$] \code{compute(object(\bslash{}Irc\bslash{}Server), 'ping')} avec \\
+\apred{\code{'\$server->bufferState >= 0'}}~;
+
+\item[$(t_6)$] \code{compute(object(\bslash{}Irc\bslash{}Server), 'ping')} avec \\
+\apred{\code{'network\_buffer\_state() > 0'}}.
+
+\end{itemize}
+%
+satisfait le Critère de Couverture de Prédicat.
+
+\end{example}
+
+\subsection{Combinaisons}
+
+Avoir de tels critères de couverture n'est pas suffisant pour produire ou
+qualifier des cas de test {\em réalistes}. En effet, couvrir toutes les clauses
+d'un contrat n'assure pas que tous les domaines ont été couverts. À l'inverse,
+savoir que tous les domaines ont été couverts n'assure pas que toutes les
+clauses du contrat ont été exploitées. Ainsi, afin d'avoir des cas de test plus
+réalistes, ces critères de couverture de contrat peuvent être combinés ensemble.
+Nous proposons les combinaisons suivantes~:
+%
+\begin{itemize}
+
+\item le Critère Clause~+~Domaine vise à ouvrir la structure et les domaines
+d'un contrat~;
+
+\item le Critère Clause~+~Prédicat vise à couvrir la structure et les prédicats
+d'un contrat~;
+
+\item le Critère \inenglish{All}-$G$ vise à satisfaire les critères Clause,
+Domaine et Prédicat en même temps.
+
+\end{itemize}
+%
+Ce treillis de Critère de Couverture de Contrat est résumé dans la
+Figure~\ref{figure:test:lattice}.
+
+\begin{figure}
+
+\fig{11cm}{!}{Criteria.tex}
+
+\caption{\label{figure:test:lattice} Hiérarchie des critères. $A \rightarrow B$
+signifie que si le critère $A$ est satisfait, alors $B$ est également
+satisfait.}
+
+\end{figure}
+
+\begin{example}[Suite de test satisfaisant les combinaisons des Critères de
+Couverture de Contrat]
+
+La suite de test $\{t_1, t_2, t_3, t_4\}$ satisfait le Critère de Couverture
+Clause~+~Domaine. La suite de test $\{t_1, t_3, t_5, t_6\}$ satisfait le Critère
+de Couverture Clause~+~Prédicat. La suite de test $\{t_1, t_3, t_4, t_5, t_6\}$
+satisfait le Critère de Couverture \inenglish{All}-$G$
+
+\end{example}

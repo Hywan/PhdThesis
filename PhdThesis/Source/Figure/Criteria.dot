@@ -10,10 +10,10 @@ digraph {
     spc -> sc;
     spc -> pc;
 
-    ac  [width=1.0, label=" ", texlbl="All-$G$ Coverage"];
-    sc  [width=1.0, label=" ", texlbl="Clause Coverage"];
-    dc  [width=1.0, label=" ", texlbl="Domain Coverage"];
-    pc  [width=1.0, label=" ", texlbl="Predicate Coverage"];
-    sdc [width=1.0, label=" ", texlbl="\begin{tabular}{c}Clause + Domain \\ Coverage\end{tabular}"];
-    spc [width=1.0, label=" ", texlbl="\begin{tabular}{c}Clause + Predicate \\ Coverage\end{tabular}"];
+    ac  [width=1.0, label=" ", texlbl="Couverture \inenglish{All}-$G$"];
+    sc  [width=1.0, label=" ", texlbl="Couverture Clause"];
+    dc  [width=1.0, label=" ", texlbl="Couverture Domaine"];
+    pc  [width=1.0, label=" ", texlbl="Couverture Prédicat"];
+    sdc [width=1.0, label=" ", texlbl="\begin{tabular}{c}Couverture \\ Clause~+~ Domaine\end{tabular}"];
+    spc [width=1.0, label=" ", texlbl="\begin{tabular}{c}Couverture \\ Clause~+~Prédicat\end{tabular}"];
 }
