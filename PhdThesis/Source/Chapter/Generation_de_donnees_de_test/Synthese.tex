@@ -1,2 +1,29 @@
 \section{Synthèse}
 \label{section:data:summary}
+
+Dans ce chapitre, nous avons présenté les différentes techniques de génération
+de données utilisées dans Praspel. Nous avons présenté la technique utilisée par
+défaut qui est pseudo-aléatoire. Nous avons observé un grand nombre de mauvaises
+données générées qui introduisaient du rejet lorsque nous manipulions des
+données structurelles ou complexes, comme les tableaux ou les chaînes de
+caractères. Nous avons abordé ces problèmes un par un.
+
+Nous avons proposé un solveur de contraintes sur les tableaux. Le langage
+Praspel a été étendu pour gérer nativement plusieurs contraintes sur ces
+derniers. Nous avons au préalable effectué une étude sur des dizaines de projets
+PHP afin de connaître les contraintes les plus populaires sur les tableaux. Ces
+travaux ont été publiés dans l'article~\acitei{EnderlinGB13}.
+
+Nous avons également introduit une approche \inenglish{grammar-based testing}
+dans Praspel avec les domaines réalistes \code{grammar} et \code{regex}. Ces
+derniers permettent de valider et vérifier des données textuelles complexes.
+Pour y arriver, nous avons écrit notre propre compilateur de compilateurs
+$LL(\star)$ avec son langage de description de grammaire associé, à savoir PP.
+Nous avons proposé trois algorithmes de génération de données à partir d'une
+grammaire pour différents usages et contextes~: des données variées, aléatoires,
+de taille fixe, bornée ou encore libre etc. Ces travaux ont été publiés dans
+l'article~\acitei{EnderlinDGB12}. \\
+
+Nous connaissons le language, nous savons comment évaluer le contrat, nous
+savons comment générer des données satisfaisants le contrat. Dans le chapitre
+suivant, nous allons voir comment générer des tests à partir d'un contrat.
