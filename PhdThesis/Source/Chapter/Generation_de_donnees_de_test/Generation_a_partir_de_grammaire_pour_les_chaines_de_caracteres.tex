@@ -423,7 +423,7 @@ Figure~\ref{figure:data:random_tabular}.
 \begin{figure}
 
 \begin{center}
-\begin{tabular}{lcccccccccccccc}
+\begin{tabular}{c|cc|cccccccccccc}
 $n$ & \code{f:} & $\dots$ & \code{g:} & \code{(} &
   \code{<b> <c>} & \code{|} & \code{<d>} & \code{|} & \code{f()} & \code{)} &
   \multicolumn{3}{c}{\code{\{1, 3\}}} \\
@@ -434,11 +434,11 @@ $n$ & \code{f:} & $\dots$ & \code{g:} & \code{(} &
 
 \hline
 
-5 & 24 & & 73 & 24 & 0 & & 0 & & - & & (24, & 28, & 21)\\
-4 & 8  & & 24 & 8  & 0 & & 0 & & - & & (8, & 10, & 6) \\
-3 & 3  & & 8  & 3  & 0 & & 0 & & - & & (3, & 4, & 1) \\
-2 & 1  & & 3  & 2  & 1 & & 0 & & - & & (2, & 1, & 0) \\
-1 & 0  & & 1  & 1  & 0 & & 1 & & - & & (1, & 0, & 0) \\
+5 & 24 & & 73 & & 0 & & 0 & & - & & (24, & 28, & 21)\\
+4 & 8  & & 24 & & 0 & & 0 & & - & & (8, & 10, & 6) \\
+3 & 3  & & 8  & & 0 & & 0 & & - & & (3, & 4, & 1) \\
+2 & 1  & & 3  & & 1 & & 0 & & - & & (2, & 1, & 0) \\
+1 & 0  & & 1  & & 0 & & 1 & & - & & (1, & 0, & 0) \\
 
 \hline
 
@@ -448,8 +448,9 @@ $n$ & \code{f:} & $\dots$ & \code{g:} & \code{(} &
 \caption{\label{figure:data:random_tabular} Tableau récapitulatif des résultats
 de la fonction $\psi$. La première colonne montre les valeurs possibles de $n$.
 La deuxième colonne montre les résultats pour $f(n)$. Ensuite, nous avons les
-résultats pour $g(n)$, avec le détail~: pour la disjonction, pour chaque branche
-de la disjonction, et ensuite pour la répétition avec $r = 1$, 2 et 3.}
+résultats pour $g(n)$, avec le détail~: pour chaque branche de la disjonction et
+pour la répétition avec $r = 1$, 2 et 3. Le symbole «~-~» représente une donnée
+dupliquée sur la même ligne.}
 
 \end{figure}
 
