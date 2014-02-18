@@ -4,7 +4,8 @@
 Les sections précédentes expliquaient comment générer des données scalaires,
 telles que des booléens, des entiers, réels ou chaînes, et aussi des données
 plus complexes, telles que des tableaux. Nous allons décrire comment générer des
-objets, puisque le paradigme le plus utilisé en PHP est l'objet. \\
+objets, puisque le paradigme le plus utilisé en PHP5\footnote{Sortie en juillet
+2004.} est l'objet. \\
 
 Un objet est une aggrégation d'attributs et de méthodes. Les deux sont annotés
 par des contrats Praspel, respectivement par la clause \ainvariant et les autres
@@ -25,5 +26,6 @@ pointe vers le premier objet), nous appliquons une stratégie inspirée de
 Jartege~\acite{Oriat05} et UDITA~\acite{GligoricGJKKM10}. Cette stratégie
 consiste à enregistrer les objets créés dans un groupe. Quand un objet est
 demandé, nous avons le choix entre en générer un nouveau ou en choisir un dans
-le groupe. Ce choix est dynamiquement réalisé en fonction de l'état du groupe:
-plus il contient d'objets, moins il y aura de nouveaux objets générés.
+le groupe. Ce choix est dynamiquement réalisé en fonction de l'état du groupe~:
+plus il contient d'objets, moins il y aura de nouveaux objets générés. Ce choix
+est paramétrable par une fonction de répartition fournie par l'utilisateur.

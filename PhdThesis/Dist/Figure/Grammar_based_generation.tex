@@ -1,17 +1,17 @@
 %%
 \pgfsetcolor{black}
   % Edge: grammar -> sequence
-  \draw [->] (69.556bp,72bp) .. controls (105.93bp,72bp) and (163.92bp,72bp)  .. (212.79bp,72bp);
+  \draw [->] (69.579bp,72bp) .. controls (106.76bp,72bp) and (166.62bp,72bp)  .. (215.89bp,72bp);
   \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
   \pgfsetstrokecolor{strokecol}
   \draw (117bp,82.5bp) node {génération};
   % Edge: sequence -> result
-  \draw [->] (273.31bp,72bp) .. controls (311.93bp,72bp) and (379.86bp,72bp)  .. (431.73bp,72bp);
-  \draw (377bp,81.5bp) node {concrétisation};
+  \draw [->] (276.27bp,72bp) .. controls (315.51bp,72bp) and (385.17bp,72bp)  .. (437.91bp,72bp);
+  \draw (383bp,81.5bp) node {concrétisation};
   % Edge: sequenceX -> resultX
-  \draw [->] (322.17bp,18bp) .. controls (356.21bp,18bp) and (394.47bp,18bp)  .. (431.9bp,18bp);
+  \draw [->] (327.8bp,18bp) .. controls (362.16bp,18bp) and (400.5bp,18bp)  .. (437.94bp,18bp);
   % Edge: grammarX -> sequenceX
-  \draw [->] (62.09bp,18bp) .. controls (85.245bp,18bp) and (120.45bp,18bp)  .. (163.8bp,18bp);
+  \draw [->] (62.047bp,18bp) .. controls (85.253bp,18bp) and (120.62bp,18bp)  .. (164.41bp,18bp);
   % Node: grammar
 \begin{scope}
   \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
@@ -23,21 +23,21 @@
 \begin{scope}
   \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
   \pgfsetstrokecolor{strokecol}
-  \draw (459bp,18bp) node {\code{abcdef}};
+  \draw (465bp,18bp) node {\code{7 + 42}};
 \end{scope}
   % Node: sequence
 \begin{scope}
   \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
   \pgfsetstrokecolor{strokecol}
-  \draw [state] (243bp,72bp) ellipse (30bp and 18bp);
-  \draw (243bp,72bp) node {séquence};
+  \draw [state] (246bp,72bp) ellipse (30bp and 18bp);
+  \draw (246bp,72bp) node {séquence};
 \end{scope}
   % Node: result
 \begin{scope}
   \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
   \pgfsetstrokecolor{strokecol}
-  \draw [state,accepting] (459bp,72bp) ellipse (27bp and 18bp);
-  \draw (459bp,72bp) node {mot};
+  \draw [state,accepting] (465bp,72bp) ellipse (27bp and 18bp);
+  \draw (465bp,72bp) node {mot};
 \end{scope}
   % Node: grammarX
 \begin{scope}
@@ -49,6 +49,6 @@
 \begin{scope}
   \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
   \pgfsetstrokecolor{strokecol}
-  \draw (243bp,18bp) node {[[\code{a} $\mapsto \dots$], [\code{bc} $\mapsto \dots$], $\dots$]};
+  \draw (246bp,18bp) node {$[[\code{7} \mapsto \dots], [\code{+} \mapsto \dots], [\code{42} \mapsto \dots]]$};
 \end{scope}
 %
