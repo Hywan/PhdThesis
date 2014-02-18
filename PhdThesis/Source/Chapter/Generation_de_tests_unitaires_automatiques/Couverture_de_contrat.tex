@@ -2,8 +2,8 @@
 \label{section:test:contract}
 
 Dans cette section, nous expliquons comment construire le graphe d'un contrat
-Praspel, en forme normale. Ce graphe reflète les clauses du contrat à travers
-les assignements de domaines réalistes et les prédicats.
+Praspel en forme normale. Ce graphe reflète les clauses du contrat à travers
+les déclarations de domaines réalistes et les prédicats.
 
 Dans la suite, nous notons $A$ l'ensemble composé de toutes les expressions
 Praspel générées par les entités syntaxiques \grule{expression} et
@@ -61,8 +61,8 @@ Figure~\ref{figure:language:grammar_part2} par l'entité syntaxique
 prédicats et de contraintes, respectivement décritent par les entités
 syntaxiques \grule{declaration}, \grule{predicate} et \grule{constraint} dans la
 Figure~\ref{figure:language:grammar_part3}. Nous transformons seulement les deux
-premières sortes d'expressions, comme les expressions de type \grule{constraint}
-ne sont pas pertinente pour la couverture: elles représentent un seul
+premières sortes d'expressions car les expressions de type \grule{constraint}
+ne sont pas pertinentes pour la couverture~: elles représentent un seul
 comportement (par exemple, \grule{constraint} et \grule{declaration}
 apparaissent toujours ensembles) et sont toujours exécutées.
 
@@ -70,7 +70,7 @@ Une expression sans contrainte en forme normale est de la forme \code{$d$ and
 $p$}, où $d$ (respectivement $p$) est une conjonction d'expressions de type
 \grule{declaration} (respectivement \grule{predicate}). Son graphe d'expression
 est la concaténation par une transition $\varepsilon$ du {\strong graphe des
-domaines} obtenu à partir $d$ et du {\strong graphe des prédicats} obtenu à
+domaines} obtenu à partir de $d$ et du {\strong graphe des prédicats} obtenu à
 partir de $p$. Les deux constructions sont détaillées ci-dessous.
 
 Une conjonction de déclarations a la forme générale \code{$i_1$: $D_1$ and
@@ -90,9 +90,9 @@ Le {\strong graphe des domaines} associé à l'expression \code{$i_1$: $D_1$ and
 $\dots$ and $i_m$: $D_m$} est $G = (\{\mathit{dom}\} \union \{v_s \vert \in S\},
 D, \mathit{dom}, v_{\mathrm{last}(S)})$ où~:
 %
-$$D = \Union_{d \in D_1} \{(\mathit{dom}, \code{$i_1$: $d$}, v_{i_1})\} \union
-      \Union_{2 \leq j \leq m}
-      \Union_{d \in D_j} \{(v_{i_{j - 1}}, \code{$i_j$: $d$}, v_{i_{j}})\}$$
+$$D = \Union_{d \,\in\, D_1} \{(\mathit{dom}, \code{$i_1$: $d$}, v_{i_1})\} \union
+      \Union_{2 \,\leq\, j \,\leq\, m}
+      \Union_{d \,\in\, D_j} \{(v_{i_{j - 1}}, \code{$i_j$: $d$}, v_{i_{j}})\}$$
 %
 Un prédicat est de la forme \apred{p}, où $p$ est une chaîne de caractères
 contenant un prédicat PHP en forme normale disjonctive (DNF). Nous lui associons
@@ -120,9 +120,9 @@ associé au dernier exemple.
 
 Un {\strong contrat atomique} est un contrat composé uniquement des clauses
 \arequires, \aensures et \athrowable. Il ne contient ni clauses \abehavior, ni
-\adefault, \ie aucun sous-contrat, et n'est par conséquent pas décomposable en
-contrat pour plus. Un contrat atomique en forme normale adopte la forme générale
-suivante~:
+\adefault, c'est~à~dire aucun sous-contrat, et n'est par conséquent pas
+décomposable en sous-contrat. Un contrat atomique en forme normale adopte
+la forme générale suivante~:
 %
 \begin{pre}
 \arequires  \(R\); \\
@@ -183,15 +183,15 @@ induction, supposons que l'ensemble des sommets $V$ contient au moins les six
 sommets $v_1 = i$, $v_2$, $v_3$, $v_4$, $v_5$, $v_6$ introduits dans la
 Section~\ref{subsection:test:atomic_graph}.
 
-Le graphe résultat est $G' = (V \union \{v'\}, D', i, N, E, U)$ avec le nouveau
+Le graphe résultant est $G' = (V \union \{v'\}, D', i, N, E, U)$ avec le nouveau
 sommet $v' \notin V$, et~:
 %
 \begin{equation*}
 \centering
 \begin{aligned}
-D = & D \union \{(v2, T_C, v'), (v', T_E, v5)\} \\
-    & - \{(v_2, \varphi, v_6) \vert (v_2, \varphi, v_6) \in D\} \union
-      \{(v_2, \varphi \land \neg T_C, v_6) \vert (v_2, \varphi, v_6) \in D\}
+D =\; & D \union \{(v_2, T_C, v'), (v', T_E, v_5)\} \\
+    & - \{(v_2, \varphi, v_6) \,\vert\, (v_2, \varphi, v_6) \in D\} \union
+      \{(v_2, \varphi \land \neg T_C, v_6) \,\vert\, (v_2, \varphi, v_6) \in D\}
 \end{aligned}
 \end{equation*}
 
@@ -210,8 +210,8 @@ quand il y a deux clauses \athrowable (dans la figure, $v'$ est noté $v_7$).
 \subsection{Graphe d'un contrat avec une clause \abehavior}
 \label{subsection:test:behavior_graph}
 
-Maintenant, nous considérions le cas d'un contrat contenant exactement une
-clause \abehavior. Soit $C$ le contrat~:
+Maintenant, nous considérons le cas d'un contrat contenant exactement une clause
+\abehavior. Soit $C$ le contrat~:
 %
 \begin{pre}
 \arequires \(R\); \\
@@ -257,7 +257,7 @@ clause \abehavior~$\beta$ à la liste des comportements dont le graphe de contra
 est $(V, D, i, N, E, U)$. Soit $G_\beta = (V_\beta, D_\beta, i_\beta, N_\beta,
 E_\beta, U_\beta)$ le graphe de contrat associé au comportement $\beta$. Modulo
 quelques renommages, supposons que $V$ contient un sommet $v$ tel que $D$
-contiens un arc $(i, R, v)$ et que tous les sommets de $G_\beta$ sont distincts
+contient un arc $(i, R, v)$ et que tous les sommets de $G_\beta$ sont distincts
 de ceux de $G$ ($V \intersection V_\beta = \emptyset$). Alors, le nouveau graphe
 de contrat est $G = (V \union V_\beta - \{i_\beta\}, D \union D'_\beta, i, N
 \union N'_\beta, E \union E_\beta, U \union U_\beta)$, où $D'_\beta$
@@ -295,8 +295,8 @@ $$G = (
 avec
 %
 $$D = \{(v_1, I, i_M)\} \union
-      \{(n, I, v_2) \;\vert\; n \in N_M\} \union
-      \{(e, I, v_3) \;\vert\; e \in E_M\}$$
+      \{(n, I, v_2) \,\vert\, n \in N_M\} \union
+      \{(e, I, v_3) \,\vert\, e \in E_M\}$$
 
 Il contient trois sommets supplémentaires et plusieurs nouveaux arcs, dont la
 signification est que l'invariant $I$ doit être satisfait avant et après
