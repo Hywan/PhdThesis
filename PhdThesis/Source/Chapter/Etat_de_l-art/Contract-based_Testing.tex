@@ -1,0 +1,51 @@
+\section{\inenglish{Contract-based Testing}}
+\label{section:sota:cbt}
+
+Jusqu'à maintenant, nous avons vu comment les contrats sont utilisés pour
+{\strong filtrer} les données manipuler par un programme ou pour vérifier que le
+programme ne produira pas d'erreur. Cependant, l'un des intérêts et usages
+principaux des contrats est pour le {\strong test}. En effet, le {\strong test à
+partir de contrats} (\inenglish{Contract-based Testing}, abrégé CbT) a été
+introduit pour exploiter les langages de contrats afin de tester des
+programmes~\acite{Aichernig03}~:
+
+\begin{itemize}
+
+\item les invariants et les préconditions sont utilisés pour {\strong générer
+des données} de test~;
+
+\item les postconditions {\strong fournissent un oracle} capable de calculer le
+verdict du test à l'exécution.
+
+\end{itemize}
+
+Rappelons qu'un test est composé de trois parties~: un SUT, des données de test
+et un oracle. La première partie est présente du fait de la proximité entre les
+contrats et le programme, et les deux dernières nous sont données en exploitant
+le contrat. À partir d'une spécification formelle, sous la forme d'un contrat,
+nous sommes capable de générer des tests automatiquement. Comme nous sommes au
+niveau du code source du programme, et plus précisément, sur les méthodes des
+classes (dans un contexte orienté objet), les tests seront {\strong unitaires}. \\
+
+Le test à partir de contrat répond au constat suivant. La validation dynamique
+souffre d'une limitation majeure~: elle fournit des résultats limités. Les
+spécifications sont souvent vérifiées avec les données des exécutions courantes
+et rarement de manière exhaustive. Ainsi, la validation dynamique résulte
+souvent à une détection incomplète et tardive (potentiellement en production) de
+défauts. Et pourtant, «~un test montre la présence, jamais l'absence d'une
+erreur~» (Edsger W.~Dijkstra dans~\acitep{Buxton70}). Et un bon test est un test
+qui échoue.  Pour savoir ce qu'est un «~bon test~», il existe plusieurs
+métriques pour le qualifier~: les critères de couverture de
+code~\acite{MillerM63, Myers04, GargantiniGM12}. Si plusieurs tests remplissent
+les critères les plus élevés de la couverture de code, alors une importante
+partie des erreurs serait détectée. Toutefois, il faut être conscient que ces
+critères ne sont pas non plus exhaustives. En effet, ce n'est pas parce qu'un
+test à activer tous les chemins que toutes les erreurs ont été évitées. De plus,
+des erreurs peuvent se cacher dans l'environnement d'exécution du programme.
+Notons que si nous travaillons en boîte-noire, ces critères ne sont pas
+appliquables, et nous pouvons uniquement nous référer aux postconditions des
+contrats.
+
+Une façon de pallier ces limitations est de générer des données de tests les
+plus pertinentes possible afin de tenter de couvrir tous les comportements de la
+spécification. C'est un des grands défis du test à partir de contrat.
