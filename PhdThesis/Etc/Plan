@@ -108,9 +108,9 @@ Ressortir aussi les définitions du white-box, black-box etc.
 
 
 
-2.1 devient Langages de contrats
-2.1.1 disparaît
-2.1.2 disparaît
+x 2.1 devient Langages de contrats
+x 2.1.1 disparaît
+x 2.1.2 disparaît
 2.2 devient contract-based testing
         on décrit les objectifs de tests
             critère de sélection de tests
@@ -119,7 +119,7 @@ Ressortir aussi les définitions du white-box, black-box etc.
        et données à générer (integers, strings, arrays etc.)
        et objectifs (couverture aux limites etc.)
 
-dans 2.1, tout va dans l'intro, sauf 2.1.1.
+x dans 2.1, tout va dans l'intro, sauf 2.1.1.
 
 
 Dire en intro de l'état de l'art qu'il existe d'autres travaux (sur Appolo par

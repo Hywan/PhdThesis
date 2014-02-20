@@ -3,124 +3,14 @@
 
 \minitoc
 
-Cette thèse s'intéresse à la conformité entre un programme et sa spécification,
-à travers la création d'un nouveau langage de spécification. Ce langage sera
-utilisé pour générer automatiquement des tests. Cet état de l'art commence par
-poser quelques mots de vocabulaire et des définitions. Puis, nous verrons dans
-un deuxième temps les langages de spécifications majeurs, suivis des techniques
-de génération de tests. Enfin, nous verrons des techniques de générations de
-données de tests aux frontières de plusieurs domaines de la vérification et de
-la validation.
+Notre contribution à ce mémoire est un langage de spécification par contrat.
+Cet état de l'art concerne naturelleent les langages de spécification et plus
+particulièrement eceux à base de contrat. Nous en profiterons pour faire un
+rappel sur le vocabulaire utilisé. Ensuite, nous utilisons ce langage pour
+générer des tests automatiquement, ce qui consiste d'une part à générer des
+données de tests et d'autre part à générer des suites de tests. La suite de
+l'état de l'art présentera alors …
 
-\require{Chapter/Etat_de_l-art/Behavioral_Interface_Specification_Languages.tex}
-\require{Chapter/Etat_de_l-art/Generation_de_tests.tex}
+\require{Chapter/Etat_de_l-art/Langages_de_contrats.tex}
+\require{Chapter/Etat_de_l-art/Contract-based_Testing.tex}
 \require{Chapter/Etat_de_l-art/Generation_de_donnees.tex}
-
-%
-%  Langage de spéc' :
-%  
-%      V&V
-%          verification: are we building the product right?
-%          validation: are we building the right product?
-%  
-%      Model-based Testing
-%          super mais trop dur à faire
-%  
-%      Design-by-Contract
-%          Eiffel
-%              on explique les pré-, postconditions, invariants.
-%  
-%      Contract-based Testing
-%          du MBT dans le code finalement
-%          plus simple
-%          plus rapide
-%          on est au niveau unitaire du coup (proche du code)
-%          on est au niveau black-box du coup
-%              sauf si on annote des tests (tests paramétrés, tests fonctionnels…)
-%  
-%      Ça nous paraît être le bon endroit pour écrire une spéc' (annotation du
-%      code), simple pour les développeurs, ça rentre dans les méthodes de dév'
-%      etc.
-%  
-%      JML
-%      Spec#
-%      ACSL
-%  
-%      Bilan**
-%  
-%  
-%  Génération de données :
-%  
-%      Une spécification décrit le fonctionnement du programme. Avec le
-%      design-by-contract, on décrit les données.
-%  
-%      Deux approches :
-%          validation : on va valider les données fournies
-%          vérification : on va générer puis valider ses données
-%  
-%      Comment fait-on en général ?
-%          Solveur ou autre/aléatoire
-%          PHP manipule beaucoup les types suivants :
-%              Entiers
-%              Tableaux
-%              Chaînes/grammaires
-%              Objets
-%  
-%      Bilan**
-%  
-%  
-%  Génération automatique de tests :
-%  
-%      On fait du contract-based testing
-%      On prend une spéc', on génère des séquences d'exécution (des tests), avec
-%      les données précédemment générées
-%  
-%      Comment générer des tests à partir d'une spéc' ?
-%      Que cherche-t-on à atteindre ?
-%      => couvrir tous les comportements de la spéc', since elle représente/reflète
-%      le comportement du programme
-%  
-%      Qui a fait ça avant ?
-%  
-%      Bilan**
-%  
-%  
-%  Synthèse
-%  
-%  
-%  
-%  
-%  
-%  Les outils à étudier :
-%      Apollo (Sosym)
-%   x  JML
-%   x  JSConTest
-%   x  Eiffel
-%      Madsen
-%   x  Yagg
-%   x  Geno
-%   x  YouGen
-%   x  @Flajolet
-%   x  @Howden
-%   x  @Hennessy "Analysing the effectiveness of rule-coverage as a reduction…"
-%   x  Korat
-%   x  TestEra (pré-Korat)
-%   x  UDITA (post-Korat)
-%      Java PathFinder
-%      Alloy
-%      SpecExplorer
-%   x  Spec#
-%   x  ACSL
-%      AsmL
-%   x  KLEE
-%   x  Exe
-%      Symstra
-%   x  Jartege
-%   x  Euclide
-%   x  InKA
-%   x  FDCC
-%   x  ARTOO
-%   x  AutoTest
-%   x  Pex
-%      Quickcheck
-%      JML-Testing-Tools

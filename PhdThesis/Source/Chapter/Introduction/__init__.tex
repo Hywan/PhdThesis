@@ -9,7 +9,20 @@ de spécification accompagné de ses outils. Ces activités s'articulent autour 
 trois axes majeurs~: langage de spécification, génération de données et
 génération automatique de tests.
 
-Informellement, nous pouvons voir un test comme étant composé de trois parties~:
+\section{Vérification et validation}
+
+Aujourd'hui, nous sommes dans l'ère du tout numérique. Le nombre de nouveaux
+logiciels produits et utilisés chaque jour est énorme. Nous utilisons de plus en
+plus de machines dans notre quotidien~: téléphone, tablette, ordinateur,
+télévision, appareil électro-ménager… Une très grande majorité d'entre eux sont
+connectés à un réseau, le plus souvent Internet. Internet nous permet d'accéder
+à des centaines, voire des milliers, de millions de sites Web. Nous pouvons les
+classifier des dommages et des coûts qu'ils occasionnent en cas de
+dysfonctionnement. bla bla bla
+
+Tous ces logiciels ont besoins d'être vérifier et valider. Ce mémoire
+s'intéresse aux tests logiciels. Informellement, nous pouvons voir un test comme
+étant composé de trois parties~:
 
 \begin{enumerate}
 
@@ -39,35 +52,157 @@ moitié du prix d'un projet}. Et pourquoi ne pas écrire une spécification
 formelle, et la rendre exécutable~?  C'est~à~dire d'utiliser un langage formel
 pour décrire le fonctionnement du programme, puis dériver, à partir de cette
 spécification, des tests qui soient exécutables et qui vont vérifier ou valider
-plusieurs aspects de cette spécification. \\
+plusieurs aspects de cette spécification.
 
-Nous nous intéressons à des programmes écrits en PHP~\acite{PHP} pour plusieurs
-raisons. Comparés à des langages plus traditionnels, comme C ou Java, les
-langages de scripts accélèrent le processus de développement grâce à la
-flexibilité qu'ils offrent avec le typage dynamique, faible et le mélange de
-paradigmes. Cependant, cette flexibilité rend plus difficile la compréhension du
-comportement de certains programmes, tout comme il est plus difficile de
-s'assurer que le programme n'est pas affecté par une modification (nous parlons
-de {\strong régressions}). Ce type de langage nous apporte des problématiques
-encore peu ou pas abordées dans l'état de l'art actuel. De plus, aucun travaux
-ne considère PHP pour la génération de données de test ou la génération de
-tests. De même, aucun langage de spécification dédié à PHP n'existait avant les
-travaux de cette thèse. Par ailleurs, plus de 85\% du Web fonctionne avec PHP.
-Cela implique qu'il y a un marché important avec d'immenses besoins~; que ce
-soit des sites de commerces\footnote{Etsy, \url{https://etsy.com/}.}, de
-banques, d'assurances, de réseaux sociaux\footnote{Facebook,
-\url{https://facebook.com/}.}, de moteurs de recherche\footnote{Yahoo,
-\url{https://yahoo.com/}.}, d'encyclopédie\footnote{Wikipedia,
-\url{https://wikipedia.org/}.}, gouvernementaux\footnote{France, Belgique,
-Suisse, USA, Canada etc.} et d'autres. Nous tenons à préciser que nous nous
-intéressons à du test pour PHP et non pas du test pour le Web à travers un
-client HTML comme un navigateur. Nous considérons PHP uniquement, tout en
-orientant nos travaux vers les problématiques du Web. \\
+\subsection{\inenglish{Behavioral Interface Specification Language}}
 
-Cette thèse s'intéresse à la conformité entre un programme et sa spécification,
-à travers la création d'un nouveau langage de spécification simple, pragmatique
-pour le Web et unifiant plusieurs théories. Chaque théorie introduit se verra
+Le terme {\strong spécification} signifie généralement une description précise
+d'un comportement d'un artéfact. La {\strong vérification} signifie prouver
+qu'une implémentation (c'est~à~dire un programme) satisfait une spécification
+particulière dans toutes les exécutions et configurations possibles.
+Généralement, une telle preuve est accomplie à l'aide de raisonnements
+statiques, c'est~à~dire uniquement par analyse du programme. Quand un
+raisonnement statique n'est pas possible ou suffisant, nous pouvons utiliser une
+{\strong validation} dynamique, pour tester l'implémentation, c'est~à~dire que
+nous allons exécuter le programme. Une validation dynamique est aussi appelée
+\inenglish{Runtime Assertion Checking}, abrégé RAC~\acite{Geller76}.
+
+Un {\strong langage de spécification} formel est une notation précise pour
+décrire les comportements et propriétés d'un programme. Les {\strong notations
+formelles} aident à rendre les spécifications non-ambiguës, moins dépendantes
+des normes culturelles, et ainsi moins sujettes à une mauvaise interprétation.
+Les langages de spécification sont conçus pour répondre à des problèmes généraux
+ou spécialisés. Les langages de spécifications généraux, tels que
+Z~\acite{Spivey89} ou OCL~\acite{RichtersG98}, ne sont pas conçus pour une
+méthodologie particulière ou des outils de vérifications. Cependant, les
+langages de spécifications sont très souvent spécialisés, en fonction du type de
+langage qu'ils visent~: typage statique et fort, ou dynamique et faible, orienté
+objet ou fonctionnel etc.
+
+Par ailleurs, comme une notation est formelle, elle peut être exploitée par une
+machine pour y appliquer un traitement automatique. Les spécifications
+formelles peuvent alors aider à {\strong automatiser le test}, autant pour
+générer les données de test~\acite{BernotGM91, KorelA98, SankarH94, Jalote92}
+que pour calculer le verdict du test~\acite{CheonL02}. C'est dans ces deux
+directions que nous allons nous tourner\footnote{TODO: en introduction}.
+
+Les spécifications peuvent documenter les {\strong interfaces} d'un programme.
+Par interfaces, il faut comprendre les parties du programme permettant de
+manipuler les données. Nous parlons alors de {\strong langages d'annotations}.
+De tels langages peuvent jouer un rôle central dans la programmation. Par
+exemple, ils facilitent la maintenance du code, qui n'est généralement pas
+suffisament expressif pour faire comprendre au développeur ses tenants et ses
+aboutissants. Par ailleurs, lors d'une phase de \inenglish{debugging}, les
+annotations permettent de localiser plus facilement la faute. Dans le cas où
+nous travaillons en boîte-blanche (\inenglish{white-box}), c'est~à~dire où nous
+avons accès au code source du programme, les annotations peuvent faire partie de
+la grammaire du langage, ou alors, elles sont écrites dans des {\strong
+commentaires}. Dans le cas où nous travaillons en boîte-noire
+(\inenglish{black-box}), c'est~à~dire où nous n'avons pas ou partiellement
+d'accès au code source, les annotations peuvent parfois être externes au
+programme, par exemple sur un langage de définition d'interface
+(\inenglish{Interface Definition Language}, abrégé IDL) ou sur un modèle, ce qui
+nous rapprocherait du \inenglish{Model-based Testing}, abrégé
+MbT~\acite{Utting07}. La différence entre boîte-noire et boîte-blanche peut
+parfois être plus subtile~\acite{Gaudel11}~: nous considérons que nous sommes en
+boîte-noire quand nous n'exploitons pas la structure du code, basiquement le
+contenu des fonctions et méthodes, sinon, nous sommes en boîte-blanche.
+
+Les langages d'annotations sont des \inenglish{Behavioral Interface
+Specification Language}, abrégé BISL. C'est dans cette catégorie de langage que
+ce situe nos contributions.
+
+\section{Contexte et problématique}
+
+Ce mémoire s'intéresse à la conformité entre un programme et sa spécification, à
+travers la création d'un nouveau langage de spécification simple, pragmatique
+pour le Web et unifiant plusieurs théories. Chaque théorie introduite se verra
 enrichie pour la rendre compatible avec les besoins liés au Web.
+
+\subsection{\inenglish{PHP: Hypertext Preprocessor}}
+
+PHP~\acite{PHP} se définit comme étant un «~langage de script universel
+populaire qui est particulièrement adapté pour le développement Web~». PHP se
+définit également avec les adjectifs suivants~: «~rapide, flexible et
+pragmatique~». C'est aussi un langage multiparadigmes. Il est par exemple
+procédural avec des fonctions nommées, orienté objet avec des classes, des
+interfaces et des traits, ou encore fonctionnel avec des fonctions anonymes et
+des closures. PHP est un langage de script interprété. Nous pouvons le voir
+comme un langage «~glu~» (comme la majorité des langages de script),
+c'est~à~dire qu'il communique avec à peu prêt tout et est au centre de beaucoup
+de logiciels. La syntaxe du langage est inspirée de C, C++, Java ou encore Perl.
+Depuis plusieurs années, le langage connaît des améliorations importantes afin
+de faire oublier les erreurs de modélisation passées qui lui sont trop souvent
+associées.
+
+Nous nous intéressons à des programmes écrits en PHP pour plusieurs raisons.
+Comparés à des langages plus traditionnels, comme C ou Java, les langages de
+scripts accélèrent le processus de développement grâce à la flexibilité qu'ils
+offrent avec un typage dynamique, faible et le mélange de paradigmes. Cependant,
+cette flexibilité rend plus difficile la compréhension du comportement de
+certains programmes, tout comme il est plus difficile de s'assurer que le
+programme n'est pas affecté par une modification (nous parlons de {\strong
+régressions}).
+
+Ce type de langage nous apporte des problématiques encore peu ou pas abordées
+dans l'état de l'art actuel. De plus, aucun travaux ne considère PHP pour la
+génération de données de test ou la génération de tests. De même, aucun langage
+de spécification dédié à PHP n'existait avant les travaux de ce mémoire. Par
+ailleurs, plus de 85\% du Web fonctionne avec PHP.  Cela implique qu'il y a un
+marché important avec d'immenses besoins~; que ce soit des sites de
+commerces\footnote{Etsy, \url{https://etsy.com/}.}, de banques, d'assurances, de
+réseaux sociaux\footnote{Facebook, \url{https://facebook.com/}.}, de moteurs de
+recherche\footnote{Yahoo, \url{https://yahoo.com/}.},
+d'encyclopédie\footnote{Wikipedia, \url{https://wikipedia.org/}.},
+gouvernementaux\footnote{France, Belgique, Suisse, USA, Canada etc.} et
+d'autres. Nous tenons à préciser que nous nous intéressons à du test pour PHP et
+non pas du test pour le Web à travers un client HTML comme un navigateur. Nous
+considérons PHP uniquement, tout en orientant nos travaux vers les
+problématiques du Web.
+
+\subsection{Langage de contrat}
 
 \section{Contributions}
 \label{section:introduction:contributions}
+
+Dans ce mémoire, nous proposons un nouveau langage de contrat. Pour élaborer un
+tel langage, nous avons trois axes de réflexion~: le langage lui-même (sa
+syntaxe et sa sémantique), les algorithmes de générations de données, et enfin
+les algorithmes de générations de tests.
+
+\subsection{Un langage de contrats pour PHP}
+
+Nous proposons un langage de contrat. Ce contrat peut être utilisé de deux
+façons différentes~: soit il sera évalué lors de l'exécution du programme afin
+de vérifier qu'aucune spécification n'est violée, soit nous pouvons à partir
+d'un contrat générer automatiquement plusieurs tests unitaires. Cette seconde
+façon est traitée dans les contributions suivantes. Cette contribution
+s'intéresse au langage en lui-même, à savoir sa syntaxe et sa sémantique. Nous
+voyons aussi comment évaluer un contrat pour qu'il vérifie des données à
+l'exécution. Cette contribution a été publiée dans~\acitei{EnderlinDGO11}.
+
+\subsection{Des générateurs de données}
+
+Nous avons dit qu'un contrat pouvait être utilisé pour générer
+automatiquement des tests unitaires. Un test est constitué de trois choses~: un
+SUT, des données de test et un oracle. Cette contribution s'intéresse à générer
+des données de test. Ces données sont spécifiées par le contrat et représentent
+au mieux les données manipulées par le programme. Nous devons alors être
+capables de générer toutes sortes de données~: des booléens, des entiers, des
+réels, des chaînes de caractères, des tableaux, des objets etc. Cette
+contribution a donné lieux à deux publications~: \acitei{EnderlinDGB12} et
+\acitei{EnderlinGB13}.
+
+\subsection{Un générateur automatique de tests unitaires}
+
+Cette dernière contribution «~boucle la boucle~». Nous avons un langage de
+contrat qui peut être évalué pour vérifier les données manipulées par le
+programme à l'exécution. Nous sommes capable de générer automatiquement des
+données de test à partir d'un morceau d'un contrat. La dernière étape
+s'intéresse au fait qu'un contrat peut exprimer plusieurs comportements et nous
+devons nous assurer que tous ces comportements sont testées. Nous allons alors
+générer autant de tests unitaires que nécessaire pour couvrir tous ces
+comportements. Les données nécessaires pour exécuter ces tests seront générées
+avec la contribution précédente.
+
+\section{Plan du mémoire}

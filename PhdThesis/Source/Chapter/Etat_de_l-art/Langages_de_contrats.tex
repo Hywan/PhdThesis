@@ -1,60 +1,5 @@
-\section{\inenglish{Behavioral Interface Specification Languages}}
+\section{Langages de contrats}
 \label{section:sota:bisl}
-
-Le terme {\strong spécification} signifie généralement une description précise
-d'un comportement d'un artéfact. La {\strong vérification} signifie prouver
-qu'une implémentation (c'est~à~dire un programme) satisfait une spécification
-particulière dans toutes les exécutions et configurations possibles.
-Généralement, une telle preuve est accomplie à l'aide de raisonnements
-statiques, c'est~à~dire uniquement par analyse du programme. Quand un
-raisonnement statique n'est pas possible ou suffisant, nous pouvons utiliser une
-{\strong validation} dynamique, pour tester l'implémentation, c'est~à~dire que
-nous allons exécuter le programme. Une validation dynamique est aussi appelée
-\inenglish{Runtime Assertion Checking}, abrégé RAC~\acite{Geller76}.
-
-Un {\strong langage de spécification} formel est une notation précise pour
-décrire les comportements et propriétés d'un programme. Les {\strong notations
-formelles} aident à rendre les spécifications non-ambiguës, moins dépendantes
-des normes culturelles, et ainsi moins sujettes à une mauvaise interprétation.
-Les langages de spécification sont conçus pour répondre à des problèmes généraux
-ou spécialisés. Les langages de spécifications généraux, tels que
-Z~\acite{Spivey89} ou OCL~\acite{RichtersG98}, ne sont pas conçus pour une
-méthodologie particulière ou des outils de vérifications. Cependant, les
-langages de spécifications sont très souvent spécialisés, en fonction du type de
-langage qu'ils visent~: typage statique et fort, ou dynamique et faible, orienté
-objet ou fonctionnel etc.
-
-Par ailleurs, comme une notation est formelle, elle peut être exploitée par une
-machine pour y appliquer un traitement automatique.  Les spécifications
-formelles peuvent alors aider à {\strong automatiser le test}, autant pour
-générer les données de test~\acite{BernotGM91, KorelA98, SankarH94, Jalote92}
-que pour calculer le verdict du test~\acite{CheonL02}. C'est dans ces deux
-directions que nous allons nous tourner\footnote{TODO: en introduction}.
-
-Les spécifications peuvent documenter les {\strong interfaces} d'un programme.
-Par interfaces, il faut comprendre les parties du programme permettant de
-manipuler les données. Nous parlons alors de {\strong langages d'annotations}.
-De tels langages peuvent jouer un rôle central dans la programmation. Par
-exemple, ils facilitent la maintenance du code, qui n'est généralement pas
-suffisament expressif pour faire comprendre au développeur ses tenants et ses
-aboutissants. Par ailleurs, lors d'une phase de \inenglish{debugging}, les
-annotations permettent de localiser plus facilement la faute. Dans le cas où
-nous travaillons en boîte-blanche (\inenglish{white-box}), c'est~à~dire où nous
-avons accès au code source du programme, les annotations peuvent faire partie
-de la grammaire du langage, ou alors, elles sont écrites dans des {\strong
-commentaires}. Dans le cas où nous travaillons en boîte-noire
-(\inenglish{black-box}), c'est~à~dire où nous n'avons pas ou partiellement
-d'accès au code source, les annotations peuvent parfois être externes au
-programme, par exemple sur un langage de définition d'interface
-(\inenglish{Interface Definition Language}, abrégé IDL) ou sur un modèle, ce qui
-nous rapprocherait du \inenglish{Model-based Testing}, abrégé
-MbT~\acite{Utting07}. La différence entre boîte-noire et boîte-blanche peut
-parfois être plus subtile~\acite{Gaudel11}.  Nous considérons que nous sommes en
-boîte-noire quand nous n'exploitons pas la structure du code, basiquement le
-contenu des fonctions et méthodes, sinon, nous sommes en boîte-blanche.
-
-\subsection{Langages de contrats}
-\label{subsection:sota:dbc}
 
 Les spécifications sont souvent utilisées sous la forme de {\strong
 contrats}~\acite{Liskov86, Meyer92}. Nous parlons de programmation par contrats
@@ -90,12 +35,14 @@ l'exécution d'une méthode, il se trouve dans un {\strong pré-état}, et aprè
 l'exécution d'une méthode, il se trouve dans un {\strong post-état}. Pour les
 langages supportant les exceptions, il existe un post-état normal et un
 post-état exceptionnel dans le cas où une exception ait été levée. Par ailleurs,
-nous disons que le test est un {\strong succès} si aucune clause n'est violée,
-sinon le test est un {\strong échec}.
+quand le contrat est évalué, nous disons que c'est un {\strong succès} si aucune
+clause n'est violée, sinon c'est un {\strong échec}.
 
 Les langages décrivant une spécification formelle à travers des contrats pour le
 comportement des programmes, et utilisés comme annotations, sont appelés des
 {\strong langages de contrats}. Il en existe plusieurs~\acite{HatcliffLLMP12}.
+
+\paragraph{Eiffel} Rappel sur Eiffel (à placer un peu avant).
 
 \paragraph{JML} Le \inenglish{Java Modeling Language}~\acite{JML} est un langage
 de contrats pour Java~\acite{Java}. À la différence de Eiffel qui utilise
@@ -191,55 +138,3 @@ elle est proche du code source du programme. Toutefois, selon la complexité du
 langage de spécification, elle sera plus ou moins utilisée. Cette complexité
 ressentie peut être compensée par d'autres services que peuvent offrir les
 contrats.
-
-\subsection{Test à partir de contrats}
-\label{subsection:sota:cbt}
-
-Jusqu'à maintenant, nous avons vu comment les contrats sont utilisés pour
-{\strong filtrer} les données manipuler par un programme ou pour vérifier que le
-programme ne produira pas d'erreur. Cependant, l'un des intérêts et usages
-principaux des contrats est pour le {\strong test}. En effet, le {\strong test à
-partir de contrats} (\inenglish{Contract-based Testing}, abrégé CbT) a été
-introduit pour exploiter les langages de contrats afin de tester des
-programmes~\acite{Aichernig03}~:
-
-\begin{itemize}
-
-\item les invariants et les préconditions sont utilisés pour {\strong générer
-des données} de test~;
-
-\item les postconditions {\strong fournissent un oracle} capable de calculer le
-verdict du test à l'exécution.
-
-\end{itemize}
-
-Rappelons qu'un test est composé de trois parties~: un SUT, des données de test
-et un oracle. La première partie est présente du fait de la proximité entre les
-contrats et le programme, et les deux dernières nous sont données en exploitant
-le contrat. À partir d'une spécification formelle, sous la forme d'un contrat,
-nous sommes capable de générer des tests automatiquement. Comme nous sommes au
-niveau du code source du programme, et plus précisément, sur les méthodes des
-classes (dans un contexte orienté objet), les tests seront {\strong unitaires}. \\
-
-Le test à partir de contrat répond au constat suivant. La validation dynamique
-souffre d'une limitation majeure~: elle fournit des résultats limités. Les
-spécifications sont souvent vérifiées avec les données des exécutions courantes
-et rarement de manière exhaustive. Ainsi, la validation dynamique résulte
-souvent à une détection incomplète et tardive (potentiellement en production) de
-défauts. Et pourtant, «~un test montre la présence, jamais l'absence d'une
-erreur~» (Edsger W.~Dijkstra dans~\acitep{Buxton70}). Et un bon test est un test
-qui échoue.  Pour savoir ce qu'est un «~bon test~», il existe plusieurs
-métriques pour le qualifier~: les critères de couverture de
-code~\acite{MillerM63, Myers04, GargantiniGM12}. Si plusieurs tests remplissent
-les critères les plus élevés de la couverture de code, alors une importante
-partie des erreurs serait détectée. Toutefois, il faut être conscient que ces
-critères ne sont pas non plus exhaustives. En effet, ce n'est pas parce qu'un
-test à activer tous les chemins que toutes les erreurs ont été évitées. De plus,
-des erreurs peuvent se cacher dans l'environnement d'exécution du programme.
-Notons que si nous travaillons en boîte-noire, ces critères ne sont pas
-appliquables, et nous pouvons uniquement nous référer aux postconditions des
-contrats.
-
-Une façon de pallier ces limitations est de générer des données de tests les
-plus pertinentes possible afin de tenter de couvrir tous les comportements de la
-spécification. C'est un des grands défis du test à partir de contrat.
