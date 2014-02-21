@@ -2,7 +2,7 @@ My PhdThesis. This is a “subtree” of a private SVN repository.
 
 # Compile
 
-How to compile the document? Blazing easy:
+How to compile the document? Deadly simple:
 
     $ cd PhdThesis
     $ make bib
