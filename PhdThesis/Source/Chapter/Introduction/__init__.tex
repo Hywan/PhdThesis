@@ -165,33 +165,44 @@ problématiques du Web.
 \section{Contributions}
 \label{section:introduction:contributions}
 
-Dans ce mémoire, nous proposons un nouveau langage de contrat. Pour élaborer un
-tel langage, nous avons trois axes de réflexion~: le langage lui-même (sa
-syntaxe et sa sémantique), les algorithmes de générations de données, et enfin
-les algorithmes de générations de tests.
+Dans ce mémoire, nous proposons un nouveau langage de contrat pour PHP. Pour
+élaborer un tel langage, nous avons trois axes de réflexion~: le langage
+lui-même (sa syntaxe et sa sémantique), les algorithmes de générations de
+données, et enfin les algorithmes de générations de tests.
 
-\subsection{Un langage de contrats pour PHP}
+\subsection{Un langage de contrats pour PHP~: Praspel}
 
-Nous proposons un langage de contrat. Ce contrat peut être utilisé de deux
-façons différentes~: soit il sera évalué lors de l'exécution du programme afin
-de vérifier qu'aucune spécification n'est violée, soit nous pouvons à partir
-d'un contrat générer automatiquement plusieurs tests unitaires. Cette seconde
-façon est traitée dans les contributions suivantes. Cette contribution
-s'intéresse au langage en lui-même, à savoir sa syntaxe et sa sémantique. Nous
-voyons aussi comment évaluer un contrat pour qu'il vérifie des données à
-l'exécution. Cette contribution a été publiée dans~\acitei{EnderlinDGO11}.
+Nous proposons un nouveau langage de contrat appelé {\strong Praspel}. Un
+contrat peut être utilisé de deux façons différentes~: soit il sera évalué lors
+de l'exécution du programme afin de vérifier qu'aucune spécification ne soit
+violée, soit nous pouvons à partir d'un contrat générer automatiquement
+plusieurs tests unitaires. Cette seconde façon est traitée dans les
+contributions suivantes.  Cette contribution s'intéresse au langage en lui-même,
+à savoir sa syntaxe et sa sémantique. Nous voyons aussi comment évaluer un
+contrat pour qu'il vérifie des données à l'exécution. Ce langage est inspiré de
+JML~\acite{JML} mais se différencie sur la façon de spécifier les données. En
+effet, il s'appuye en grande partie sur les {\strong domaines réalistes}, des
+structures permettant de valider et générer des données et pouvant être
+emboîtées afin de représenter des données plus complexes. Cette contribution a
+été publiée dans~\acitei{EnderlinDGO11}.
 
 \subsection{Des générateurs de données}
 
-Nous avons dit qu'un contrat pouvait être utilisé pour générer
-automatiquement des tests unitaires. Un test est constitué de trois choses~: un
-SUT, des données de test et un oracle. Cette contribution s'intéresse à générer
-des données de test. Ces données sont spécifiées par le contrat et représentent
-au mieux les données manipulées par le programme. Nous devons alors être
-capables de générer toutes sortes de données~: des booléens, des entiers, des
-réels, des chaînes de caractères, des tableaux, des objets etc. Cette
-contribution a donné lieux à deux publications~: \acitei{EnderlinDGB12} et
-\acitei{EnderlinGB13}.
+Nous avons dit qu'un contrat pouvait être utilisé pour générer automatiquement
+des tests unitaires. Un test est constitué de trois choses~: un SUT, des données
+de test et un oracle. Cette contribution s'intéresse à générer des données de
+test. Ces données sont spécifiées au mieux par le contrat. Nous devons alors
+être capables de générer toutes sortes de données~: des booléens, des entiers,
+des réels, des chaînes de caractères, des tableaux, des objets etc. Nous avons
+commencé par générer aléatoirement et uniformément des booléens, des entiers et
+des réels. Toutefois, cette approche montre rapidement ses limites avec des
+chaînes de caractères, des tableaux ou des objets. Nous avons proposés des
+algorithmes de générations de chaîne de caractères s'appuyant sur des
+grammaires. Ensuite, nous nous sommes concentrés sur les tableaux avec un
+solveur et des contraintes dédiées. Ces contributions ont donné lieux à deux
+publications, respectivement \acitei{EnderlinDGB12} et \acitei{EnderlinGB13}.
+Enfin, nous avons pu améliorer la génération des objets en combinant toutes ces
+approches.
 
 \subsection{Un générateur automatique de tests unitaires}
 
@@ -200,9 +211,12 @@ contrat qui peut être évalué pour vérifier les données manipulées par le
 programme à l'exécution. Nous sommes capable de générer automatiquement des
 données de test à partir d'un morceau d'un contrat. La dernière étape
 s'intéresse au fait qu'un contrat peut exprimer plusieurs comportements et nous
-devons nous assurer que tous ces comportements sont testées. Nous allons alors
-générer autant de tests unitaires que nécessaire pour couvrir tous ces
-comportements. Les données nécessaires pour exécuter ces tests seront générées
-avec la contribution précédente.
+devons nous assurer que tous ces comportements sont testées. Nous avons alors
+défini plusieurs critères de couverture sur les contrats afin d'avoir des
+objectifs de tests à atteindre. Par conséquent, nous avons développer des
+algorithmes générant autant de tests unitaires que nécessaire pour satisfaire
+certains critères et ainsi couvrir tous les comportements des contrats. Les
+données nécessaires pour exécuter ces tests seront générées automatiquement avec
+la contribution précédente.
 
 \section{Plan du mémoire}
