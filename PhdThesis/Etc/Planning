@@ -1,0 +1,27 @@
+À partir du 26 février
+
+mercredi : fixer https://github.com/jubianchi/atoum/issues/5
+
+jeudi :    chapitre 4
+           appliquer la review de Fréd' et celle de Fabrice (dérouler les algos
+           en exemple du GbT)
+
+           Julien Bianchi va finir https://github.com/Hywan/atoum-instrumentation/
+
+vendredi : chapitre 5
+           appliquer la review de Fréd'
+
+lundi :    chapitre 3
+
+           lancer atoum/enhanced :
+               - l'instrumentation sera déjà dans atoum
+               - inclure Praspel : génération de données
+               - inclure Praspel : génération de tests (seconde étape, on
+                 commence avec une Hoathis)
+
+mardi :    état de l'art
+
+mercredi : état de l'art
+
+mercredi : expérimentation
+           trouver des nouveaux développeurs
