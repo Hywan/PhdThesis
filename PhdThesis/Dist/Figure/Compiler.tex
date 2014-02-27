@@ -1,23 +1,23 @@
 %%
 \pgfsetcolor{black}
   % Edge: word -> sequence
-  \draw [->] (54.002bp,77bp) .. controls (85.514bp,77bp) and (138.93bp,77bp)  .. (185.84bp,77bp);
+  \draw [->] (54.002bp,66bp) .. controls (74.739bp,66bp) and (104.96bp,66bp)  .. (143.69bp,66bp);
   \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
   \pgfsetstrokecolor{strokecol}
-  \draw (94bp,86.5bp) node {lexicale};
+  \draw (94bp,75.5bp) node {lexicale};
   % Edge: wordX -> sequenceX
   \draw [->] (54.002bp,20bp) .. controls (72.429bp,20bp) and (98.348bp,20bp)  .. (134.2bp,20bp);
   % Edge: sequence -> result
-  \draw [->] (246.22bp,77bp) .. controls (283.35bp,77bp) and (347.46bp,77bp)  .. (397.87bp,77bp);
-  \draw (346bp,87.5bp) node {syntaxique};
+  \draw [->] (288.24bp,66bp) .. controls (321.69bp,66bp) and (360.14bp,66bp)  .. (397.86bp,66bp);
+  \draw (346bp,76.5bp) node {syntaxique};
   % Edge: sequenceX -> resultX
   \draw [->] (297.62bp,20bp) .. controls (327.42bp,20bp) and (359.89bp,20bp)  .. (394.46bp,20bp);
   % Node: word
 \begin{scope}
   \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
   \pgfsetstrokecolor{strokecol}
-  \draw [state] (27bp,77bp) ellipse (27bp and 18bp);
-  \draw (27bp,77bp) node {mot};
+  \draw [state] (27bp,66bp) ellipse (27bp and 18bp);
+  \draw (27bp,66bp) node {mot};
 \end{scope}
   % Node: resultX
 \begin{scope}
@@ -29,15 +29,15 @@
 \begin{scope}
   \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
   \pgfsetstrokecolor{strokecol}
-  \draw [state] (216bp,77bp) ellipse (30bp and 18bp);
-  \draw (216bp,77bp) node {séquence};
+  \draw [state] (216bp,66bp) ellipse (72bp and 18bp);
+  \draw (216bp,66bp) node {séquence de lexèmes};
 \end{scope}
   % Node: result
 \begin{scope}
   \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
   \pgfsetstrokecolor{strokecol}
-  \draw [state,accepting] (425bp,77bp) ellipse (27bp and 18bp);
-  \draw (425bp,77bp) node {AST};
+  \draw [state,accepting] (425bp,66bp) ellipse (27bp and 18bp);
+  \draw (425bp,66bp) node {AST};
 \end{scope}
   % Node: sequenceX
 \begin{scope}

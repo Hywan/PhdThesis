@@ -1,6 +1,7 @@
 digraph {
     graph [rankdir=LR];
     node  [style="state"];
+    nodesep=0.1;
 
     subgraph {
         wordX     -> sequenceX;
@@ -13,10 +14,10 @@ digraph {
     }
 
     wordX     [shape=plaintext, label=" ", texlbl="\code{7 + 42}"];
-    sequenceX [shape=plaintext, width=2.2, label=" ", texlbl="$[[\code{7} \mapsto \dots], [\code{+} \mapsto \dots], [\code{42} \mapsto \dots]]$"];
+    sequenceX [shape=plaintext, label=" ", texlbl="$[[\code{7} \mapsto \dots], [\code{+} \mapsto \dots], [\code{42} \mapsto \dots]]$"];
     resultX   [shape=plaintext, label=" ", texlbl="\begin{tikzpicture}[node distance=2cm] \node [state, scale=.3] (foo1) {}; \node [state, scale=.3, below left of=foo1] (foo2) {}; \node [state, scale=.3, below right of=foo1] (foo3) {}; \node [state, scale=.3, below left of=foo3] (foo4) {}; \node [state, scale=.3, below right of=foo3] (foo5) {}; \draw [thick] (foo1) -- (foo2) (foo1) -- (foo3) (foo3) -- (foo4) (foo3) -- (foo5); \end{tikzpicture}"];
 
     word     [label=" ", texlbl="mot"                         ];
-    sequence [label=" ", texlbl="séquence"                    ];
+    sequence [label=" ", width=2, texlbl="séquence de lexèmes"];
     result   [style="state,accepting", label=" ", texlbl="AST"];
 }

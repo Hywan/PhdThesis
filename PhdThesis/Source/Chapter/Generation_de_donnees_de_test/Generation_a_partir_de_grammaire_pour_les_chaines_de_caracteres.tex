@@ -170,7 +170,7 @@ ci-après).
 \caption{\label{figure:data:compiler} Fonctionnement d'un compilateur.}
 
 \end{figure}
-
+%
 Nous parlons de {\strong compilateur de compilateur} car la grammaire est tout
 d'abord transformée en compilateur, c'est à dire en un analyseur lexical et un
 syntaxique. La grammaire nous évite d'avoir à écrire un compilateur à la main.
@@ -178,14 +178,15 @@ syntaxique. La grammaire nous évite d'avoir à écrire un compilateur à la mai
 Nous expliquons le fonctionnement de l'analyseur lexical, représenté par
 l'algorithme dans la figure~\ref{figure:data:algo_lexer}. À partir d'une donnée
 textuelle (mot), nous allons calculer une séquence de lexèmes. Nous allons
-appliquer toutes les expressions régulières des lexèmes de l'espace de nom courant les uns après les autres
-sur le début du mot jusqu'à trouver un lexème valide (reconnaissant le début du
-mot). Quand un lexème est trouvé, nous lui associons certaines données, comme
-son nom, sa valeur, sa position et son espace de nom. Ensuite, nous mettons à
-jour l'espace de nom courant à partir de l'espace de nom sortant du lexème (soit
-un nom d'espace, soit le mot-clé \code{\_\_shift\_\_ * $j$}). Si aucun lexème
-n'est trouvé, une erreur sera levée, sinon nous ajoutons le lexème à la séquence
-et nous continuons jusqu'à atteindre la fin de la donnée analysée.
+appliquer toutes les expressions régulières des lexèmes de l'espace de nom
+courant les uns après les autres sur le début du mot jusqu'à trouver un lexème
+valide (reconnaissant le début du mot). Quand un lexème est trouvé, nous lui
+associons certaines données, comme son nom, sa valeur, sa position et son espace
+de nom. Ensuite, nous mettons à jour l'espace de nom courant à partir de
+l'espace de nom sortant du lexème (soit un nom d'espace, soit le mot-clé
+\code{\_\_shift\_\_ * $j$}). Si aucun lexème n'est trouvé, une erreur sera
+levée, sinon nous ajoutons le lexème à la séquence et nous continuons jusqu'à
+atteindre la fin de la donnée analysée.
 
 \begin{figure}
 
@@ -321,8 +322,8 @@ règle \code{tag} poursuit avec un appel à la règle \code{attributes} qui
 commence avec le lexème \code{name}. Encore une fois, nous avons une
 correspondance.
 
-\item[4-5.] Pareil pour le quatrième (\code{equal}) et cinquième lexème
-(\code{value}).
+\item[4-5.] L'opération est identique pour le quatrième (\code{equal}) et
+cinquième lexème (\code{value}).
 
 \item[6.] Le sixième lexème est \code{gt}. La règle \code{attributes} demande
 soit d'avoir un nouvel attribut, soit nous avons atteint la fin de la règle, ce
@@ -395,8 +396,7 @@ algorithmes est résumé dans la figure~\ref{figure:data:grammar}.
 \fig{\textwidth}{!}{Grammar_based_generation.tex}
 
 \caption{\label{figure:data:grammar} Principe des algorithmes de générations de
-données~: à partir d'une grammaire est extraite une séquence de lexème qui est
-ensuite concrétisée vers un mot.}
+données.}
 
 \end{figure}
 %
@@ -605,13 +605,13 @@ de données de façon exhaustive peut être efficace pour détecter des erreurs 
 toutes les données sont testées.
 
 À chaque construction du langage PP est associée une fonction $\beta$ qui va
-nous calculer la prochaine séquence. Cet algorithme se comporte comme un
-itérateur sur tous les éléments du multi-ensemble construits avec la fonction
-$\beta$. Un multi-ensemble, noté $\amultiset{A}$, est un ensemble avec des
-répétitions~: en effet, rien ne nous assure que la grammaire ne puisse pas
-produire au moins deux séquences identiques mais par des dérivations/chemins
-différents. Pour simplifier l'écriture de la fonction $\beta$, nous considérons
-que la grammaire PP est en forme normale de Chomsky~\acite{Chomsky56}. Ainsi~:
+calculer la prochaine séquence. Cet algorithme se comporte comme un itérateur
+sur tous les éléments du multi-ensemble construits avec la fonction $\beta$. Un
+multi-ensemble, noté $\amultiset{A}$, est un ensemble avec des répétitions~: en
+effet, rien ne nous assure que la grammaire ne puisse pas produire au moins deux
+séquences identiques mais par des dérivations/chemins différents. Pour
+simplifier l'écriture de la fonction $\beta$, nous considérons que la grammaire
+PP est en forme normale de Chomsky~\acite{Chomsky56}. Ainsi~:
 
 \begin{align*}
 %
@@ -892,7 +892,7 @@ Chaque tirage a été fait aléatoirement et uniformément, mais localement.
 
 \end{example}
 
-Chaque opérateur non-boré, comme \code{*} ou \code{+}, est borné à un entier
+Chaque opérateur non-borné, comme \code{*} ou \code{+}, est borné à un entier
 arbitraire, par défaut 2.
 
 Nous n'avons vu que très peu de constructions qu'offre la syntaxe PCRE, mais il

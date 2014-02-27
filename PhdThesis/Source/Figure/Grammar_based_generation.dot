@@ -1,6 +1,7 @@
 digraph {
     graph [rankdir=LR];
     node  [style="state"];
+    nodesep=0.1;
 
     subgraph {
         grammarX  -> sequenceX;
@@ -13,10 +14,10 @@ digraph {
     }
 
     grammarX  [shape=plaintext, label=" ", texlbl="PP"];
-    sequenceX [shape=plaintext, width=2.2, label=" ", texlbl="$[[\code{7} \mapsto \dots], [\code{+} \mapsto \dots], [\code{42} \mapsto \dots]]$"];
+    sequenceX [shape=plaintext, label=" ", texlbl="$[[\code{7} \mapsto \dots], [\code{+} \mapsto \dots], [\code{42} \mapsto \dots]]$"];
     resultX   [shape=plaintext, label=" ", texlbl="\code{7 + 42}"];
 
     grammar  [label=" ", texlbl="grammaire"                   ];
-    sequence [label=" ", texlbl="séquence"                    ];
+    sequence [label=" ", width=2, texlbl="séquence de lexèmes"];
     result   [style="state,accepting", label=" ", texlbl="mot"];
 }

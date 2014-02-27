@@ -1,13 +1,13 @@
 %%
 \pgfsetcolor{black}
   % Edge: grammar -> sequence
-  \draw [->] (69.579bp,72bp) .. controls (106.76bp,72bp) and (166.62bp,72bp)  .. (215.89bp,72bp);
+  \draw [->] (69.579bp,61bp) .. controls (94.99bp,61bp) and (130.99bp,61bp)  .. (173.83bp,61bp);
   \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
   \pgfsetstrokecolor{strokecol}
-  \draw (117bp,82.5bp) node {génération};
+  \draw (117bp,71.5bp) node {génération};
   % Edge: sequence -> result
-  \draw [->] (276.27bp,72bp) .. controls (315.51bp,72bp) and (385.17bp,72bp)  .. (437.91bp,72bp);
-  \draw (383bp,81.5bp) node {concrétisation};
+  \draw [->] (318.05bp,61bp) .. controls (354.6bp,61bp) and (397.61bp,61bp)  .. (437.78bp,61bp);
+  \draw (383bp,70.5bp) node {concrétisation};
   % Edge: sequenceX -> resultX
   \draw [->] (327.8bp,18bp) .. controls (362.16bp,18bp) and (400.5bp,18bp)  .. (437.94bp,18bp);
   % Edge: grammarX -> sequenceX
@@ -16,8 +16,8 @@
 \begin{scope}
   \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
   \pgfsetstrokecolor{strokecol}
-  \draw [state] (35bp,72bp) ellipse (35bp and 18bp);
-  \draw (35bp,72bp) node {grammaire};
+  \draw [state] (35bp,61bp) ellipse (35bp and 18bp);
+  \draw (35bp,61bp) node {grammaire};
 \end{scope}
   % Node: resultX
 \begin{scope}
@@ -29,15 +29,15 @@
 \begin{scope}
   \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
   \pgfsetstrokecolor{strokecol}
-  \draw [state] (246bp,72bp) ellipse (30bp and 18bp);
-  \draw (246bp,72bp) node {séquence};
+  \draw [state] (246bp,61bp) ellipse (72bp and 18bp);
+  \draw (246bp,61bp) node {séquence de lexèmes};
 \end{scope}
   % Node: result
 \begin{scope}
   \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
   \pgfsetstrokecolor{strokecol}
-  \draw [state,accepting] (465bp,72bp) ellipse (27bp and 18bp);
-  \draw (465bp,72bp) node {mot};
+  \draw [state,accepting] (465bp,61bp) ellipse (27bp and 18bp);
+  \draw (465bp,61bp) node {mot};
 \end{scope}
   % Node: grammarX
 \begin{scope}
