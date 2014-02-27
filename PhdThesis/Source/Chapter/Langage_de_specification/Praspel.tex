@@ -8,7 +8,7 @@
 
 Praspel est un acronyme anglais signifiant \inenglish{PHP Realistic Annotation
 and SPEcification Language}. C'est un langage et un framework de test à partir
-de contrats en PHP (voir la Section~\ref{subsection:sota:cbt}). Ce langage
+de contrats en PHP (voir la section~\ref{subsection:sota:cbt}). Ce langage
 repose sur les domaines réalistes.
 
 Praspel est un {\strong langage d'annotation} car il s'écrit dans les
@@ -74,7 +74,7 @@ normale~: les entités syntaxiques de plus haut niveau.}
 \end{figure}
 
 Un contrat est composé de clauses, dont la syntaxe est décrite dans les
-Figures~\ref{figure:language:grammar_part0},
+figures~\ref{figure:language:grammar_part0},
 \ref{figure:language:grammar_part1}, \ref{figure:language:grammar_part2} et
 \ref{figure:language:grammar_part3}. Dans ces figures, le style \code{token}
 représente un lexème de la grammaire de Praspel, \grule{rule} représente une
@@ -125,8 +125,8 @@ avec toutes les clauses.}
 
 \end{figure}
 
-La Figure~\ref{figure:language:grammar_part0} montre les familles de clauses,
-dont le contenu est décrit par la Figure~\ref{figure:language:grammar_part1}.
+La figure~\ref{figure:language:grammar_part0} montre les familles de clauses,
+dont le contenu est décrit par la figure~\ref{figure:language:grammar_part1}.
 Ainsi, nous apprenons que les entités syntaxiques \grule{attribute-clauses} et
 \grule{method-clauses} définissent respectivement les clauses annotant les
 attributs d'une classe et ses méthodes.  L'entité syntaxique
@@ -134,14 +134,14 @@ attributs d'une classe et ses méthodes.  L'entité syntaxique
 actuelle de Praspel est bien plus libérale~: elle accepte des clauses dans
 n'importe quel ordre mais pour faciliter le raisonnement, nous ne présenterons
 et ne travaillerons que sur une forme normale. La
-Figure~\ref{figure:language:typical_contract} illustre la localisation typique
+figure~\ref{figure:language:typical_contract} illustre la localisation typique
 des clauses sur une classe \code{C} avec un attribut \code{a} et une méthode
 \code{f}. La clause \ainvariant est localisée juste avant l'attribut \code{a}.
 Les autres clauses sont des clauses de méthode.  Elles sont localisées juste
 avant l'en-tête des méthodes. La plupart de ces clauses introduisent des
 expressions Praspel, représentée par les entités syntaxiques \grule{expression}
 ou \grule{exceptional-expression}, détaillées dans la
-Section~\ref{subsection:language:expressions}.
+section~\ref{subsection:language:expressions}.
 
 \begin{figure}
 \centering
@@ -195,12 +195,12 @@ particulier~: elle exprime les conditions sous lesquelles des exceptions peuvent
 être levées par la méthode et aussi le post-état du système associé (par exemple
 une exception a été levée mais le système est suffisamment propre pour tenter
 une nouvelle exécution). La syntaxe de $T$ ($T_{\alpha.\beta}$ et $T_\m{D}$ dans
-la Figure~\ref{figure:language:typical_contract}) est définie par l'entité
+la figure~\ref{figure:language:typical_contract}) est définie par l'entité
 syntaxique \grule{exceptional-expression} dans la
-Figure~\ref{figure:language:grammar_part2}. $T$ peut être \code{$T_C$ with
+figure~\ref{figure:language:grammar_part2}. $T$ peut être \code{$T_C$ with
 $T_E$}, où $T_C$ est une liste de nom de classes asssociée à un identifiant, et
 $T_E$ est une expression, appelée {\strong postcondition exceptionnelle}, dont
-la syntaxe est détaillée dans la Section~\ref{subsection:language:expressions}.
+la syntaxe est détaillée dans la section~\ref{subsection:language:expressions}.
 Tous les identifiants définis dans $T_C$ peuvent apparaître dans $T_E$. La
 sémantique est la suivante~: si l'exception levée est une instance d'une classe
 représentant une exception listée dans $T_C$, alors elle est assignée à
@@ -215,11 +215,11 @@ informations peuvent s'avérer très utiles pour offrir un retour à l'utilisate
 Les clauses \arequires, \aensures, \athrowable et \abehavior elle-même peuvent
 apparaître à l'intérieur d'une clause \abehavior. Cette structure décrit des
 comportements {\strong imbriqués}, comme illustré dans la
-Figure~\ref{figure:language:typical_contract} dans laquelle le comportement
+figure~\ref{figure:language:typical_contract} dans laquelle le comportement
 $\beta$ est imbriqué dans le comportement $\alpha$. À côté de ça, nous pouvons
 également décrire des comportements {\strong alternatifs} en juxtaposant des
 clauses \abehavior. Ceci est toujours illustré dans la
-Figure~\ref{figure:language:typical_contract} avec le comportement $\gamma$,
+figure~\ref{figure:language:typical_contract} avec le comportement $\gamma$,
 frère du comportement $\alpha$. Les comportements sont, dans la pratique,
 {\strong mutuellement exclusifs}, cependant, la syntaxe autorise l'écriture de
 comportement non-déterministe.
@@ -227,7 +227,7 @@ comportement non-déterministe.
 La clause \adefault est strictement équivalente à une clause \abehavior avec une
 clause \arequires implicite décrivant la conjonction de toutes les négations des
 clauses \arequires des comportements frères précédents.  Par exemple, dans la
-Figure~\ref{figure:language:typical_contract} la clause \arequires de \adefault
+figure~\ref{figure:language:typical_contract} la clause \arequires de \adefault
 pourrait mathématiquement s'écrire $\neg R_\alpha \land \neg R_\gamma$.
 
 Afin d'«~activer~» un comportement donné, sa clause \arequires doit être
@@ -291,7 +291,7 @@ des contrats.}
 
 \end{figure}
 
-La Figure~\ref{figure:language:short_contract} montre un exemple concret d'une
+La figure~\ref{figure:language:short_contract} montre un exemple concret d'une
 classe \code{Filesystem} annotée, avec deux méthodes \code{getUsage} et
 \code{store}. Cet exemple sera utilisé pour illustrer chaque notion introduite
 dans la suite de ce document.
@@ -313,7 +313,7 @@ d'invariants avec la clause \ainvariant.
 \subsection{Expressions}
 \label{subsection:language:expressions}
 
-Les Figures~\ref{figure:language:grammar_part2} et
+Les figures~\ref{figure:language:grammar_part2} et
 \ref{figure:language:grammar_part3} décrivent les expressions Praspel. Nous
 avons principalement trois sortes d'expressions~: déclarations, prédicats et
 contraintes, respectivement présentées dans les paragraphes suivants.
@@ -416,7 +416,7 @@ un attribut de classe, spécifié dans une clause \ainvariant, soit un paramètr
 de la méthode, spécifié dans les autres clauses. La valeur d'une variable peut
 appartenir à plusieurs domaines réalistes si la variable est définie par une
 {\strong disjonction} de domaines réalistes, représentée par le mot-clé
-\code{or}. Dans la Figure~\ref{figure:language:short_contract}, la variable
+\code{or}. Dans la figure~\ref{figure:language:short_contract}, la variable
 \code{index} du contrat de la méthode \code{store} peut avoir deux valeurs~:
 soit un entier entre 0 et 65535, soit \code{null}. Une disjonction de domaines
 réalistes peut contenir n'importe quelle sorte de domaine réaliste~: ce afin de
@@ -445,7 +445,7 @@ $p$ doit être un prédicat en forme normal {\strong disjonctive} (DNF). La
 construction \apred{p} ne supporte que la validation (prédicabilité) et non pas
 la vérification (générabilité). Le prédicat \apred{\code{'\$this->getUsage() +
 \$file->getSize() > static::SIZE'}} dans la
-Figure~\ref{figure:language:short_contract} signifie que s'il n'y a plus de
+figure~\ref{figure:language:short_contract} signifie que s'il n'y a plus de
 place pour ajouter un nouveau fichier, alors cette partie de la précondition est
 satisfaite.
 
@@ -464,17 +464,17 @@ les deux aspects~: validation et vérification. L'objectif est de faire évoluer
 le langage en supportant plus de constructions usuelles nativement au lieu de
 les avoir dans une boîte-noire, et ainsi, entre autre, réduire le rejet lors de
 la génération de données. Ce processus est illustré dans la
-Section~\ref{section:data:arrays}.
+section~\ref{section:data:arrays}.
 
 \paragraph{Contraintes.} Praspel a principalement deux sortes de contraintes~:
 soit en utilisant la syntaxe des déclarations, soit en utilisant le mot-clé
 \code{is}. Des exemples de contraintes sont présentées dans la
-Section~\ref{section:data:arrays}.
+section~\ref{section:data:arrays}.
 \\
 
-Un mot sur les identifiants. Dans la Figure~\ref{figure:language:short_contract}
+Un mot sur les identifiants. Dans la figure~\ref{figure:language:short_contract}
 ainsi que dans la règle \grule{identifier} de la grammaire de la
-Figure~\ref{figure:language:grammar_part3}, nous pouvons voir l'utilisation de
+figure~\ref{figure:language:grammar_part3}, nous pouvons voir l'utilisation de
 mot-clés comme \code{this}, \code{self} etc. Pour faire référence à un
 identifiant sur un objet, nous utiliserons \code{this}. Pour faire référence à
 la classe courante, nous utiliserons \code{self}, pour la classe parente, nous
@@ -490,7 +490,7 @@ classe, nous utiliserons \code{static}. Par exemple, si nous créons la classe
 
 La description de tableaux est une partie très important de Praspel, contrôlant
 la génération de collections présentée dans la
-Section~\ref{section:data:arrays}.
+section~\ref{section:data:arrays}.
 
 Dans PHP, un tableau est toujours un {\strong tableau associatif} (ou une
 \inenglish{map}, un {\strong dictionnaire}), \ie une collection de paires
@@ -570,7 +570,7 @@ a4: array([from  0..10 to boolean(), \\
 
 \end{example}
 
-Dans la Figure~\ref{figure:language:short_contract}, l'attribut \code{\_map} est
+Dans la figure~\ref{figure:language:short_contract}, l'attribut \code{\_map} est
 spécifié comme un tableau d'objets \code{File}, d'une longueur entre 0 et 65535.
 
 \subsection{Exécution et assignement du verdict de tests}
@@ -580,7 +580,7 @@ Nous nous appuyons sur un \inenglish{runtime assertion checker} (RAC) pour
 calculer le verdict du test. Ce verdict est basé sur la vérification
 d'assertions à l'exécution. Le RAC manipule trois informations~: un système sous
 test, un contrat et des données. Dans la
-Figure~\ref{figure:language:short_contract}, le système sous test peut être la
+figure~\ref{figure:language:short_contract}, le système sous test peut être la
 méthode \code{store}, le contrat est le contrat associé à cette méthode et les
 données sont soit fournies, soit générées automatiquement (nous verrons comment
 dans les chapitres suivants).
@@ -610,7 +610,7 @@ d'une \inenglish{precondition failure} à un niveau supérieur.
 Le test réussit si aucune erreur Praspel n'est détectée. Autrement, il échoue,
 et l'erreur avec des informations supplémentaires est consignée.
 
-Par exemple, dans la Figure~\ref{figure:language:short_contract}, prenons la
+Par exemple, dans la figure~\ref{figure:language:short_contract}, prenons la
 méthode \code{store} et son contrat.
 %
 Avec le jeu (\code{'foo'}, \code{null}), nous aurons une \inenglish{precondition

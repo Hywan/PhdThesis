@@ -88,7 +88,7 @@ tag: \\
 
 \end{figure}
 
-La Figure~\ref{figure:data:xml} montre un exemple d'une grammaire simplifiée
+La figure~\ref{figure:data:xml} montre un exemple d'une grammaire simplifiée
 d'un document XML~\acite{xml}. Elle commence par la déclaration des lexèmes, en
 utilisant des espaces de noms pour identifier si l'analyse se déroule à
 l'extérieur ou à l'intérieur d'une balise. Nous avons alors~:
@@ -129,7 +129,7 @@ Si un lexème est suivi de \code{[$i$]} avec $i \geq 0$, nous avons une
 unification. C'est une nouvelle construction. Une unification pour les lexèmes
 implique que tous les \code{token[$i$]} avec le même $i$ ont la même valeur
 localement à la règle.  Remarquons la présence d'une unification de lexèmes dans
-la Figure~\ref{figure:data:xml}~: \code{name[0]} indique que les balises
+la figure~\ref{figure:data:xml}~: \code{name[0]} indique que les balises
 d'ouverture et de fermeture doivent avoir le même nom. Ainsi, la donnée
 \code{<foo>…</foo>} sera considérée comme valide, alors que \code{<foo>…</bar>}
 sera considérée comme invalide. Un autre usage courant est la gestion des
@@ -139,14 +139,14 @@ alors que \code{"…'} ou \code{'…"} devront être invalides. Pour cela, nous
 écrirons par exemple \code{quote[1]} dans une règle.
 
 Nous trouverons la grammaire du langage PP en langage PP dans la
-Figure~\ref{figure:appendices:grammar_of_pp} à la
+figure~\ref{figure:appendices:grammar_of_pp} à la
 page~\pageref{figure:appendices:grammar_of_pp}.
 
 \subsection{Compilateur de compilateur $LL(\star)$}
 \label{subsection:data:compiler-compiler}
 
 Le fonctionnement schématique d'un compilateur est présenté dans la
-Figure~\ref{figure:data:compiler}. À partir d'un {\strong mot} (d'une donnée
+figure~\ref{figure:data:compiler}. À partir d'un {\strong mot} (d'une donnée
 textuelle), nous allons extraire une {\strong séquence} de lexèmes grâce à
 l'analyseur {\strong lexical}. Ensuite, cette séquence sera {\strong dérivée}
 grâce à l'analyseur {\strong syntaxique} pour savoir si elle est valide ou non.
@@ -179,7 +179,7 @@ une erreur sera levée.
 \begin{example}[Analyse lexicale de \code{<a x="y"><b /><c>foo</c></a>}]
 \label{example:data:lexical_analyze}
 
-Avec la grammaire de la Figure~\ref{figure:data:xml}, l'analyse lexicale de la
+Avec la grammaire de la figure~\ref{figure:data:xml}, l'analyse lexicale de la
 donnée~:
 %
 $$\code{<a x="y"><b /><c>foo</c></a>}$$
@@ -276,7 +276,7 @@ arbre de syntaxe abstrait. Les constructions \code{\#node} dans la grammaire
 permettent de forcer la création d'un nœud dont les enfants seront des nœuds ou
 des lexèmes déclarés avec la syntaxe \code{<token>} (l'autre construction
 \code{::token::} n'autorise pas les lexèmes à apparaître dans l'arbre). La
-Figure~\ref{figure:data:ast} montre l'AST résultant des
+figure~\ref{figure:data:ast} montre l'AST résultant des
 Exemples~\ref{example:data:lexical_analyze} et
 \ref{example:data:syntactic_analyze}.
 %
@@ -309,7 +309,7 @@ des domaines réalistes.
 
 Nous proposons trois algorithmes de générations différents~: aléatoire uniforme,
 exhaustive bornée et enfin basée sur la couverture. Le principe de ces
-algorithmes est résumé dans la Figure~\ref{figure:data:grammar}.
+algorithmes est résumé dans la figure~\ref{figure:data:grammar}.
 %
 \begin{figure}
 
@@ -418,7 +418,7 @@ règle \code{g} est une répétition $r \in [1; 3]$ d'une disjonction. Avec $r =
 \code{f}, donc nous devons calculer $f(4)$. Avec $r = 2$, nous pouvons avoir
 \code{<b> <c> <b> <c>}, ou \code{<b> <c>} puis $f(2)$, ou \code{<d>} puis $f(3)$
 etc. Nous arrivons finalement au tableau de la
-Figure~\ref{figure:data:random_tabular}.
+figure~\ref{figure:data:random_tabular}.
 
 \begin{figure}
 
@@ -744,7 +744,7 @@ Nous rappelons que les lexèmes sont exprimés avec des expressions régulières
 format PCRE. Nous avons écrit la grammaire des PCRE avec PP. Ainsi, nous
 analysons une expression régulière avec cette grammaire, le compilateur de
 compilateur nous produit un AST que nous allons parcourir pour générer une
-donnée. Ce processus est détaillé dans la Figure~\ref{figure:data:regex}.
+donnée. Ce processus est détaillé dans la figure~\ref{figure:data:regex}.
 %
 \begin{figure}
 

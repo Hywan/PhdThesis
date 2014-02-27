@@ -9,7 +9,7 @@ contexte.
 
 Tout au long de cette partie, nous considérons une méthode PHP \code{f} et nous
 représentons par $G(\code{f})$ ou $G$ son contrat $(V, D, i, N, E, U)$, comme
-défini dans la Section~\ref{section:test:contract}.
+défini dans la section~\ref{section:test:contract}.
 
 \subsection{Définitions}
 
@@ -103,7 +103,7 @@ indéfinie et est une instance de $T_C$.
 Jusqu'à maintenant, nous avons seulement considéré les chemins de $G(\code{f})$
 (routes et sentiers) démarrant depuis l'état initial de $G(\code{f})$ et
 terminant dans un de ses états finaux (soit normaux soit exceptionels). Par
-exemple, dans la Figure~\ref{figure:test:throwable_graph}, nous voyons qu'il est
+exemple, dans la figure~\ref{figure:test:throwable_graph}, nous voyons qu'il est
 possible d'activer plusieurs chemins en même temps, quand $T_{C_1}$ étend
 $T_{C_2}$ et qu'une exception de classe $T_{C_1}$ est levée. Nous représentons
 par $R_\code{f}(S)$ l'ensemble des routes de $G(\code{f})$ activés par une suite
@@ -115,7 +115,7 @@ Nous définissons maintenant les critères de couverture sur les contrats que no
 proposons, à partir des graphes de contrats.
 
 Les exemples suivants sont basés sur le contrat de la
-Figure~\ref{figure:test:irc} pour la méthode \code{compute} avec deux arguments:
+figure~\ref{figure:test:irc} pour la méthode \code{compute} avec deux arguments:
 \code{server} qui doit être une classe de type
 \code{\bslash{}Irc\bslash{}Server} et \code{buffer} qui doit contenir un message
 IRC.
@@ -262,7 +262,7 @@ Domaine et Prédicat en même temps.
 \end{itemize}
 %
 Ce {\strong treillis} de Critère de Couverture de Contrat est résumé dans la
-Figure~\ref{figure:test:lattice}.
+figure~\ref{figure:test:lattice}.
 
 \begin{figure}
 

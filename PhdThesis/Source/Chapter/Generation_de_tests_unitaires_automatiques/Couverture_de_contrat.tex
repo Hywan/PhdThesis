@@ -8,7 +8,7 @@ les déclarations de domaines réalistes et les prédicats.
 Dans la suite, nous notons $A$ l'ensemble composé de toutes les expressions
 Praspel générées par les entités syntaxiques \grule{expression} et
 \grule{exception-identifier} de la grammaire de la
-Figure~\ref{figure:language:grammar_part2}, et complété par toutes les
+figure~\ref{figure:language:grammar_part2}, et complété par toutes les
 expressions de la forme $\neg t_1 \land \dots \land \neg t_n$ où $t_i$ est
 généré par l'entité syntaxique \grule{exception-identifier}, pour $1 \leq i \leq
 n$. Nous considérons deux familles de graphes, à savoir {\strong graphes
@@ -36,19 +36,19 @@ erreurs}, avec $N \disjunion E \disjunion U \subseteq V$.
 
 \end{definition}
 
-La Section~\ref{subsection:test:expression_graph} transforme n'importe quelle
+La section~\ref{subsection:test:expression_graph} transforme n'importe quelle
 expression Praspel en un graphe d'expression. Les autres sections définissent la
 transformation de tout contrat Praspel en graphe de contrat. Le cas le plus
 simple est celui d'un contrat sans comportement, appelé {\strong contrat
 atomique}. Ils sont considérés dans les
-Sections~\ref{subsection:test:atomic_graph} et
+sections~\ref{subsection:test:atomic_graph} et
 \ref{subsection:test:throwable_graph}. Ensuite, les graphes de contrat avec des
 comportements sont définis par induction. Le cas simple avec seulement un
-comportement est traité dans la Section~\ref{subsection:test:behavior_graph}. Le
+comportement est traité dans la section~\ref{subsection:test:behavior_graph}. Le
 pas d'induction considérant un ou plusieurs comportements est traité dans la
-Section~\ref{subsection:test:behaviors_graph}. Le cas d'un contrat avec une
+section~\ref{subsection:test:behaviors_graph}. Le cas d'un contrat avec une
 clause \adefault (respectivement \ainvariant) est traité dans la
-Section~\ref{subsection:test:default_graph} (respectivement
+section~\ref{subsection:test:default_graph} (respectivement
 \ref{subsection:test:invariant_graph}). Afin de rester simple, nous allons
 seulement considérer des contrats en forme normale.
 
@@ -56,11 +56,11 @@ seulement considérer des contrats en forme normale.
 \label{subsection:test:expression_graph}
 
 Les expressions Praspel sont décrites dans la
-Figure~\ref{figure:language:grammar_part2} par l'entité syntaxique
+figure~\ref{figure:language:grammar_part2} par l'entité syntaxique
 \grule{expression}. Une expression est une conjonction de déclarations, de
 prédicats et de contraintes, respectivement décritent par les entités
 syntaxiques \grule{declaration}, \grule{predicate} et \grule{constraint} dans la
-Figure~\ref{figure:language:grammar_part3}. Nous transformons seulement les deux
+figure~\ref{figure:language:grammar_part3}. Nous transformons seulement les deux
 premières sortes d'expressions car les expressions de type \grule{constraint}
 ne sont pas pertinentes pour la couverture~: elles représentent un seul
 comportement (par exemple, \grule{constraint} et \grule{declaration}
@@ -112,7 +112,7 @@ d'un graphe de domaine et d'un graphe de prédicat.}
 
 \end{figure}
 
-La Figure~\ref{figure:test:expression_graph} présente graphiquement le graphe
+La figure~\ref{figure:test:expression_graph} présente graphiquement le graphe
 associé au dernier exemple.
 
 \subsection{Graphe d'un contrat atomique}
@@ -166,7 +166,7 @@ atomique.}
 
 \end{figure}
 
-La Figure~\ref{figure:test:atomic_graph} présente graphiquement ce graphe. Dans
+La figure~\ref{figure:test:atomic_graph} présente graphiquement ce graphe. Dans
 cette figure ainsi que dans toutes celles qui vont suivre, le sommet normal
 final est représenté par un double cercle, et le sommet final exceptionnel par
 un double rectangle.
@@ -175,13 +175,13 @@ un double rectangle.
 clauses \athrowable}
 \label{subsection:test:throwable_graph}
 
-La Section~\ref{subsection:test:atomic_graph} considérait un contrat avec un
+La section~\ref{subsection:test:atomic_graph} considérait un contrat avec un
 seule clause \athrowable. Dans cette section, nous voyons comment un contrat est
 modifié quand nous ajoutons une ou plusieurs clauses \code{\athrowable $T_C$
 with $T_E$} à un contrat dont le graphe est $G = (V, D, i, N, E, U)$. Par
 induction, supposons que l'ensemble des sommets $V$ contient au moins les six
 sommets $v_1 = i$, $v_2$, $v_3$, $v_4$, $v_5$, $v_6$ introduits dans la
-Section~\ref{subsection:test:atomic_graph}.
+section~\ref{subsection:test:atomic_graph}.
 
 Le graphe résultant est $G' = (V \union \{v'\}, D', i, N, E, U)$ avec le nouveau
 sommet $v' \notin V$, et~:
@@ -204,7 +204,7 @@ atomique avec deux clauses \athrowable.}
 
 \end{figure}
 
-La Figure~\ref{figure:test:throwable_graph} présente graphiquement ce graphe
+La figure~\ref{figure:test:throwable_graph} présente graphiquement ce graphe
 quand il y a deux clauses \athrowable (dans la figure, $v'$ est noté $v_7$).
 
 \subsection{Graphe d'un contrat avec une clause \abehavior}
@@ -243,7 +243,7 @@ avec une seule clause \abehavior, qui contient un (sous-)contrat atomique.}
 
 \end{figure}
 
-La Figure~\ref{figure:test:behavior_graph} présente graphiquement ce graphe
+La figure~\ref{figure:test:behavior_graph} présente graphiquement ce graphe
 quand le comportement est atomique et contient seulement une seule clause
 \athrowable.  Dans la figure, les sommets sont renumérotés depuis $v_1$.
 
@@ -251,7 +251,7 @@ quand le comportement est atomique et contient seulement une seule clause
 \abehavior}
 \label{subsection:test:behaviors_graph}
 
-La Section~\ref{subsection:test:behavior_graph} considérait un contrat avec une
+La section~\ref{subsection:test:behavior_graph} considérait un contrat avec une
 seule clause \abehavior. Dans cette section, nous voyons comment ajouter une
 clause \abehavior~$\beta$ à la liste des comportements dont le graphe de contrat
 est $(V, D, i, N, E, U)$. Soit $G_\beta = (V_\beta, D_\beta, i_\beta, N_\beta,
@@ -270,9 +270,9 @@ en remplaçant $i_\beta$ par $v$.
 Après un groupe de clauses \abehavior, nous pouvons avoir une clause \adefault.
 Rappelons-nous qu'une clause \adefault est strictement équivalente à une clause
 \abehavior avec une clause \arequires implicite (voir la
-Section~\ref{subsection:language:clauses}). Ainsi, ajouter une clause \adefault
+section~\ref{subsection:language:clauses}). Ainsi, ajouter une clause \adefault
 est un cas spécial d'ajout d'une clause \abehavior, considéré dans la
-Section~\ref{subsection:test:behaviors_graph}.
+section~\ref{subsection:test:behaviors_graph}.
 
 \subsection{Cas de la clause \ainvariant}
 \label{subsection:test:invariant_graph}
@@ -312,7 +312,7 @@ un invariant.}
 
 \end{figure}
 
-La Figure~\ref{figure:test:invariant_graph} illustre ce principe d'extension
+La figure~\ref{figure:test:invariant_graph} illustre ce principe d'extension
 d'un graphe de contrat avec un invariant. Pour des raisons de simplicité, elle
 représente seulement un sommet final normal et un sommet final exceptionnel. \\
 

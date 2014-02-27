@@ -16,9 +16,9 @@ déroule basiquement en 3~étapes~:
 
 Les variables qui nous intéressent sont déclarées dans les préconditions ainsi
 que dans les invariants. Ces derniers seront traités dans la
-Section~\ref{section:data:objects}. Rappelons-nous qu'une précondition est
+section~\ref{section:data:objects}. Rappelons-nous qu'une précondition est
 constituée de déclarations, de prédicats et de contraintes (voir la
-Figure~\ref{figure:language:grammar_part2}). Lors d'une génération de données,
+figure~\ref{figure:language:grammar_part2}). Lors d'une génération de données,
 nous allons commencer par traiter les déclarations. Nous allons choisir une
 variable $v$ dans la liste des variables $V$, les unes après les autres.
 L'ordre des variables est décroissant selon le nombre de contraintes portées~:
@@ -31,7 +31,7 @@ $$\code{i: $t_1$(\dots) or \dots or $t_n$(\dots)}$$
 %
 Nous allons choisir pseudo-aléatoirement le domaine réaliste $t_c$ avec $c \in
 [1, n]$. Cette étape est représentée par l'état \code{pick} dans la
-Figure~\ref{figure:data:process}.
+figure~\ref{figure:data:process}.
 %
 \begin{figure}
 
@@ -63,12 +63,12 @@ Mais il n'y a pas que le choix d'un domaine réaliste parmi une disjonction qui
 est pseudo-aléatoire. Par défaut, un domaine réaliste génère une donnée de
 manière pseudo-aléatoire.  Si nous écrivons \code{boundinteger(7, 42)}, alors un
 entier de l'intervalle 7 à 42 sera généré pseudo-aléatoirement. Nous avons
-précisé dans la Section~\ref{subsection:language:realdom:implementation} qu'une
+précisé dans la section~\ref{subsection:language:realdom:implementation} qu'une
 méthode \code{sample} d'un domaine réaliste reçoit un générateur numérique en
 argument. Le seul générateur actuel est pseudo-aléatoire, basé sur l'algorithme
 de Mersenne Twister~\acite{MatsumotoN98}. Il permet de générer des entiers et
 des réels. Un exemple d'utilisation a été montré dans la
-Figure~\ref{figure:language:boundinteger}.
+figure~\ref{figure:language:boundinteger}.
 
 C'est aussi cette méthodologie qu'utilise le domaine réaliste \code{String} pour
 générer des chaînes de caractères. Cette approche pseudo-aléatoire pose

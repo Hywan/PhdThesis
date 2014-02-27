@@ -78,7 +78,7 @@ propriétés de son parent. Par exemple, le domaine réaliste \code{Color} héri
 de \code{String}, et \code{Boundinteger} hérite de \code{Integer}. Tous les
 domaines réalistes doivent être enfant de la classe \code{Realdom}.
 
-La Figure~\ref{figure:language:boundinteger} montre une implémentation légère du
+La figure~\ref{figure:language:boundinteger} montre une implémentation légère du
 domaine réaliste \code{Boundinteger}. Il hérite du domaine réaliste
 \code{Integer} en \circled{1}. La propriété de prédicabilité rafine celle du
 parent en \circled{2}, et ajoute de nouvelles contraintes en \circled{3} qui
@@ -153,7 +153,7 @@ paramètres peuvent être des entiers ou des caractères. Alors, nous pouvons
 écrire \code{string('a', 'z', 4..12)} sans produire d'erreur, mais
 \code{string(true, 'z', 4..12)} produira une erreur.
 
-La Figure~\ref{figure:language:boundinteger} montre la déclaration de deux
+La figure~\ref{figure:language:boundinteger} montre la déclaration de deux
 paramètres~: \code{lower} et \code{upper} en \circled{4}, qui sont de type
 \code{Constinteger}, avec respectivement en valeur par défaut
 \code{PHP\_INT\_MIN} et \code{PHP\_INT\_MAX}. Si aucune valeur par défaut n'est
@@ -189,7 +189,7 @@ peuvent être énumérées.
 
 \end{itemize}
 
-Ainsi, par exemple, dans la Figure~\ref{figure:language:boundinteger} en
+Ainsi, par exemple, dans la figure~\ref{figure:language:boundinteger} en
 \circled{5}, nous voyons que le domaine réaliste \code{Boundinteger} implémente
 les interfaces \code{Interval}, \code{Finite}, \code{Nonconvex} et
 \code{Enumerable}. C'est donc un intervalle avec un nombre fini d'éléments que
