@@ -6,20 +6,18 @@ Nous parlons de tableaux associatifs, ou encore \inenglish{hashmaps}, car ils
 sont constituées de paires clé-valeur.
 
 Nous allons tout d'abord étudier plusieurs projets PHP pour connaître les
-contraintes les plus utilisées sur les tableaux. Ensuite, nous allons étendre
+fonctions les plus utilisées sur les tableaux. Ensuite, nous allons étendre
 Praspel pour introduire des conditions sur les tableaux. Enfin, nous verrons
 comment ces conditions sont traduites en contraintes pour notre propre solveur.
 
 \subsection{Étude des contraintes les plus utilisées}
 
-L'idée principale est d'étudier plusieurs projets PHP afin de déterminer quelles
-sont les contraintes sur les tableaux les plus utilisées. Pour cela, nous avons
-sélectionnés 61~projets PHP sur plusieurs plateformes, comme
+Nous avons sélectionnés 61~projets PHP sur plusieurs plateformes, comme
 Github\footnote{\url{http://github.com/}} ou
 Sourceforge\footnote{\url{http://sourceforge.net/}}, à partir de leur
 popularité, leur impact sur l'industrie et leur complexité. Tous ces projets
 représentent 28~066 fichiers, soit 5~220~547~lignes de code. Dans ces lignes de
-code, nous avons compter le nombre d'occurences de chaque fonction de tableaux
+code, nous avons compté le nombre d'occurences de chaque fonction de tableaux
 disponible dans la bibliothèque standard de PHP. La
 figure~\ref{figure:data:collecting_informations} présente ces résultats~: les
 fonctions sont triés par leur nombre d'occurences $n$.
@@ -143,7 +141,7 @@ fonctions sont triés par leur nombre d'occurences $n$.
 }
 
 \caption{\label{figure:data:collecting_informations} Résultats de l'étude de
-plusieurs projets PHP pour connaître les contraintes les plus populaires sur les
+plusieurs projets PHP pour connaître les fonctions les plus populaires sur les
 tableaux.}
 
 \end{figure}
@@ -171,7 +169,7 @@ une paire est de la forme~:
 $$\code{a[$K$]: $V$}$$
 %
 où $K$ et $V$ sont des disjonctions de domaines réalistes. La condition signifie
-que les paires contituées de toutes les clés de $K$ et au moins une valeur dans
+que les paires constituées de toutes les clés de $K$ et au moins une valeur dans
 $V$ sont présentes dans le tableau \code{a}. $K$ accepte seulement les domaines
 réalistes qui implémentent les interfaces \code{Constant}, \code{Interval} et
 \code{Enumerable}. Cette condition est équivalente à utiliser les fonctions
@@ -192,7 +190,7 @@ signifie que toutes les valeurs de $V$ doivent être présentes dans le tableau
 \code{a}. Cette condition est équivalente à utiliser la fonction
 \code{in\_array} avec toutes les valeurs de $V$ en conjonction.
 
-Au lieu d'utiliser le symbole \code{:}, nous pouvons utiliser le symbole
+Au lieu d'utiliser le symbole \code{:} nous pouvons utiliser le symbole
 \code{!:} pour exprimer la négation. La condition \code{a[$K$]!: $V$} signifie
 que toutes les clés de $K$ ont une valeur dans \code{a} et que cette valeur
 n'est pas dans $V$. Le fonctionnement est similaire avec le symbole \code{\_}.
@@ -234,16 +232,15 @@ constructions \code{from $F_i$ to $T_i$} avec $1 \leq i \leq p$, et $L$ est une
 disjonction de domaines réalistes $L_1, \dots, L_m$ héritant du domaine réaliste
 \code{Integer} et étant positifs ou nuls.
 
-Dans l'Exemple~\ref{example:data:array_conditions}, $p = 1$, $m = 2$, $L_1 =
+Dans l'exemple~\ref{example:data:array_conditions}, $p = 1$, $m = 2$, $L_1 =
 [\code{0..5}]$ et $L_2 = \{\code{10}\}$. Dans la description du tableau, aucun
 domaine n'a été déclaré. Dans ce cas, le domaine réaliste \code{integerpp(0, 1)}
 est utilisé par défaut~: il représente un entier auto-incrémenté commençant à 0
 et avec un pas de 1, soit \code{0}, \code{1}, \code{2}, \code{3} etc. Dans cet
 exemple, $F_1 = \code{integerpp(0, 1)}$ et $T_1 = \code{string('a', 'e', 1)}$.
 
-Afin d'éviter tout risque de confusion, précisons qu'une disjonction de domaines
-domaines \code{$D_1$ or $\dots$ or $D_n$} sera souvent identifié comme
-l'ensemble $D_1 \union \dots \union D_n$.
+Nous précisons qu'une disjonction de domaines domaines \code{$D_1$ or $\dots$ or
+$D_n$} sera souvent identifié comme l'ensemble $D_1 \union \dots \union D_n$.
 
 \subsubsection{Variables}
 
@@ -302,7 +299,7 @@ donc la contrainte suivante~:
 %
 $$S \in L_1 \union \dots \union L_m$$
 
-Dans l'Exemple~\ref{example:data:array_conditions}, nous avons $L_1 \subseteq
+Dans l'exemple~\ref{example:data:array_conditions}, nous avons $L_1 \subseteq
 [\code{0..5}]$ et $L_2 \subseteq \{\code{10}\}$. La taille $S$ est contrainte
 par $S \in L_1 \union L_2$.
 
@@ -335,7 +332,7 @@ contraintes~:
 $$K \subseteq X \quad\mathrm{et}\quad \hat{H}(K) \intersection V = \emptyset$$
 
 Pour la condition \code{a[0]: 'b' or 'c'} dans
-l'Exemple~\ref{example:data:array_conditions}, nous avons $K = \{\code{0}\}$ et
+l'exemple~\ref{example:data:array_conditions}, nous avons $K = \{\code{0}\}$ et
 $V = \{\code{'b'}, \code{'c'}\}$. Les contraintes sont $\{\code{0}\} \subseteq
 X$ et $\hat{H}(\{\code{0}\}) \subseteq \{\code{'b'}, \code{'c'}\}$.
 

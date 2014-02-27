@@ -2,7 +2,7 @@
 \label{section:data:strings}
 
 Une grammaire est utilisée pour décrire des données textuelles complexes. À
-l'aide d'analyseurs lexicals et syntaxiques, nous allons nous assurer qu'une
+l'aide d'analyseurs lexicaux et syntaxiques, nous allons nous assurer qu'une
 donnée (textuelle) est conforme à une grammaire. C'est une caractéristique sur
 deux d'un domaine réaliste~: ce qui fait des grammaires de bonnes candidates
 pour être un domaine réaliste.
@@ -19,14 +19,23 @@ caractéristique des domaines réalistes, à savoir la générabilité.
 
 \begin{definition}[Grammaire]
 
-Une grammaire est définie par un quadruplet $G = (\Sigma, N, P, S)$. $\Sigma$
-est l'ensemble fini de {\strong symboles terminaux} disjoint de $N$. Aussi
-appelés {\strong lexèmes}, ce sont les unités atomiques lexicales d'une langue.
-$N$ est l'ensemble fini de {\strong symboles non-terminaux}. $P$ est l'ensemble
-fini des {\strong règles de production}. Les règles expriment l'enchaînement
-possible des lexèmes les uns par rapport aux autres.  $S \in N$ est l'axiome de
-la grammaire, le symbole indiquant le point de départ de lecture de la
-grammaire.
+Une grammaire est définie par un quadruplet $G = (\Sigma, N, P, S)$, où~:
+%
+\begin{itemize}
+
+\item $\Sigma$ est l'ensemble fini de {\strong symboles terminaux} disjoint de
+$N$~; aussi appelés {\strong lexèmes}, ce sont les unités atomiques lexicales
+d'une langue~;
+
+\item $N$ est l'ensemble fini de {\strong symboles non-terminaux}~;
+
+\item $P$ est l'ensemble fini des {\strong règles de production}~; les règles
+expriment l'enchaînement possible des lexèmes les uns par rapport aux autres~;
+
+\item $S \in N$ est l'axiome de la grammaire, le symbole indiquant le point de
+départ de lecture de la grammaire.
+
+\end{itemize}
 
 \end{definition}
 
@@ -45,18 +54,19 @@ expression régulière, et \code{ns\_source} et \code{ns\_dest} sont des espaces
 de nom optionnels. Les expressions régulières sont écrites en utilisant la
 syntaxe standard des PCRE~\acite{Hazel05}, très expressives, largement utilisées
 et supportées (par exemple dans PHP, Javascript, Perl, Python, Apache, KDE
-etc.). Les espaces de noms servent à représenter des sous-ensembles disjoints de
+etc.). Les espaces de noms servent à représenter des sous-ensembles disjoint de
 lexèmes pour la phase d'analyse lexicale (détaillée ci-après). Une déclaration
 \code{\%skip} est similaire à une déclaration \code{\%token} excepté qu'elle
-représente un lexème à «~sauter~», c'est~à~dire à ne pas retenir pour la suite.
-Typiquement les espaces dans une expression arithmétique n'ont pas d'importance,
-nous pouvons les sauter. Si un espace de nom source n'est pas précisé, alors il
-prendra la valeur \code{default}, qui est l'espace de nom par défaut. L'espace
-de nom de destination peut être de la forme spéciale \code{\_\_shift\_\_ * $j$},
-avec $j \geq 1$, ou simplement \code{\_\_shift\_\_} (équivalent à avoir $j =
-1$), pour revenir $j$ espaces de nom en arrière. Il est parfois possible
-d'accéder à un lexème depuis plusieurs espaces de nom différents~; cette forme
-spéciale permet de revenir dans les espaces de nom d'origines. \\
+représente un lexème à ne pas retenir pour la suite. Typiquement les espaces
+dans une expression arithmétique n'ont pas d'importance, nous pouvons ne pas les
+retenir, il n'apporte rien à l'expression. Si un espace de nom source n'est pas
+précisé, alors il prendra la valeur \code{default}, qui est l'espace de nom par
+défaut. L'espace de nom de destination peut être de la forme spéciale
+\code{\_\_shift\_\_ * $j$}, avec $j \geq 1$, ou simplement \code{\_\_shift\_\_}
+(équivalent à avoir $j = 1$), pour revenir $j$ espaces de nom en arrière. Il est
+parfois possible d'accéder à un lexème depuis plusieurs espaces de nom
+différents~; cette forme spéciale permet de revenir dans les espaces de nom
+d'origines. \\
 
 \begin{figure}
 
@@ -111,7 +121,7 @@ première règle déclarée. Elle décrit un document XML comme une séquence de
 balises, chaque balise ayant potentiellement des attributs et étant atomique
 (\code{<aTag />}), composite (contenant d'autres balises), contenant du texte
 (\code{<aTag>with text</aTag>}) ou étant vide. Un nom de règle (un non-terminal)
-est suivi du symbole \code{:}, puis d'une nouvelle ligne, immédiatement suivie
+est suivi du symbole \code{:} puis d'une nouvelle ligne, immédiatement suivie
 par une règle de production, préfixée par des caractères blancs horizontaux
 (espaces ou tabulations). Les lexèmes peuvent être référencés en utilisant deux
 types de constructions. La construction \code{::token::} signifie que le lexème
@@ -125,11 +135,11 @@ représentées par le symbole \code{\mvert} et le groupement par \code{(} et
 \code{)}. La construction \code{\#node} (parfois utilisé comme nom de règle) est
 utile pour la fin du processus de compilation.
 
-Si un lexème est suivi de \code{[$i$]} avec $i \geq 0$, nous avons une
-unification. C'est une nouvelle construction. Une unification pour les lexèmes
-implique que tous les \code{token[$i$]} avec le même $i$ ont la même valeur
-localement à la règle.  Remarquons la présence d'une unification de lexèmes dans
-la figure~\ref{figure:data:xml}~: \code{name[0]} indique que les balises
+Une nouvelle construction présente dans le langage PP est l'unification.
+Présente uniquement sur les lexèmes, elle impose que tous les \code{token[$i$]}
+avec le même $i$ ont la même valeur localement à la règle, avec $i \geq 0$.
+Remarquons la présence d'une unification de lexèmes dans la
+figure~\ref{figure:data:xml}~: \code{name[0]} indique que les balises
 d'ouverture et de fermeture doivent avoir le même nom. Ainsi, la donnée
 \code{<foo>…</foo>} sera considérée comme valide, alors que \code{<foo>…</bar>}
 sera considérée comme invalide. Un autre usage courant est la gestion des
@@ -150,16 +160,14 @@ figure~\ref{figure:data:compiler}. À partir d'un {\strong mot} (d'une donnée
 textuelle), nous allons extraire une {\strong séquence} de lexèmes grâce à
 l'analyseur {\strong lexical}. Ensuite, cette séquence sera {\strong dérivée}
 grâce à l'analyseur {\strong syntaxique} pour savoir si elle est valide ou non.
-Un \inenglish{Abstract Syntax Tree}, abrégé AST, sera produit (détailé
+Un \inenglish{Abstract Syntax Tree}, abrégé AST, sera produit (détaillé
 ci-après).
 %
 \begin{figure}
 
 \fig{\textwidth}{!}{Compiler.tex}
 
-\caption{\label{figure:data:compiler} Fonctionnement d'un compilateur~: un mot
-est transformé en séquence de lexèmes grâce à une analyse lexicale. Et cette
-séquence est validée ou invalidée grâce à une analyse syntaxique.}
+\caption{\label{figure:data:compiler} Fonctionnement d'un compilateur.}
 
 \end{figure}
 
@@ -167,14 +175,85 @@ Nous parlons de {\strong compilateur de compilateur} car la grammaire est tout
 d'abord transformée en compilateur, c'est à dire en un analyseur lexical et un
 syntaxique. La grammaire nous évite d'avoir à écrire un compilateur à la main.
 
-Nous expliquons le fonctionnement de l'analyseur lexical. Il va appliquer, dans
-l'ordre de déclaration, tous les lexèmes de l'espace de nom courant sur le début
-du mot jusqu'à trouver un lexème valide (reconnaissant le début du mot). Le
-début du mot reconnu est supprimé pour être ajouté à la suite de la séquence,
-avec des données supplémentaires (espace de nom, numéro de lignes, de colonnes
-etc.). L'espace de nom est actualisé et l'analyseur recommence jusqu'à atteindre
-la fin du mot. Si aucun lexème ne permet de reconnaître le début du mot, alors
-une erreur sera levée.
+Nous expliquons le fonctionnement de l'analyseur lexical, représenté par
+l'algorithme dans la figure~\ref{figure:data:algo_lexer}. À partir d'une donnée
+textuelle (mot), nous allons calculer une séquence de lexèmes. Nous allons
+appliquer toutes les expressions régulières des lexèmes de l'espace de nom courant les uns après les autres
+sur le début du mot jusqu'à trouver un lexème valide (reconnaissant le début du
+mot). Quand un lexème est trouvé, nous lui associons certaines données, comme
+son nom, sa valeur, sa position et son espace de nom. Ensuite, nous mettons à
+jour l'espace de nom courant à partir de l'espace de nom sortant du lexème (soit
+un nom d'espace, soit le mot-clé \code{\_\_shift\_\_ * $j$}). Si aucun lexème
+n'est trouvé, une erreur sera levée, sinon nous ajoutons le lexème à la séquence
+et nous continuons jusqu'à atteindre la fin de la donnée analysée.
+
+\begin{figure}
+
+\begin{algorithmic}[1]
+
+\State $\astruct{Token}\{
+    \avar{name}: \atype{string},
+    \avar{value}: \atype{string},
+    \avar{at}: \atype{integer},
+    \avar{namespace}: \atype{string}
+\}$
+
+\Function{$\akw{Lexer}$}{}
+
+  \Require $\avar{word}: \atype{string}, \avar{tokens}:
+  \atype{map\astype{string, \atype{map}\astype{string, regex, string}}}$
+  \Ensure $\avar{sequence}: \atype{list\astype{Token}} \gets []$
+
+  \State $\avar{namespace}: \atype{string} \gets \astring{'default'}$
+  \State $\avar{namespaceStack}: \atype{stack\astype{string}} \gets []$
+  \State $\avar{offset}: \atype{integer} \gets 0$
+  \State $\avar{nextToken}: \atype{Token}$
+
+  \While{$\avar{offset} \leq \avar{word}.\acall{length()}$}
+
+      \State $\avar{nextToken} \gets \akw{null}$
+
+      \ForAll{$\{\avar{name}, \avar{regex}, \avar{namespace\_out}\} \in \avar{tokens[namespace]}$}
+
+          \If{$\avar{word} \akw{matches} \avar{regex} \akw{at} \avar{offset} \asets \avar{value}$}
+
+              \State $\avar{nextToken} \gets \atype{Token}\{\avar{name}, \avar{value}, \avar{offset}, \avar{namespace}\}$
+
+              \If{$\avar{namespace\_out} \akw{matches} \astring{'\_\_shift\_\_ * \mathit{j}'}$}
+
+                  \State $\avar{j}.\acall{times}(\avar{namespaceStack}.\acall{pop})$
+
+              \Else
+
+                  \State $\avar{namespaceStack}.\acall{push}(\avar{namespace\_out})$
+
+              \EndIf
+
+              \State $\avar{namespace} \gets \avar{namespaceStack}.\acall{last}()$
+              \State $\abreak$
+
+          \EndIf
+
+      \EndFor
+
+      \If{$\akw{null} = \avar{nextToken}$}
+
+        \State $\acall{error}$
+
+      \EndIf
+
+      \State $\avar{offset} \gets \avar{offset} + \avar{nextToken}.\acall{value}.\acall{length()}$
+      \State $\avar{sequence}.\acall{push}(\avar{nextToken})$
+
+  \EndWhile
+
+\EndFunction
+
+\end{algorithmic}
+
+\caption{\label{figure:data:algo_lexer} Algorithme de l'analyseur lexical.}
+
+\end{figure}
 
 \begin{example}[Analyse lexicale de \code{<a x="y"><b /><c>foo</c></a>}]
 \label{example:data:lexical_analyze}
@@ -277,7 +356,7 @@ permettent de forcer la création d'un nœud dont les enfants seront des nœuds 
 des lexèmes déclarés avec la syntaxe \code{<token>} (l'autre construction
 \code{::token::} n'autorise pas les lexèmes à apparaître dans l'arbre). La
 figure~\ref{figure:data:ast} montre l'AST résultant des
-Exemples~\ref{example:data:lexical_analyze} et
+exemples~\ref{example:data:lexical_analyze} et
 \ref{example:data:syntactic_analyze}.
 %
 \begin{figure}
@@ -591,7 +670,7 @@ Quand $y$ est non-défini (avec \code{*} et \code{+}), il est borné à $n$.
 \label{example:data:bounded_exhaustive_generation}
 
 Soit la même grammaire que dans
-l'Exemple~\ref{example:data:random_uniform_generation}, à savoir~:
+l'exemple~\ref{example:data:random_uniform_generation}, à savoir~:
 
 \begin{pre}
 f: <a> g() \\
