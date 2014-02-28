@@ -389,6 +389,26 @@ H(\code{0}) & = \{\code{'b'}, \code{'c'}\}
 %
 \end{align*}
 
+Nous appliquons l'algorithme. Nous sélectionnons et retirons le premier arc $(S,
+X)$ avec la contrainte $\mathrm{card}(X) = S$. Nous révisons les valeurs de
+$S$~: la cardinalité de $X = \code{natural(0, 1)}$ est égale à $+\infty$, $S$
+reste inchangée. Nous ajoutons l'arc $(Y, S)$. Nous sélectionnons et retirons le
+deuxième arc $(X, Y)$ lié par la contrainte $\mathrm{card}(X) =
+\mathrm{card}(Y)$. Nous n'avons rien à réviser pour l'instant~; en revanche,
+nous savons que les deux ensembles auront la même cardinalité. Ensuite, nous
+sélectionnons et retirons l'arc $(Y, S)$ avec la contrainte $\mathrm{card}(Y) =
+S$ (que nous avons déduite). Nous révisons les valeurs de $S$~: la variable $Y =
+\code{string('a', 'e', 1)}$ peut contenir 1 à 5 données maximum (de \code{a}
+jusqu'à \code{e}), alors nous enlevons 1 et 10 de $S$ pour obtenir $S =
+[\code{1..5}]$. Nous ajoutons l'arc $(X, Y)$ traité juste avant. Cette fois-ci,
+nous pouvons réviser $Y$ avec la contrainte $\mathrm{card}(X) =
+\mathrm{card}(Y)$ qui peut maintenir s'écrire $5 = \mathrm{card}(Y)$. Nous
+révisons alors \code{natural(0, 1)} pour qu'il ne produise que 5 données au
+maximum. Ensuite, nous prenons un autre arc et nous vérifions que la consistence
+de $\{\code{0}\} \subseteq X$, ce qui est le cas car $\code{0} \in
+\code{natural(0, 1)}$. Pareil avec $\{\code{'b'}, \code{'c'}\} \subseteq
+\code{string('a', 'e', 1)}$.
+
 \end{example}
 
 Nous avons
