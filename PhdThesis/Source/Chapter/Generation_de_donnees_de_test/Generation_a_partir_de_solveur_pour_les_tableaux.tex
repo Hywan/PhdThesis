@@ -19,8 +19,9 @@ popularité, leur impact sur l'industrie et leur complexité. Tous ces projets
 représentent 28~066 fichiers, soit 5~220~547~lignes de code. Dans ces lignes de
 code, nous avons compté le nombre d'occurences de chaque fonction de tableaux
 disponible dans la bibliothèque standard de PHP. La
-figure~\ref{figure:data:collecting_informations} présente ces résultats~: les
-fonctions sont triés par leur nombre d'occurences $n$.
+figure~\ref{figure:data:collecting_informations} présente partiellement ces
+résultats~: les fonctions sont triées par leur nombre d'occurences $n$~; celles
+avec $n < 100$ n'apparaissent pas.
 %
 \begin{figure}
 
@@ -214,7 +215,7 @@ suivant qui utilise \code{a}:
 \begin{pre}
 length: 0..5 or 10 \\
 a     : array([to string('a', 'e', 1)], length) \\
-a[0]  : 'b' or 'd' \\
+a[0]  : 'b' or 'c' \\
 a is unique
 \end{pre}
 
@@ -222,22 +223,29 @@ a is unique
 
 \subsection{Solveur de contraintes}
 
-Sur une conjonction de conditions sur un tableau \code{a}, nous proposons
+Sur une conjonction de conditions d'un tableau \code{a}, nous proposons
 d'invoquer un solveur de contraintes pour construire un tableau satisfaisant
 toutes ces conditions. Cette partie explique comment les conditions sur les
-tableaux sont transformées en contraintes pour le solveur. Une de ces conditions
-est supposée être une déclaration de tableau de la forme \code{a: array($D$,
-$L$)}, où $D$ est en forme normale. C'est~à~dire que $D$ est une liste de $p$
-constructions \code{from $F_i$ to $T_i$} avec $1 \leq i \leq p$, et $L$ est une
-disjonction de domaines réalistes $L_1, \dots, L_m$ héritant du domaine réaliste
-\code{Integer} et étant positifs ou nuls.
+tableaux sont transformées en contraintes pour le solveur, ou plus précisément
+en problème de satisfaction de contraintes (\inenglish{Constraint Satisfcation
+Problem}, abrégé CSP). Un CSP~\acite{Tsang93} est un triplet composé de
+variables, de valeurs pour ces variables et de contraintes. Les variables sont
+déclarées dans Praspel, les valeurs sont données par la disjonction de domaines
+réalistes, et enfin, les contraintes entre ces variables sont données par les
+conditions sur les tableaux.
+
+Une de ces conditions est supposée être une déclaration de tableau de la forme
+\code{a: array($D$, $L$)}, où $D$ est en forme normale. C'est~à~dire que $D$ est
+une liste de $p$ constructions \code{from $F_i$ to $T_i$} avec $1 \leq i \leq
+p$, et $L$ est une disjonction de domaines réalistes $L_1, \dots, L_m$ héritant
+du domaine réaliste \code{Integer} et étant positifs ou nuls.
 
 Dans l'exemple~\ref{example:data:array_conditions}, $p = 1$, $m = 2$, $L_1 =
 [\code{0..5}]$ et $L_2 = \{\code{10}\}$. Dans la description du tableau, aucun
-domaine n'a été déclaré. Dans ce cas, le domaine réaliste \code{integerpp(0, 1)}
+domaine n'a été déclaré. Dans ce cas, le domaine réaliste \code{natural(0, 1)}
 est utilisé par défaut~: il représente un entier auto-incrémenté commençant à 0
 et avec un pas de 1, soit \code{0}, \code{1}, \code{2}, \code{3} etc. Dans cet
-exemple, $F_1 = \code{integerpp(0, 1)}$ et $T_1 = \code{string('a', 'e', 1)}$.
+exemple, $F_1 = \code{natural(0, 1)}$ et $T_1 = \code{string('a', 'e', 1)}$.
 
 Nous précisons qu'une disjonction de domaines domaines \code{$D_1$ or $\dots$ or
 $D_n$} sera souvent identifié comme l'ensemble $D_1 \union \dots \union D_n$.
@@ -283,19 +291,19 @@ expriment que la taille du tableau est son nombre de clés et que ce nombre est
 positif ou nul. Par défaut, il n'y a pas de contrainte d'unicité sur les
 co-domaines, donc nous avons seulement la contrainte~:
 %
-$$\mathrm{card}(Y) \leq \mathrm{card}(X)$$
+$$\mathrm{card}(X) \geq \mathrm{card}(Y)$$
 %
 Cependant, en présence de la condition \code{a is unique}, cette contrainte
 devient~:
 %
-$$\mathrm{card}(Y) = \mathrm{card}(X)$$
+$$\mathrm{card}(X) = \mathrm{card}(Y)$$
 
 \subsubsection{Contraintes sur la taille du tableau}
 
 Pendant la propagation des contraintes, le solveur peut raffiner les domaines
-réalistes $L_1, \dots, L_m$, représentant les valeurs possibles pour la taille du
-tableau $S$. Cette taille appartient à un de ses domaines réalistes, nous avons
-donc la contrainte suivante~:
+réalistes $L_1, \dots, L_m$, représentant les valeurs possibles pour la taille
+$S$ du tableau. Cette taille appartient à un de ses domaines réalistes, nous
+avons donc la contrainte suivante~:
 %
 $$S \in L_1 \union \dots \union L_m$$
 
@@ -312,7 +320,7 @@ $$Y = \hat{H}(X)$$
 Nous attendons du solveur qu'il nous propose une solution pour le domaine $X$
 (respectivement le co-domaine $Y$) sous la forme d'une disjonction de domaines
 réalistes \code{$X_1$ or $\dots$ or $X_p$} (respectivement \code{$Y_1$ or
-$\dots$ or $Y_p$}, compatibles avec toutes les conditions sur le tableau. Nous
+$\dots$ or $Y_p$}), compatibles avec toutes les conditions sur le tableau. Nous
 devrions avoir les égalités $X = \Union_{1 \;\leq\; i \leq p} X_i$ et $Y =
 \Union_{1 \;\leq\; i \leq p} Y_i$, ainsi que les inclusions $X_i \subseteq F_i$
 et $Y_i \subseteq T_i$ pour $1 \leq i \leq p$. La paire $(X_i, Y_i)$ devrait
@@ -345,17 +353,54 @@ négation \code{a[\_]!: $V$} en contrainte $V \intersection Y = \emptyset$.
 
 \subsubsection{Propagation et consistence}
 
-La propagation des contraintes utilise un algorithme AC3~\acite{Mackworth77}
-implémenté en PHP. Nous avons donc cinq sortes de domaines réalistes
-implémentant les interfaces \code{Constant}, \code{Interval}, \code{Nonconvex},
-\code{Finite} et \code{Enumerable}. Pour chaque sorte de domaine réaliste, nous
-avons implémenté une ou des méthodes de raffinement pour permettre la réduction
-du domaine. Par exemple, \code{Nonconvex} attend une méthode \code{discredit}
-pour supprimer une valeur du domaine, \code{Interval} attend les méthodes
-\code{reduceRightTo} et \code{reduceLeftTo} etc. La consistence vérifie
-également qu'il n'y a pas de domaine réaliste vide pour les quatres variables
-$S$, $H$, $X$ et $Y$, mais pas pour $X_i$ et $Y_i$. L'objectif est de détecter
-les inconsistences au plus tôt.
+La propagation des contraintes utilise un algorithme AC-3~\acite{Mackworth77},
+pour \inenglish{Arc Consistency Algorithm \#3}, implémenté en PHP.
+
+Le principe d'un tel algorithme est de transformer un CSP en un graphe où chaque
+nœud représente une variable, et les arcs représentent les contraintes.
+
+\begin{example}[Propagation et consistence avec un algorithme AC3]
+
+Si nous reprenons notre exemple~\ref{example:data:array_conditions}, nous avons
+les contraintes suivantes~:
+
+\begin{align*}
+%
+S & \geq 0 \\
+%
+\mathrm{card}(X) & = S \\
+%
+\mathrm{card}(X) & = \mathrm{card}(Y) \\
+%
+S & \in [\code{0..5}] \union \{\code{10}\} \\
+%
+Y & = \hat{H}(X) \\
+%
+X & = \ingray{X_1 =\;} \code{natural(0, 1)} \\
+%
+Y & = \ingray{Y_1 =\;} \code{string('a', 'e', 1)} \\
+%
+\{\code{0}\} & \subseteq X \\
+%
+\ingray{\hat{H}(\{\code{0}\})} & \ingray{\;\subseteq \{\code{'b'}, \code{'c'}\}
+                                 \quad \text{simplifiée en}} \\
+%
+H(\code{0}) & = \{\code{'b'}, \code{'c'}\}
+%
+\end{align*}
+
+\end{example}
+
+Nous avons
+donc cinq sortes de domaines réalistes implémentant les interfaces
+\code{Constant}, \code{Interval}, \code{Nonconvex}, \code{Finite} et
+\code{Enumerable}. Pour chaque sorte de domaine réaliste, nous avons implémenté
+une ou des méthodes de raffinement pour permettre la réduction du domaine. Par
+exemple, \code{Nonconvex} attend une méthode \code{discredit} pour supprimer une
+valeur du domaine, \code{Interval} attend les méthodes \code{reduceRightTo} et
+\code{reduceLeftTo} etc. La consistence vérifie également qu'il n'y a pas de
+domaine réaliste vide pour les quatres variables $S$, $H$, $X$ et $Y$, mais pas
+pour $X_i$ et $Y_i$. L'objectif est de détecter les inconsistences au plus tôt.
 
 \subsubsection{\inenglish{Labelling}}
 
