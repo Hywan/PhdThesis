@@ -201,9 +201,9 @@ atteindre la fin de la donnée analysée.
 
 \Function{$\akw{Lexer}$}{}
 
-  \Require $\avar{word}: \atype{string}, \avar{tokens}:
-  \atype{map\astype{string, \atype{map}\astype{string, regex, string}}}$
-  \Ensure $\avar{sequence}: \atype{list\astype{Token}} \gets []$
+  \Require $\avar{word}: \atype{string}$
+  \Require $\avar{tokens}: \atype{map\astype{string, \atype{map}\astype{string, regex, string}}}$
+  \Ensure  $\avar{sequence}: \atype{list\astype{Token}} \gets []$
 
   \State $\avar{namespace}: \atype{string} \gets \astring{'default'}$
   \State $\avar{namespaceStack}: \atype{stack\astype{string}} \gets []$

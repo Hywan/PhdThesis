@@ -353,11 +353,164 @@ négation \code{a[\_]!: $V$} en contrainte $V \intersection Y = \emptyset$.
 
 \subsubsection{Propagation et consistence}
 
-La propagation des contraintes utilise un algorithme AC-3~\acite{Mackworth77},
+La propagation des contraintes utilise un algorithme AC3~\acite{Mackworth77},
 pour \inenglish{Arc Consistency Algorithm \#3}, implémenté en PHP.
 
-Le principe d'un tel algorithme est de transformer un CSP en un graphe où chaque
-nœud représente une variable, et les arcs représentent les contraintes.
+Cet algorithme travaille sur un CSP transformé en graphe dirigé où les nœuds
+représentent les variables et les arcs représentent les contraintes entre deux
+variables. Un arc $(x, y)$ est considéré comme consistent si et seulement si
+pour chaque valeur $d_x$ de la variable $x$, il existe une valeur $d_y$ de la
+variable $y$ telle que $(d_x, d_y)$ satisfasse la contrainte entre $x$ et $y$.
+Si ce n'est pas le cas, il faut supprimer les valeurs du domaine de $x$ pour
+appliquer la consistence sur l'arc. La consistence d'arc détecte les erreurs le
+plus tôt possible. Cet algorithme permet aussi de propager les contraintes d'une
+variable à l'autre en même temps qu'il vérifie la consistence. La
+figure~\ref{figure:data:ac3} présente l'algorithme AC3.
+L'exemple~\ref{example:data:ac3} illustre cet algorithme.
+
+% parler du binary et unary
+
+\begin{figure}
+
+\begin{center}
+\begin{algorithmic}
+
+\State $\avar{Variables}: \atype{set\astype{Variable}}$
+\State $\avar{Domains}: \lambda (\avar{x}: \atype{Variable} \rightarrow \atype{set\astype{Domain}})$
+\State $\avar{Neighbours}: \lambda (\avar{x}: \atype{Variable} \rightarrow \atype{set\astype{Variable}})$
+
+\\\hrulefill
+
+\Function{$\akw{AC3}$}{}
+
+  \Require $\avar{csp}: \atype{CSP}$
+  \State $\avar{queue}: \atype{set\astype{(x, y)}} \gets \akw{all~the~arcs}$
+
+  \While{$\avar{queue} \neq \emptyset$}
+
+      \State $(x, y) \gets \avar{queue}.\acall{pop}()$
+
+      \If{$\acall{AC3\_Arc\_Reduce}(x, y)$}
+
+          \ForAll{$z \in \acall{Neighbours}(x)$}
+
+              \State $\avar{queue} = \avar{queue} \union \{(z, x)\}$
+
+          \EndFor
+
+      \EndIf
+
+  \EndWhile
+
+\EndFunction
+
+\\\hrulefill
+
+\Function{$\akw{AC3\_Arc\_Reduce}$}{}
+
+    \Require $\avar{x}: \atype{Variable}$
+    \Require $\avar{y}: \atype{Variable}$
+    \Ensure  $\avar{removed}: \atype{boolean} \gets \akw{false}$
+
+    \ForAll{$d_x \in \avar{Domains}(x)$}
+
+        \If{$\akw{there~is~no} d_y \in \avar{D}(y) \akw{s.t} d_y.\acall{reduce}(d_y)$}
+
+            \State $\akw{delete} d_x \akw{from} \avar{Domains}(x)$
+            \State $\avar{removed} \gets true$
+
+        \EndIf
+
+    \EndFor
+
+    \State $\areturn \avar{removed}$
+
+\EndFunction
+
+\end{algorithmic}
+\end{center}
+
+\caption{\label{figure:data:ac3} Algorithme AC3.}
+
+\end{figure}
+
+\begin{example}[Illustration de l'algorithme AC3]
+\label{example:data:ac3}
+
+Supposons que nous avons le CSP suivant~:
+%
+\begin{itemize}
+
+\item variables~: $x$, $y$, $z$~;
+
+\item domaines~: $D(x) = (4, 5, 6, 7)$, $D(y) = (4, 5, 6, 8, 9)$ et $D(z) = (3,
+5, 6, 7, 9)$~;
+
+\item contraintes~: $x = y$ et $y = z$.
+
+\end{itemize}
+
+Sans algorithme AC3, intuitivement, nous commençons par vérifier la contrainte
+$x = y$, c'est~à~dire que tous les valeurs des domaines $D(x)$ et $D(y)$ qui ne
+sont pas égales seront supprimées. Alors nous obtenons $D(x) = (4, 5, 6)$, $D(y)
+= (4, 5, 6)$ et $D(z)$ est inchangé. Ensuite, nous vérifions la contrainte $y =
+z$. Nous obtenons $D(y) = (5, 6)$, $D(z) = (5, 6)$ et $D(x)$ est inchangé. Mais
+nous avons un problème~: la contrainte $x = y$ n'est plus satisfaite. Nous
+devons alors re-vérifier la contrainte $x = y$ pour obtenir $D(x) = (5, 6)$.
+
+Maintenant, voyons comment opère l'algorithme AC3. Nous avons les mêmes
+variables, domaines et contraintes qu'au début de cet exemple. Le graphe du CSP
+est le suivant~:
+
+\fig{6cm}{!}{AC3.tex}
+
+Nous avons un ensemble $Q$ contenant au départ tous les arcs du graphe, soit $Q
+= \{(x, y), (y, x), (y, z), (z, y)\}$. Nous commençons par traiter la première
+paire de $Q$ après l'avoir supprimée. Nous traitons alors la contrainte
+impliquant $x$ et $y$, soit $x = y$ mais nous n'allons travailler que sûr $x$.
+Ainsi $D(x) = (4, 5, 6)$, $D(y)$ et $D(z)$ restant inchangés. La variable $x$
+n'a pas d'arcs vers d'autres variables, donc nous ne modifions pas $Q$. Ensuite,
+la paire suivante est $(y, x)$, donc nous traitons la contrainte $y = y$ mais
+cette fois-ci , nous modifions $y$. Ainsi
+$D(y) = (4, 5, 6)$, $D(x)$ et $D(z)$ restant inchangés. La variable $y$ a un arc
+vers $z$ en plus de vers $x$, donc nous devrions ajouter la paire $(z, y)$ mais
+elle existe déjà dans $Q$, nous ne faisons rien. La paire suivante dans $Q$ est
+$(y, z)$, donc nous traitons la contrainte $y = z$ en modifiant uniquement $y$.
+Ainsi~: $D(y) = (5, 6)$, $D(x)$ et $D(z)$ restant inchangés. La variable $z$ n'a
+pas d'arcs vers une autre variable, donc nous ne modifions pas $Q$. La paire
+suivante est $(z, y)$, donc nous vérifions la contrainte $y = z$ en modifiant
+$z$. Ainsi (en rappelant tous les domaines)~: $D(x) = (4, 5, 6)$, $D(y) = (5,
+6)$ et $D(z) = (5, 6)$. La variable $y$ a un arc vers la varible $x$, donc nous
+ajoutons la paire $(x, y)$ dans $Q$. Comme $Q$ était vide, cela devient notre
+paire suivante que nous traitons. Nous appliquons alors la contrainte $x = y$ en
+modifiant $x$. Ainsi, nous obtenons~: $D(x) = D(y) = D(z) = (5, 6)$. La variable
+$x$ n'a pas d'arc vers d'autres variables que $y$, donc ne modifions pas $Q$. Ce
+dernier est vide, donc l'algorithme se termine.
+
+\end{example}
+
+%Le principe d'un tel algorithme est de transformer un CSP en un graphe où chaque
+%nœud représente une variable et les arcs représentent les con\-train\-tes, ce
+%afin de propager et de vérifier la consistence des contraintes. L'algorithme,
+%présenté dans la figure~\ref{figure:data:ac3}, va sélectionner un arc (une
+%contrainte) à traiter~: les variables seront réduites si possible. Si une des
+%deux variables est liée à une autre variable à travers une contrainte, alors un
+%nouvel arc sera créé jusqu'à ce qu'aucune réduction ou propagation des
+%contraintes ne puissent être appliquées, c'est~à~dire jusqu'à ce qu'il n'y ait
+%plus d'arcs à traiter (la variable $\avar{queue}$ représente cet ensemble
+%d'arcs). La particularité de cette variante est que nous utilisons les domaines
+%réalistes pour représenter l'ensemble des valeurs possibles pour une variable.
+%Nous avons cinq sortes de domaines réalistes représentées par les interfaces
+%\code{Constant}, \code{Interval}, \code{Nonconvex}, \code{Finite} et
+%\code{Enumerable}. Pour chaque sorte de domaine réaliste, nous avons implémenté
+%une ou des méthodes de raffinement pour permettre la réduction du domaine. Cette
+%méthode s'appelle $\akw{reduce}$ dans l'algorithme. Par exemple,
+%\code{Nonconvex} attend une méthode \code{discredit} pour supprimer une valeur
+%du domaine, \code{Interval} attend les méthodes \code{reduceRightTo} et
+%\code{reduceLeftTo} pour réduire respectivement la borne droite et gauche etc.
+%L'algorithme AC3 travaille sur des contraintes unaires et binaires,
+%respectivement représentées par les variables $\avar{R_1}$ et $\avar{R_2}$ dans
+%l'algorithme.
 
 \begin{example}[Propagation et consistence avec un algorithme AC3]
 
@@ -397,11 +550,11 @@ deuxième arc $(X, Y)$ lié par la contrainte $\mathrm{card}(X) =
 \mathrm{card}(Y)$. Nous n'avons rien à réviser pour l'instant~; en revanche,
 nous savons que les deux ensembles auront la même cardinalité. Ensuite, nous
 sélectionnons et retirons l'arc $(Y, S)$ avec la contrainte $\mathrm{card}(Y) =
-S$ (que nous avons déduite). Nous révisons les valeurs de $S$~: la variable $Y =
-\code{string('a', 'e', 1)}$ peut contenir 1 à 5 données maximum (de \code{a}
-jusqu'à \code{e}), alors nous enlevons 1 et 10 de $S$ pour obtenir $S =
-[\code{1..5}]$. Nous ajoutons l'arc $(X, Y)$ traité juste avant. Cette fois-ci,
-nous pouvons réviser $Y$ avec la contrainte $\mathrm{card}(X) =
+S$ (que nous avons déduite par propagation). Nous révisons les valeurs de $S$~:
+la variable $Y = \code{string('a', 'e', 1)}$ peut contenir 1 à 5 données maximum
+(de \code{a} jusqu'à \code{e}), alors nous enlevons 0 et 10 de $S$ pour obtenir
+$S = [\code{1..5}]$. Nous ajoutons l'arc $(X, Y)$ traité juste avant. Cette
+fois-ci, nous pouvons réviser $Y$ avec la contrainte $\mathrm{card}(X) =
 \mathrm{card}(Y)$ qui peut maintenir s'écrire $5 = \mathrm{card}(Y)$. Nous
 révisons alors \code{natural(0, 1)} pour qu'il ne produise que 5 données au
 maximum. Ensuite, nous prenons un autre arc et nous vérifions que la consistence
