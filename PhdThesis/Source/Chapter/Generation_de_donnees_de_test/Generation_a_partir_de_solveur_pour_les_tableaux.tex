@@ -492,6 +492,10 @@ Ce dernier est vide, donc l'algorithme se termine.
 
 \end{example}
 
+La complexité de cet algorithme est de $\m{O}(mn^3)$ où $m$ est le nombre de
+contraintes (d'arcs) et $n$ le nombre de valeurs de la «~plus grande~»
+disjonction de domaines réalistes.
+
 Notre implémentation est une variante de l'algorithme AC3. Les variables n'ont
 pas des domaines mais une disjonction de domaines réalistes. Rappelons que nous
 manipulons cinq sortes de domaines réalistes classés par les interfaces
@@ -563,23 +567,36 @@ plus de paires à vérifier, l'algorithme termine.
 
 La consistence vérifie également qu'il n'y a pas de domaine réaliste vide pour
 les quatres variables $S$, $H$, $X$ et $Y$. L'objectif est de détecter les
-inconsistences au plus tôt.
+inconsistences au plus tôt. Toutefois, toutes les inconsistences ne sont pas
+détectées, ceci étant un problème NP-difficile.
 
 \subsubsection{\inenglish{Labelling}}
 
 Le \inenglish{labelling} (étiquetage) est le processus qui trouve une valeur
-pour chaque variable. Afin de faire converger le solveur rapidement vers une
-solution, nous utilisons une heuristique qui consiste à choisir une valeur pour
-la variable $S$ en premier. Cette approche permet de déplier les quantificateurs
-$\forall$ et $\exists$ (puisque $F_i$ et $T_i$ sont énumérables, nous ne
-manipulons que des ensembles finis). Ensuite, le solveur essaye de calculer les
-ensembles $X_i$ et $Y_i$. Nous utilisons un générateur pseudo-aléatoire pour
-générer une valeur dans le domaine réaliste, pour sélectionner un domaine
-réaliste dans une disjonction etc. La valeur générée est ensuite propagée. Si
-une inconsistence est détectée, nous ajoutons une nouvelle contrainte pour
-discréditer cette valeur, puis nous en générons une nouvelle. Par exemple, si $S
-= 5$ conduit à une inconsistence, nous ajoutons la contrainte $S \neq 5$. La
-nouvelle contrainte est supprimée pendant l'étape de \inenglish{backtracking}.
+pour chaque variable. Il s'applique si les contraintes sont consistentes. L'idée
+est de sélectionner une variable et de lui choisir une valeur, puis de
+recommencer avec une autre variable etc. Le choix de la variable à sélectionner
+dépend de la dépendance entre les variables (les arcs vus dans la section
+précédente).
 
-Quand toutes les variables sont étiquetées, c'est~à~dire que chacune a une valeur
-valide, le solveur retourne la solution.
+À chaque choix de valeur, la consistence entre les contraintes sont
+vérifiées. Si une inconsistence est détectée, alors le processus va revenir en
+arrière, nous parlons de \inenglish{backtracking}.
+
+À chaque fois que l'algorithme sélectionne une nouvelle variable, sa disjonction
+de domaines réalistes est clonée (dupliquée)~; ainsi lors du
+\inenglish{backtracking}, nou restaurons la disjonction précédente pour
+«~restaurer l'état~». En même temps, la valeur qui a conduite à l'inconsistence
+est discréditer afin de ne pas être re-sélectionnée.
+
+Dans notre implémentation, le choix d'une valeur utilise la caractéristique de
+générabilité des domaines réalistes, avec un générateur numérique
+pseudo-aléatoire. Afin de faire converger le solveur rapidement vers une
+solution, nous utilisons une heuristique qui consiste à choisir une valeur pour
+la variable $S$ en premier.  Cette approche permet de déplier les
+quantificateurs $\forall$ et $\exists$ (puisque $F_i$ et $T_i$ sont énumérables,
+nous ne manipulons que des ensembles finis). Ensuite, le solveur essaye de
+calculer les ensembles $X_i$ et $Y_i$.
+
+Quand toutes les variables sont étiquetées, c'est~à~dire que chacune a une
+valeur valide, le solveur retourne la solution.
