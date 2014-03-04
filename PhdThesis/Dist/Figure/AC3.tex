@@ -1,0 +1,28 @@
+%%
+\pgfsetcolor{black}
+  % Edge: X -> Y
+  \draw [<->] (36.303bp,18bp) .. controls (51.313bp,18bp) and (56.509bp,18bp)  .. (71.896bp,18bp);
+  % Edge: Y -> Z
+  \draw [<->] (108.3bp,18bp) .. controls (123.31bp,18bp) and (128.51bp,18bp)  .. (143.9bp,18bp);
+  % Node: Y
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw [state] (90bp,18bp) ellipse (18bp and 18bp);
+  \draw (90bp,18bp) node {$Y$};
+\end{scope}
+  % Node: X
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw [state] (18bp,18bp) ellipse (18bp and 18bp);
+  \draw (18bp,18bp) node {$X$};
+\end{scope}
+  % Node: Z
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw [state] (162bp,18bp) ellipse (18bp and 18bp);
+  \draw (162bp,18bp) node {$Z$};
+\end{scope}
+%

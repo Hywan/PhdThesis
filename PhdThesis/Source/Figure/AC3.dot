@@ -1,0 +1,10 @@
+digraph {
+    graph [rankdir=LR];
+    node [shape=circle, style="state", width=0.5];
+    concentrate=true;
+
+    X -> Y;
+    Y -> X;
+    Y -> Z;
+    Z -> Y;
+}
