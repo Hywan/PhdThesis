@@ -247,8 +247,9 @@ est utilisé par défaut~: il représente un entier auto-incrémenté commençan
 et avec un pas de 1, soit \code{0}, \code{1}, \code{2}, \code{3} etc. Dans cet
 exemple, $F_1 = \code{natural(0, 1)}$ et $T_1 = \code{string('a', 'e', 1)}$.
 
-Nous précisons qu'une disjonction de domaines domaines \code{$D_1$ or $\dots$ or
-$D_n$} sera souvent identifié comme l'ensemble $D_1 \union \dots \union D_n$.
+Nous précisons qu'une disjonction de domaines réalistes \code{$D_1$ or $\dots$
+or $D_n$} sera souvent identifiée comme l'ensemble $D_1 \union \dots \union
+D_n$.
 
 \subsubsection{Variables}
 
@@ -321,11 +322,11 @@ Nous attendons du solveur qu'il nous propose une solution pour le domaine $X$
 (respectivement le co-domaine $Y$) sous la forme d'une disjonction de domaines
 réalistes \code{$X_1$ or $\dots$ or $X_p$} (respectivement \code{$Y_1$ or
 $\dots$ or $Y_p$}), compatibles avec toutes les conditions sur le tableau. Nous
-devrions avoir les égalités $X = \Union_{1 \;\leq\; i \leq p} X_i$ et $Y =
-\Union_{1 \;\leq\; i \leq p} Y_i$, ainsi que les inclusions $X_i \subseteq F_i$
-et $Y_i \subseteq T_i$ pour $1 \leq i \leq p$. La paire $(X_i, Y_i)$ devrait
-aussi satisfaire la contrainte $\hat{H}(X_i) = Y_i$, c'est~à~dire que $Y_i$ est
-le co-domaine de la restriction de $H$ à $X_i$ ($\subseteq X$).
+devrions avoir les égalités $X = \Union_{1 \;\leq\; i \;\leq\; p} X_i$ et $Y =
+\Union_{1 \;\leq\; i \;\leq\; p} Y_i$, ainsi que les inclusions $X_i \subseteq
+F_i$ et $Y_i \subseteq T_i$ pour $1 \leq i \leq p$. La paire $(X_i, Y_i)$
+devrait aussi satisfaire la contrainte $\hat{H}(X_i) = Y_i$, c'est~à~dire que
+$Y_i$ est le co-domaine de la restriction de $H$ à $X_i$ ($\subseteq X$).
 
 \subsubsection{Contraintes sur les paires}
 
@@ -334,7 +335,7 @@ domaines réalistes, nous introduisons les contraintes~:
 %
 $$K \subseteq X \quad\mathrm{et}\quad \hat{H}(K) \subseteq V$$
 %
-Une condition négative sur une paire \code{a[$K$]!: $V$} est traduire en
+Une condition négative sur une paire \code{a[$K$]!: $V$} est traduite en
 contraintes~:
 %
 $$K \subseteq X \quad\mathrm{et}\quad \hat{H}(K) \intersection V = \emptyset$$
@@ -414,7 +415,7 @@ cet algorithme.
 
     \ForAll{$x \in \avar{Domains}(X)$}
 
-        \If{$\akw{there~is~no} y \in \avar{Domains}(Y) \akw{s.t} y.\acall{reduce}(y)$}
+        \If{$\akw{there~is~no} y \in \avar{Domains}(Y) \akw{such~that} y.\acall{reduce}(y)$}
 
             \State $\akw{delete} x \akw{from} \avar{Domains}(X)$
             \State $\avar{removed} \gets true$
@@ -470,8 +471,8 @@ Nous avons un ensemble $Q$ (représentant la variable $\avar{queue}$ de
 l'algorithme présenté dans la figure~\ref{figure:data:ac3}) contenant au départ
 tous les arcs du graphe, soit $Q = \{(X, Y), (Y, X), (Y, Z), (Z, Y)\}$. Nous
 commençons par traiter la première paire de $Q$ après l'avoir supprimée. Nous
-traitons alors la contrainte impliquant $X$ et $Y$, soit $x = y$ mais nous
-n'allons travailler que sûr $x$.  Ainsi $D(X) = (4, 5, 6)$, $D(Y)$ et $D(Z)$
+traitons alors la contrainte impliquant $X$ et $Y$, soit $X = Y$ mais nous
+n'allons travailler que sûr $X$. Ainsi $D(X) = (4, 5, 6)$, $D(Y)$ et $D(Z)$
 restant inchangés. La variable $X$ n'a pas d'arcs vers d'autres variables, donc
 nous ne modifions pas $Q$. Ensuite, la paire suivante est $(Y, X)$, donc nous
 traitons la contrainte $X = Y$ mais cette fois-ci, nous modifions $Y$. Ainsi
@@ -487,8 +488,8 @@ $Z$. Ainsi (en rappelant tous les domaines)~: $D(X) = (4, 5, 6)$, $D(Y) = (5,
 ajoutons la paire $(X, Y)$ dans $Q$. Comme $Q$ était vide, cela devient notre
 paire suivante que nous traitons. Nous appliquons alors la contrainte $X = Y$ en
 modifiant $X$. Ainsi, nous obtenons~: $D(X) = D(Y) = D(Z) = (5, 6)$. La variable
-$X$ n'a pas d'arcs vers d'autres variables que $Y$, donc ne modifions pas $Q$.
-Ce dernier est vide, donc l'algorithme se termine.
+$X$ n'a pas d'arcs vers d'autres variables que $Y$, donc nous ne modifions pas
+$Q$.  Cette dernière est vide, donc l'algorithme se termine.
 
 \end{example}
 
@@ -496,16 +497,16 @@ La complexité de cet algorithme est de $\m{O}(mn^3)$ où $m$ est le nombre de
 contraintes (d'arcs) et $n$ le nombre de valeurs de la «~plus grande~»
 disjonction de domaines réalistes.
 
-Notre implémentation est une variante de l'algorithme AC3. Les variables n'ont
-pas des domaines mais une disjonction de domaines réalistes. Rappelons que nous
-manipulons cinq sortes de domaines réalistes classés par les interfaces
-\code{Constant}, \code{Interval}, \code{Nonconvex}, \code{Finite} et
-\code{Enumerable}. Pour chaque sorte de domaine réaliste, nous avons implémenté
-une ou des méthodes de raffinement pour permettre la réduction du domaine
-réaliste. Par exemple, \code{Nonconvex} attend une méthode \code{discredit} pour
-supprimer une valeur du domaine, \code{Interval} attend les méthodes
-\code{reduceRightTo} et \code{reduceLeftTo} respectivement pour réduire la borne
-droite et gauche etc.
+Notre implémentation est une variante de l'algorithme AC3 (tout en conservant la
+même complexité). Les variables n'ont pas des domaines mais une disjonction de
+domaines réalistes. Rappelons que nous manipulons cinq sortes de domaines
+réalistes classés par les interfaces \code{Constant}, \code{Interval},
+\code{Nonconvex}, \code{Finite} et \code{Enumerable}. Pour chaque sorte de
+domaine réaliste, nous avons implémenté une ou des méthodes de raffinement pour
+permettre la réduction du domaine réaliste. Par exemple, \code{Nonconvex} attend
+une méthode \code{discredit} pour supprimer une valeur du domaine,
+\code{Interval} attend les méthodes \code{reduceRightTo} et \code{reduceLeftTo}
+respectivement pour réduire la borne droite et gauche etc.
 
 \begin{example}[Propagation et consistence avec un algorithme AC3]
 
@@ -585,9 +586,9 @@ arrière, nous parlons de \inenglish{backtracking}.
 
 À chaque fois que l'algorithme sélectionne une nouvelle variable, sa disjonction
 de domaines réalistes est clonée (dupliquée)~; ainsi lors du
-\inenglish{backtracking}, nou restaurons la disjonction précédente pour
+\inenglish{backtracking}, nous restaurons la disjonction précédente pour
 «~restaurer l'état~». En même temps, la valeur qui a conduite à l'inconsistence
-est discréditer afin de ne pas être re-sélectionnée.
+est discréditée afin de ne pas être re-sélectionnée.
 
 Dans notre implémentation, le choix d'une valeur utilise la caractéristique de
 générabilité des domaines réalistes, avec un générateur numérique
