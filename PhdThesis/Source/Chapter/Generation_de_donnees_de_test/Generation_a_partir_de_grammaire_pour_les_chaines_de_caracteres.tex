@@ -176,7 +176,8 @@ d'abord transformée en compilateur, c'est à dire en un analyseur lexical et un
 syntaxique. La grammaire nous évite d'avoir à écrire un compilateur à la main.
 
 Nous expliquons le fonctionnement de l'analyseur lexical, représenté par
-l'algorithme dans la figure~\ref{figure:data:algo_lexer}. À partir d'une donnée
+l'algorithme dans la figure~\ref{figure:data:algo_lexer}
+page~\pageref{figure:data:algo_lexer}. À partir d'une donnée
 textuelle (mot), nous allons calculer une séquence de lexèmes. Nous allons
 appliquer toutes les expressions régulières des lexèmes de l'espace de nom
 courant les uns après les autres sur le début du mot jusqu'à trouver un lexème
@@ -202,7 +203,7 @@ atteindre la fin de la donnée analysée.
 \Function{$\akw{Lexer}$}{}
 
   \Require $\avar{word}: \atype{string}$
-  \Require $\avar{tokens}: \atype{map\astype{string, \atype{map}\astype{string, regex, string}}}$
+  \Require $\avar{tokens}: \atype{map\astype{string, \atype{map}\astype{string, (regex, string)}}}$
   \Ensure  $\avar{sequence}: \atype{list\astype{Token}} \gets []$
 
   \State $\avar{namespace}: \atype{string} \gets \astring{'default'}$
@@ -265,8 +266,9 @@ donnée~:
 $$\code{<a x="y"><b /><c>foo</c></a>}$$
 %
 produit la séquence suivante~:
+%
 \begin{center}
-\begin{tabular}{rlllr}
+\begin{longtable}{rlllr}
    & espace de nom  & lexème       & valeur     & position \\
 0  & \code{default} & \code{lt}    & \code{<}   & 0 \\
 1  & \code{in\_tag} & \code{name}  & \code{a}   & 1 \\
@@ -291,7 +293,7 @@ produit la séquence suivante~:
 20 & \code{in\_tag} & \code{name}  & \code{a}   & 26 \\
 21 & \code{in\_tag} & \code{gt}    & \code{>}   & 27 \\
 22 & \code{default} & \code{EOF}   & \code{}    & 29
-\end{tabular}
+\end{longtable}
 \end{center}
 
 \end{example}
@@ -405,9 +407,13 @@ grammaire. Ces lexèmes vont être concrétiser pour obtenir une donnée
 textuelle. L'algorithme de concrétisation est présenté à la fin de la section.
 
 Pour générer des séquences de lexèmes, les algorithmes vont explorer les règles
-de la grammaire selon différentes contraintes\footnote{Doit-on préciser d'où
-viennent ces contraintes~?}~: la taille de la séquence, la fréquence
-d'apparition des lexèmes, la quantité de séquences etc.
+de la grammaire selon différentes contraintes~: la taille de la séquence, la
+fréquence d'apparition des lexèmes, la quantité de séquences etc. Ces
+contraintes sont extraites d'une étude menée de manière empirique auprès d'une
+demi-douzaine d'ingénieurs de tests qualifiés, ajoutés à notre propre
+expérience. Certains souhaitaient des données de tailles fixes ou bornées,
+d'autres insistaient sur la diversité des données, ou encore sur la quantité
+avec par exemple de l'exhaustivité.
 
 \subsubsection{Génération aléatoire uniforme}
 \label{subsection:data:random_uniform_generation}
@@ -586,13 +592,14 @@ $\tfrac{1}{2}$. Et ainsi de suite.
 
 \end{example}
 
-Cet algorithme est efficace pour calculer des petites séquences de taille fixe
-avec beaucoup de diversités dans les résultats (puisqu'aléatoire).  Toutefois,
-l'étape du dénombrement avec la fonction $\psi$ est exponentielle. Et malgré
-l'utilisation d'heuristiques inspirées de la programme dynamique, pour une
-valeur de $n > 10$, au moins 2~heures de calculs sont nécessaires. Ce problème
-ne concerne que la première étape de l'algorithme, car la seconde étape, quand à
-elle, est très rapide~: l'exploration d'une séquence est la plus rapide de tous
+Cet algorithme est efficace comparé aux autres pour calculer des petites
+séquences de taille fixe avec beaucoup de diversités dans les résultats
+(puisqu'aléatoire). Toutefois, la complexité de l'étape du dénombrement avec la
+fonction $\psi$ est quadratique~: $\m{O}(n^2)$. Et malgré l'utilisation
+d'heuristiques inspirées de la programme dynamique, pour une valeur de $n > 10$,
+au moins 2~heures de calculs sont nécessaires. Ce problème ne concerne que la
+première étape de l'algorithme, car l'étape de génération a une complexité
+linéaire $\m{O}(n)$~: l'exploration d'une séquence est la plus rapide de tous
 les algorithmes.
 
 \subsubsection{Génération exhaustive bornée}
@@ -710,10 +717,13 @@ sont~:
 
 \end{example}
 
-Cet algorithme est rapide pour calculer des petites séquences et l'exhaustivité
-est très efficace pour détecter des erreurs. Toutefois, le nombre de séquences
-générables est exponentielle par rapport $n$ mais l'unité de temps de calculs
-reste la seconde et non pas l'heure comme avec l'algorithme précédent.
+Cet algorithme est rapide pour calculer des petites séquences avec une
+complexité $\m{O}(n)$ dans le meilleur des cas, et l'exhaustivité est très
+efficace pour détecter des erreurs. Toutefois, le nombre de séquences générables
+peut être important. En effet, nous travaillons avec un multi-ensemble, soit un
+ensemble avec des répétitions~: une même séquence peut être produite depuis
+plusieurs chemins différents. Ainsi, dans le pire des cas, l'algorithme est
+expontiel, dans le meilleur des cas il est linéaire.
 
 \subsubsection{Génération basée sur la couverture}
 \label{subsection:data:coverage_based_generation}
@@ -735,7 +745,7 @@ séquence.
 Pour assurer une diversité dans les séquences générées, les points de choix sont
 résolus aléatoirement parmi les sous-règles non-couvertes. Une heuristique est
 utilisée pour borner les répétitions afin de réduire encore plus l'explosion
-combinatoire et aussi garantir la terminaison de l'algorithme. L'opérateur
+combinatoire et aussi garantir la terminaison de l'algorithme~: l'opérateur
 \code{*} est borné à 0, 1 et 2, \code{+} est déplié 1 ou 2~fois, et $\{x, y\}$
 est déplié $x$, $x + 1$, $y - 1$ et $y$~fois.
 
@@ -806,7 +816,10 @@ la grammaire.
 
 \end{example}
 
-Cet algorithme est rapide pour des séquences de taille moyenne ou grande. La
+Cet algorithme est rapide pour des séquences de taille moyenne ou grande avec
+une complexité logarithmique $\m{O}(\mathrm{log}~n)$. En pratique, l'algorithme
+de génération aléatoire uniforme est plus rapide pour calculer des séquences
+avec $n \leq 10$, mais il se fait vite dépassé par celui-ci au-delà. La
 diversité entre les séquences générées est dû au choix aléatoire sur les points
 de choix. Il génère peu de données mais il couvre toutes les règles et tous les
 lexèmes. Enfin, contrairement aux algorithmes précédents, nous ne pouvons pas
