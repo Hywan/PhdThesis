@@ -8,7 +8,7 @@
 
 Praspel est un acronyme anglais signifiant \inenglish{PHP Realistic Annotation
 and SPEcification Language}. C'est un langage et un framework de test à partir
-de contrats en PHP (voir la section~\ref{subsection:sota:cbt}). Ce langage
+de contrats en PHP (voir la partie~\ref{subsection:sota:cbt}). Ce langage
 repose sur les domaines réalistes.
 
 Praspel est un {\strong langage d'annotation} car il s'écrit dans les
@@ -39,7 +39,7 @@ l'exécution de la méthode.
 
 \end{itemize}
 
-Le reste de la section décrit les parties de la grammaire de Praspel, en forme
+Le reste de la partie décrit les parties de la grammaire de Praspel, en forme
 normale.
 
 \subsection{Clauses}
@@ -141,7 +141,7 @@ Les autres clauses sont des clauses de méthode.  Elles sont localisées juste
 avant l'en-tête des méthodes. La plupart de ces clauses introduisent des
 expressions Praspel, représentée par les entités syntaxiques \grule{expression}
 ou \grule{exceptional-expression}, détaillées dans la
-section~\ref{subsection:language:expressions}.
+partie~\ref{subsection:language:expressions}.
 
 \begin{figure}
 \centering
@@ -200,7 +200,7 @@ syntaxique \grule{exceptional-expression} dans la
 figure~\ref{figure:language:grammar_part2}. $T$ peut être \code{$T_C$ with
 $T_E$}, où $T_C$ est une liste de nom de classes asssociée à un identifiant, et
 $T_E$ est une expression, appelée {\strong postcondition exceptionnelle}, dont
-la syntaxe est détaillée dans la section~\ref{subsection:language:expressions}.
+la syntaxe est détaillée dans la partie~\ref{subsection:language:expressions}.
 Tous les identifiants définis dans $T_C$ peuvent apparaître dans $T_E$. La
 sémantique est la suivante~: si l'exception levée est une instance d'une classe
 représentant une exception listée dans $T_C$, alors elle est assignée à
@@ -464,12 +464,12 @@ les deux aspects~: validation et vérification. L'objectif est de faire évoluer
 le langage en supportant plus de constructions usuelles nativement au lieu de
 les avoir dans une boîte-noire, et ainsi, entre autre, réduire le rejet lors de
 la génération de données. Ce processus est illustré dans la
-section~\ref{section:data:arrays}.
+partie~\ref{section:data:arrays}.
 
 \paragraph{Contraintes.} Praspel a principalement deux sortes de contraintes~:
 soit en utilisant la syntaxe des déclarations, soit en utilisant le mot-clé
 \code{is}. Des exemples de contraintes sont présentées dans la
-section~\ref{section:data:arrays}.
+partie~\ref{section:data:arrays}.
 \\
 
 Un mot sur les identifiants. Dans la figure~\ref{figure:language:short_contract}
@@ -490,7 +490,7 @@ classe, nous utiliserons \code{static}. Par exemple, si nous créons la classe
 
 La description de tableaux est une partie très important de Praspel, contrôlant
 la génération de collections présentée dans la
-section~\ref{section:data:arrays}.
+partie~\ref{section:data:arrays}.
 
 Dans PHP, un tableau est toujours un {\strong tableau associatif} (ou une
 \inenglish{map}, un {\strong dictionnaire}), \ie une collection de paires
