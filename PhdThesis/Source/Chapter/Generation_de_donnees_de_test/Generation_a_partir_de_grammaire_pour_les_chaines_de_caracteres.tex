@@ -941,11 +941,9 @@ $$\code{grammar($F$, $L$)}$$
 %
 où $F$ est le chemin vers le fichier PP contenant la grammaire. Par défaut, ce
 domaine réaliste utilise la génération basée sur la couverture car elle produit
-peu de données différentes, relativement vite et couvrant toute la
-grammaire\footnote{TODO~: chercher un ou deux articles faisant le parallèle
-entre couverture de grammaire et de code (structurel).}. Bien sûr, il est
-possible de modifier l'algorithme à utiliser pour la génération, et dans ce cas,
-$L$ représentera la taille de la séquence souhaitée.
+peu de données différentes, relativement vite et couvrant toute la grammaire.
+Bien sûr, il est possible de modifier l'algorithme à utiliser pour la
+génération, et dans ce cas, $L$ représentera la taille de la séquence souhaitée.
 
 \begin{example}[Utilisation du domaine réaliste \code{Grammar}]
 
@@ -958,7 +956,7 @@ un booléen~:
  * \arequires payload: grammar('Xml.pp'); \\
  * \aensures  \aresult: boolean(); \\
  */ \\
-function handleRequest ( \$payload ) { … }
+function handleRequest ( \$payload ) \{ … \}
 \end{pre}
 
 \end{example}
@@ -977,8 +975,9 @@ par une grammaire qui offre également plus de finesse dans les résultats. Ce
 domaine réaliste est tellement utilisé que Praspel propose une syntaxe
 simplifiée pour l'utiliser encore plus rapidement. Ainsi, une expression
 régulière doit être encadrée de délimiteurs, par exemple \code{/}, et peut-être
-suivie d'options (un caractère active une option). La syntaxe simplifiée de
-Praspel impose le délimiteur \code{/}.
+suivie d'options (un caractère active une option, comme \code{i} pour modifier
+la sensibilité à la casse). La syntaxe simplifiée de Praspel impose le
+délimiteur \code{/}.
 
 \begin{example}[Utilisation du domaine réaliste \code{Regex}]
 

@@ -3,22 +3,75 @@
 
 Les sections précédentes expliquaient comment générer des données scalaires,
 telles que des booléens, des entiers, réels ou chaînes, et aussi des données
-plus complexes, telles que des tableaux. Nous allons décrire comment générer des
-objets, puisque le paradigme le plus utilisé en PHP5\footnote{Sortie en juillet
-2004.} est l'objet. \\
+plus complexes, telles que des tableaux. Nous allons à présent décrire comment
+générer des objets, puisque le paradigme le plus utilisé en PHP5\footnote{Sortie
+en juillet 2004.} est l'objet. \\
 
 Un objet est une aggrégation d'attributs et de méthodes. Les deux sont annotés
 par des contrats Praspel, respectivement par la clause \ainvariant et les autres
 clauses (voir les entités syntaxiques \grule{attribute-clauses} et
-\grule{method-clauses} de la figure~\ref{figure:language:grammar_part0} et la
-figure~\ref{figure:language:typical_contract} pour les positionner). Alors, la
-stratégie pour générer un objet est de l'instancier en appelant son
-constructeur, et de définir une valeur à ses attributs. Les valeurs des
-arguments du constructeur sont générées grâce à sa précondition. Les valeurs des
-attributs sont générées grâce aux invariants. Si un argument du constructeur ou
-un attribut est lui-même un objet, ce processus est répété récursivement. Nous
-contournons l'encapsulation pour accéder aux attributs protégés et privés ou aux
-méthodes en instrumentant le code source.
+\grule{method-clauses} de la figure~\ref{figure:language:grammar_part0}
+page~\pageref{figure:language:grammar_part0} et de la
+figure~\ref{figure:language:typical_contract}
+page~\pageref{figure:language:typical_contract} pour les positionner). Le
+domaine réaliste~:
+%
+$$\code{class($C$)}$$
+%
+représente une instance d'un objet de type $C$. L'algorithme de la méthode
+\code{sample} de ce domaine réaliste est présenté dans la
+figure~\ref{figure:data:object}.  La stratégie pour générer un objet est de
+l'instancier en appelant son constructeur, et de définir une valeur à ses
+attributs. Les valeurs des arguments du constructeur sont générées grâce à sa
+précondition. Les valeurs des attributs sont générées grâce aux invariants. Si
+un argument du constructeur ou un attribut est lui-même un objet (par conséquent
+spécifié avec le domaine réaliste \code{Class}), ce processus est répété
+récursivement. Nous contournons l'encapsulation pour accéder aux attributs ou
+méthodes protégés et privés en instrumentant le code source.
+
+\begin{figure}
+
+\begin{center}
+\begin{algorithmic}
+
+\Function{$\akw{Object\_sample}$}{}
+
+  \Require $\avar{class}: \atype{Class}$
+  \Require $\avar{store}: \atype{set\astype{Object}}$
+  \Require $\avar{decision}: \lambda ( \avar{class}: \atype{Class} \times \avar{store}: \atype{set\astype{Object}} \rightarrow \atype{boolean} )$
+  \Require $\avar{pick}: \lambda ( \avar{store}: \atype{set\astype{Object}} \rightarrow \atype{Object} )$
+  \Ensure  $\avar{object}: \atype{Object}$
+
+  \If{$\akw{false} = \avar{decision}(\avar{class}, \avar{store})$}
+
+      \State $\avar{object} \gets \avar{pick}(\avar{store})$
+
+  \Else
+
+      \State $\avar{constructor}: \atype{Method} \gets \avar{class}.\acall{getConstructor}()$
+      \State $\avar{object} \gets \avar{constructor}.\acall{call}(\acall{Generate\_data}(\avar{constructor}))$
+
+      \ForAll{$\avar{attribute} \in \avar{class}.\acall{getAttributes}(\avar{object})$}
+
+          \State $\avar{specification}: \atype{Praspel} \gets \avar{attribute}.\acall{getSpecification}()$
+          \State $\avar{invariant}: \atype{Clause} \gets \avar{specification}.\acall{getClause}(\astring{'invariant'})$
+          \State $\avar{attribute}.\acall{value} \gets \avar{invariant}.\acall{sample}()$
+
+      \EndFor
+
+  \EndIf
+
+  \State $\areturn \avar{object}$
+
+\EndFunction
+
+\end{algorithmic}
+\end{center}
+
+\caption{\label{figure:data:object} Caractéristique de générabilité du domaine
+réaliste \code{Class}.}
+
+\end{figure}
 
 Afin de gérer les références circulaires (par exemple quand un premier objet a
 un attribut qui pointe sur un deuxième objet, qui a lui-même un attribut qui
