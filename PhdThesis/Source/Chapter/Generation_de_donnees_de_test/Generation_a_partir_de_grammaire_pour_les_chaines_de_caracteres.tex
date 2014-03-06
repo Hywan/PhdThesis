@@ -833,20 +833,19 @@ de données concrètes. Pour cela, nous devons transformer les lexèmes en donn�
 afin de produit un mot.
 
 Nous rappelons que les lexèmes sont exprimés avec des expressions régulières au
-format PCRE. Nous avons écrit la grammaire des PCRE avec PP. Ainsi, nous
-analysons une expression régulière avec cette grammaire, le compilateur de
-compilateur nous produit un AST que nous allons parcourir pour générer une
-donnée. Ce processus est détaillé dans la figure~\ref{figure:data:regex}.
+format PCRE, qui est un langage comme un autre~! Afin d'être capable de
+transformer les lexèmes en données concrètes, nous devions les analyser. C'est
+pourquoi nous avons écrit la grammaire du langage PCRE avec le langage PP.
+Ainsi, nous analysons une expression régulière avec cette grammaire, le
+compilateur de compilateurs nous produit un AST que nous allons parcourir pour
+générer une donnée valide correspondant à l'expression régulière de départ. Ce
+processus est détaillé dans la figure~\ref{figure:data:regex}.
 %
 \begin{figure}
 
 \fig{11.7cm}{!}{Regex_to_word.tex}
 
-\caption{\label{figure:data:regex} Fonctionnement de la concrétisation~: à
-partir d'une expression régulière et de la grammaire des PCRE, l'analyseur
-lexical puis syntaxique nous génère un AST. Sur ce dernier, nous appliquons un
-visiteur qui calcule une génération aléatoire isotropique afin d'obtenir une
-donnée valide correspondant à l'expression régulière de départ.}
+\caption{\label{figure:data:regex} Fonctionnement de la concrétisation.}
 
 \end{figure}
 %
@@ -854,21 +853,26 @@ L'algorithme de génération est aléatoire isotropique~\acite{Sawyer78}~: c'est
 dire qu'il est aléatoire uniforme mais l'uniformité est locale à un point de
 choix, et non pas parmi toutes les sous-structures possibles. C'est une approche
 nettement plus naïve qu'avec les algorithmes précédents, mais la phase de
-concrétisation n'a pas beaucoup d'importance~: il est juste nécessaire d'obtenir
-un mot valide.
+concrétisation ne nécessite pas autant d'attention que la génération des
+séquences de lexèmes. Les lexèmes représentent l'unité atomique de nos langages,
+leur valeur n'est pas censé avoir d'influence lorsque nous utilisons la donnée
+concrétisée pour du test ou d'autres applications. De plus, nous sommes plus
+intéressés par la forme de la séquence (comme toutes les séquences de manière
+exhaustive ou couvrant toute la grammaire) car elle caractérise véritablement
+notre donnée.
 
 \begin{example}[Génération aléatoire isotropique]
 
 Soit l'expression régulière suivante~:
-
+%
 $$\code{([ae]+|[x-y]!)\{1,3\}}$$
-
+%
 Nous allons parcourir cette expression comme si nous parcourions son AST, et à
 chaque point de choix, nous allons faire un tirage aléatoire uniforme pour
 continuer notre parcours~:
 
 \noindent
-\begin{tabularx}{\textwidth}{XX}
+\begin{longtable}{lp{7cm}}
 
 \code{\ingray{([ae]+|[w-z]!)}\{1,3\}} &
     nous tirons le nombre de répétitions $r_1 \in [1; 3]$, disons $r_1 = 2$~; \\
@@ -899,14 +903,29 @@ continuer notre parcours~:
     nous finissons avec la concaténation, que nous avons déjà appliquée tout le
     long de cet exemple.
 
-\end{tabularx}
-%
+\end{longtable}
+
+\noindent
 Chaque tirage a été fait aléatoirement et uniformément, mais localement.
 
 \end{example}
 
 Chaque opérateur non-borné, comme \code{*} ou \code{+}, est borné à un entier
-arbitraire, par défaut 2.
+arbitraire, par défaut 2. \\
+
+Nous nous permettons une petite parenthèse afin d'être complet dans notre
+discours. Si nous souhaitons utiliser les algorithmes vus précédemment pour
+concrétiser les lexèmes (exprimés avec le langage PCRE), ceci demanderait un
+travail supplémentaire. En effet, il faudra transformer le langage des PCRE vers
+le langage PP, et ainsi, nous nous retrouvons dans la même position qu'au début
+de cette partie où nous avons une grammaire et nos algorithmes de générations.
+Dans une telle grammaire, les nouveaux lexèmes seraient alors des litéraux
+(comme \code{a}, \code{b}, \code{0} et autre symbole «~unitaire~») facilement
+générables avec un algorithme aléatoire isotropique. Pour résumé, cela
+reviendrait à écrire un compilateur PCRE vers PP. Ce travail a été commencé par
+un étudiant~\acite{Kuhner14} suite à un projet sur la visualisation graphique
+d'expressions régulières, réalisé avec notre compilateur et notre grammaire des
+PCRE. \\
 
 Nous n'avons vu que très peu de constructions qu'offre la syntaxe PCRE, mais il
 est possible d'exprimer des choses bien plus complexes. Nous vous encourageons à
