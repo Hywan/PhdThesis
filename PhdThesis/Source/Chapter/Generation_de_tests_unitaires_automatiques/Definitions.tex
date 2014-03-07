@@ -4,18 +4,17 @@
 Un {\strong chemin} est une séquence de transitions consécutives séparées par
 des points. Deux transitions $(v, \alpha, w)$ et $(x, \beta, y)$ sont
 consécutives si et seulement si $w = x$. Nous disons qu'un sommet $v$ {\strong
-est dans} le chemin $p$ si le chemin $p$ contient une transition $(v, \alpha,
-w)$ ou $(w, \alpha, v)$.
+est dans} le chemin $p$ si et seulement si le chemin $p$ contient une transition
+$(v, \alpha, w)$ ou $(w, \alpha, v)$.
 
 Nous associons deux sortes de chemins à un contrat $G = (V, D, i, N, E, U)$. Une
-{\strong route} de $G$ est un chemin dont les transitions sont dans $D$.
-À présent, considérons n'importe quelle route $r$ de $G$, et remplaçons
-n'importe quelle transition $(v, e, w)$ dans $r$, où $e$ est une expresssion,
-par le chemin $(v, \varepsilon, i_H) \cdot q \cdot (n_H, \varepsilon, w)$, où
-$q$ est un chemin de $i_H$ à $n_H$ du graphe d'expression $H = (V_H, D_H, i_H,
-n_H)$ associé à $e$.  Le résultat est appelé un {\strong sentier} de $r$. Un
-sentier d'un graphe de contrat $G$ est n'importe quel sentier obtenu depuis une
-route de $G$.
+{\strong route} de $G$ est un chemin dont les transitions sont dans $D$. À
+présent, soit $r$ une route de $G$, $e$ une expression et $H = (V_H, D_H, i_H,
+n_H)$ le graphe de l'expression. Nous remplaçons toutes les transitions $(v, e,
+w)$ dans $r$ par le chemin $(v, \varepsilon, i_H) \cdot q \cdot (n_H,
+\varepsilon, w)$ où $q$ est un chemin de $i_H$ à $n_H$ du graphe $H$. Le
+résultat est appelé un {\strong sentier} de $r$. Un sentier d'un graphe de
+contrat $G$ est n'importe quel sentier obtenu depuis une route de $G$.
 
 Un {\strong test unitaire} pour une méthode PHP \code{f} est un ensemble de
 données (appelées entrées), qui fixent les valeurs pour les
@@ -34,8 +33,10 @@ l'objet directement.
 %
 Une {\strong suite de tests} est un ensemble de cas de test.
 
-Quand nous exécutons un cas de test, nous sommes capable de calculer l'ensemble
-des chemins traversés dans le graphe de contrat $G$.
+Quand nous exécutons un cas de test, nous sommes capable d'y associer des
+chemins du graphe de contrat $G$, appelés chemins {\strong activés par} le cas
+de test, démarrant depuis l'état initial de $G(\code{f})$ et terminant dans un
+de ses états finaux (soit normaux soit exceptionels).
 
 Nous représentons par $s'$ l'état après l'exécution du test, par $r$ la valeur
 retournée par la méthode \code{f} et par $e$ l'exception levée le cas échéant.
@@ -46,14 +47,14 @@ d'exception), $e$ est considérée comme indéfinie.
 Afin de définir quels sont les chemins (autant les routes que les sentiers) d'un
 contrat qui sont activés par un cas de test $(s, t)$, nous explorons le contrat
 $G(\code{f})$ et nous collectons les chemins en évaluant les étiquettes des
-transitions tout en respectant le test~:
+transitions tout en respectant le test $t$~:
 %
 \begin{itemize}
 
 \item si la transition est étiquetée par une expression $R$ (respectivement
 $I$) provenant d'une précondition (respectivement d'un invariant évalué dans le
 pré-état), la transition est activée si et seulement si $R$ (respectivement $I$)
-est vraie dans le pré-état $s$ du test~;
+est vraie dans le pré-état $s$~;
 
 \item si la transition est étiquetée par une expression $E$ provenant d'une
 postcondition (normale ou exceptionnelle), la transition est activée si et
@@ -68,13 +69,14 @@ $I$ est vraie dans le post-état $s'$~;
 
 \item si la transition est étiquetée par une déclaration de domaines réalistes
 \code{$i$: $d$}, la transition est activée si et seulement si la valeur courante
-de $i$ appartient à un des domaines réalistes dans la disjonction $d$ (grâce à
-la caractéristique de prédicabilité). Quand cette déclaration provient d'une
-précondition (c'est~à~dire dans un graphe d'expression d'une précondition), la
-valeur de $i$ est choisie dans le pré-état $s$ du test si $i$ est un attribut de
-classe, ou dans les arguments de la méthode si $i$ est un argument de la
-méthode. Quand la déclaration est exprimée dans une postcondition (normale ou
-exceptionnelle), la valeur de $i$ est choisie dans le post-état $s'$~;
+de $i \in t$ appartient à un des domaines réalistes dans la disjonction $d$
+(grâce à la caractéristique de prédicabilité). Quand cette déclaration provient
+d'une précondition (c'est~à~dire dans un graphe d'expression d'une
+précondition), la valeur de $i$ est choisie dans le pré-état $s$ du test si $i$
+est un attribut de classe, ou dans les arguments de la méthode si $i$ est un
+argument de la méthode. Quand la déclaration est exprimée dans une postcondition
+(normale ou exceptionnelle), la valeur de $i$ est choisie dans le post-état
+$s'$~;
 
 \item si la transition est étiquetée par un prédicat, la transition est activée
 si et seulement le prédicat est satisfait avec l'état courant du système ($s$
@@ -82,22 +84,23 @@ dans le cas d'une précondition, $s'$ pour un prédicat \inenglish{before-after}
 c'est~à~dire contenu dans une postcondition, dont les expressions \aold{\empty}
 sont évaluées dans le pré-état $s$)~;
 
-\item si la transition est étiquetée par une classe d'exception $T_C$, alors la
-transition est activée si et seulement si l'exception levée $e$ n'est pas
-indéfinie et est une instance de $T_C$.
+\item si la transition est étiquetée par un \grule{exception-identifier} $T_C$,
+alors la transition est activée si et seulement si l'exception levée $e$ n'est
+pas indéfinie et est une instance de $T_C$.
 
 \end{itemize}
 
-Jusqu'à maintenant, nous avons seulement considéré les chemins de $G(\code{f})$
-(routes et sentiers) démarrant depuis l'état initial de $G(\code{f})$ et
-terminant dans un de ses états finaux (soit normaux soit exceptionels). Par
-exemple, dans la figure~\ref{figure:test:throwable_graph}, nous voyons qu'il est
-possible d'activer plusieurs chemins en même temps, quand $T_{C_1}$ étend
-$T_{C_2}$ et qu'une exception de classe $T_{C_1}$ est levée. Nous représentons
-par $R_\code{f}(S)$ l'ensemble des routes de $G(\code{f})$ activées par une
-suite de test $S$. Similairement, nous représentons par $T_\code{f}(S)$
-l'ensemble des sentiers de $G(\code{f})$ activés par une suite de test $S$ et
-traversant des graphes d'expression imbriquées dans $G(\code{f})$.
+\begin{example}[Activer plusieurs chemins avec un même cas de tests]
+
+Dans la figure~\ref{figure:test:throwable_graph}, nous voyons qu'il est possible
+d'activer plusieurs chemins en même temps, quand $T_{C_1}$ étend $T_{C_2}$ et
+qu'une exception de classe $T_{C_1}$ est levée. Nous représentons par
+$R_\code{f}(S)$ l'ensemble des routes de $G(\code{f})$ activées par une suite de
+test $S$. Similairement, nous représentons par $T_\code{f}(S)$ l'ensemble des
+sentiers de $G(\code{f})$ activés par une suite de test $S$ et traversant des
+graphes d'expression imbriquées dans $G(\code{f})$.
+
+\end{example}
 
 Les exemples suivants sont basés sur le contrat de la
 figure~\ref{figure:test:irc} pour la méthode \code{compute} avec deux arguments:
