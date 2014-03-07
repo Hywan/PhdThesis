@@ -1,0 +1,75 @@
+%%
+\begin{scope}
+  \pgfsetstrokecolor{black}
+  \pgfsetdash{{3pt}{3pt}}{0pt}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw [dashed] (82bp,8bp) -- (82bp,116bp) -- (342bp,116bp) -- (342bp,8bp) -- cycle;
+\end{scope}
+  \pgfsetcolor{black}
+  % Edge: n_M -> v_2
+  \draw [->] (333.58bp,89bp) .. controls (346.1bp,89bp) and (363.16bp,89bp)  .. (387.76bp,89bp);
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (361bp,98.5bp) node {$I$};
+  % Edge: e_M -> v_3
+  \draw [->] (333.16bp,34bp) .. controls (345.72bp,34bp) and (363.02bp,34bp)  .. (387.89bp,34bp);
+  \draw (361bp,43.5bp) node {$I$};
+  % Edge: hidden -> e_M
+  \draw [->,dashed] (258.22bp,49.311bp) .. controls (268.23bp,46.565bp) and (278.48bp,43.752bp)  .. (297.21bp,38.608bp);
+  % Edge: hidden -> n_M
+  \draw [->,dashed] (258.22bp,74.236bp) .. controls (268.08bp,76.843bp) and (278.17bp,79.514bp)  .. (296.73bp,84.427bp);
+  % Edge: v_1 -> i_M
+  \draw [->] (36.386bp,62bp) .. controls (48.76bp,62bp) and (65.631bp,62bp)  .. (89.95bp,62bp);
+  \draw (63bp,71.5bp) node {$I$};
+  % Edge: i_M -> hidden
+  \draw [->,dashed] (126.13bp,62bp) .. controls (133.9bp,62bp) and (143.57bp,62bp)  .. (163.59bp,62bp);
+  % Node: i_M
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (108bp,62bp) ellipse (18bp and 18bp);
+  \draw (108bp,62bp) node {$i_M$};
+\end{scope}
+  % Node: v_1
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw [state,initial] (18bp,62bp) ellipse (18bp and 18bp);
+  \draw (18bp,62bp) node {$v_1$};
+\end{scope}
+  % Node: v_2
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw [state,accepting] (406bp,89bp) ellipse (18bp and 18bp);
+  \draw (406bp,89bp) node {$v_2$};
+\end{scope}
+  % Node: v_3
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw [state,accepting] (424bp,52bp) -- (388bp,52bp) -- (388bp,16bp) -- (424bp,16bp) -- cycle;
+  \draw (406bp,34bp) node {$v_3$};
+\end{scope}
+  % Node: n_M
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (315bp,89bp) ellipse (19bp and 19bp);
+  \draw (315bp,89bp) node {$n_M$};
+\end{scope}
+  % Node: hidden
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (211bp,62bp) node {$\dotso$};
+\end{scope}
+  % Node: e_M
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (315bp,34bp) ellipse (18bp and 18bp);
+  \draw (315bp,34bp) node {$e_M$};
+\end{scope}
+%

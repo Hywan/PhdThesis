@@ -2,11 +2,11 @@ digraph {
     graph [rankdir=LR];
     node [shape=circle, width=0.5];
 
-    v_1 -> v_2 [label=" ", texlbl="$R$"];
+    v_1 -> v_2 [label=" ", texlbl="$P$"];
 
     subgraph {
-        v_2 -> v_3 [label=" ", texlbl="$R_\alpha$"];
-        v_3 -> v_4 [label=" ", texlbl="$E_\alpha$"];
+        v_2 -> v_3 [label=" ", texlbl="$P_\alpha$"];
+        v_3 -> v_4 [label=" ", texlbl="$Q_\alpha$"];
         v_3 -> v_5 [label=" ", texlbl="$T_{C_\alpha}$"];
         v_5 -> v_6 [label=" ", texlbl="$T_{E_\alpha}$"];
         v_3 -> v_7 [label=" ", texlbl="$\neg T_{C_\alpha}$"];
@@ -16,4 +16,5 @@ digraph {
     v_2 [style="state,accepting"];
     v_4 [style="state,accepting"];
     v_6 [style="state,accepting", shape=rect];
+    v_7 [style="state,dashed"];
 }

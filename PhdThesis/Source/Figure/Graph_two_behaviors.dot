@@ -1,0 +1,32 @@
+digraph {
+    graph [rankdir=LR];
+    node [shape=circle, width=0.5];
+
+    v_1 -> v_2 [label=" ", texlbl="$P$"];
+
+    subgraph {
+        v_2 -> v_3 [label=" ", texlbl="$P_\alpha$"];
+        v_3 -> v_4 [label=" ", texlbl="$Q_\alpha$"];
+        v_3 -> v_5 [label=" ", texlbl="$T_{C_\alpha}$"];
+        v_5 -> v_6 [label=" ", texlbl="$T_{E_\alpha}$"];
+        v_3 -> v_7 [label=" ", texlbl="$\neg T_{C_\alpha}$"];
+    }
+
+    subgraph {
+        v_2  -> v_8  [label=" ", texlbl="$P_\beta$"];
+        v_8  -> v_9  [label=" ", texlbl="$Q_\beta$"];
+        v_8  -> v_10 [label=" ", texlbl="$T_{C_\beta}$"];
+        v_10 -> v_11 [label=" ", texlbl="$T_{E_\beta}$"];
+        v_8  -> v_12 [label=" ", texlbl="$\neg T_{C_\beta}$"];
+    }
+
+    v_1      [style="state,initial"];
+    v_2      [style="state,accepting"];
+    v_4 v_9  [style="state,accepting"];
+    v_6 v_11 [style="state,accepting", shape=rect];
+    v_7 v_12 [style="state,dashed"];
+
+    v_10 [label=" ", texlbl="$v_{10}$"];
+    v_11 [label=" ", texlbl="$v_{11}$"];
+    v_12 [label=" ", texlbl="$v_{12}$"];
+}

@@ -1,0 +1,123 @@
+%%
+\pgfsetcolor{black}
+  % Edge: v_5 -> v_6
+  \draw [->] (334.42bp,234bp) .. controls (349.62bp,234bp) and (371.93bp,234bp)  .. (399.78bp,234bp);
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (367bp,245bp) node {$T_{E_\alpha}$};
+  % Edge: v_3 -> v_7
+  \draw [->] (223.4bp,195.44bp) .. controls (229.5bp,191.86bp) and (236.85bp,188.14bp)  .. (244bp,186bp) .. controls (258.12bp,181.77bp) and (274.48bp,180.18bp)  .. (298bp,179.5bp);
+  \draw (262bp,197bp) node {$\neg T_{C_\alpha}$};
+  % Edge: v_3 -> v_4
+  \draw [->] (218.46bp,219.71bp) .. controls (224.88bp,228.91bp) and (234bp,240.57bp)  .. (244bp,249bp) .. controls (257.71bp,260.56bp) and (275.39bp,270.29bp)  .. (298.93bp,281.4bp);
+  \draw (262bp,281.5bp) node {$Q_\alpha$};
+  % Edge: v_3 -> v_5
+  \draw [->] (225.56bp,209.53bp) .. controls (242.44bp,214.15bp) and (268.88bp,221.38bp)  .. (298.55bp,229.5bp);
+  \draw (262bp,234bp) node {$T_{C_\alpha}$};
+  % Edge: v_8 -> v_9
+  \draw [->] (224.06bp,94.477bp) .. controls (230.14bp,97.705bp) and (237.29bp,101.26bp)  .. (244bp,104bp) .. controls (258.47bp,109.91bp) and (275.14bp,115.15bp)  .. (298.36bp,121.73bp);
+  \draw (262bp,127bp) node {$Q_\beta$};
+  % Edge: v_8 -> v_10
+  \draw [->] (226.08bp,83.505bp) .. controls (231.78bp,82.687bp) and (238.16bp,81.787bp)  .. (244bp,81bp) .. controls (258.57bp,79.035bp) and (274.85bp,76.964bp)  .. (298.06bp,74.071bp);
+  \draw (262bp,92.5bp) node {$T_{C_\beta}$};
+  % Edge: v_1 -> v_2
+  \draw [->] (36.353bp,161bp) .. controls (49.177bp,161bp) and (66.892bp,161bp)  .. (91.7bp,161bp);
+  \draw (64bp,170.5bp) node {$P$};
+  % Edge: v_8 -> v_12
+  \draw [->] (219.86bp,72.021bp) .. controls (226.26bp,64.468bp) and (234.88bp,55.405bp)  .. (244bp,49bp) .. controls (257.73bp,39.356bp) and (274.93bp,31.751bp)  .. (298.53bp,23.072bp);
+  \draw (262bp,60.5bp) node {$\neg T_{C_\beta}$};
+  % Edge: v_10 -> v_11
+  \draw [->] (334.42bp,72bp) .. controls (349.62bp,72bp) and (371.93bp,72bp)  .. (399.78bp,72bp);
+  \draw (367bp,83.5bp) node {$T_{E_\beta}$};
+  % Edge: v_2 -> v_8
+  \draw [->] (124.75bp,150.25bp) .. controls (140.58bp,137.89bp) and (166.77bp,117.43bp)  .. (193.27bp,96.726bp);
+  \draw (159bp,143bp) node {$P_\beta$};
+  % Edge: v_2 -> v_3
+  \draw [->] (126.85bp,168.27bp) .. controls (141.81bp,175.12bp) and (164.48bp,185.51bp)  .. (191.44bp,197.87bp);
+  \draw (159bp,198.5bp) node {$P_\alpha$};
+  % Node: v_4
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (316bp,288bp) ellipse (18bp and 18bp);
+  \draw (316bp,288bp) node {$v_4$};
+\end{scope}
+  % Node: v_5
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (316bp,234bp) ellipse (18bp and 18bp);
+  \draw (316bp,234bp) node {$v_5$};
+\end{scope}
+  % Node: v_6
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (418bp,234bp) ellipse (18bp and 18bp);
+  \draw (418bp,234bp) node {$v_6$};
+\end{scope}
+  % Node: v_7
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (316bp,180bp) ellipse (18bp and 18bp);
+  \draw (316bp,180bp) node {$v_7$};
+\end{scope}
+  % Node: v_12
+\begin{scope}
+  \pgfsetdash{{3pt}{3pt}}{0pt}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw [state,dashed] (316bp,18bp) ellipse (18bp and 18bp);
+  \draw (316bp,18bp) node {$v_{12}$};
+\end{scope}
+  % Node: v_10
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (316bp,72bp) ellipse (18bp and 18bp);
+  \draw (316bp,72bp) node {$v_{10}$};
+\end{scope}
+  % Node: v_2
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw [state,accepting] (110bp,161bp) ellipse (18bp and 18bp);
+  \draw (110bp,161bp) node {$v_2$};
+\end{scope}
+  % Node: v_3
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (208bp,205bp) ellipse (18bp and 18bp);
+  \draw (208bp,205bp) node {$v_3$};
+\end{scope}
+  % Node: v_11
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw [state,accepting] (436bp,90bp) -- (400bp,90bp) -- (400bp,54bp) -- (436bp,54bp) -- cycle;
+  \draw (418bp,72bp) node {$v_{11}$};
+\end{scope}
+  % Node: v_8
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (208bp,86bp) ellipse (18bp and 18bp);
+  \draw (208bp,86bp) node {$v_8$};
+\end{scope}
+  % Node: v_9
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw [state,accepting] (316bp,126bp) ellipse (18bp and 18bp);
+  \draw (316bp,126bp) node {$v_9$};
+\end{scope}
+  % Node: v_1
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw [state,initial] (18bp,161bp) ellipse (18bp and 18bp);
+  \draw (18bp,161bp) node {$v_1$};
+\end{scope}
+%

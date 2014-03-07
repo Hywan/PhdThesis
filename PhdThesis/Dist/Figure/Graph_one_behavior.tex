@@ -10,16 +10,16 @@
   \draw (262bp,57bp) node {$\neg T_{C_\alpha}$};
   % Edge: v_3 -> v_4
   \draw [->] (222.4bp,83.255bp) .. controls (228.69bp,88.194bp) and (236.46bp,93.808bp)  .. (244bp,98bp) .. controls (258.21bp,105.9bp) and (275.11bp,112.66bp)  .. (298.66bp,120.93bp);
-  \draw (262bp,124.5bp) node {$E_\alpha$};
+  \draw (262bp,124.5bp) node {$Q_\alpha$};
   % Edge: v_3 -> v_5
   \draw [->] (226.03bp,72bp) .. controls (242.62bp,72bp) and (268.12bp,72bp)  .. (297.66bp,72bp);
   \draw (262bp,83bp) node {$T_{C_\alpha}$};
   % Edge: v_1 -> v_2
   \draw [->] (36.353bp,72bp) .. controls (49.177bp,72bp) and (66.892bp,72bp)  .. (91.7bp,72bp);
-  \draw (64bp,81.5bp) node {$R$};
+  \draw (64bp,81.5bp) node {$P$};
   % Edge: v_2 -> v_3
   \draw [->] (128.16bp,72bp) .. controls (142.5bp,72bp) and (163.19bp,72bp)  .. (189.99bp,72bp);
-  \draw (159bp,82.5bp) node {$R_\alpha$};
+  \draw (159bp,82.5bp) node {$P_\alpha$};
   % Node: v_4
 \begin{scope}
   \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
@@ -43,9 +43,10 @@
 \end{scope}
   % Node: v_7
 \begin{scope}
+  \pgfsetdash{{3pt}{3pt}}{0pt}
   \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
   \pgfsetstrokecolor{strokecol}
-  \draw (316bp,18bp) ellipse (18bp and 18bp);
+  \draw [state,dashed] (316bp,18bp) ellipse (18bp and 18bp);
   \draw (316bp,18bp) node {$v_7$};
 \end{scope}
   % Node: v_1

@@ -2,8 +2,8 @@ digraph {
     graph [rankdir=LR];
     node [shape=circle, width=0.5];
 
-    v_1 -> v_2 [label=" ", texlbl="$R$"];
-    v_2 -> v_3 [label=" ", texlbl="$E$"];
+    v_1 -> v_2 [label=" ", texlbl="$P$"];
+    v_2 -> v_3 [label=" ", texlbl="$Q$"];
     v_2 -> v_4 [label=" ", texlbl="$T_C$"];
     v_4 -> v_5 [label=" ", texlbl="$T_E$"];
     v_2 -> v_6 [label=" ", texlbl="$\neg T_C$"];
@@ -11,4 +11,5 @@ digraph {
     v_1 [style="state,initial"];
     v_3 [style="state,accepting"];
     v_5 [style="state,accepting", shape=rect];
+    v_6 [style="state,dashed"];
 }

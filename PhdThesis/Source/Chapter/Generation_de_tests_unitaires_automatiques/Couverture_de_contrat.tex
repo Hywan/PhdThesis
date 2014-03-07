@@ -83,21 +83,8 @@ est une disjonction de domaines réalistes, $1 \leq j \leq m$. Nous notons aussi
 par $D_j$ la liste $[d_{j,1}, \dots, d_{j,k_j}]$ de domaines réalistes dans la
 disjonction. Soit $S = [i_1, \dots, i_m]$ la liste des identifiants déclarés
 dans cette expression. La notation $s \in S$ signifie que $s$ est un élément de
-la liste $S$.
-
-\begin{example}[Expression simple de deux déclarations de domaines réalistes]
-\label{example:test:expression_graph1}
-
-Dans l'expression suivante~:
-%
-$$\code{i: foo() or bar() and j: baz() or qux()}$$
-%
-nous avons $S = [\code{i}, \code{j}]$, $D_1 = [\code{foo()}, \code{bar()}]$ et
-$D_2 = [\code{baz()}, \code{qux()}]$.
-
-\end{example}
-
-Pour construire le graphe des domaines, nous utilisons la définition suivante.
+la liste $S$. Pour construire le graphe des domaines, nous utilisons la
+définition suivante.
 
 \begin{definition}[Graphe des domaines]
 
@@ -114,9 +101,28 @@ $$D = \Union_{d \,\in\, D_1} \{(\mathit{dom}, \code{$i_1$: $d$}, v_{i_1})\} \uni
 
 \end{definition}
 
-La première partie de la figure~\ref{figure:test:expression_graph} présente
-graphiquement le graphe associé à
-l'exemple~\ref{example:test:expression_graph1}.
+\begin{example}[Expression simple de deux déclarations de domaines réalistes]
+\label{example:test:expression_graph1}
+
+Dans l'expression suivante~:
+%
+$$\code{i: foo() or bar() and j: baz() or qux()}$$
+%
+nous avons $S = [\code{i}, \code{j}]$, $D_1 = [\code{foo()}, \code{bar()}]$ et
+$D_2 = [\code{baz()}, \code{qux()}]$. La première partie de la
+figure~\ref{figure:test:expression_graph} présente graphiquement le graphe
+associé à l'exemple~\ref{example:test:expression_graph1}.
+
+\end{example}
+
+\begin{figure}
+
+\fig{\textwidth}{!}{Expression_graph.tex}
+
+\caption{\label{figure:test:expression_graph} Graphe d'expressions, composé
+d'un graphe des domaines et d'un graphe des prédicats.}
+
+\end{figure}
 
 \subsubsection{Graphe des prédicats}
 
@@ -131,21 +137,6 @@ $P_m$}, où $P_j = \code{$p_{j,1}$ or $\dots$ or $p_{j,k_j}$}$ est une
 disjonction de variables ou de prédicats PHP (fonctions booléennes ou opérations
 logiques), $1 \leq j \leq m$. Nous notons aussi par $P_j$ la liste $[p_{j,1},
 \dots, p_{j,k_j}]$ de variables ou prédicats PHP déclarés dans la conjonction.
-
-\begin{example}[Exemple simple d'un prédicat]
-\label{example:test:expression_graph2}
-
-Dans l'expression suivante~:
-%
-$$
-\apred{\code{'(\$a || \$b) \&\& (\$c || \$d)'}}
-$$
-%
-nous avons $m = 2$, $P_1 = [\code{\$a}, \code{\$b}]$ et $P_2 = [\code{\$c},
-\code{\$d}]$.
-
-\end{example}
-
 Pour construire le graphe des prédicats, nous utilisons la définition suivante.
 
 \begin{definition}[Graphe des prédicats]
@@ -162,18 +153,19 @@ $$D = \Union_{p \,\in\, P_1} \{(\mathit{pred}, p, v_1)\} \union
 
 \end{definition}
 
-\begin{figure}
+\begin{example}[Exemple simple d'un prédicat]
+\label{example:test:expression_graph2}
 
-\fig{\textwidth}{!}{Expression_graph.tex}
+Dans l'expression suivante~:
+%
+$$\apred{\code{'(\$a || \$b) \&\& (\$c || \$d)'}}$$
+%
+nous avons $m = 2$, $P_1 = [\code{\$a}, \code{\$b}]$ et $P_2 = [\code{\$c},
+\code{\$d}]$. La deuxième partie de la
+figure~\ref{figure:test:expression_graph} présente graphiquement le graphe
+associé à l'exemple~\ref{example:test:expression_graph2}.
 
-\caption{\label{figure:test:expression_graph} Un graphe d'expressions, composé
-d'un graphe des domaines et d'un graphe des prédicats.}
-
-\end{figure}
-
-La deuxième partie de la figure~\ref{figure:test:expression_graph} présente
-graphiquement le graphe associé à
-l'exemple~\ref{example:test:expression_graph2}.
+\end{example}
 
 \subsection{Graphe d'un contrat atomique}
 \label{subsection:test:atomic_graph}
@@ -185,12 +177,12 @@ décomposable en sous-contrats. Un contrat atomique en forme normale adopte
 la forme générale suivante~:
 %
 \begin{pre}
-\arequires  \(R\); \\
-\aensures   \(E\); \\
+\arequires  \(P\); \\
+\aensures   \(Q\); \\
 \athrowable \(T\sb{C}\) with \(T\sb{E}\);
 \end{pre}
 %
-où $R$ et $E$ sont des expressions de sorte \grule{expression} respectivement
+où $P$ et $Q$ sont des expressions de sorte \grule{expression} respectivement
 associées aux clauses \arequires et \aensures. L'expression de sorte
 \grule{exceptional-expression} associée à la clause \athrowable est composée de
 deux parties~: $T_C$ représente le nom de la classe de l'exception et
@@ -210,8 +202,8 @@ $$G = (
 où
 %
 $$D = \{
-  (v_1, R, v_2),
-  (v_2, E, v_3),
+  (v_1, P, v_2),
+  (v_2, Q, v_3),
   (v_2, T_C, v_4),
   (v_4, T_E, v_5),
   (v_2, \neg T_C, v_6)
@@ -226,10 +218,15 @@ atomique.}
 
 \end{figure}
 
+\begin{example}[Graphe d'un contrat atomique]
+
 La figure~\ref{figure:test:atomic_graph} présente graphiquement ce graphe. Dans
 cette figure ainsi que dans toutes celles qui vont suivre, les sommets normaux
-finaux sont représentés par un double cercle, et les sommets finaux
-exceptionnels par un double rectangle.
+finaux sont représentés par un double cercle, les sommets finaux
+exceptionnels par un double rectangle et les sommets d'erreurs par un cercle
+avec des tirets.
+
+\end{example}
 
 \subsection{Contrat atomique avec plusieurs clauses \athrowable}
 \label{subsection:test:throwable_graph}
@@ -263,10 +260,14 @@ atomique avec deux clauses \athrowable.}
 
 \end{figure}
 
+\begin{example}[Graphe d'un contrat atomique avec deux clauses \athrowable]
+
 La figure~\ref{figure:test:throwable_graph} présente graphiquement ce graphe
 quand il y a deux clauses~: \code{\athrowable $T_{C_1}$ with $T_{E_1}$} et
 \code{\athrowable $T_{C_2}$ with $T_{E_2}$} (dans la figure, $v'$ est noté
 $v_7$).
+
+\end{example}
 
 \subsection{Graphe d'un contrat avec une clause \abehavior}
 \label{subsection:test:behavior_graph}
@@ -275,7 +276,7 @@ Considérons à présent le cas d'un contrat contenant exactement une clause
 \abehavior. Soit $C$ le contrat~:
 %
 \begin{pre}
-\arequires \(R\); \\
+\arequires \(P\); \\
 \abehavior \(\alpha\) \{ \(B\) \}
 \end{pre}
 %
@@ -285,7 +286,7 @@ D_\alpha, i_\alpha, N_\alpha, E_\alpha, U_\alpha)$ le graphe de contrat associé
 %
 $$G = (
   \{v\} \union V_\alpha,
-  \{(v, R, i_\alpha)\} \union D_\alpha,
+  \{(v, P, i_\alpha)\} \union D_\alpha,
   v,
   \{i_\alpha\} \union N_\alpha,
   E_\alpha,
@@ -294,21 +295,38 @@ $$G = (
 %
 avec un nouveau sommet $v \notin V_\alpha$. Ce graphe est composé de tous les
 sommets et arcs de $G_\alpha$, complété avec un nouvel arc entre $v$, le nouveau
-sommet initial, et $i_\alpha$, le sommet initial de $G_\alpha$.
+sommet initial, et $i_\alpha$, le sommet initial de $G_\alpha$. Le sommet
+$i_\alpha$ devient également un sommet final normal car la sémantique du contrat
+est qu'il n'est pas obligatoire d'emprunter un comportement. Par conséquent, $P$
+peut être évalué mais pas nécessaire $P_\alpha$.
 
 \begin{figure}
 
-\fig{\textwidth}{!}{One_behavior_graph.tex}
+\fig{\textwidth}{!}{Graph_one_behavior.tex}
 
-\caption{\label{figure:test:behavior_graph} Le graphe correspondant à un contrat
-avec une seule clause \abehavior, qui contient un (sous-)contrat atomique.}
+\caption{\label{figure:test:behavior_graph} Graphe correspondant à un contrat
+avec une seule clause \abehavior.}
 
 \end{figure}
 
-La figure~\ref{figure:test:behavior_graph} présente graphiquement ce graphe
-quand le comportement est atomique et contient seulement une seule clause
-\code{\athrowable $T_{C_\alpha}$ with $T_{E_\alpha}$}. Dans la figure, les
-sommets sont renumérotés à partir de $v_1$.
+\begin{example}[Graphe d'un contrat avec une clause \abehavior]
+
+La figure~\ref{figure:test:behavior_graph} présente graphiquement le graphe du
+contrat~:
+%
+\begin{pre}
+\arequires \(P\); \\
+\abehavior \(\alpha\) \{ \\
+    \arequires  \(P\sb{\alpha}\); \\
+    \aensures   \(Q\sb{\alpha}\); \\
+    \athrowable \(T\sb{C\sb{\alpha}}\) with \(T\sb{E\sb{\alpha}}\); \\
+\}
+\end{pre}
+%
+Le comportement est atomique et contient une seule clause \athrowable. Dans la
+figure, les sommets sont renumérotés à partir de $v_1$.
+
+\end{example}
 
 \subsection{Contrat avec plusieurs clauses \abehavior}
 \label{subsection:test:behaviors_graph}
@@ -316,15 +334,48 @@ sommets sont renumérotés à partir de $v_1$.
 La partie~\ref{subsection:test:behavior_graph} considérait un contrat avec une
 seule clause \abehavior. Dans cette partie, nous voyons comment ajouter une
 clause \abehavior~$\beta$ à la liste des comportements dont le graphe de contrat
-est $(V, D, i, N, E, U)$. Soit $G_\beta = (V_\beta, D_\beta, i_\beta, N_\beta,
-E_\beta, U_\beta)$ le graphe de contrat associé au comportement $\beta$. Modulo
-quelques renommages, supposons que $V$ contient un sommet $v$ tel que $D$
-contient un arc $(i, R, v)$ et que tous les sommets de $G_\beta$ sont distincts
-de ceux de $G$ ($V \intersection V_\beta = \emptyset$). Alors, le nouveau graphe
-de contrat est $G = (V \union V_\beta - \{i_\beta\}, D \union D'_\beta, i, N
-\union N'_\beta, E \union E_\beta, U \union U_\beta)$, où $D'_\beta$
-(respectivement $N'_\beta$) est obtenu de $D_\beta$ (respectivement $N_\beta$)
-en remplaçant $i_\beta$ par $v$.
+est $G = (V, D, i, N, E, U)$. Soit $G_\beta = (V_\beta, D_\beta, i_\beta,
+N_\beta, E_\beta, U_\beta)$ le graphe de contrat associé au comportement
+$\beta$. {\em Modulo} quelques renommages, supposons que $V$ contient un sommet
+$v$ tel que $D$ contient un arc $(i, P, v)$. Supposons aussi que tous les
+sommets de $G_\beta$ sont distincts de ceux de $G$ ($V \intersection V_\beta =
+\emptyset$). Alors, le nouveau graphe de contrat est $G' = (V \union V_\beta -
+\{i_\beta\}, D \union D'_\beta, i, N \union N'_\beta, E \union E_\beta, U \union
+U_\beta)$, où $D'_\beta$ (respectivement $N'_\beta$) est obtenu de $D_\beta$
+(respectivement $N_\beta$) en remplaçant $i_\beta$ par $v$.
+
+\begin{figure}
+
+\fig{\textwidth}{!}{Graph_two_behaviors.tex}
+
+\caption{\label{figure:test:graph_two_behaviors.tex} Graphe correspondant à
+un contrat avec deux clauses \abehavior.}
+
+\end{figure}
+
+\begin{example}[Graphe d'un contrat avec deux clauses \abehavior]
+
+La figure~\ref{figure:test:graph_two_behaviors.tex} présente graphiquement le
+graphe du contrat~:
+%
+\begin{pre}
+\arequires \(P\); \\
+\abehavior \(\alpha\) \{ \\
+    \arequires  \(P\sb{\alpha}\); \\
+    \aensures   \(Q\sb{\alpha}\); \\
+    \athrowable \(T\sb{C\sb{\alpha}}\) with \(T\sb{E\sb{\alpha}}\); \\
+\} \\
+\abehavior \(\beta\) \{ \\
+    \arequires  \(P\sb{\beta}\); \\
+    \aensures   \(Q\sb{\beta}\); \\
+    \athrowable \(T\sb{C\sb{\beta}}\) with \(T\sb{E\sb{\beta}}\); \\
+\}
+\end{pre}
+%
+Les sous-contrats des deux comportements sont atomiques et ne contiennent chacun
+qu'une seule clause \athrowable.
+
+\end{example}
 
 \subsection{Cas de la clause \adefault}
 \label{subsection:test:default_graph}
@@ -340,7 +391,7 @@ partie~\ref{subsection:test:behaviors_graph}.
 \label{subsection:test:invariant_graph}
 
 Dans cette dernière partie, nous voyons comment intégrer une clause
-\ainvariant~$I$ (localisée sur les attributs de classe) dans le graphe de
+\ainvariant~$I$ (située au niveau des attributs de classe) dans le graphe de
 contrat d'une méthode $G_M = (V_M, D_M, i_M, N_M, E_M, U_M)$. Nous supposons que
 l'ensemble $V_M$ ne contient pas les sommets $v_1$, $v_2$ et $v_3$. Le graphe
 résultant est~:
@@ -367,15 +418,18 @@ normale ou exceptionnelle.
 
 \begin{figure}
 
-\fig{\textwidth}{!}{Invariant_graph.tex}
+\fig{\textwidth}{!}{Graph_invariant.tex}
 
 \caption{\label{figure:test:invariant_graph} Graphe correspondant à contrat avec
 un invariant.}
 
 \end{figure}
 
+\begin{example}[Graphe d'un contrat d'une clause \ainvariant]
+
 La figure~\ref{figure:test:invariant_graph} illustre ce principe d'extension
 d'un graphe de contrat avec un invariant. Dans un souci de simplicité, elle
-représente seulement un sommet final normal et un sommet final exceptionnel. \\
+représente seulement un sommet final normal $n_M \in N_M$ et un sommet final
+exceptionnel $e_M \in E_M$.
 
-Nous remarquons que tous les graphes construits sont acycliques.
+\end{example}

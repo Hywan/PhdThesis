@@ -2,20 +2,20 @@ digraph {
     graph [rankdir=LR];
     node [shape=circle, width=.5];
 
-    v_1    -> i_m    [label=" ", texlbl="$I$"];
-    i_m    -> hidden [style=dashed];
-    hidden -> n_m    [style=dashed];
-    hidden -> e_m    [style=dashed];
-    n_m    -> v_2    [label=" ", texlbl="$I$"];
-    e_m    -> v_3    [label=" ", texlbl="$I$"];
+    v_1    -> i_M    [label=" ", texlbl="$I$"];
+    i_M    -> hidden [style=dashed];
+    hidden -> n_M    [style=dashed];
+    hidden -> e_M    [style=dashed];
+    n_M    -> v_2    [label=" ", texlbl="$I$"];
+    e_M    -> v_3    [label=" ", texlbl="$I$"];
 
     subgraph cluster0 {
         style="dashed";
 
-        i_m;
+        i_M;
         hidden;
-        n_m;
-        e_m;
+        n_M;
+        e_M;
     }
 
     v_1    [style="state,initial"];

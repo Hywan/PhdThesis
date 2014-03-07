@@ -7,10 +7,10 @@
   \draw (303bp,127bp) node {$T_{E_1}$};
   % Edge: v_2 -> v_3
   \draw [->] (119.57bp,113.58bp) .. controls (125.75bp,123.53bp) and (134.94bp,136.01bp)  .. (146bp,144bp) .. controls (169.47bp,160.94bp) and (201.55bp,170.4bp)  .. (233.95bp,177.33bp);
-  \draw (181bp,181.5bp) node {$E$};
+  \draw (181bp,182.5bp) node {$Q$};
   % Edge: v_1 -> v_2
   \draw [->] (36.353bp,98bp) .. controls (49.177bp,98bp) and (66.892bp,98bp)  .. (91.7bp,98bp);
-  \draw (64bp,107.5bp) node {$R$};
+  \draw (64bp,107.5bp) node {$P$};
   % Edge: v_7 -> v_5
   \draw [->] (270.15bp,73.229bp) .. controls (283.44bp,74.516bp) and (302.2bp,77.07bp)  .. (318bp,82bp) .. controls (320.94bp,82.916bp) and (323.94bp,84.044bp)  .. (335.97bp,89.465bp);
   \draw (303bp,93bp) node {$T_{E_2}$};
@@ -39,9 +39,10 @@
 \end{scope}
   % Node: v_6
 \begin{scope}
+  \pgfsetdash{{3pt}{3pt}}{0pt}
   \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
   \pgfsetstrokecolor{strokecol}
-  \draw (252bp,18bp) ellipse (18bp and 18bp);
+  \draw [state,dashed] (252bp,18bp) ellipse (18bp and 18bp);
   \draw (252bp,18bp) node {$v_6$};
 \end{scope}
   % Node: v_7
