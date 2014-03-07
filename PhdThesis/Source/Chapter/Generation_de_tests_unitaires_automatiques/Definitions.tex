@@ -1,6 +1,10 @@
 \section{Définitions}
 \label{section:test:definitions}
 
+Tout au long de cette partie, nous considérons une méthode PHP \code{f} et nous
+désignons par $G(\code{f})$ ou $G$ son contrat $(V, D, i, N, E, U)$, comme
+défini dans la partie~\ref{section:test:contract}.
+
 Un {\strong chemin} est une séquence de transitions consécutives séparées par
 des points. Deux transitions $(v, \alpha, w)$ et $(x, \beta, y)$ sont
 consécutives si et seulement si $w = x$. Nous disons qu'un sommet $v$ {\strong
@@ -90,58 +94,13 @@ pas indéfinie et est une instance de $T_C$.
 
 \end{itemize}
 
-\begin{example}[Activer plusieurs chemins avec un même cas de tests]
+Il est possible qu'un test active plusieurs chemins en même temps. Par exemple,
+dans la figure~\ref{figure:test:throwable_graph}, si $T_{C_1}$ étend $T_{C_2}$
+et qu'une exception de classe $T_{C_1}$ est levée, alors les chemins $v_1 \cdot
+v_2 \cdot v_4 \cdot v_5$ et $v_1 \cdot v_2 \cdot v_7 \cdot v_5$ seront activés.
+\\
 
-Dans la figure~\ref{figure:test:throwable_graph}, nous voyons qu'il est possible
-d'activer plusieurs chemins en même temps, quand $T_{C_1}$ étend $T_{C_2}$ et
-qu'une exception de classe $T_{C_1}$ est levée. Nous représentons par
-$R_\code{f}(S)$ l'ensemble des routes de $G(\code{f})$ activées par une suite de
-test $S$. Similairement, nous représentons par $T_\code{f}(S)$ l'ensemble des
-sentiers de $G(\code{f})$ activés par une suite de test $S$ et traversant des
-graphes d'expression imbriquées dans $G(\code{f})$.
-
-\end{example}
-
-Les exemples suivants sont basés sur le contrat de la
-figure~\ref{figure:test:irc} pour la méthode \code{compute} avec deux arguments:
-\code{server} qui doit être une classe de type
-\code{\bslash{}Irc\bslash{}Server} et \code{buffer} qui doit contenir un message
-IRC.
-%
-\begin{figure}
-
-\begin{bigpre}
-/** \\
- * \arequires server: class('\(\bslash\)Irc\(\bslash\)Server'); \\
- * \abehavior message \{ \\
- *     \arequires buffer: /^privmessage .+/ or /^message .+/; \\
- *     \aensures  \aresult: 1..; \\
- * \} \\
- * \abehavior ping \{ \\
- *     \arequires buffer: /^ping\$/ and \\
- *               \(\bslash\)pred('\$server->bufferState   >= 0 or \\
- *                      network\_buffer\_state() >  0'); \\
- *     \aensures  \aresult: 1..; \\
- * \} \\
- * \adefault \{ \\
- *     \athrowable \(\bslash\)Irc\(\bslash\)Exception\(\bslash\)MalformedMessage e \\
- *                    with e->code: 400..491; \\
- * \} \\
- */ \\
-public static function compute ( \$server, \$buffer ) \{ … \}
-\end{bigpre}
-
-\caption{\label{figure:test:irc} Exemple d'un contrat et d'une méthode
-manipulant un flux IRC.}
-
-\end{figure}
-%
-Nous avons deux comportements, un pour un message privé ou public (représenté
-par une expression régulière à travers le domaine réaliste \code{regex} sous sa
-forme simplifiée) et un pour un «~ping~». Dans le dernier comportement, la
-précondition a un prédicat pour spécifier que le réseau est dans un état
-spécifique. Enfin, le comportement par défaut spécifie qu'une exception de type
-\code{\bslash{}Irc\bslash{}Exception\bslash{}MalformedMessage} doit être levée
-si le tampon n'est ni un message ni un ping. De plus, le code d'une exception
-doit être un entier entre 400 et 491.
-
+Nous représentons également par $R_\code{f}(S)$ l'ensemble des routes de
+$G(\code{f})$ activées par une suite de test $S$. Similairement, nous
+représentons par $T_\code{f}(S)$ l'ensemble des sentiers de $G(\code{f})$
+activés par une suite de test $S$ et traversant des graphes d'expressions.
