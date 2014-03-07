@@ -1,0 +1,138 @@
+\section{Critères de couverture}
+\label{section:test:criteria}
+
+Nous définissons maintenant les critères de couverture pour les contrats par des
+propriétés de l'ensemble des chemins du graphe associé à un contrat Praspel
+annotant une méthode PHP. Mais tout d'abord, nous rappelons les définitions d'un
+chemin, d'un cas de test et d'une suite de tests pour notre contexte.
+
+Tout au long de cette partie, nous considérons une méthode PHP \code{f} et nous
+désignons par $G(\code{f})$ ou $G$ son contrat $(V, D, i, N, E, U)$, comme
+défini dans la partie~\ref{section:test:contract}.
+
+\subsection{Critère de Clause}
+
+Le Critère de Clause vise à couvrir la structure d'un contrat. Ainsi, le Critère
+de Clause est satisfait par une suite de tests $S$ d'une méthode \code{f} de
+graphe de contrat $G(\code{f}) = (V, D, i, N, E, U)$ si tous les états de $V
+\bslash U$ sont dans une route de $R_\code{f}(S)$.
+
+\begin{example}[Suite de tests satisfaisant le Critère de Clause]
+
+Les cas de test suivants couvrent toutes les clauses. La syntaxe
+\code{object($c$)} représente une instance valide d'une classe $c$. La suite de
+tests $\{t_1, t_2, t_3\}$ avec~:
+%
+\begin{itemize}
+
+\item[$(t_1)$] \code{compute(object(\bslash{}Irc\bslash{}Server), 'message foobar')}~;
+
+\item[$(t_2)$] \code{compute(object(\bslash{}Irc\bslash{}Server), 'ping')}~;
+
+\item[$(t_3)$] \code{compute(object(\bslash{}Irc\bslash{}Server), 'xyz')}.
+
+\end{itemize}
+%
+satisfait le Critère de Couverture de Clause.
+
+\end{example}
+
+\subsection{Critère de Domaine}
+
+Le Critère de Domaine raffine le Critère de Clause en considérant la déclaration
+de domaines réalistes à l'intérieur des graphes d'expression. Plus formellement,
+le Critère de Domaine est satisfait par une suite de tests $S$ pour une méthode
+\code{f} si toutes les transitions de la forme \code{$i$: $d$} dans le graphe de
+contrat $G(\code{f})$ (qui sont dans les graphes d'expressions étiquetant les
+transitions de $G(\code{f})$ et contenant le nœud $\mathit{dom}$) apparaissent
+dans au moins un sentier de $T_\code{f}(S)$.
+
+\begin{example}[Suite de tests satisfaisant le Critère de Domaine]
+
+La suite de tests $\{t_1, t_2, t_4\}$ avec~:
+%
+\begin{itemize}
+
+\item[$(t_4)$] \code{compute(object(\bslash{}Irc\bslash{}Server), 'privmessage foobar')}.
+
+\end{itemize}
+%
+satisfait le Critère de Couverture de Domaine: les deux déclarations de domaines
+réalistes de la variable \code{buffer} sont couverts.
+
+\end{example}
+
+\subsection{Critère de Prédicat}
+
+Similairement au Critère de Domaine, le Critère de Prédicat s'applique aux
+prédicats dans les graphes d'expression, et vise à tous les couvrir. Plus
+formellement, le Critère de Prédicat est satisfait par une suite de tests $S$
+pour une méthode \code{f} si toutes les transitions qui ne sont pas de la forme
+\code{$i$: $d$} dans le graphe de contrat $G(\code{f})$ (qui sont dans les
+graphes d'expressions étiquetant les transitions de $G(\code{f})$ et contenant
+le nœud $\mathit{pred}$) apparaissent dans au moins un sentier de
+$T_\code{f}(S)$.
+
+\begin{example}[Suite de tests satisfaisant le Critère de Prédicat]
+
+La suite de tests $\{t_5, t_6\}$ avec~:
+%
+\begin{itemize}
+
+\item[$(t_5)$] \code{compute(object(\bslash{}Irc\bslash{}Server), 'ping')} avec \\
+\apred{\code{'\$server->bufferState >= 0'}}~;
+
+\item[$(t_6)$] \code{compute(object(\bslash{}Irc\bslash{}Server), 'ping')} avec \\
+\apred{\code{'network\_buffer\_state() > 0'}}.
+
+\end{itemize}
+%
+satisfait le Critère de Couverture de Prédicat.
+
+\end{example}
+
+\subsection{Combinaisons}
+
+Avoir de tels critères de couverture n'est pas suffisant pour produire ou
+qualifier des cas de test {\em réalistes}. En effet, couvrir toutes les clauses
+d'un contrat n'assure pas que tous les domaines réalistes aient été couverts. À
+l'inverse, savoir que tous les domaines ont été couverts n'assure pas que toutes
+les clauses du contrat aient été exploitées. Ainsi, afin d'avoir des cas de test
+plus réalistes, ces critères de couverture de contrat peuvent être combinés
+ensemble.  Nous proposons les combinaisons suivantes~:
+%
+\begin{itemize}
+
+\item le Critère Clause~+~Domaine vise à couvrir la structure et les domaines
+réalistes d'un contrat~;
+
+\item le Critère Clause~+~Prédicat vise à couvrir la structure et les prédicats
+d'un contrat~;
+
+\item le Critère \inenglish{All}-$G$ vise à satisfaire les critères Clause,
+Domaine et Prédicat en même temps.
+
+\end{itemize}
+%
+Ce {\strong treillis} de critères de couverture de contrats est résumé dans la
+figure~\ref{figure:test:lattice}.
+
+\begin{figure}
+
+\fig{11cm}{!}{Criteria.tex}
+
+\caption{\label{figure:test:lattice} Hiérarchie des critères. $A \rightarrow B$
+signifie que si le critère $A$ est satisfait, alors $B$ est également
+satisfait.}
+
+\end{figure}
+
+\begin{example}[Suite de tests satisfaisant les combinaisons des Critères de
+Couverture de Contrat]
+
+La suite de tests $\{t_1, t_2, t_3, t_4\}$ satisfait le Critère de Couverture
+Clause~+~Domaine. La suite de tests $\{t_1, t_3, t_5, t_6\}$ satisfait le
+Critère de Couverture Clause~+~Prédicat. La suite de tests $\{t_1, t_3, t_4,
+t_5, t_6\}$ satisfait le Critère de Couverture \inenglish{All}-$G$
+
+\end{example}

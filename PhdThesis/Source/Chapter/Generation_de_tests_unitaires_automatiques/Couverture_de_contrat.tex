@@ -2,9 +2,9 @@
 \label{section:test:contract}
 
 Dans cette partie, nous expliquons comment construire le graphe d'un contrat
-Praspel en forme normale (définis dans le chapitre~\ref{chapter:language}). Ce
-graphe reflète les déclarations de domaines réalistes et les prédicats du
-contrat.
+Praspel en forme normale (défini dans le chapitre~\ref{chapter:language}
+page~\pageref{chapter:language}). Ce graphe reflète les déclarations de domaines
+réalistes et les prédicats du contrat.
 
 Dans toute la suite, nous notons $A$ l'ensemble composé de toutes les
 expressions Praspel générées par les entités syntaxiques \grule{expression} et
@@ -57,18 +57,19 @@ seulement considérer des contrats en forme normale.
 \label{subsection:test:expression_graph}
 
 Les expressions Praspel en forme normale sont décrites dans la
-figure~\ref{figure:language:grammar_part2} par l'entité syntaxique
+figure~\ref{figure:language:grammar_part2}
+page~\pageref{figure:language:grammar_part2} par l'entité syntaxique
 \grule{expression}. Une expression est une conjonction de déclarations, de
-prédicats et de contraintes, respectivement décritent dans la
-figure~\ref{figure:language:grammar_part3} par les entités syntaxiques
+prédicats et de contraintes, respectivement décrit dans la
+figure~\ref{figure:language:grammar_part3}
+page~\pageref{figure:language:grammar_part3} par les entités syntaxiques
 \grule{declaration}, \grule{predicate} et \grule{constraint}. Nous transformons
-seulement les deux premières sortes d'expressions car les expressions de type
+seulement les deux premières sortes d'expressions car les expressions de sorte
 \grule{constraint} ne sont pas pertinentes pour la couverture~: elles
 représentent un seul comportement (par exemple, \grule{constraint} et
 \grule{declaration} apparaissent toujours ensemble) et sont toujours évaluées.
-
-Une expression sans contrainte en forme normale est de la forme \code{$d$ and
-$p$}, où $d$ (respectivement $p$) est une conjonction d'expressions de type
+Les expressions que nous manipulons sont de la forme \code{$d$ and
+$p$}, où $d$ (respectivement $p$) est une conjonction d'expressions de sorte
 \grule{declaration} (respectivement \grule{predicate}). Son graphe d'expression
 est la concaténation par une transition $\varepsilon$ du {\strong graphe des
 domaines} obtenu à partir de $d$ et du {\strong graphe des prédicats} obtenu à
@@ -85,7 +86,7 @@ dans cette expression. La notation $s \in S$ signifie que $s$ est un élément d
 la liste $S$.
 
 \begin{example}[Expression simple de deux déclarations de domaines réalistes]
-\label{example:test:expression_graph}
+\label{example:test:expression_graph1}
 
 Dans l'expression suivante~:
 %
@@ -103,7 +104,7 @@ Pour construire le graphe des domaines, nous utilisons la définition suivante.
 Le {\strong graphe des domaines} associé à l'expression \code{$i_1$: $D_1$ and
 $\dots$ and $i_m$: $D_m$} est~:
 %
-$$G = (\{\mathit{dom}\} \union \{v_s \vert s \in S\}, D, \mathit{dom}, i_m)$$
+$$G = (\{\mathit{dom}\} \union \{v_s \;\vert\; s \in S\}, D, \mathit{dom}, v_{i_m})$$
 %
 avec~:
 %
@@ -113,28 +114,66 @@ $$D = \Union_{d \,\in\, D_1} \{(\mathit{dom}, \code{$i_1$: $d$}, v_{i_1})\} \uni
 
 \end{definition}
 
+La première partie de la figure~\ref{figure:test:expression_graph} présente
+graphiquement le graphe associé à
+l'exemple~\ref{example:test:expression_graph1}.
+
 \subsubsection{Graphe des prédicats}
 
-Un prédicat est de la forme \apred{p}, où $p$ est une chaîne de caractères
-contenant un prédicat PHP en forme normale disjonctive (DNF). Nous lui associons
-un {\strong graphe de prédicat}. La définition est similaire à celle des graphes
-de domaines, après avoir remplacé \code{\&\&} par \code{and} et \code{||} par
-\code{or}, et annoté les disjonctions pour avoir des sommets numérotés. Le
-sommet initial n'est plus $\mathit{dom}$ mais $\mathit{pred}$. Par exemple,
-\apred{\code{'(\$a || \$b) \&\& (\$c || \$d)'}} devient \code{$(1~:)$ \$a or \$b
-and $(2~:)$ \$c and \$d}.
+Un graphe des prédicats est similaire à un graphe des domaines car la forme de
+l'expression est très similaire. En effet, trivialement, nous pouvons dire que
+l'opérateur \code{and} est remplacé par \code{\&\&} et que \code{or} est
+remplacé par \code{||}. Plus formellement, un prédicat Praspel est de la forme
+générale \apred{p}, où $p$ est une chaîne de caractères contenant une expression
+logique PHP en forme normale conjonctive (\inenglish{Conjunctive Normal Form},
+abrégé CNF), c'est~à~dire que $p$ est de la forme \code{$P_1$ and $\dots$ and
+$P_m$}, où $P_j = \code{$p_{j,1}$ or $\dots$ or $p_{j,k_j}$}$ est une
+disjonction de variables ou de prédicats PHP (fonctions booléennes ou opérations
+logiques), $1 \leq j \leq m$. Nous notons aussi par $P_j$ la liste $[p_{j,1},
+\dots, p_{j,k_j}]$ de variables ou prédicats PHP déclarés dans la conjonction.
+
+\begin{example}[Exemple simple d'un prédicat]
+\label{example:test:expression_graph2}
+
+Dans l'expression suivante~:
+%
+$$
+\apred{\code{'(\$a || \$b) \&\& (\$c || \$d)'}}
+$$
+%
+nous avons $m = 2$, $P_1 = [\code{\$a}, \code{\$b}]$ et $P_2 = [\code{\$c},
+\code{\$d}]$.
+
+\end{example}
+
+Pour construire le graphe des prédicats, nous utilisons la définition suivante.
+
+\begin{definition}[Graphe des prédicats]
+
+Le {\strong graphe des prédicats} associé à l'expression \apred{'\code{$P_1$ and
+$\dots$ and $P_m$}'} est~:
+%
+$$G = (\{\mathit{pred}\} \union \{v_j \;\vert\; j \in [1; m]\}, D, \mathit{pred}, v_m)$$
+%
+avec~:
+$$D = \Union_{p \,\in\, P_1} \{(\mathit{pred}, p, v_1)\} \union
+      \Union_{2 \,\leq\, j \,\leq\, m}
+      \Union_{p \,\in\, P_j} \{(v_{j - 1}, p, v_j)\}$$
+
+\end{definition}
 
 \begin{figure}
 
 \fig{\textwidth}{!}{Expression_graph.tex}
 
 \caption{\label{figure:test:expression_graph} Un graphe d'expressions, composé
-d'un graphe de domaine et d'un graphe de prédicat.}
+d'un graphe des domaines et d'un graphe des prédicats.}
 
 \end{figure}
 
-La figure~\ref{figure:test:expression_graph} présente graphiquement le graphe
-associé à l'exemple~\ref{example:test:expression_graph}.
+La deuxième partie de la figure~\ref{figure:test:expression_graph} présente
+graphiquement le graphe associé à
+l'exemple~\ref{example:test:expression_graph2}.
 
 \subsection{Graphe d'un contrat atomique}
 \label{subsection:test:atomic_graph}
@@ -151,7 +190,7 @@ la forme générale suivante~:
 \athrowable \(T\sb{C}\) with \(T\sb{E}\);
 \end{pre}
 %
-où $R$ et $E$ sont des expressions de sorte \grule{expressions} respectivement
+où $R$ et $E$ sont des expressions de sorte \grule{expression} respectivement
 associées aux clauses \arequires et \aensures. L'expression de sorte
 \grule{exceptional-expression} associée à la clause \athrowable est composée de
 deux parties~: $T_C$ représente le nom de la classe de l'exception et
