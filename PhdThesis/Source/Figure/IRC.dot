@@ -12,8 +12,8 @@ digraph {
         w_3 -> w_4 [label=" ", texlbl="$\varepsilon$"];
         w_4 -> w_5 [label=" ", texlbl="$\code{1..}$"];
         w_5 -> w_6 [label=" ", texlbl="$\varepsilon$"];
-        v_2 -> w_3 [style="dashed"];
-        w_3 -> w_6 [style="dashed"];
+        v_2 -> w_3 [style="dotted"];
+        w_3 -> w_6 [style="dotted"];
     }
 
     subgraph {
@@ -26,18 +26,18 @@ digraph {
         x_5 -> x_6 [label=" ", texlbl="$\varepsilon$"];
         x_6 -> x_7 [label=" ", texlbl="$\code{1..}$"];
         x_7 -> x_8 [label=" ", texlbl="$\varepsilon$"];
-        v_2 -> x_5 [style="dashed"];
-        x_5 -> x_8 [style="dashed"];
+        v_2 -> x_5 [style="dotted"];
+        x_5 -> x_8 [style="dotted"];
     }
 
     subgraph {
-        v_2 -> y_1 [label=" ", texlbl="$\top$"];
+        v_2 -> y_1 [label=" ", texlbl="$\neg \code{/\^\empty priv…} \land \neg \code{/\^\empty ping\$/}$"];
         y_1 -> y_2 [label=" ", texlbl="$\quad\quad\code{\bslash Irc\bslash Excep...  e}\quad$"];
         y_2 -> y_3 [label=" ", texlbl="$\varepsilon$"];
         y_3 -> y_4 [label=" ", texlbl="$\quad\code{400..491}$"];
         y_4 -> y_5 [label=" ", texlbl="$\varepsilon$"];
         y_1 -> y_6 [label=" ", texlbl="$\quad\neg \code{\bslash Irc\bslash Excep... e}$"];
-        y_1 -> y_5 [style="dashed"];
+        y_1 -> y_5 [style="dotted"];
     }
 
     v_1 [style="state,initial"]

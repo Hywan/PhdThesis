@@ -37,23 +37,30 @@ public static function compute ( \$server, \$buffer ) \{ … \}
 \caption{\label{figure:test:irc} Contrat et méthode manipulant un flux IRC.}
 
 \end{figure}
-
+%
 \begin{figure}
 
 \fig{\textwidth}{!}{IRC.tex}
 
-\caption{Foobar.}
+\caption{\label{figure:test:irc_graph} Graphe de contrat associé à la figure
+\ref{figure:test:irc}.}
 
 \end{figure}
 %
-Nous avons deux comportements, un pour un message privé ou public (représenté
-par une expression régulière à travers le domaine réaliste \code{regex} sous sa
-forme simplifiée) et un pour un «~ping~». Dans le dernier comportement, la
-précondition a un prédicat pour spécifier que le réseau est dans un état
-spécifique. Enfin, le comportement par défaut spécifie qu'une exception de type
-\code{\bslash{}Irc\bslash{}Exception\bslash{}MalformedMessage} doit être levée
-si le tampon n'est ni un message ni un ping. De plus, le code d'une exception
-doit être un entier entre 400 et 491.
+Le graphe de contrat associé est présenté dans la
+figure~\ref{figure:test:irc_graph}. Tous les états ont été renommés en $v_i$
+avec $1 \leq i \leq 22$, pour éviter toute ambiguïté lorsque nous parlerons des
+chemins. Les graphes d'expressions y sont représentés. Par conséquent, sont
+représentés tous les sentiers. Les routes sont représentées par des arcs en
+pointillés. Certaines étiquettes sont tronquées pour réduire la taille du
+graphe. Dans cet exemple, nous avons deux comportements, un pour un message
+privé ou public (représenté par une expression régulière à travers le domaine
+réaliste \code{regex} sous sa forme simplifiée) et un pour un «~ping~». Dans le
+dernier comportement, la précondition a un prédicat pour spécifier que le réseau
+est dans un état spécifique. Enfin, le comportement par défaut spécifie qu'une
+exception de type \code{\bslash{}Irc\bslash{}Exception\bslash{}MalformedMessage}
+doit être levée si le tampon n'est ni un message ni un ping. De plus, le code
+d'une exception doit être un entier entre 400 et 491.
 
 \subsection{Critère de Clause}
 
@@ -69,16 +76,39 @@ La suite de tests $\{t_1, t_2, t_3\}$ avec~:
 %
 \begin{itemize}
 
-\item[$(t_1)$] \code{compute(object(\bslash{}Irc\bslash{}Server), 'message foobar')}~;
+\item[$t_1.$]
+%
+\code{compute(object(\bslash{}Irc\bslash{}Server), 'message foobar')}~;
 
-\item[$(t_2)$] \code{compute(object(\bslash{}Irc\bslash{}Server), 'ping')}~;
+\item[$t_2.$]
+%
+\code{compute(object(\bslash{}Irc\bslash{}Server), 'ping')}~;
 
-\item[$(t_3)$] \code{compute(object(\bslash{}Irc\bslash{}Server), 'xyz')}.
+\item[$t_3.$]
+%
+\code{compute(object(\bslash{}Irc\bslash{}Server), 'xyz')}.
 
 \end{itemize}
 %
 satisfait le Critère de Couverture de Clause, c'est~à~dire que ces cas de tests
-couvrent toutes les clauses.
+couvrent toutes les clauses avec les chemins respectifs suivants (sur les
+routes)~:
+%
+\begin{itemize}
+
+\item[$R_\code{compute}(\{t_1\}).$]
+%
+$v_1 \cdot v_2 \cdot v_5 \cdot v_8$~;
+
+\item[$R_\code{compute}(\{t_2\}).$]
+%
+$v_1 \cdot v_2 \cdot v_{13} \cdot v_{16}$~;
+
+\item[$R_\code{compute}(\{t_3\}).$]
+%
+$v_1 \cdot v_3 \cdot v_{17} \cdot v_{21}$.
+
+\end{itemize}
 
 \end{example}
 
@@ -98,12 +128,34 @@ La suite de tests $\{t_1, t_2, t_4\}$ avec~:
 %
 \begin{itemize}
 
-\item[$(t_4)$] \code{compute(object(\bslash{}Irc\bslash{}Server), 'privmessage foobar')}.
+\item[$t_4.$]
+%
+\code{compute(object(\bslash{}Irc\bslash{}Server), 'privmessage foobar')}.
 
 \end{itemize}
 %
 satisfait le Critère de Couverture de Domaine: les deux déclarations de domaines
-réalistes de la variable \code{buffer} sont couverts.
+réalistes de la variable \code{buffer} sont couverts. Cette suite de test
+produit les chemins respectifs suivants (sur les sentiers)~:
+%
+\begin{itemize}
+
+\item[$T_\code{compute}(\{t_1\}).$]
+%
+$v_1 \cdot v_2 \cdot v_3 \cdot v_4 \cdot v_5 \cdot v_6 \cdot v_7 \cdot v_8$, \\
+avec la transition $(v_3, \code{/\^\empty message .+/}, v_4)$ d'activée~;
+
+\item[$T_\code{compute}(\{t_2\}).$]
+%
+$v_1 \cdot v_2 \cdot v_9 \cdot v_{10} \cdot v_{11} \cdot v_{12} \cdot v_{13}
+\cdot v_{14} \cdot v_{15} \cdot v_{16}$~;
+
+\item[$T_\code{compute}(\{t_4\}).$]
+%
+$v_1 \cdot v_2 \cdot v_3 \cdot v_4 \cdot v_5 \cdot v_6 \cdot v_7 \cdot v_8$, \\
+avec la transition $(v_3, \code{/\^\empty privmessage .+/}, v_4)$ d'activée.
+
+\end{itemize}
 
 \end{example}
 
@@ -124,15 +176,34 @@ La suite de tests $\{t_5, t_6\}$ avec~:
 %
 \begin{itemize}
 
-\item[$(t_5)$] \code{compute(object(\bslash{}Irc\bslash{}Server), 'ping')} avec \\
-\apred{\code{'\$server->bufferState >= 0'}}~;
+\item[$t_5.$] \code{compute(object(\bslash{}Irc\bslash{}Server), 'ping')} \\
+avec \apred{\code{'\$server->bufferState >= 0'}}~;
 
-\item[$(t_6)$] \code{compute(object(\bslash{}Irc\bslash{}Server), 'ping')} avec \\
-\apred{\code{'network\_buffer\_state() > 0'}}.
+\item[$t_6.$] \code{compute(object(\bslash{}Irc\bslash{}Server), 'ping')} \\
+avec \apred{\code{'network\_buffer\_state() > 0'}}.
 
 \end{itemize}
 %
-satisfait le Critère de Couverture de Prédicat.
+satisfait le Critère de Couverture de Prédicat. Cette suite de test produit les
+chemins respectifs suivants (sur les sentiers)~:
+%
+\begin{itemize}
+
+\item[$T_\code{compute}(\{t_5\}).$]
+%
+$v_1 \cdot v_2 \cdot v_9 \cdot v_{10} \cdot v_{11} \cdot v_{11} \cdot v_{12}
+\cdot v_{13} \cdot v_{14} \cdot v_{15} \cdot v_{16}$ \\
+avec la transition $(v_{11}, \code{\$server->bufferState >= 0}, v_{12})$
+d'activée~;
+
+\item[$T_\code{compute}(\{t_6\}).$]
+%
+$v_1 \cdot v_2 \cdot v_9 \cdot v_{10} \cdot v_{11} \cdot v_{11} \cdot v_{12}
+\cdot v_{13} \cdot v_{14} \cdot v_{15} \cdot v_{16}$ \\
+avec la transition $(v_{11}, \code{network\_buffer\_state() > 0}, v_{12})$
+d'activée.
+
+\end{itemize}
 
 \end{example}
 
@@ -141,10 +212,10 @@ satisfait le Critère de Couverture de Prédicat.
 Avoir de tels critères de couverture n'est pas suffisant pour produire ou
 qualifier des cas de test {\em réalistes}. En effet, couvrir toutes les clauses
 d'un contrat n'assure pas que tous les domaines réalistes aient été couverts. À
-l'inverse, savoir que tous les domaines ont été couverts n'assure pas que toutes
-les clauses du contrat aient été exploitées. Ainsi, afin d'avoir des cas de test
-plus réalistes, ces critères de couverture de contrat peuvent être combinés
-ensemble.  Nous proposons les combinaisons suivantes~:
+l'inverse, savoir que tous les domaines aient été couverts n'assure pas que
+toutes les clauses du contrat aient été exploitées. Ainsi, afin d'avoir des cas
+de test plus réalistes, ces critères de couverture de contrat peuvent être
+combinés ensemble.  Nous proposons les combinaisons suivantes~:
 %
 \begin{itemize}
 
