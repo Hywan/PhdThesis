@@ -1,6 +1,6 @@
 digraph {
     graph [rankdir=TB];
-    node [shape=circle, width=0.5];
+    node [shape=circle, width=0.5, style="state"];
 
     v_1 -> v_2 [label=" ", texlbl="$\quad\quad\code{class('\bslash Irc\bslash Server')}$"];
 
@@ -9,8 +9,11 @@ digraph {
         w_1 -> w_2 [label=" ", texlbl="$\quad\code{/\^\empty privmessage .+/}\quad$"];
         w_1 -> w_2 [label=" ", texlbl="$\quad\code{/\^\empty message .+/}\quad$"];
         w_2 -> w_3 [label=" ", texlbl="$\varepsilon$"];
-        w_3 -> w_4 [label=" ", texlbl="$\code{1..}\quad$"];
+        w_3 -> w_4 [label=" ", texlbl="$\varepsilon$"];
+        w_4 -> w_5 [label=" ", texlbl="$\code{1..}$"];
+        w_5 -> w_6 [label=" ", texlbl="$\varepsilon$"];
         v_2 -> w_3 [style="dashed"];
+        w_3 -> w_6 [style="dashed"];
     }
 
     subgraph {
@@ -20,27 +23,46 @@ digraph {
         x_3 -> x_4 [label=" ", texlbl="$\quad\code{\$server->buf... >= 0}$"];
         x_3 -> x_4 [label=" ", texlbl="$\quad\code{network...() > 0}$"];
         x_4 -> x_5 [label=" ", texlbl="$\varepsilon$"];
-        x_5 -> x_6 [label=" ", texlbl="$\code{1..}$"];
+        x_5 -> x_6 [label=" ", texlbl="$\varepsilon$"];
+        x_6 -> x_7 [label=" ", texlbl="$\code{1..}$"];
+        x_7 -> x_8 [label=" ", texlbl="$\varepsilon$"];
         v_2 -> x_5 [style="dashed"];
+        x_5 -> x_8 [style="dashed"];
     }
 
     subgraph {
         v_2 -> y_1 [label=" ", texlbl="$\top$"];
-        y_1 -> y_2 [label=" ", texlbl="$\quad\quad\code{\bslash Irc\bslash Excep...  e}$"];
+        y_1 -> y_2 [label=" ", texlbl="$\quad\quad\code{\bslash Irc\bslash Excep...  e}\quad$"];
         y_2 -> y_3 [label=" ", texlbl="$\varepsilon$"];
         y_3 -> y_4 [label=" ", texlbl="$\quad\code{400..491}$"];
         y_4 -> y_5 [label=" ", texlbl="$\varepsilon$"];
-        y_1 -> y_5 [label=" ", texlbl="$\quad\neg \code{\bslash Irc... e}$"];
+        y_1 -> y_6 [label=" ", texlbl="$\quad\neg \code{\bslash Irc\bslash Excep... e}$"];
         y_1 -> y_5 [style="dashed"];
     }
 
-    /*
-    v_1      [style="state,initial"];
-    v_2      [style="state,accepting"];
-    v_4      [style="state,accepting"];
-    v_6      [style="state,accepting"];
+    v_1 [style="state,initial"]
+    v_2 [style="state,accepting"];
 
-    v_4 v_9  [style="state,accepting"];
-    v_10     [style="state,accepting", shape=rect, texlbl="$v_{10}$"];
-    */
+    w_1 [label=" ", texlbl="$v_3$"];
+    w_2 [label=" ", texlbl="$v_4$"];
+    w_3 [label=" ", texlbl="$v_5$"];
+    w_4 [label=" ", texlbl="$v_6$"];
+    w_5 [label=" ", texlbl="$v_7$"];
+    w_6 [label=" ", texlbl="$v_8$", style="state,accepting"];
+
+    x_1 [label=" ", texlbl="$v_9$"];
+    x_2 [label=" ", texlbl="$v_{10}$"];
+    x_3 [label=" ", texlbl="$v_{11}$"];
+    x_4 [label=" ", texlbl="$v_{12}$"];
+    x_5 [label=" ", texlbl="$v_{13}$"];
+    x_6 [label=" ", texlbl="$v_{14}$"];
+    x_7 [label=" ", texlbl="$v_{15}$"];
+    x_8 [label=" ", texlbl="$v_{16}$", style="state,accepting"];
+
+    y_1 [label=" ", texlbl="$v_{17}$"];
+    y_2 [label=" ", texlbl="$v_{18}$"];
+    y_3 [label=" ", texlbl="$v_{19}$"];
+    y_4 [label=" ", texlbl="$v_{20}$"];
+    y_5 [label=" ", texlbl="$v_{21}$", style="state,accepting", shape=rect];
+    y_6 [label=" ", texlbl="$v_{22}$", style="dashed"];
 }

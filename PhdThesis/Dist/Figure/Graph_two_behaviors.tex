@@ -39,7 +39,7 @@
 \begin{scope}
   \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
   \pgfsetstrokecolor{strokecol}
-  \draw (316bp,288bp) ellipse (18bp and 18bp);
+  \draw [state,accepting] (316bp,288bp) ellipse (18bp and 18bp);
   \draw (316bp,288bp) node {$v_4$};
 \end{scope}
   % Node: v_5
@@ -53,14 +53,15 @@
 \begin{scope}
   \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
   \pgfsetstrokecolor{strokecol}
-  \draw (418bp,234bp) ellipse (18bp and 18bp);
+  \draw [state,accepting] (436bp,252bp) -- (400bp,252bp) -- (400bp,216bp) -- (436bp,216bp) -- cycle;
   \draw (418bp,234bp) node {$v_6$};
 \end{scope}
   % Node: v_7
 \begin{scope}
+  \pgfsetdash{{3pt}{3pt}}{0pt}
   \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
   \pgfsetstrokecolor{strokecol}
-  \draw (316bp,180bp) ellipse (18bp and 18bp);
+  \draw [state,dashed] (316bp,180bp) ellipse (18bp and 18bp);
   \draw (316bp,180bp) node {$v_7$};
 \end{scope}
   % Node: v_12

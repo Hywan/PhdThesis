@@ -20,11 +20,14 @@ digraph {
         v_8  -> v_12 [label=" ", texlbl="$\neg T_{C_\beta}$"];
     }
 
-    v_1      [style="state,initial"];
-    v_2      [style="state,accepting"];
-    v_4 v_9  [style="state,accepting"];
-    v_6 v_11 [style="state,accepting", shape=rect];
-    v_7 v_12 [style="state,dashed"];
+    v_1  [style="state,initial"];
+    v_2  [style="state,accepting"];
+    v_4  [style="state,accepting"];
+    v_9  [style="state,accepting"];
+    v_6  [style="state,accepting", shape=rect];
+    v_11 [style="state,accepting", shape=rect];
+    v_7  [style="state,dashed"];
+    v_12 [style="state,dashed"];
 
     v_10 [label=" ", texlbl="$v_{10}$"];
     v_11 [label=" ", texlbl="$v_{11}$"];
