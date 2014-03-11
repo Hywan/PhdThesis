@@ -1,5 +1,6 @@
 \def\gsep{$\quad::=\quad$}
 \def\mvert{$\;\;|\;\;$}
+\def\mvertp{\phantom{$\;\;|\;\;$}}
 \newcommand{\gtoken}[1]{\underline{\code{php-#1}}}
 \newcommand{\grule}[1]{\textit{#1}}
 
@@ -41,7 +42,7 @@ l'exécution de la méthode.
 Nous décrivons maintenant les parties de la grammaire de Praspel en forme
 normale. La grammaire complète se trouve dans
 l'annexe~\ref{appendices:grammar_of_praspel}
-page~\ref{appendices:grammar_of_praspel}.
+page~\pageref{appendices:grammar_of_praspel}.
 
 \subsection{Clauses}
 \label{subsection:language:clauses}
@@ -88,7 +89,7 @@ alors $s$ doit être un lexème.
 
 \begin{figure}
 \begin{bigpre}
-class \(C\) \{ \\
+class C \{ \\
 \\
     /** \\
      * @invariant \(I\); \\
@@ -96,24 +97,24 @@ class \(C\) \{ \\
     protected \$a; \\
 \\
     /** \\
-     * @is \(Q\); \\
-     * @requires \(R\); \\
+     * @is \(S\); \\
+     * @requires \(P\); \\
      * @behavior \(\alpha\) \{ \\
      *     @description 'Apply the \(\alpha\) process.'; \\
-     *     @requires \(R\sb{\alpha}\); \\
+     *     @requires \(P\sb{\alpha}\); \\
      *     @behavior \(\beta\) \{ \\
-     *         @requires  \(R\sb{\alpha.\beta}\); \\
-     *         @ensures   \(E\sb{\alpha.\beta}\); \\
+     *         @requires  \(P\sb{\alpha.\beta}\); \\
+     *         @ensures   \(Q\sb{\alpha.\beta}\); \\
      *         @throwable \(T\sb{\alpha.\beta}\); \\
      *     \} \\
      * \} \\
      * @behavior \(\gamma\) \{ \\
-     *     @requires \(R\sb{\gamma}\); \\
+     *     @requires \(P\sb{\gamma}\); \\
      *     \(\dots\) \\
      * \} \\
      * @default \{ \\
      *     @description 'Apply the fallback process.'; \\
-     *     @ensures   \(E\sb{\m{D}}\); \\
+     *     @ensures   \(Q\sb{\m{D}}\); \\
      *     @throwable \(T\sb{\m{D}}\); \\
      * \} \\
      */ \\
@@ -229,7 +230,7 @@ La clause \adefault est strictement équivalente à une clause \abehavior avec u
 clause \arequires implicite décrivant la conjonction de toutes les négations des
 clauses \arequires des comportements frères précédents.  Par exemple, dans la
 figure~\ref{figure:language:typical_contract} la clause \arequires de \adefault
-pourrait mathématiquement s'écrire $\neg R_\alpha \land \neg R_\gamma$.
+pourrait mathématiquement s'écrire $\neg P_\alpha \land \neg P_\gamma$.
 
 Afin d'«~activer~» un comportement donné, sa clause \arequires doit être
 satisfaite. Après l'exécution, le système est dans le post-état. Nous faisons
@@ -244,7 +245,7 @@ l'environnement. En effet, une méthode peut muter (modifier) ou pas son
 environnement lors de son exécution. Si elle ne le modifie pas, alors nous
 parlons d'une méthode {\strong pure}, sinon nous parlons d'une méthode {\strong
 mutante} (par défaut). Seules les méthodes pures peuvent être utilisées dans les
-contrats.
+contrats. \\
 
 \begin{figure}
 \begin{bigpre}
@@ -273,7 +274,8 @@ class Filesystem \{ \\
      *           index: 0..0xffff or void; \\
      * @behavior full \{ \\
      *     @description 'The filesystem is full.'; \\
-     *     @requires  \(\bslash\)pred('\$this->getUsage() + \$file->getSize() > static::SIZE'); \\
+     *     @requires  \(\bslash\)pred('\$this->getUsage() + \$file->getSize() \\
+     *                          > static::SIZE'); \\
      *     @throwable AllocationException e with \\
      *                    file->isAttached(): false and \\
      *                    e->getFilesystem(): this; \\
@@ -287,15 +289,15 @@ class Filesystem \{ \\
 \}
 \end{bigpre}
 
-\caption{\label{figure:language:short_contract} exemple d'une classe annotée par
-des contrats.}
+\caption{\label{figure:language:short_contract} Exemple d'une classe
+\code{Filesystem} annotée par des contrats.}
 
 \end{figure}
 
 La figure~\ref{figure:language:short_contract} montre un exemple concret d'une
 classe \code{Filesystem} annotée, avec deux méthodes \code{getUsage} et
 \code{store}. Cet exemple sera utilisé pour illustrer chaque notion introduite
-dans la suite de ce document.
+dans la suite de cette partie.
 
 La méthode \code{getUsage} est déclarée comme \code{pure}, ce qui veut dire
 qu'elle ne modifie pas son environnement. Elle n'a pas de clause \arequires,
@@ -328,7 +330,7 @@ contraintes, respectivement présentées dans les paragraphes suivants.
    \grule{predicate}$^?_\code{and}$ \\
 
 \grule{exceptional-expression} & \gsep &
-    $($ $($ \grule{exception-identifier} $)^+_\code{or}$
+    $($ $($ \grule{exception-identifier} $)^+_\code{or}$ \\ & &
     \code{with} \grule{expression} $)^+_{\code{or}}$ \\
 
 \grule{exception-identifier} & \gsep &
@@ -376,12 +378,12 @@ normale~: les entités syntaxiques d'expressions.}
     \grule{scalar} \mvert \grule{array} \\
 
 \grule{scalar} & \gsep &
-    \code{null} \mvert \gtoken{boolean} \mvert \grule{number} \mvert
-    \gtoken{string} \\
+    \code{null} \mvert \gtoken{boolean} \mvert \grule{number} \\ & &
+    \mvert \gtoken{string} \\
 
 \grule{number} & \gsep &
-    \gtoken{binary} \mvert \gtoken{octal} \mvert \gtoken{hexa} \mvert
-    \gtoken{decimal} \\
+    \gtoken{binary} \mvert \gtoken{octal} \mvert \gtoken{hexa} \\ & &
+    \mvert \gtoken{decimal} \\
 
 \grule{array} & \gsep &
     \code{[} \grule{pair}$^?_\code{,}$ \code{]} \\
@@ -399,8 +401,8 @@ normale~: les entités syntaxiques d'expressions.}
 \grule{identifier} & \gsep &
     \gtoken{identifier} \\ & &
     \mvert \code{this} $($ \code{->} \gtoken{identifier} $)^*$ \\ & &
-    \mvert $($ \code{self} \mvert \code{static} \mvert \code{parent} $)$
-    $($ \code{::} \gtoken{identifier} $)^+$ \\ & &
+    \mvert $($ \code{self} \mvert \code{static} \mvert \code{parent} $)$ \\ & &
+    \mvertp $($ \code{::} \gtoken{identifier} $)^+$ \\ & &
     \mvert \code{\bslash old(} \grule{extended-identifier} \code{)} \\ & &
     \mvert \code{\bslash result} \\
 \end{tabular}
@@ -411,17 +413,19 @@ entités syntaxiques de construction des expressions.}
 
 \end{figure}
 
-\paragraph{Déclarations.} Une déclaration assigne un ou plusieurs domaines
-réalistes à une variable à travers l'opérateur \code{:}. Une variable est soit
-un attribut de classe, spécifié dans une clause \ainvariant, soit un paramètre
-de la méthode, spécifié dans les autres clauses. La valeur d'une variable peut
-appartenir à plusieurs domaines réalistes si la variable est définie par une
-{\strong disjonction} de domaines réalistes, représentée par le mot-clé
-\code{or}. Dans la figure~\ref{figure:language:short_contract}, la variable
-\code{index} du contrat de la méthode \code{store} peut avoir deux valeurs~:
-soit un entier entre 0 et 65535, soit \code{null}. Une disjonction de domaines
-réalistes peut contenir n'importe quelle sorte de domaine réaliste~: ce afin de
-mimer l'aspect dynamique de PHP.
+\subsubsection{Déclarations}
+
+Une déclaration assigne un ou plusieurs domaines réalistes à une variable à
+travers l'opérateur \code{:}. Une variable est soit un attribut de classe,
+spécifié dans une clause \ainvariant, soit un paramètre de la méthode, spécifié
+dans les autres clauses. La valeur d'une variable peut appartenir à plusieurs
+domaines réalistes si la variable est définie par une {\strong disjonction} de
+domaines réalistes, représentée par le mot-clé \code{or}. Dans la
+figure~\ref{figure:language:short_contract}, la variable \code{index} du contrat
+de la méthode \code{store} peut avoir deux valeurs~: soit un entier entre 0 et
+65535, soit \code{null}. Une disjonction de domaines réalistes peut contenir
+n'importe quelle sorte de domaine réaliste~: ce afin de mimer l'aspect dynamique
+de PHP.
 
 Si une variable est précédée par le mot-clé \code{let}, cela signifie que c'est
 une variable {\strong locale}, qui appartient au modèle et non pas au système
@@ -434,21 +438,22 @@ Les clauses \aensures et \athrowable peuvent également faire {\strong référen
 à la valeur d'une variable dans le pré-état grâce à la construction \aold{i}, où
 $i$ est le nom d'une variable.
 
-\paragraph{Prédicats.} Toutes les constructions présentent dans Praspel
-supportent la validation et la vérification, \ie par les propriétés de
-prédicabilité et de générabilité des domaines réalistes. Chaque concept
-introduit dans le langage doit supporter ces deux aspects. Mais ils arrivent que
-certaines choses ne puissent pas être exprimées avec les constructions
-actuelles. C'est pourquoi nous avons la construction «~boîte-noire~» \apred{p},
-où $p$ est du code PHP. Cette construction permet à l'utilisateur d'exprimer des
-contraintes arbitraires en utilisant PHP lui-même au lieu de Praspel. Le code
-$p$ doit être un prédicat en forme normal {\strong disjonctive} (DNF). La
-construction \apred{p} ne supporte que la validation (prédicabilité) et non pas
-la vérification (générabilité). Le prédicat \apred{\code{'\$this->getUsage() +
-\$file->getSize() > static::SIZE'}} dans la
-figure~\ref{figure:language:short_contract} signifie que s'il n'y a plus de
-place pour ajouter un nouveau fichier, alors cette partie de la précondition est
-satisfaite.
+\subsubsection{Prédicats}
+
+Toutes les constructions présentent dans Praspel supportent la validation et la
+vérification, \ie par les propriétés de prédicabilité et de générabilité des
+domaines réalistes. Chaque concept introduit dans le langage doit supporter ces
+deux aspects. Mais ils arrivent que certaines choses ne puissent pas être
+exprimées avec les constructions actuelles. C'est pourquoi nous avons la
+construction «~boîte-noire~» \apred{p}, où $p$ est du code PHP. Cette
+construction permet à l'utilisateur d'exprimer des contraintes arbitraires en
+utilisant PHP lui-même au lieu de Praspel. Le code $p$ doit être un prédicat en
+forme normal {\strong conjonctive} (CNF). La construction \apred{p} ne supporte
+que la validation (prédicabilité) et non pas la vérification (générabilité). Le
+prédicat \apred{\code{'\$this->getUsage() + \$file->getSize() > static::SIZE'}}
+dans la figure~\ref{figure:language:short_contract} signifie que s'il n'y a plus
+de place pour ajouter un nouveau fichier, alors cette partie de la précondition
+est satisfaite.
 
 Parce que la construction \apred{p} est une boîte-noire, elle introduit du rejet
 lors de la génération de données car les contraintes $p$ ne sont pas
@@ -465,13 +470,16 @@ les deux aspects~: validation et vérification. L'objectif est de faire évoluer
 le langage en supportant plus de constructions usuelles nativement au lieu de
 les avoir dans une boîte-noire, et ainsi, entre autre, réduire le rejet lors de
 la génération de données. Ce processus est illustré dans la
-partie~\ref{section:data:arrays}.
+partie~\ref{section:data:arrays} page~\pageref{section:data:arrays}.
 
-\paragraph{Contraintes.} Praspel a principalement deux sortes de contraintes~:
-soit en utilisant la syntaxe des déclarations, soit en utilisant le mot-clé
-\code{is}. Des exemples de contraintes sont présentées dans la
-partie~\ref{section:data:arrays}.
-\\
+\subsubsection{Contraintes}
+
+Praspel a principalement deux sortes de contraintes~: soit en utilisant la
+syntaxe des déclarations, soit en utilisant le mot-clé \code{is} (différent de
+la clause \ais). Des exemples de contraintes sont présentées dans la
+partie~\ref{section:data:arrays} page~\pageref{section:data:arrays}.
+
+\subsubsection{Identifiants}
 
 Un mot sur les identifiants. Dans la figure~\ref{figure:language:short_contract}
 ainsi que dans la règle \grule{identifier} de la grammaire de la
@@ -482,9 +490,9 @@ la classe courante, nous utiliserons \code{self}, pour la classe parente, nous
 utiliserons \code{parent}. Et pour faire référence à l'enfant courant d'une
 classe, nous utiliserons \code{static}. Par exemple, si nous créons la classe
 \code{BigFilesystem} qui hérite de \code{Filesystem} et redéfinit la constante
-\code{SIZE}, alors dans \code{Filesystem}, \code{self::SIZE} sera équivalent à
-\code{Filesystem::SIZE} alors que \code{static::SIZE} sera équivalent à
-\code{BigFilesystem::SIZE}.
+\code{SIZE}, alors dans \code{Filesystem}, utiliser \code{self::SIZE} sera
+équivalent à \code{Filesystem::SIZE} alors que \code{static::SIZE} sera
+équivalent à \code{BigFilesystem::SIZE}.
 
 \subsection{Description de tableaux}
 \label{subsection:language:array}
