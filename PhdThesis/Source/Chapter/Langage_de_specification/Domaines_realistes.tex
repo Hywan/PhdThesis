@@ -28,12 +28,15 @@ les tableaux etc., et qu'ils permettent d'exprimer des types plus complexes,
 comme des grammaires, des graphes etc. Le mot {\strong réaliste} signifie qu'ils
 sont conçus pour spécifier des domaines de données {\strong pertinentes} pour un
 contexte {\strong spécifique}. Par exemple, une adresse email peut être un
-domaine réaliste~: plusieurs logiciels identifient leurs utilisateurs avec leur
-adresse email. Ceci est plus qu'une chaîne de caractères~; en effet, ça doit
-respecter certaines règles, notamment syntaxiques.
+domaine réaliste. En effet, plusieurs logiciels identifient leurs utilisateurs
+avec leur adresse email. C'est plus qu'une chaîne de caractères~: il y a une
+certaines règles, notamment syntaxiques, à respecter.
+
+\begin{definition}[Caractéristiques d'un domaine réalistes]
+\label{definition:language:realdom}
 
 Les domaines réalistes ont été conçus afin de répondre aux problématiques de
-test. C'est pourquoi ils ont les deux propriétés suivantes~:
+test. C'est pourquoi ils ont les deux caractéristiques suivantes~:
 
 \begin{itemize}
 
@@ -45,7 +48,9 @@ domaine réaliste.
 
 \end{itemize}
 
-Ces deux propriétés permettent respectivement de {\strong valider} et de
+\end{definition}
+
+Ces deux caractéristiques permettent respectivement de {\strong valider} et de
 {\strong vérifier} un programme.
 
 \subsection{Implémentation}
@@ -73,17 +78,11 @@ l'instant, le seul générateur numérique disponible est pseudo-aléatoire.
 
 Parce que les domaines réalistes sont implémentés à travers des classes et que
 PHP est orienté objet, nous pouvons faire de l'{\strong héritage}. Par
-conséquent, un domaine réaliste enfant peut hériter et {\strong rafiner} les
+conséquent, un domaine réaliste enfant peut hériter et {\strong raffiner} les
 propriétés de son parent. Par exemple, le domaine réaliste \code{Color} hérite
-de \code{String}, et \code{Boundinteger} hérite de \code{Integer}. Tous les
-domaines réalistes doivent être enfant de la classe \code{Realdom}.
-
-La figure~\ref{figure:language:boundinteger} montre une implémentation légère du
-domaine réaliste \code{Boundinteger}. Il hérite du domaine réaliste
-\code{Integer} en \circled{1}. La propriété de prédicabilité rafine celle du
-parent en \circled{2}, et ajoute de nouvelles contraintes en \circled{3} qui
-vérifient que \code{\$q} appartient à l'intervalle décrit par le domaine
-réaliste.
+de \code{String}, et \code{Bound\-integer} hérite de \code{Integer}. Une seule
+contrainte~: tous les domaines réalistes doivent être enfant de la classe
+\code{Realdom}.
 
 \begin{figure}[t]
 \begin{bigpre}
@@ -117,12 +116,18 @@ class          Boundinteger \\
 \end{bigpre}
 
 \caption{\label{figure:language:boundinteger} Implémentation légère du domainer
-réaliste \code{Boundinteger}. Nous pouvons voir l'héritage, les interfaces, les
-propriétés de prédicabilité et de générabilité à travers les méthodes
-\code{predicate} et \code{sample}, le rafinement et la déclaration des
-paramètres.}
+réaliste \code{Boundinteger}.}
 
 \end{figure}
+
+La figure~\ref{figure:language:boundinteger} montre une implémentation légère du
+domaine réaliste \code{Bound\-integer}. Il hérite du domaine réaliste
+\code{Integer} en \circled{1}. Nous remarquons aussi de nombreux interfaces pour
+caractériser la «~forme~» ou les propriétés du domaine réaliste (détaillé dans
+la partie \ref{subsection:language:realdom:classification}). La propriété de
+prédicabilité raffine celle du parent en \circled{2}, et ajoute de nouvelles
+contraintes en \circled{3} qui vérifient que \code{\$q} appartient à
+l'intervalle décrit par le domaine réaliste.
 
 \subsection{Paramètres}
 \label{subsection:language:realdom:parameters}
@@ -144,29 +149,61 @@ pouvons écrire \code{4..12}, qui est un sucre syntaxique de
 \end{example}
 
 Quand nous décrivons les paramètres d'un domaine réaliste, nous pouvons indiquer
-leurs types. Le type est exprimé à travers le ou les noms d'un des domaines
-réalistes, séparés par le symbole \code{$\vert$}. En effet, un domaine réaliste
-accepte plusieurs sortes d'arguments et est capable de faire la traduction d'un
-type vers un autre lui-même. Ainsi, nous restons proche de la philosophie de
-PHP. Par exemple, pour le domaine réaliste \code{String}, ses deux premiers
-paramètres peuvent être des entiers ou des caractères. Alors, nous pouvons
-écrire \code{string('a', 'z', 4..12)} sans produire d'erreur, mais
-\code{string(true, 'z', 4..12)} produira une erreur.
+leurs types. Le type est exprimé à travers le ou les noms de domaines réalistes,
+séparés par le symbole \code{$\vert$}. En effet, un domaine réaliste accepte
+plusieurs sortes d'arguments et est capable de faire la traduction d'un domaine
+réaliste vers un autre lui-même. Ainsi, nous restons proche de la philosophie de
+PHP et de son typage dynamique. La figure~\ref{figure:language:boundinteger}
+montre la déclaration de deux paramètres~: \code{lower} et \code{upper} en
+\circled{4}, qui sont de type \code{Constinteger}, avec respectivement en valeur
+par défaut \code{PHP\_INT\_MIN} et \code{PHP\_INT\_MAX} qui sont des constantes
+de PHP. Si aucune valeur par défaut n'est précisée, alors le paramètre est
+{\strong obligatoire}, sinon il est {\strong optionnel}.
 
-La figure~\ref{figure:language:boundinteger} montre la déclaration de deux
-paramètres~: \code{lower} et \code{upper} en \circled{4}, qui sont de type
-\code{Constinteger}, avec respectivement en valeur par défaut
-\code{PHP\_INT\_MIN} et \code{PHP\_INT\_MAX}. Si aucune valeur par défaut n'est
-précisée, alors le paramètre est {\strong obligatoire}, sinon il est {\strong
-optionnel}.
+\begin{example}[Multi-typage des paramètres]
+
+Un exemple de multi-typage de paramètres avec le domaine réaliste \code{String},
+dont ses deux premiers paramètres peuvent être des entiers ou des caractères,
+déclarés comme suit~:
+%
+\begin{pre}
+protected \$_arguments = [ \\
+    'Constinteger|Conststring codepointMin' => 0x20, \\
+    'Constinteger|Conststring codepointMax' => 0x7e, \\
+    'Integer                  length' \\
+];
+\end{pre}
+%
+où \code{Constinteger} et \code{Conststring} représentent respectivement un
+entier et une chaîne de caractères Praspel comme \code{7} ou \code{'foo'}.
+Alors, nous pouvons écrire \code{string('a', 'z', 4..12)} sans produire
+d'erreur, mais \code{string(true, 'z', 4..12)} produira une erreur car
+\code{true} est une valeur du domaine réaliste \code{Constboolean} et que le
+paramètre \code{codepointMin} n'accepte que les domaines \code{Constinteger} ou
+\code{Conststring}.
+
+Nous voyons que les deux premiers paramètres sont optionnels et que seul le
+dernier est obligatoire. Pour utiliser la valeur par défaut d'un paramètre, nous
+pouvons utiliser le mot-clé \code{default} (ou \code{…}). Ainsi, nous pouvons
+écrire~: \code{string(default, default, 7)} (ou \code{string(…, …, 7)}).
+
+Notons également que les chaînes de caractères de Praspel (représentées par le
+domaine réaliste \code{Conststring}) sont au format Unicode (UTF-8), ce qui nous
+permet d'écrire~: \code{string('$\alpha$', '$\omega$', 4..12)} pour représenter
+un mot en minuscule écrit en grec.
+
+\end{example}
+
+
 
 \subsection{Classification}
 \label{subsection:language:realdom:classification}
 
-L'héritage est une classification. Une autre classification {\strong
-transversale} est possible grâce aux {\strong interfaces}. Elles aident à
-caractériser le «~paysage~» des domaines réalistes. Les interfaces les plus
-intéressantes sont~:
+L'héritage que nous venons de voir en
+\ref{subsection:language:realdom:hierarchy} est une classification. Une autre
+classification {\strong transversale} est possible grâce aux {\strong
+interfaces}. Elles aident à caractériser le «~paysage~» des domaines réalistes.
+Les interfaces les plus intéressantes sont~:
 
 \begin{itemize}
 
