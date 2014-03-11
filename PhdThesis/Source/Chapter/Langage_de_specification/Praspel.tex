@@ -199,8 +199,8 @@ une exception a été levée mais le système est suffisamment propre pour tente
 une nouvelle exécution). La syntaxe de $T$ ($T_{\alpha.\beta}$ et $T_\m{D}$ dans
 la figure~\ref{figure:language:typical_contract}) est définie par l'entité
 syntaxique \grule{exceptional-expression} dans la
-figure~\ref{figure:language:grammar_part2}. $T$ peut être \code{$T_C$ with
-$T_E$}, où $T_C$ est une liste de nom de classes asssociée à un identifiant, et
+figure~\ref{figure:language:grammar_part2}. $T$ est de la forme \code{$T_C$ with
+$T_E$} où $T_C$ est une liste de nom de classes asssociée à un identifiant et
 $T_E$ est une expression, appelée {\strong postcondition exceptionnelle}, dont
 la syntaxe est détaillée dans la partie~\ref{subsection:language:expressions}.
 Tous les identifiants définis dans $T_C$ peuvent apparaître dans $T_E$. La
@@ -229,7 +229,7 @@ comportement non-déterministe.
 La clause \adefault est strictement équivalente à une clause \abehavior avec une
 clause \arequires implicite décrivant la conjonction de toutes les négations des
 clauses \arequires des comportements frères précédents.  Par exemple, dans la
-figure~\ref{figure:language:typical_contract} la clause \arequires de \adefault
+figure~\ref{figure:language:typical_contract}, la clause \arequires de \adefault
 pourrait mathématiquement s'écrire $\neg P_\alpha \land \neg P_\gamma$.
 
 Afin d'«~activer~» un comportement donné, sa clause \arequires doit être
@@ -319,7 +319,7 @@ d'invariants avec la clause \ainvariant.
 Les figures~\ref{figure:language:grammar_part2} et
 \ref{figure:language:grammar_part3} décrivent les expressions Praspel. Nous
 avons principalement trois sortes d'expressions~: déclarations, prédicats et
-contraintes, respectivement présentées dans les paragraphes suivants.
+contraintes, respectivement présentées dans les parties suivantes.
 
 \begin{figure}
 \begin{center}
@@ -441,9 +441,9 @@ $i$ est le nom d'une variable.
 \subsubsection{Prédicats}
 
 Toutes les constructions présentent dans Praspel supportent la validation et la
-vérification, \ie par les propriétés de prédicabilité et de générabilité des
-domaines réalistes. Chaque concept introduit dans le langage doit supporter ces
-deux aspects. Mais ils arrivent que certaines choses ne puissent pas être
+vérification, \ie par les caractéristiques de prédicabilité et de générabilité
+des domaines réalistes. Chaque concept introduit dans le langage doit supporter
+ces deux aspects. Mais ils arrivent que certaines choses ne puissent pas être
 exprimées avec les constructions actuelles. C'est pourquoi nous avons la
 construction «~boîte-noire~» \apred{p}, où $p$ est du code PHP. Cette
 construction permet à l'utilisateur d'exprimer des contraintes arbitraires en
@@ -492,12 +492,13 @@ classe, nous utiliserons \code{static}. Par exemple, si nous créons la classe
 \code{BigFilesystem} qui hérite de \code{Filesystem} et redéfinit la constante
 \code{SIZE}, alors dans \code{Filesystem}, utiliser \code{self::SIZE} sera
 équivalent à \code{Filesystem::SIZE} alors que \code{static::SIZE} sera
-équivalent à \code{BigFilesystem::SIZE}.
+équivalent à \code{BigFilesystem::SIZE}. Ce mécanisme est appelé le
+\inenglish{Late Static Binding}\footnote{Voir \url{http://php.net/lsb}.}.
 
 \subsection{Description de tableaux}
 \label{subsection:language:array}
 
-La description de tableaux est une partie très important de Praspel, contrôlant
+La description de tableaux est une partie très importante de Praspel, contrôlant
 la génération de collections présentée dans la
 partie~\ref{section:data:arrays}.
 
@@ -532,14 +533,15 @@ pas de 1.
 
 La syntaxe des descriptions de tableaux est illustrée avec les déclarations de
 tableaux suivantes~:
-
+%
 \begin{pre}
 a1: array([to boolean()], 7..42) \\
 a2: array([from 0..5 or 10 to integer()], 7) \\
-a3: array([from 0..10 to boolean(), from 20..30 to float()], 7) \\
+a3: array([from 0..10 to boolean(), \\
+           from 20..30 to float()], 7) \\
 a4: array([from 0..10 or 20..30 to boolean() or float()], 7)
 \end{pre}
-
+%
 L'identifiant \code{a1} est déclaré comme un tableau homogène de booléens avec
 une longueur comprise entre 7 et 42. L'identifiant \code{a2} est déclaré comme
 un tableau homogène de longueur 7, dont les clés sont des entiers entre 0 et 5
@@ -554,15 +556,18 @@ alors que \code{a3} ne peut pas la contenir.
 En fait, nous introduisons une {\strong forme normale} pour supprimer les
 disjonctions dans les descriptions des paires, en appliquant itérativement la
 règle de réécriture suivante~:
-
+%
 \begin{center}
 \begin{tabular}{c}
 \code{from $F_1$ or $F_2$ to $T_1$ or $T_2$} \\
 \hline
-\code{from $F_1$ to $T_1$, from $F_1$ to $T_2$, from $F_2$ to $T_1$, from $F_2$ to $T_2$} \\
+\code{from $F_1$ to $T_1$} \\
+\code{from $F_1$ to $T_2$} \\
+\code{from $F_2$ to $T_1$} \\
+\code{from $F_2$ to $T_2$}
 \end{tabular}
 \end{center}
-
+%
 Une description de tableau est en forme normale quand elle ne peut plus être
 réduite par cette règle.
 
@@ -597,36 +602,38 @@ dans les chapitres suivants).
 Quand la vérification d'une assertion échoue, une erreur spécifique est
 produite. Les erreurs du RAC (aussi appelées les \inenglish{Praspel failures}
 ou erreurs Praspel) peuvent être de cinq sortes~:
-%
-\begin{inparaenum}[$(i)$]
-%
+
+\begin{enumerate}
+
 \item \inenglish{precondition failure}, quand une précondition n'est pas
 satisfaite lors de l'invocation de la méthode~;
-%
+
 \item \inenglish{postcondition failure}, quand une postcondition n'est pas
 satisfaite après l'exécution de la méthode~;
-%
+
 \item \inenglish{throwable failure}, quand l'exécution de la méthode lève une
 exception inattendue~;
-%
+
 \item \inenglish{invariant failure}, quand un invariant de classe est cassé~; et
-%
+
 \item \inenglish{internal precondition failure}, qui correspond à la propagation
 d'une \inenglish{precondition failure} à un niveau supérieur.
-%
-\end{inparaenum}
+
+\end{enumerate}
 
 Le test réussit si aucune erreur Praspel n'est détectée. Autrement, il échoue,
 et l'erreur avec des informations supplémentaires est consignée.
 
-Par exemple, dans la figure~\ref{figure:language:short_contract}, prenons la
-méthode \code{store} et son contrat.
+\begin{example}[Vérifications des assertions]
+
+Considérons par exemple la méthode \code{store} et son contrat dans la
+figure~\ref{figure:language:short_contract}.
 %
 Avec le jeu (\code{'foo'}, \code{null}), nous aurons une \inenglish{precondition
 failure}~: la contrainte \code{file: class('File')} n'est pas respectée car la
-méthode \code{predicate(\$q)} du domaine réaliste \code{Class} avec \code{\$q =
-'foo'} retourne \code{false}, et aucun autre domaine réaliste n'est spécifié
-pour cette variable.
+méthode \code{predicate(\$q)} du domaine réaliste \code{Class} avec $\code{\$q}
+= \code{'foo'}$ retourne \code{false}, et aucun autre domaine réaliste n'est
+spécifié pour cette variable.
 %
 Avec le jeu de paramètres (\code{new File(…)}, \code{null}), avec un fichier
 vide, nous activerons le comportement par défaut et nous n'observerons aucune
@@ -648,13 +655,15 @@ postcondition exceptionnelle n'est pas respectée, nous aurons une
 \inenglish{throwable failure}. Si aucune exception n'est levée, nous aurons une
 \inenglish{postcondition failure}.
 %
-Si pendant avant ou après l'exécution de la méthode \code{store}, un invariant
-est cassé, nous aurons une \inenglish{invariant failure}. Par exemple, si
-l'attribut \code{\_map} contient autre chose que des objets \code{File} ou que
-sa taille dépasse 65535.
+Si avant ou après l'exécution de la méthode \code{store}, un invariant est
+cassé, nous aurons une \inenglish{invariant failure}. Par exemple, si l'attribut
+\code{\_map} contient autre chose que des objets \code{File} ou que sa taille
+dépasse 65535.
 %
 Enfin, si la méthode \code{store} fait appel à la méthode \code{getUsage} en ne
 respectant pas sa précondition (ici en lui donnant un argument par exemple),
 alors une \inenglish{precondition failure} sera émise depuis la méthode
 \code{getUsage}, qui sera ensuite traduite en \inenglish{internal precondition
 failure} depuis la méthode \code{store}.
+
+\end{example}
