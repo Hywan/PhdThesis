@@ -1,4 +1,4 @@
-\section{Génération à partir de solveur pour les tableaux}
+\section{Génération à partir de propriétés sur les tableaux}
 \label{section:data:arrays}
 
 Les tableaux sont utilisés pour représenter toutes sortes de collections en PHP.
@@ -7,10 +7,10 @@ sont constituées de paires clé-valeur.
 
 Nous allons tout d'abord étudier plusieurs projets PHP pour connaître les
 fonctions les plus utilisées sur les tableaux. Ensuite, nous allons étendre
-Praspel pour introduire des conditions sur les tableaux. Enfin, nous verrons
-comment ces conditions sont traduites en contraintes pour notre propre solveur.
+Praspel pour introduire des propriétés sur les tableaux. Enfin, nous verrons
+comment ces propriétés sont traduites en contraintes pour notre propre solveur.
 
-\subsection{Étude des contraintes les plus utilisées}
+\subsection{Étude des propriétés les plus utilisées}
 
 Nous avons sélectionnés 61~projets PHP sur plusieurs plateformes, comme
 Github\footnote{\url{http://github.com/}} ou
@@ -156,60 +156,60 @@ compte le nombre d'éléments contenus dans un tableau, la fonction
 \code{in\_array()} vérifie si une valeur est présente dans le tableau. Toutes
 ces fonctions travaillent sur un seul tableau à la fois. Cette étude suggère que
 nous pouvons considérer ces fonctions booléennes sans effet de bord en tant que
-conditions les plus fréquentes sur les tableaux.
+propriétés les plus fréquentes sur les tableaux.
 
-\subsection{Conditions sur les tableaux}
+\subsection{Syntaxe des propriétés}
 
 Nous étendons la syntaxe d'une déclaration de tableau~:
 %
 $$\code{a: array($D$, $L$)}$$
 %
-dans Praspel avec les conditions sur les tableaux suivantes. Une condition sur
+dans Praspel avec les propriétés sur les tableaux suivantes. Une propriété sur
 une paire est de la forme~:
 %
 $$\code{a[$K$]: $V$}$$
 %
-où $K$ et $V$ sont des disjonctions de domaines réalistes. La condition signifie
+où $K$ et $V$ sont des disjonctions de domaines réalistes. La propriété signifie
 que les paires constituées de toutes les clés de $K$ et au moins une valeur dans
 $V$ sont présentes dans le tableau \code{a}. $K$ accepte seulement les domaines
 réalistes qui implémentent les interfaces \code{Constant}, \code{Interval} et
-\code{Enumerable}. Cette condition est équivalente à utiliser les fonctions
+\code{Enumerable}. Cette propriété est équivalente à utiliser les fonctions
 \code{array\_key\_exists()} et \code{in\_array()} combinées. Si nous voulons
 exprimer une contrainte seulement sur $K$, nous pouvons utiliser le symbole
-\code{\_}. La condition~:
+\code{\_}. La propriété~:
 %
 $$\code{a[$K$]: \_}$$
 %
 signifie que toutes les clés de $K$ doivent être présentes dans le tableau
-\code{a}. Cette condition est équivalente à utiliser la fonction
+\code{a}. Cette propriété est équivalente à utiliser la fonction
 \code{array\_key\_exists} avec toutes les clés de $K$ en conjonction. De même,
-la condition~:
+la propriété~:
 %
 $$\code{a[\_]: $V$}$$
 %
 signifie que toutes les valeurs de $V$ doivent être présentes dans le tableau
-\code{a}. Cette condition est équivalente à utiliser la fonction
+\code{a}. Cette propriété est équivalente à utiliser la fonction
 \code{in\_array} avec toutes les valeurs de $V$ en conjonction.
 
 Au lieu d'utiliser le symbole \code{:} nous pouvons utiliser le symbole
-\code{!:} pour exprimer la négation. La condition \code{a[$K$]!: $V$} signifie
+\code{!:} pour exprimer la négation. La propriété \code{a[$K$]!: $V$} signifie
 que toutes les clés de $K$ ont une valeur dans \code{a} et que cette valeur
 n'est pas dans $V$. Le fonctionnement est similaire avec le symbole \code{\_}.
-Par exemple, la condition \code{a[$K$]!: \_} signifie que toutes les clés de $K$
+Par exemple, la propriété \code{a[$K$]!: \_} signifie que toutes les clés de $K$
 ont une valeur qui n'est pas dans \code{\_} (rien), donc qu'aucune clé de $K$
 n'apparaît dans \code{a}.
 
 Les clés des tableaux sont toujours uniques, mais pas les valeurs. Nous pouvons
-exprimer la condition d'unicité sur les valeurs en écrivant~:
+exprimer la propriété d'unicité sur les valeurs en écrivant~:
 %
 $$\code{a is unique}$$
 %
 Dans ce cas, nous ne pouvons pas avoir deux fois la même valeur dans le tableau
 \code{a}.
 
-\begin{example}[Conditions sur un tableau]
-\label{example:data:array_conditions}
-Pour illustrer toutes les sortes de conditions, nous allons utiliser l'exemple
+\begin{example}[Propriétés sur un tableau]
+\label{example:data:array_proprietes}
+Pour illustrer toutes les sortes de propriétés, nous allons utiliser l'exemple
 suivant qui utilise \code{a}:
 
 \begin{pre}
@@ -221,26 +221,26 @@ a is unique
 
 \end{example}
 
-\subsection{Solveur de contraintes}
+\subsection{Sémantiques ensemblistes des propriétés}
 
-Sur une conjonction de conditions d'un tableau \code{a}, nous proposons
+Sur une conjonction de propriétés d'un tableau \code{a}, nous proposons
 d'invoquer un solveur de contraintes pour construire un tableau satisfaisant
-toutes ces conditions. Cette partie explique comment les conditions sur les
+toutes ces propriétés. Cette partie explique comment les propriétés sur les
 tableaux sont transformées en contraintes pour le solveur, ou plus précisément
 en problème de satisfaction de contraintes (\inenglish{Constraint Satisfaction
 Problem}, abrégé CSP). Un CSP~\acite{Tsang93} est un triplet composé de
 variables, de valeurs pour ces variables (aussi appelés domaines) et de
 contraintes. Les variables sont déclarées dans Praspel, les valeurs sont données
 par la disjonction de domaines réalistes, et enfin, les contraintes entre ces
-variables sont données par les conditions sur les tableaux.
+variables sont données par les propriétés sur les tableaux.
 
-Une de ces conditions est supposée être une déclaration de tableau de la forme
+Une de ces propriétés est supposée être une déclaration de tableau de la forme
 \code{a: array($D$, $L$)}, où $D$ est en forme normale. C'est~à~dire que $D$ est
 une liste de $p$ constructions \code{from $F_i$ to $T_i$} avec $1 \leq i \leq
 p$, et $L$ est une disjonction de domaines réalistes $L_1, \dots, L_m$ héritant
 du domaine réaliste \code{Integer} et étant positifs ou nuls.
 
-Dans l'exemple~\ref{example:data:array_conditions}, $p = 1$, $m = 2$, $L_1 =
+Dans l'exemple~\ref{example:data:array_proprietes}, $p = 1$, $m = 2$, $L_1 =
 [\code{0..5}]$ et $L_2 = \{\code{10}\}$. Dans la description du tableau, aucun
 domaine n'a été déclaré. Dans ce cas, le domaine réaliste \code{natural(0, 1)}
 est utilisé par défaut~: il représente un entier auto-incrémenté commençant à 0
@@ -267,7 +267,7 @@ $Y$ (totale car les clés sont uniques)~;
 
 \item les domaines réalistes $X_1, \dots, X_p$ (respectivement $Y_1, \dots,
 Y_p)$ qui sont des sous-ensembles des domaines réalistes $F_1, \dots, F_p$
-(respectivement $T_1, \dots, T_p$), compatibles avec toutes les conditions sur
+(respectivement $T_1, \dots, T_p$), compatibles avec toutes les propriétés sur
 le tableau.
 
 \end{enumerate}
@@ -294,7 +294,7 @@ co-domaines, donc nous avons seulement la contrainte~:
 %
 $$\mathrm{card}(X) \geq \mathrm{card}(Y)$$
 %
-Cependant, en présence de la condition \code{a is unique}, cette contrainte
+Cependant, en présence de la propriété \code{a is unique}, cette contrainte
 devient~:
 %
 $$\mathrm{card}(X) = \mathrm{card}(Y)$$
@@ -308,7 +308,7 @@ avons donc la contrainte suivante~:
 %
 $$S \in L_1 \union \dots \union L_m$$
 
-Dans l'exemple~\ref{example:data:array_conditions}, nous avons $L_1 \subseteq
+Dans l'exemple~\ref{example:data:array_proprietes}, nous avons $L_1 \subseteq
 [\code{0..5}]$ et $L_2 \subseteq \{\code{10}\}$. La taille $S$ est contrainte
 par $S \in L_1 \union L_2$.
 
@@ -321,7 +321,7 @@ $$Y = \hat{H}(X)$$
 Nous attendons du solveur qu'il nous propose une solution pour le domaine $X$
 (respectivement le co-domaine $Y$) sous la forme d'une disjonction de domaines
 réalistes \code{$X_1$ or $\dots$ or $X_p$} (respectivement \code{$Y_1$ or
-$\dots$ or $Y_p$}), compatibles avec toutes les conditions sur le tableau. Nous
+$\dots$ or $Y_p$}), compatibles avec toutes les propriétés sur le tableau. Nous
 devrions avoir les égalités $X = \Union_{1 \;\leq\; i \;\leq\; p} X_i$ et $Y =
 \Union_{1 \;\leq\; i \;\leq\; p} Y_i$, ainsi que les inclusions $X_i \subseteq
 F_i$ et $Y_i \subseteq T_i$ pour $1 \leq i \leq p$. La paire $(X_i, Y_i)$
@@ -330,46 +330,50 @@ $Y_i$ est le co-domaine de la restriction de $H$ à $X_i$ ($\subseteq X$).
 
 \subsubsection{Contraintes sur les paires}
 
-Pour chaque condition \code{a[$K$]: $V$}, où $K$ et $V$ sont des disjonctions de
+Pour chaque propriété \code{a[$K$]: $V$}, où $K$ et $V$ sont des disjonctions de
 domaines réalistes, nous introduisons les contraintes~:
 %
 $$K \subseteq X \quad\mathrm{et}\quad \hat{H}(K) \subseteq V$$
 %
-Une condition négative sur une paire \code{a[$K$]!: $V$} est traduite en
+Une propriété négative sur une paire \code{a[$K$]!: $V$} est traduite en
 contraintes~:
 %
 $$K \subseteq X \quad\mathrm{et}\quad \hat{H}(K) \intersection V = \emptyset$$
 
-Pour la condition \code{a[0]: 'b' or 'c'} dans
-l'exemple~\ref{example:data:array_conditions}, nous avons $K = \{\code{0}\}$ et
+Pour la propriété \code{a[0]: 'b' or 'c'} dans
+l'exemple~\ref{example:data:array_proprietes}, nous avons $K = \{\code{0}\}$ et
 $V = \{\code{'b'}, \code{'c'}\}$. Les contraintes sont $\{\code{0}\} \subseteq
 X$ et $\hat{H}(\{\code{0}\}) \subseteq \{\code{'b'}, \code{'c'}\}$.
 
 \subsubsection{Contraintes sur les clés et les valeurs}
 
-La condition \code{a[$K$]: \_} est traduite en contrainte $K \subseteq X$ et sa
+La propriété \code{a[$K$]: \_} est traduite en contrainte $K \subseteq X$ et sa
 négation \code{a[$K$]!: \_} en contrainte $K \intersection X = \emptyset$. La
-condition \code{a[\_]: $V$} est traduite en contrainte $V \subseteq Y$ et sa
+propriété \code{a[\_]: $V$} est traduite en contrainte $V \subseteq Y$ et sa
 négation \code{a[\_]!: $V$} en contrainte $V \intersection Y = \emptyset$.
 
-\subsubsection{Propagation et consistence}
+\subsection{Solveur de contraintes}
+
+Introduction
+
+\subsubsection{Propagation et consistance}
 
 La propagation des contraintes utilise un algorithme AC3~\acite{Mackworth77},
 pour \inenglish{Arc Consistency Algorithm \#3}, implémenté en PHP.
 
-Cet algorithme travaille sur un CSP transformé en graphe dirigé où les nœuds
+Cet algorithme travaille sur un CSP transformé en graphe orienté où les nœuds
 représentent les variables et les arcs représentent les contraintes entre deux
-variables. La consistence d'arc détecte les erreurs le plus tôt possible. Un arc
-$(X, Y)$ est considéré comme consistent si et seulement si pour chaque valeur
-$x$ de la variable $X$, il existe une valeur $y$ de la variable $Y$ telle que
-$(x, y)$ satisfasse la contrainte entre $X$ et $Y$.  Si ce n'est pas le cas, il
-faut supprimer les valeurs du domaine de $x$ pour appliquer la consistence sur
-l'arc. Cet algorithme permet aussi de propager les contraintes d'une variable à
-l'autre en même temps qu'il vérifie la consistence. Seules les contraintes
-unaires ou binaires sont gérées par cet algorithme, c'est~à~dire des contraintes
-portant sur une ou deux variables maximum. La figure~\ref{figure:data:ac3}
-présente l'algorithme AC3, tandis que l'exemple~\ref{example:data:ac3} illustre
-cet algorithme.
+variables. Un arc $(X, Y)$ est considéré comme consistant si et seulement si
+pour chaque valeur $x$ de la variable $X$, il existe une valeur $y$ de la
+variable $Y$ telle que $(x, y)$ satisfasse la contrainte entre $X$ et $Y$.  Si
+ce n'est pas le cas, l'algorithme supprime des valeurs du domaine de $x$ pour
+obtenir la consistance de l'arc. Cet algorithme permet aussi de propager les
+contraintes d'une variable à l'autre en même temps qu'il vérifie la consistance.
+Seules les contraintes unaires et binaires sont gérées par cet algorithme,
+c'est~à~dire des contraintes portant sur une et deux variables. La
+figure~\ref{figure:data:ac3} présente l'algorithme AC3, tandis que
+l'exemple~\ref{example:data:ac3} illustre le problème auquel répond cet
+algorithme.
 
 \begin{figure}
 
@@ -377,25 +381,25 @@ cet algorithme.
 \begin{algorithmic}
 
 \State $\avar{Variables}: \atype{set\astype{Variable}}$
-\State $\avar{Domains}: \lambda (\avar{X}: \atype{Variable} \rightarrow \atype{set\astype{Domain}})$
-\State $\avar{Neighbours}: \lambda (\avar{X}: \atype{Variable} \rightarrow \atype{set\astype{Variable}})$
+\State $\avar{Domains}: \lambda (\atype{Variable} \rightarrow \atype{set\astype{Domain}})$
+\State $\avar{Neighbours}: \lambda (\atype{Variable} \rightarrow \atype{set\astype{Variable}})$
 
 \\\hrulefill
 
 \Function{$\akw{AC3}$}{}
 
   \Require $\avar{csp}: \atype{CSP}$
-  \State $\avar{queue}: \atype{set\astype{(\avar{x}, \avar{y})}} \gets \akw{all~the~arcs}$
+  \State $\avar{queue}: \atype{list\astype{(\atype{Variable}, \atype{Variable})}} \gets \akw{all~the~arcs}$
 
   \While{$\avar{queue} \neq \emptyset$}
 
       \State $(X, Y) \gets \avar{queue}.\acall{pop}()$
 
-      \If{$\acall{AC3\_Arc\_Reduce}(x, y)$}
+      \If{$\acall{AC3\_Arc\_Reduce}(X, Y)$}
 
           \ForAll{$Z \in \avar{Neighbours}(X)$}
 
-              \State $\avar{queue} = \avar{queue} \union \{(Z, X)\}$
+              \State $\avar{queue}.\acall{push}((Z, X))$
 
           \EndFor
 
@@ -442,10 +446,10 @@ Supposons que nous avons le CSP suivant~:
 %
 \begin{itemize}
 
-\item variables~: $x$, $y$, $z$~;
+\item variables~: $X$, $Y$, $Z$~;
 
-\item domaines~: $D(X) = (4, 5, 6, 7)$, $D(Y) = (4, 5, 6, 8, 9)$ et $D(Z) = (3,
-5, 6, 7, 9)$~;
+\item domaines~: $D(X) = \{4, 5, 6, 7\}$, $D(Y) = \{4, 5, 6, 8, 9\}$ et $D(Z) =
+\{3, 5, 6, 7, 9\}$~;
 
 \item contraintes~: $X = Y$ et $Y = Z$.
 
@@ -453,12 +457,12 @@ Supposons que nous avons le CSP suivant~:
 
 Sans algorithme AC3, intuitivement, nous commençons par vérifier la contrainte
 $X = Y$, c'est~à~dire que toutes les valeurs des domaines $D(X)$ et $D(Y)$ qui
-ne sont pas égales seront supprimées. Alors nous obtenons $D(X) = (4, 5, 6)$,
-$D(Y) = (4, 5, 6)$ et $D(Z)$ est inchangé. Ensuite, nous vérifions la contrainte
-$Y = Z$. Nous obtenons $D(Y) = (5, 6)$, $D(Z) = (5, 6)$ et $D(X)$ est inchangé.
-Mais nous avons un problème~: la contrainte $X = Y$ n'est plus satisfaite. Nous
-savons alors qu'il faut re-vérifier la contrainte $X = Y$ pour obtenir $D(X) =
-(5, 6)$, mais une machine ne le saurait pas nécessairement.
+ne sont pas égales seront supprimées. Alors nous obtenons $D(X) = \{4, 5, 6\}$,
+$D(Y) = \{4, 5, 6\}$ et $D(Z)$ est inchangé. Ensuite, nous vérifions la
+contrainte $Y = Z$. Nous obtenons $D(Y) = \{5, 6\}$, $D(Z) = \{5, 6\}$ et $D(X)$
+est inchangé.  Mais nous avons un problème~: la contrainte $X = Y$ n'est plus
+satisfaite. Nous savons alors qu'il faut re-vérifier la contrainte $X = Y$ pour
+obtenir $D(X) = \{5, 6\}$, mais une machine ne le saurait pas nécessairement.
 
 Maintenant, voyons comment opère l'algorithme AC3. Nous avons les mêmes
 variables, domaines et contraintes qu'au début de cet exemple. Le graphe du CSP
@@ -467,29 +471,37 @@ variables~:
 
 \fig{6cm}{!}{AC3.tex}
 
-Nous avons un ensemble $Q$ (représentant la variable $\avar{queue}$ de
-l'algorithme présenté dans la figure~\ref{figure:data:ac3}) contenant au départ
-tous les arcs du graphe, soit $Q = \{(X, Y), (Y, X), (Y, Z), (Z, Y)\}$. Nous
-commençons par traiter la première paire de $Q$ après l'avoir supprimée. Nous
-traitons alors la contrainte impliquant $X$ et $Y$, soit $X = Y$ mais nous
-n'allons travailler que sûr $X$. Ainsi $D(X) = (4, 5, 6)$, $D(Y)$ et $D(Z)$
-restant inchangés. La variable $X$ n'a pas d'arcs vers d'autres variables, donc
-nous ne modifions pas $Q$. Ensuite, la paire suivante est $(Y, X)$, donc nous
-traitons la contrainte $X = Y$ mais cette fois-ci, nous modifions $Y$. Ainsi
-$D(Y) = (4, 5, 6)$, $D(X)$ et $D(Z)$ restant inchangés. La variable $Y$ a un arc
-vers $Z$ en plus de vers $X$, donc nous devrions ajouter la paire $(Z, Y)$ mais
-elle existe déjà dans $Q$, nous ne faisons rien. La paire suivante dans $Q$ est
-$(Y, Z)$, donc nous traitons la contrainte $Y = Z$ en modifiant uniquement $Y$.
-Ainsi~: $D(Y) = (5, 6)$, $D(X)$ et $D(Z)$ restant inchangés. La variable $Z$ n'a
-pas d'arcs vers une autre variable, donc nous ne modifions pas $Q$. La paire
-suivante est $(Z, Y)$, donc nous vérifions la contrainte $Y = Z$ en modifiant
-$Z$. Ainsi (en rappelant tous les domaines)~: $D(X) = (4, 5, 6)$, $D(Y) = (5,
-6)$ et $D(Z) = (5, 6)$. La variable $Y$ a un arc vers la variable $X$, donc nous
-ajoutons la paire $(X, Y)$ dans $Q$. Comme $Q$ était vide, cela devient notre
-paire suivante que nous traitons. Nous appliquons alors la contrainte $X = Y$ en
-modifiant $X$. Ainsi, nous obtenons~: $D(X) = D(Y) = D(Z) = (5, 6)$. La variable
-$X$ n'a pas d'arcs vers d'autres variables que $Y$, donc nous ne modifions pas
-$Q$.  Cette dernière est vide, donc l'algorithme se termine.
+D'après la figure~\ref{figure:data:ac3}, nous avons $\avar{Variables} = \{X, Y,
+Z\}$, $\avar{Domains} = \{X \rightarrow \{4, 5, 6, 7\}, Y \rightarrow \{4, 5, 6,
+8, 9\}, Z \rightarrow \{3, 5, 6, 7, 9\}\}$ et $\avar{Neighbours} = \{X
+\rightarrow \{Y\}, Y \rightarrow \{X, Y\}, Z \rightarrow \{Y\}\}$. Ensuite, dans
+l'algorithme $\akw{AC3}$, la variable $\avar{queue}$ contient au départ tous les
+arcs du graphe, soit $\avar{queue} = \{(X, Y), (Y, X), (Y, Z), (Z, Y)\}$. Nous
+commençons par traiter la première paire de $\avar{queue}$ après l'avoir
+supprimée. Nous traitons alors la contrainte impliquant $X$ et $Y$, soit $X = Y$
+mais nous n'allons travailler que sûr $X$.  Ainsi $\avar{Domains}(X) = \{4, 5,
+6\}$, $\avar{Domains}(Y)$ et $\avar{Domains}(Z)$ restant inchangés. La variable
+$X$ n'a pas d'arcs vers d'autres variables, donc nous ne modifions pas
+$\avar{queue}$.  Ensuite, la paire suivante est $(Y, X)$, donc nous traitons la
+contrainte $X = Y$ mais cette fois-ci, nous modifions $Y$. Ainsi
+$\avar{Domains}(Y) = \{4, 5, 6\}$, $\avar{Domains}(X)$ et $\avar{Domains}(Z)$
+restant inchangés.  La variable $Y$ a un arc vers $Z$ en plus de vers $X$, donc
+nous devrions ajouter la paire $(Z, Y)$ mais elle existe déjà dans
+$\avar{Domains}$, nous ne faisons rien.  La paire suivante dans $\avar{queue}$
+est $(Y, Z)$, donc nous traitons la contrainte $Y = Z$ en modifiant uniquement
+$Y$. Ainsi~: $\avar{Domains}(Y) = \{5, 6\}$, $\avar{Domains}(X)$ et
+$\avar{Domains}(Z)$ restant inchangés. La variable $Z$ n'a pas d'arcs vers une
+autre variable, donc nous ne modifions pas $\avar{queue}$. La paire suivante est
+$(Z, Y)$, donc nous vérifions la contrainte $Y = Z$ en modifiant $Z$. Ainsi (en
+rappelant tous les domaines)~: $\avar{Domains}(X) = \{4, 5, 6\}$,
+$\avar{Domains}(Y) = \{5, 6\}$ et $\avar{Domains}(Z) = \{5, 6\}$. La variable
+$Y$ a un arc vers la variable $X$, donc nous ajoutons la paire $(X, Y)$ dans
+$\avar{queue}$.  Comme $\avar{queue}$ était vide, cela devient notre paire
+suivante que nous traitons. Nous appliquons alors la contrainte $X = Y$ en
+modifiant $X$.  Ainsi, nous obtenons~: $\avar{Domains}(X) = \avar{Domains}(Y) =
+\avar{Domains}(Z) = \{5, 6\}$. La variable $X$ n'a pas d'arcs vers d'autres
+variables que $Y$, donc nous ne modifions pas $\avar{queue}$. Cette dernière est
+vide, donc l'algorithme se termine.
 
 \end{example}
 
@@ -508,9 +520,9 @@ une méthode \code{discredit} pour supprimer une valeur du domaine,
 \code{Interval} attend les méthodes \code{reduceRightTo} et \code{reduceLeftTo}
 respectivement pour réduire la borne droite et gauche etc.
 
-\begin{example}[Propagation et consistence avec un algorithme AC3]
+\begin{example}[Propagation et consistance avec un algorithme AC3]
 
-Si nous reprenons notre exemple~\ref{example:data:array_conditions}, nous avons
+Si nous reprenons notre exemple~\ref{example:data:array_proprietes}, nous avons
 les contraintes suivantes~:
 
 \begin{align*}
@@ -559,35 +571,35 @@ ajoutons la paire $(X, Y)$ traitée juste avant. Cette fois-ci, nous pouvons
 réviser $Y$ avec la contrainte $\mathrm{card}(X) = \mathrm{card}(Y)$ qui peut
 maintenir s'écrire $5 = \mathrm{card}(Y)$. Nous révisons alors \code{natural(0,
 1)} pour qu'il ne produise que 5 données au maximum. Ensuite, nous prenons une
-autre paire et nous vérifions la consistence de $\{\code{0}\} \subseteq X$, ce
+autre paire et nous vérifions la consistance de $\{\code{0}\} \subseteq X$, ce
 qui est le cas car $\code{0} \in \code{natural(0, 1)}$. Pareil avec
 $\{\code{'b'}, \code{'c'}\} \subseteq \code{string('a', 'e', 1)}$. Nous n'avons
 plus de paires à vérifier, l'algorithme termine.
 
 \end{example}
 
-La consistence vérifie également qu'il n'y a pas de domaine réaliste vide pour
+La consistance vérifie également qu'il n'y a pas de domaine réaliste vide pour
 les quatres variables $S$, $H$, $X$ et $Y$. L'objectif est de détecter les
-inconsistences au plus tôt. Toutefois, toutes les inconsistences ne sont pas
+inconsistances au plus tôt. Toutefois, toutes les inconsistances ne sont pas
 détectées, ceci étant un problème NP-difficile.
 
 \subsubsection{\inenglish{Labelling}}
 
 Le \inenglish{labelling} (étiquetage) est le processus qui trouve une valeur
-pour chaque variable. Il s'applique si les contraintes sont consistentes. L'idée
+pour chaque variable. Il s'applique si les contraintes sont consistantes. L'idée
 est de sélectionner une variable et de lui choisir une valeur, puis de
 recommencer avec une autre variable etc. Le choix de la variable à sélectionner
 dépend de la dépendance entre les variables (les arcs vus dans la partie
 précédente).
 
-À chaque choix de valeur, la consistence entre les contraintes sont
-vérifiées. Si une inconsistence est détectée, alors le processus va revenir en
+À chaque choix de valeur, la consistance entre les contraintes sont
+vérifiées. Si une inconsistance est détectée, alors le processus va revenir en
 arrière, nous parlons de \inenglish{backtracking}.
 
 À chaque fois que l'algorithme sélectionne une nouvelle variable, sa disjonction
 de domaines réalistes est clonée (dupliquée)~; ainsi lors du
 \inenglish{backtracking}, nous restaurons la disjonction précédente pour
-«~restaurer l'état~». En même temps, la valeur qui a conduite à l'inconsistence
+«~restaurer l'état~». En même temps, la valeur qui a conduite à l'inconsistance
 est discréditée afin de ne pas être re-sélectionnée.
 
 Dans notre implémentation, le choix d'une valeur utilise la caractéristique de
@@ -604,7 +616,7 @@ valeur valide, le solveur retourne la solution.
 
 \begin{example}[\inenglish{Labelling}]
 
-Une solution pour l'exemple~\ref{example:data:array_conditions} est~:
+Une solution pour l'exemple~\ref{example:data:array_proprietes} est~:
 %
 \begin{pre}
 array( \\
