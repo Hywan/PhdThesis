@@ -2,35 +2,36 @@
 \label{section:data:random}
 
 Commençons par le processus de génération des données dans Praspel, qui se
-déroule basiquement en 3~étapes~:
+déroule basiquement en 3~étapes, présents dans la
+figure~\ref{figure:data:process} et détaillée ci-après~:
 
 \begin{enumerate}
 
 \item sélection d'une variable~;
 
-\item génération, validation et assignation d'une donnée à cette variable~;
+\item génération, validation et affectation d'une donnée à cette variable~;
 
 \item sélection de la variable suivante.
 
 \end{enumerate}
 
-Les variables qui nous intéressent sont déclarées dans les préconditions ainsi
-que dans les invariants. Ces derniers seront traités dans la
-partie~\ref{section:data:objects}. Rappelons-nous qu'une précondition est
-constituée de déclarations, de prédicats et de contraintes (voir la
+Les variables qui nous intéressent sont écrites dans les préconditions ainsi que
+dans les invariants. Ces derniers seront traités dans la
+partie~\ref{section:data:objects}. Rappelons qu'une précondition est constituée
+de déclarations, de prédicats et de contraintes (voir la
 figure~\ref{figure:language:grammar_part2}). Lors d'une génération de données,
-nous allons commencer par traiter les déclarations. Nous allons choisir une
-variable $v$ dans la liste des variables $V$, les unes après les autres.
-L'ordre des variables est décroissant selon le nombre de contraintes portées~:
-la variable avec le plus de contraintes sera la première de la liste.
+nous commençons par traiter les déclarations. Nous choisissons une variable $v$
+dans la liste des variables $V$, les unes après les autres. Les variables sont
+choisies dans l'ordre décroissant du nombre de contraintes portées~: la variable
+avec le plus de contraintes sera la première de la liste.
 
 Une variable porte une disjonction de domaines réalistes, soit $n$ domaine
 réalistes~:
 %
 $$\code{i: $t_1$(\dots) or \dots or $t_n$(\dots)}$$
 %
-Nous allons choisir pseudo-aléatoirement le domaine réaliste $t_c$ avec $c \in
-[1, n]$. Cette étape est représentée par l'état \code{pick} dans la
+Nous allons choisir pseudo-aléatoirement le domaine réaliste $t_c$ avec $1 \leq
+c \leq n$. Cette étape est représentée par l'état \code{pick} dans la
 figure~\ref{figure:data:process}.
 %
 \begin{figure}
@@ -43,18 +44,18 @@ gardes pour activer la transition.}
 
 \end{figure}
 %
-Sur ce domaine réaliste, nous allons utiliser sa propriété de générabilité, soit
-appeler sa méthode \code{sample}. Au sein d'un domaine réaliste, quand une
-donnée est générée, elle est aussitôt confrontée à sa propriété de
-prédicabilité, soit sa méthode \code{predicate}, afin de savoir si la donnée est
-valide ou non. Si la précondition a des prédicats (avec la construction
-\apred{p}), alors ces derniers seront évalués avec les données fraîchement
-générées. Si un prédicat a besoin de plusieurs variables, alors son évaluation
-sera repoussée à plus tard.
+Sur ce domaine réaliste, nous allons utiliser sa caractéristique de
+générabilité, c'est~à~dire appeler sa méthode \code{sample}. Au sein d'un
+domaine réaliste, quand une donnée est générée, elle est aussitôt confrontée à
+sa caractéristique de prédicabilité, c'est~à~dire sa méthode \code{predicate},
+afin de savoir si la donnée est valide ou non. Si la précondition a des
+prédicats (avec la construction \apred{p}), alors ces derniers seront évalués
+avec les données fraîchement générées. Si un prédicat a besoin de plusieurs
+variables, alors son évaluation sera reportée à plus tard.
 
 Si pendant ce cycle, la propriété de prédicabilité d'un domaine réaliste ou
-qu'un prédicat invalide une donnée, nous parlons de {\strong rejet}. Et suite à
-un rejet, une donnée est re-générée. Un nombre maximum $\tau_\mathrm{max}$ de
+qu'un prédicat invalide une donnée, nous parlons de {\strong rejet}. Suite à un
+rejet, une donnée est re-générée. Un nombre maximum $\tau_\mathrm{max}$ de
 re-générations $\tau$ est fixé afin d'éviter des générations et des rejets en
 boucle. À chaque génération, $\tau$ est incrémenté de 1. La valeur de
 $\tau_\mathrm{max}$ est paramétrable. \\
