@@ -9,7 +9,7 @@ digraph {
     predicate -> sample    [label=" ", texlbl="invalide"                                           ];
     predicate -> pred      [label=" ", texlbl="valide"                                             ];
     pred      -> sample    [label=" ", texlbl="invalide"                                           ];
-    pred      -> variable  [label=" ", texlbl="valide"                                             ];
+    pred      -> variable  [label=" ", texlbl="\quad valide $\land\;\tau = 1$"                           ];
 
     in        [style=invis                      ];
     variable  [texlbl="\code{pick}"             ];

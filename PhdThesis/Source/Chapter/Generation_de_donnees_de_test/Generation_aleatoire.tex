@@ -15,74 +15,85 @@ figure~\ref{figure:data:process} et détaillée ci-après~:
 
 \end{enumerate}
 
-Les variables qui nous intéressent sont écrites dans les préconditions ainsi que
-dans les invariants. Ces derniers seront traités dans la
+La liste des variables $V$ qui nous intéressent sont écrites dans les
+préconditions (clause \arequires) ainsi que dans les invariants (clause
+\ainvariant). Ces derniers seront traités dans la
 partie~\ref{section:data:objects}. Rappelons qu'une précondition est constituée
 de déclarations, de prédicats et de contraintes (voir la
-figure~\ref{figure:language:grammar_part2}). Lors d'une génération de données,
-nous commençons par traiter les déclarations. Nous choisissons une variable $v$
-dans la liste des variables $V$, les unes après les autres. Les variables sont
-choisies dans l'ordre décroissant du nombre de contraintes portées~: la variable
-avec le plus de contraintes sera la première de la liste.
-
-Une variable porte une disjonction de domaines réalistes, soit $n$ domaine
-réalistes~:
-%
-$$\code{i: $t_1$(\dots) or \dots or $t_n$(\dots)}$$
-%
-Nous allons choisir pseudo-aléatoirement le domaine réaliste $t_c$ avec $1 \leq
-c \leq n$. Cette étape est représentée par l'état \code{pick} dans la
-figure~\ref{figure:data:process}.
+figure~\ref{figure:language:grammar_part2}
+page~\pageref{figure:language:grammar_part2}). Le processus de génération d'une
+donnée est illustré dans la figure~\ref{figure:data:process}. Nous y retrouvons
+l'ensemble des variables $V$ avec $v \in V$ une variable. Nous trouvons
+également une variable $\tau$ et une constante $\tau_\mathrm{max}$, détaillées
+ci-après. Les annotations sur les transitions représentent des gardes pour
+activer la transition.
 %
 \begin{figure}
 
-\fig{8.5cm}{!}{Generation_process.tex}
+\fig{!}{9cm}{Generation_process.tex}
 
-\caption{\label{figure:data:process} Processus de génération des données pour
-une liste de variables $V$. Les annotations sur les transitions représentent des
-gardes pour activer la transition.}
+\caption{\label{figure:data:process} Processus de génération des données
+pseudo-aléatoire.}
 
 \end{figure}
-%
-Sur ce domaine réaliste, nous allons utiliser sa caractéristique de
-générabilité, c'est~à~dire appeler sa méthode \code{sample}. Au sein d'un
-domaine réaliste, quand une donnée est générée, elle est aussitôt confrontée à
-sa caractéristique de prédicabilité, c'est~à~dire sa méthode \code{predicate},
-afin de savoir si la donnée est valide ou non. Si la précondition a des
-prédicats (avec la construction \apred{p}), alors ces derniers seront évalués
-avec les données fraîchement générées. Si un prédicat a besoin de plusieurs
-variables, alors son évaluation sera reportée à plus tard.
 
-Si pendant ce cycle, la propriété de prédicabilité d'un domaine réaliste ou
-qu'un prédicat invalide une donnée, nous parlons de {\strong rejet}. Suite à un
-rejet, une donnée est re-générée. Un nombre maximum $\tau_\mathrm{max}$ de
+Le premier état de la figure est l'état \code{pick}. Lors d'une génération de
+données, nous commençons par traiter les déclarations. Nous choisissons alors
+une variable $v$ dans la liste des variables $V$, les unes après les autres
+(représenté par l'opération $\mathrm{pop}$ dans la figure) et ce que jusqu'à ce
+que $V$ soit non vide, sinon le processus termine. Les variables sont choisies
+dans l'ordre décroissant du nombre de contraintes portées~: la variable avec le
+plus de contraintes sera la première de la liste.
+
+L'état suivant est \code{sample}. Une variable porte une disjonction de domaines
+réalistes, soit $n$ domaine réalistes~:
+%
+$$\code{$v$: $t_1$(\dots) or \dots or $t_n$(\dots)}$$
+%
+Nous allons choisir pseudo-aléatoirement le domaine réaliste $t_c$ avec $1 \leq
+c \leq n$. Sur ce domaine réaliste $t_c$, nous allons utiliser sa
+caractéristique de générabilité, c'est~à~dire appeler sa méthode \code{sample}
+pour générer une donnée qui appartient à ce domaine.
+
+Au sein d'un domaine réaliste, quand une donnée est générée, elle est aussitôt
+confrontée à sa caractéristique de prédicabilité, c'est~à~dire sa méthode
+\code{predicate}, afin de savoir si la donnée est valide ou non. C'est l'état
+\code{predicate} de la figure.
+
+Si la précondition a des prédicats (avec la construction \apred{p}), alors ces
+derniers seront évalués avec les données fraîchement générées. Si un prédicat a
+besoin de plusieurs variables, alors son évaluation sera reportée à plus tard.
+
+Si pendant ces étapes, la propriété de prédicabilité d'un domaine réaliste ou
+qu'un prédicat invalide une donnée, il y a un {\strong rejet}. Suite à un rejet,
+une donnée est re-générée. Un nombre maximum $\tau_\mathrm{max}$ de
 re-générations $\tau$ est fixé afin d'éviter des générations et des rejets en
-boucle. À chaque génération, $\tau$ est incrémenté de 1. La valeur de
-$\tau_\mathrm{max}$ est paramétrable. \\
+boucle trop importants et donc trop longs. À chaque génération, $\tau$ est
+incrémenté de 1. La valeur de $\tau_\mathrm{max}$ est paramétrable. \\
 
 Mais il n'y a pas que le choix d'un domaine réaliste parmi une disjonction qui
 est pseudo-aléatoire. Par défaut, un domaine réaliste génère une donnée de
 manière pseudo-aléatoire.  Si nous écrivons \code{boundinteger(7, 42)}, alors un
-entier de l'intervalle 7 à 42 sera généré pseudo-aléatoirement. Nous avons
+entier de l'intervalle $[7, 42]$ sera généré pseudo-aléatoirement. Nous avons
 précisé dans la partie~\ref{subsection:language:realdom:implementation} qu'une
 méthode \code{sample} d'un domaine réaliste reçoit un générateur numérique en
 argument. Le seul générateur actuel est pseudo-aléatoire, basé sur l'algorithme
 de Mersenne Twister~\acite{MatsumotoN98}. Il permet de générer des entiers et
 des réels. Un exemple d'utilisation a été montré dans la
-figure~\ref{figure:language:boundinteger}.
+figure~\ref{figure:language:boundinteger}
+page~\pageref{figure:language:boundinteger}.
 
 C'est aussi cette méthodologie qu'utilise le domaine réaliste \code{String} pour
 générer des chaînes de caractères. Cette approche pseudo-aléatoire pose
 rapidement des problèmes. Le nombre de valeurs possibles pour \code{string('a',
-'z', 10)}, c'est~à~dire une chaîne de caractères ne contenant que les caractères
-de \code{a} à \code{z} en minuscules d'une longueur de 10, est de $26^{10}$,
-soit environ $1.412e^{14}$ données. La probabilité qu'une de ces données détecte
-une erreur dans notre programme est extrairement faible. C'est un problème
-inhérent à l'approche pseudo-aléatoire. Cependant, l'ensemble des valeurs
-générables peut être considérablement réduit si la donnée est mieux spécifiée
-(représentée). Plus la donnée pourra être spécifiée avec précisions, plus nous
-devrions être capables de générer des données pertinentes, c'est~à~dire capables
-de détecter des erreurs. \\
+'z', 10)}, c'est~à~dire pour une chaîne de 10 caractères entre \code{a} et
+\code{z} en minuscules, est de $26^{10}$, soit environ $1.412e^{14}$ valeurs
+différentes. La probabilité qu'une de ces valeurs détecte une erreur dans notre
+programme est extraimement faible. C'est un problème inhérent à l'approche
+pseudo-aléatoire. Cependant, l'ensemble des valeurs générables peut être
+considérablement réduit si la donnée est mieux spécifiée~: plus la donnée pourra
+être spécifiée avec précision, plus il sera possible de générer des données
+pertinentes, c'est~à~dire capables de détecter des erreurs. \\
 
 Dans les parties suivantes, nous allons nous intéresser à mieux spécifier et
 mieux générer des tableaux, des chaînes caractères et des objets.
