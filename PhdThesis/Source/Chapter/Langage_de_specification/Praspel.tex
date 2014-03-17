@@ -9,14 +9,14 @@
 
 Praspel est un acronyme anglais signifiant \inenglish{PHP Realistic Annotation
 and SPEcification Language}. C'est un langage et un framework de test à partir
-de contrats en PHP. Ce langage {\strong repose} sur les domaines réalistes.
+de contrats en PHP. Ce langage repose sur les domaines réalistes.
 
 Praspel est un {\strong langage d'annotation} car il s'écrit dans les
 commentaires du code source du programme. PHP comprend trois catégories de
 commentaires~: en ligne (avec \code{//} ou \code{\#}), multi-lignes (entre
-\code{/*} et \code{*/}) et en bloc (entre \code{/**} et \code{*/}). C'est dans
-cette dernière catégorie que nous écrirons Praspel, catégorie qui est
-culturellement dédiée à l'écriture des annotations, documentations API etc.
+\code{/*} et \code{*/}) et en bloc (entre \code{/**} et \code{*/}). Cette
+dernière catégorie est culturellement dédiée à l'écriture des annotations,
+documentations API etc., et est par conséquent celle où nous écrirons Praspel.
 
 Praspel est un \inenglish{Behavioral Interface Specification Language} ({\strong
 BISL}) basé sur les contrats. Un {\strong contrat} est un modèle du comportement
@@ -70,22 +70,21 @@ page~\pageref{appendices:grammar_of_praspel}.
     $)$ \\
 \end{tabular}
 
-\caption{\label{figure:language:grammar_part0} Grammaire de Praspel en forme
-normale~: les entités syntaxiques de plus haut niveau.}
+\caption{\label{figure:language:grammar_part0} Grammaire de Praspel~: les
+entités syntaxiques de plus haut niveau.}
 
 \end{figure}
 
 Un contrat est composé de clauses, dont la syntaxe est décrite dans les
 figures~\ref{figure:language:grammar_part0},
-\ref{figure:language:grammar_part1}, \ref{figure:language:grammar_part2} et
-\ref{figure:language:grammar_part3}. Dans ces figures, le style \code{token}
+\ref{figure:language:grammar_part1}. Dans ces figures, le style \code{token}
 représente un lexème de la grammaire de Praspel, \grule{rule} représente une
-entité syntaxique (règle) de la grammaire, et \gtoken{token} représente un lexème
-de la grammaire de PHP (pour être le plus proche possible du langage manipulé
-par le développeur). La notation $e^r_s$ signifie que le motif $e$ est répété
-$r$ fois, et séparé par $s$. $r$ peut être $?$, $+$ ou $*$, respectivement pour
-0 ou 1 fois, 1 ou plusieurs fois et 0 ou plusieurs fois. Si $s$ n'est pas vide,
-alors $s$ doit être un lexème.
+entité syntaxique (règle) de la grammaire, et \gtoken{token} représente un
+lexème de la grammaire de PHP (pour être le plus proche possible du langage
+manipulé par le développeur). La notation $e^r_s$ signifie que le motif $e$ est
+répété $r$ fois, et séparé par $s$. $r$ peut être $?$, $+$ ou $*$,
+respectivement pour 0 ou 1 fois, 1 ou plusieurs fois et 0 ou plusieurs fois. Si
+$s$ n'est pas vide, alors $s$ doit être un lexème.
 
 \begin{figure}
 \begin{bigpre}
@@ -133,7 +132,7 @@ Ainsi, nous apprenons que les entités syntaxiques \grule{attribute-clauses} et
 \grule{method-clauses} définissent respectivement les clauses annotant les
 attributs d'une classe et ses méthodes.  L'entité syntaxique
 \grule{method-clauses} montre l'ordre des clauses en forme normale. La grammaire
-actuelle de Praspel est bien plus libérale~: elle accepte des clauses dans
+actuelle de Praspel est bien plus souple~: elle accepte des clauses dans
 n'importe quel ordre mais pour faciliter le raisonnement, nous ne présenterons
 et ne travaillerons que sur une forme normale. La
 figure~\ref{figure:language:typical_contract} illustre la localisation typique
@@ -180,8 +179,8 @@ partie~\ref{subsection:language:expressions}.
     \adescription \gtoken{string} \\
 \end{tabular}
 
-\caption{\label{figure:language:grammar_part1} Grammaire de Praspel en forme
-normale~: les entités syntaxiques des clauses.}
+\caption{\label{figure:language:grammar_part1} Grammaire de Praspel~: les
+entités syntaxiques des clauses.}
 
 \end{figure}
 
@@ -223,14 +222,14 @@ $\beta$ est imbriqué dans le comportement $\alpha$. À côté de ça, nous pouv
 clauses \abehavior. Ceci est toujours illustré dans la
 figure~\ref{figure:language:typical_contract} avec le comportement $\gamma$,
 frère du comportement $\alpha$. Les comportements sont, dans la pratique,
-{\strong mutuellement exclusifs}, cependant, la syntaxe autorise l'écriture de
-comportement non-déterministe.
+{\strong mutuellement exclusifs}. Cependant, la syntaxe autorise l'écriture de
+comportements non-déterministes.
 
 La clause \adefault est strictement équivalente à une clause \abehavior avec une
 clause \arequires implicite décrivant la conjonction de toutes les négations des
 clauses \arequires des comportements frères précédents.  Par exemple, dans la
 figure~\ref{figure:language:typical_contract}, la clause \arequires de \adefault
-pourrait mathématiquement s'écrire $\neg P_\alpha \land \neg P_\gamma$.
+pourrait s'écrire $\neg P_\alpha \land \neg P_\gamma$.
 
 Afin d'«~activer~» un comportement donné, sa clause \arequires doit être
 satisfaite. Après l'exécution, le système est dans le post-état. Nous faisons
@@ -241,11 +240,10 @@ deux $T_C$ et $T_E$ doivent être satisfaits, comme décrit précédemment.
 
 Enfin, la clause \ais permet de qualifier la catégorie de la méthode. Le seul
 qualificatif actuel est \code{pure}, pour contrôler la mutabilité de
-l'environnement. En effet, une méthode peut muter (modifier) ou pas son
-environnement lors de son exécution. Si elle ne le modifie pas, alors nous
-parlons d'une méthode {\strong pure}, sinon nous parlons d'une méthode {\strong
-mutante} (par défaut). Seules les méthodes pures peuvent être utilisées dans les
-contrats. \\
+l'environnement. En effet, une méthode peut modifier ou pas son environnement
+lors de son exécution. Si elle ne le modifie pas, alors nous parlons d'une
+méthode {\strong pure}, sinon nous parlons d'une méthode {\strong impure} (par
+défaut). Seules les méthodes pures peuvent être utilisées dans les contrats. \\
 
 \begin{figure}
 \begin{bigpre}
@@ -294,24 +292,28 @@ class Filesystem \{ \\
 
 \end{figure}
 
-La figure~\ref{figure:language:short_contract} montre un exemple concret d'une
+\begin{example}[Contrat d'un système de fichier] La
+figure~\ref{figure:language:short_contract} montre un exemple concret d'une
 classe \code{Filesystem} annotée, avec deux méthodes \code{getUsage} et
 \code{store}. Cet exemple sera utilisé pour illustrer chaque notion introduite
 dans la suite de cette partie.
 
 La méthode \code{getUsage} est déclarée comme \code{pure}, ce qui veut dire
 qu'elle ne modifie pas son environnement. Elle n'a pas de clause \arequires,
-donc elle refusera tous les arguments. Elle a une postcondition, nous y
-reviendrons. La méthode \code{store} a deux comportements~: un comportement
-\code{full} quand le système de fichier est plein, et un comportement par
-défaut. Le premier comportement décrit une précondition et une postcondition
-uniquement exceptionnelle. En l'absence de postcondition normale, toute valeur
-retournée sera invalide. Ici, seule l'exception \code{AllocationException} peut
-être levée. Elle sera associée à l'identifiant \code{e}, puis le reste de la
-clause devra être valide. Dans le second comportement (par défaut), aucune
-exception ne peut être levée car la clause \athrowable est absente. Nous pouvons
-voir également que les attributs \code{\_usage} et \code{\_map} sont annotés
-d'invariants avec la clause \ainvariant.
+donc elle refusera tous les arguments. Elle a une postcondition que nous
+décrirons dans les parties suivantes. La méthode \code{store} a deux
+comportements~: un comportement \code{full} quand le système de fichier est
+plein, et un comportement par défaut. Le premier comportement décrit une
+précondition et une postcondition uniquement exceptionnelle. En l'absence de
+postcondition normale, toute valeur retournée sera invalide. Ici, seule
+l'exception \code{AllocationException} peut être levée. Elle sera associée à
+l'identifiant \code{e}, puis le reste de la clause devra être valide. Dans le
+second comportement (par défaut), aucune exception ne peut être levée car la
+clause \athrowable est absente. Nous pouvons voir également que les attributs
+\code{\_usage} et \code{\_map} sont annotés d'invariants avec la clause
+\ainvariant.
+
+\end{example}
 
 \subsection{Expressions}
 \label{subsection:language:expressions}
@@ -338,8 +340,8 @@ contraintes, respectivement présentées dans les parties suivantes.
 \end{tabular}
 \end{center}
 
-\caption{\label{figure:language:grammar_part2} Grammaire de Praspel en forme
-normale~: les entités syntaxiques d'expressions.}
+\caption{\label{figure:language:grammar_part2} Grammaire de Praspel~: les
+entités syntaxiques d'expressions.}
 
 \end{figure}
 
@@ -379,11 +381,14 @@ normale~: les entités syntaxiques d'expressions.}
 
 \grule{scalar} & \gsep &
     \code{null} \mvert \gtoken{boolean} \mvert \grule{number} \\ & &
-    \mvert \gtoken{string} \\
+    \mvert \gtoken{string} \mvert \grule{range} \\
 
 \grule{number} & \gsep &
     \gtoken{binary} \mvert \gtoken{octal} \mvert \gtoken{hexa} \\ & &
     \mvert \gtoken{decimal} \\
+
+\grule{range} & \gsep &
+    \grule{number} \code{..} \grule{number} \\
 
 \grule{array} & \gsep &
     \code{[} \grule{pair}$^?_\code{,}$ \code{]} \\
@@ -408,15 +413,15 @@ normale~: les entités syntaxiques d'expressions.}
 \end{tabular}
 \end{center}
 
-\caption{\label{figure:language:grammar_part3} Grammaire de Praspel en forme normale~:
-entités syntaxiques de construction des expressions.}
+\caption{\label{figure:language:grammar_part3} Grammaire de Praspel~: entités
+syntaxiques de construction des expressions.}
 
 \end{figure}
 
 \subsubsection{Déclarations}
 
-Une déclaration assigne un ou plusieurs domaines réalistes à une variable à
-travers l'opérateur \code{:}. Une variable est soit un attribut de classe,
+Une {\em déclaration} assigne un ou plusieurs domaines réalistes à une variable
+à travers l'opérateur \code{:}. Une variable est soit un attribut de classe,
 spécifié dans une clause \ainvariant, soit un paramètre de la méthode, spécifié
 dans les autres clauses. La valeur d'une variable peut appartenir à plusieurs
 domaines réalistes si la variable est définie par une {\strong disjonction} de
