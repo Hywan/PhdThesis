@@ -1,9 +1,9 @@
 \section{Génération à partir de propriétés sur les tableaux}
 \label{section:data:arrays}
 
-Les tableaux sont utilisés pour représenter toutes sortes de collections en PHP.
-Nous parlons de tableaux associatifs, ou encore \inenglish{hashmaps}, car ils
-sont constituées de paires clé-valeur.
+En PHP, les tableaux sont utilisés pour représenter toutes sortes de
+collections. Nous parlons de tableaux associatifs, ou encore
+\inenglish{hashmaps}, car ils sont constitués de paires clé-valeur.
 
 Nous allons tout d'abord étudier plusieurs projets PHP pour connaître les
 fonctions les plus utilisées sur les tableaux. Ensuite, nous allons étendre
@@ -13,12 +13,12 @@ comment ces propriétés sont traduites en contraintes pour notre propre solveur
 \subsection{Étude des propriétés les plus utilisées}
 
 Nous avons sélectionnés 61~projets PHP sur plusieurs plateformes, comme
-Github\footnote{\url{http://github.com/}} ou
-Sourceforge\footnote{\url{http://sourceforge.net/}}, à partir de leur
-popularité, leur impact sur l'industrie et leur complexité. Tous ces projets
-représentent 28~066 fichiers, soit 5~220~547~lignes de code. Dans ces lignes de
-code, nous avons compté le nombre d'occurences de chaque fonction de tableaux
-disponible dans la bibliothèque standard de PHP. La
+Github\footnote{Voir \url{http://github.com/}.} ou Sourceforge\footnote{Voir
+\url{http://sourceforge.net/}.}, à partir de leur popularité, leur impact sur
+l'industrie et leur complexité. Tous ces projets représentent 28~066 fichiers,
+soit 5~220~547~lignes de code. Dans ces lignes de code, nous avons compté le
+nombre d'occurences de chaque fonction de tableaux disponible dans la
+bibliothèque standard de PHP\footnote{Voir \url{http://php.net/ref.array}.}. La
 figure~\ref{figure:data:collecting_informations} présente partiellement ces
 résultats~: les fonctions sont triées par leur nombre d'occurences $n$~; celles
 avec $n < 100$ n'apparaissent pas.
@@ -141,9 +141,8 @@ avec $n < 100$ n'apparaissent pas.
 }
 }
 
-\caption{\label{figure:data:collecting_informations} Résultats de l'étude de
-plusieurs projets PHP pour connaître les fonctions les plus populaires sur les
-tableaux.}
+\caption{\label{figure:data:collecting_informations} Étude des fonctions sur les
+tableaux~: les fonctions en abscisse et leur nombre d'occurences en ordonnée.}
 
 \end{figure}
 %
@@ -170,34 +169,70 @@ une paire est de la forme~:
 $$\code{a[$K$]: $V$}$$
 %
 où $K$ et $V$ sont des disjonctions de domaines réalistes. La propriété signifie
-que les paires constituées de toutes les clés de $K$ et au moins une valeur dans
-$V$ sont présentes dans le tableau \code{a}. $K$ accepte seulement les domaines
-réalistes qui implémentent les interfaces \code{Constant}, \code{Interval} et
-\code{Enumerable}. Cette propriété est équivalente à utiliser les fonctions
-\code{array\_key\_exists()} et \code{in\_array()} combinées. Si nous voulons
-exprimer une contrainte seulement sur $K$, nous pouvons utiliser le symbole
-\code{\_}. La propriété~:
+que les paires constituées de toutes les valeurs de $K$ avec au moins une valeur
+dans $V$ sont présentes dans le tableau \code{a}. $K$ accepte seulement les
+domaines réalistes qui implémentent les interfaces \code{Constant},
+\code{Interval} et \code{Enumerable}. Cette propriété est équivalente à utiliser
+les fonctions \code{array\_key\_exists()} et \code{in\_array()} combinées.
+
+\begin{example}[\code{a[$K$]: $V$} en PHP]
+
+La propriété \code{a[7..8]: true} signifie que \code{true} est associé aux clés
+\code{7} et \code{8}, ce qui correspond en PHP au prédicat suivant~:
+%
+\begin{pre}
+   array\_key\_exists(7, \$a) \\
+\&\& in\_array(true, \$a) \\
+\&\& \$a[7] === true \\
+\&\& array\_key\_exists(8, \$a) \\
+\&\& in\_array(true, \$a) \\
+\&\& \$a[8] === true
+\end{pre}
+%
+Nous vérifions que la clé \code{7} existe dans le tableau \code{\$a}, puis nous
+vérifions que la valeur \code{true} existe également, et enfin, nous vérifions
+qu'elles forment une paire.
+
+\end{example}
+
+Si nous voulons exprimer une contrainte seulement sur $K$, nous pouvons utiliser
+le symbole \code{\_}. La propriété~:
 %
 $$\code{a[$K$]: \_}$$
 %
-signifie que toutes les clés de $K$ doivent être présentes dans le tableau
+signifie que toutes les valeurs de $K$ doivent être des clés du tableau
 \code{a}. Cette propriété est équivalente à utiliser la fonction
-\code{array\_key\_exists} avec toutes les clés de $K$ en conjonction. De même,
+\code{array\_key\_exists} avec toutes les clés de $K$ en conjonction.  De même,
 la propriété~:
 %
 $$\code{a[\_]: $V$}$$
 %
-signifie que toutes les valeurs de $V$ doivent être présentes dans le tableau
+signifie que toutes les valeurs de $V$ doivent être des valeurs du tableau
 \code{a}. Cette propriété est équivalente à utiliser la fonction
 \code{in\_array} avec toutes les valeurs de $V$ en conjonction.
 
+\begin{example}[\code{a[$K$]: \_} et \code{a[\_]: $V$} en PHP]
+
+Les propriétés \code{a[7..8]: \_} et \code{a[\_]: 'foo'} signifient que les clés
+\code{7} et \code{8} sont présentes dans le tableau \code{\$a}, ainsi que la
+valeur \code{'foo'}~; ce qui correspond en PHP au prédicat suivant~:
+%
+\begin{pre}
+   array\_key\_exists(7, \$a) \\
+\&\& array\_key\_exists(8, \$a) \\
+\&\& in\_array('foo', \$a)
+\end{pre}
+
+\end{example}
+
 Au lieu d'utiliser le symbole \code{:} nous pouvons utiliser le symbole
 \code{!:} pour exprimer la négation. La propriété \code{a[$K$]!: $V$} signifie
-que toutes les clés de $K$ ont une valeur dans \code{a} et que cette valeur
-n'est pas dans $V$. Le fonctionnement est similaire avec le symbole \code{\_}.
-Par exemple, la propriété \code{a[$K$]!: \_} signifie que toutes les clés de $K$
-ont une valeur qui n'est pas dans \code{\_} (rien), donc qu'aucune clé de $K$
-n'apparaît dans \code{a}.
+que toutes les valeurs de $K$ sont des clés de \code{a} et que les valeurs
+associées ne sont pas dans $V$. Le fonctionnement est similaire avec le symbole
+\code{\_}.  Par exemple, la propriété \code{a[$K$]!: \_} signifie que toutes les
+valeurs de $K$ qui sont des clés de \code{a} ont une valeur qui n'est pas dans
+\code{\_} (tout), donc qu'aucune valeur de $K$ n'apparaît dans \code{a} en tant
+que clé.
 
 Les clés des tableaux sont toujours uniques, mais pas les valeurs. Nous pouvons
 exprimer la propriété d'unicité sur les valeurs en écrivant~:
@@ -210,7 +245,7 @@ Dans ce cas, nous ne pouvons pas avoir deux fois la même valeur dans le tableau
 \begin{example}[Propriétés sur un tableau]
 \label{example:data:array_proprietes}
 Pour illustrer toutes les sortes de propriétés, nous allons utiliser l'exemple
-suivant qui utilise \code{a}:
+suivant qui porte sur un tableau \code{a}:
 
 \begin{pre}
 length: 0..5 or 10 \\
@@ -219,26 +254,34 @@ a[0]  : 'b' or 'c' \\
 a is unique
 \end{pre}
 
+Deux variables sont présentes dans cet exemple~: \code{length} qui représente la
+taille du tableau, ici par un intervalle $[0; 5]$ ou 10, et \code{a} qui est un
+tableau de caractères de \code{a} à \code{e} et dont la taille est définie par
+la variable \code{length}. Il y a deux propriétés~: \code{a[0]: 'b' or 'c'} qui
+signifie que les valeurs associées à la clé \code{0} sont le caractère
+\code{'b'} ou \code{'c'} et \code{a is unique} qui signifie que toutes les
+valeurs du tableau doivent être uniques.
+
 \end{example}
 
 \subsection{Sémantiques ensemblistes des propriétés}
 
-Sur une conjonction de propriétés d'un tableau \code{a}, nous proposons
-d'invoquer un solveur de contraintes pour construire un tableau satisfaisant
-toutes ces propriétés. Cette partie explique comment les propriétés sur les
-tableaux sont transformées en contraintes pour le solveur, ou plus précisément
-en problème de satisfaction de contraintes (\inenglish{Constraint Satisfaction
-Problem}, abrégé CSP). Un CSP~\acite{Tsang93} est un triplet composé de
-variables, de valeurs pour ces variables (aussi appelés domaines) et de
-contraintes. Les variables sont déclarées dans Praspel, les valeurs sont données
-par la disjonction de domaines réalistes, et enfin, les contraintes entre ces
-variables sont données par les propriétés sur les tableaux.
+Sur un ensemble de propriétés d'un tableau \code{a}, nous proposons d'invoquer
+un solveur de contraintes pour construire un tableau satisfaisant toutes ces
+propriétés. Cette partie explique comment les propriétés sur les tableaux sont
+transformées en contraintes pour le solveur, ou plus précisément en problème de
+satisfaction de contraintes (\inenglish{Constraint Satisfaction Problem}, abrégé
+CSP). Un CSP~\acite{Tsang93} est un triplet composé de variables, de valeurs
+pour ces variables (aussi appelés domaines) et de contraintes. Les variables
+sont déclarées en Praspel, les valeurs sont données par des disjonctions de
+domaines réalistes, et les contraintes entre ces variables sont données par des
+propriétés sur les tableaux.
 
-Une de ces propriétés est supposée être une déclaration de tableau de la forme
-\code{a: array($D$, $L$)}, où $D$ est en forme normale. C'est~à~dire que $D$ est
-une liste de $p$ constructions \code{from $F_i$ to $T_i$} avec $1 \leq i \leq
-p$, et $L$ est une disjonction de domaines réalistes $L_1, \dots, L_m$ héritant
-du domaine réaliste \code{Integer} et étant positifs ou nuls.
+Une seule de ces propriétés est supposée être une déclaration de tableau de la
+forme \code{a: array($D$, $L$)}, où $D$ est en forme normale, c'est~à~dire que
+$D$ est une liste de $p$ constructions \code{from $F_i$ to $T_i$} avec $1 \leq i
+\leq p$, et $L$ est une disjonction de domaines réalistes $L_1, \dots, L_m$
+héritant du domaine réaliste \code{Integer} et étant positifs ou nuls.
 
 Dans l'exemple~\ref{example:data:array_proprietes}, $p = 1$, $m = 2$, $L_1 =
 [\code{0..5}]$ et $L_2 = \{\code{10}\}$. Dans la description du tableau, aucun
@@ -253,7 +296,7 @@ D_n$.
 
 \subsubsection{Variables}
 
-Les variables de contraintes sont:
+Les variables du CSP sont~:
 %
 \begin{enumerate}
 
@@ -276,14 +319,13 @@ Nous sommes essentiellement intéressés par trouver le contenu de $X$ et les
 valeurs de la fonction $H$. Les autres variables sont seulement introduites pour
 simplifier l'expression des contraintes.
 
-Quand $x \in X$ est vraie, $H(x) = y$ signifie que la paire $(x, y)$ est dans le
-tableau. Nous étendons $H$ aux sous-ensembles de $X$ par la fonction $\hat{H}$
-définie par $\hat{H}(E) = \{H(x) \;\mathrm{tel~que}\; x \in E\}$ pour
-n'importe quel sous-ensemble $E$ de $X$.
+Nous désignons par $H(x) = y$, avec $x \in X$, que la paire $(x, y)$ est dans le
+tableau. Nous étendons $H$ aux parties de $X$ par la fonction $\hat{H}$ définie
+par $\hat{H}(E) = \{H(x) \;\vert\; x \in E\}$ pour toute partie $E$ de $X$.
 
 \subsubsection{Contraintes de cardinalité}
 
-Soit $\mathrm{card}(E)$ représentant la cardinalité de l'ensemble fini $E$. Les
+Nous désignons par $\mathrm{card}(E)$ la cardinalité de l'ensemble fini $E$. Les
 contraintes~:
 %
 $$\mathrm{card}(X) = S \quad\mathrm{et}\quad S \geq 0$$
