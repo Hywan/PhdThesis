@@ -1,17 +1,17 @@
 \section{Génération d'objets}
 \label{section:data:objects}
 
-Les parties précédentes expliquaient comment générer des données scalaires,
-telles que des booléens, des entiers, réels ou chaînes, et aussi des données
-plus complexes, telles que des tableaux. Nous allons à présent décrire comment
+Les parties précédentes expliquent comment générer des données scalaires, telles
+que des booléens, des entiers, réels ou chaînes, et aussi des données plus
+complexes, telles que des tableaux. Nous allons à présent décrire comment
 générer des objets, puisque le paradigme le plus utilisé en PHP5\footnote{Sortie
 en juillet 2004.} est l'objet. \\
 
-Un objet est une aggrégation d'attributs et de méthodes. Les deux sont annotés
+Un objet est une agrégation d'attributs et de méthodes. Les deux sont annotés
 par des contrats Praspel, respectivement par la clause \ainvariant et les autres
 clauses (voir les entités syntaxiques \grule{attribute-clauses} et
 \grule{method-clauses} de la figure~\ref{figure:language:grammar_part0}
-page~\pageref{figure:language:grammar_part0} et de la
+page~\pageref{figure:language:grammar_part0}, et de la
 figure~\ref{figure:language:typical_contract}
 page~\pageref{figure:language:typical_contract} pour les positionner). Le
 domaine réaliste~:
@@ -19,22 +19,19 @@ domaine réaliste~:
 $$\code{class($C$)}$$
 %
 représente une instance d'un objet de type $C$. L'algorithme de la méthode
-\code{sample} de ce domaine réaliste est présenté dans la
-figure~\ref{figure:data:object}.  La stratégie pour générer un objet est de
-l'instancier en appelant son constructeur, et de définir une valeur à ses
-attributs. Les valeurs des arguments du constructeur sont générées grâce à sa
-précondition. Les valeurs des attributs sont générées grâce aux invariants. Si
-un argument du constructeur ou un attribut est lui-même un objet (par conséquent
-spécifié avec le domaine réaliste \code{Class}), ce processus est répété
-récursivement. Nous contournons l'encapsulation pour accéder aux attributs ou
-méthodes protégés et privés en instrumentant le code source.
-
+\code{sample} (représantant la caractéristique de générabilité) de ce domaine
+réaliste est présenté dans la figure~\ref{figure:data:object} à travers la
+fonction $\akw{Class\_sample}$. L'entrée $\avar{class}$ représente la classe à
+instancier, les entrées $\avar{store}$, $\avar{decision}$ et $\avar{pick}$
+représentent respectivement une collection d'objects instanciés, une fonction
+de décision et une fonction pour obtenir un élément dans la collection.
+%
 \begin{figure}
 
 \begin{center}
 \begin{algorithmic}
 
-\Function{$\akw{Object\_sample}$}{}
+\Function{$\akw{Class\_sample}$}{}
 
   \Require $\avar{class}: \atype{Class}$
   \Require $\avar{store}: \atype{set\astype{Object}}$
@@ -72,13 +69,23 @@ méthodes protégés et privés en instrumentant le code source.
 réaliste \code{Class}.}
 
 \end{figure}
+%
+La stratégie pour générer un objet est de l'instancier en appelant son
+constructeur, et de définir une valeur à ses attributs. Les valeurs des
+arguments du constructeur sont générées grâce à sa précondition. Les valeurs des
+attributs sont générées grâce aux invariants. Si un argument du constructeur ou
+un attribut est lui-même un objet (par conséquent spécifié avec le domaine
+réaliste \code{Class}), ce processus est répété récursivement. Nous contournons
+l'encapsulation pour accéder aux attributs ou méthodes protégés et privés en
+instrumentant le code source.
 
 Afin de gérer les références circulaires (par exemple quand un premier objet a
 un attribut qui pointe sur un deuxième objet, qui a lui-même un attribut qui
 pointe vers le premier objet), nous appliquons une stratégie inspirée de
 Jartege~\acite{Oriat05} et UDITA~\acite{GligoricGJKKM10}. Cette stratégie
-consiste à enregistrer les objets créés dans un groupe. Quand un objet est
+consiste à enregistrer les objets créés dans une collection. Quand un objet est
 demandé, nous avons le choix entre en générer un nouveau ou en choisir un dans
-le groupe. Ce choix est dynamiquement réalisé en fonction de l'état du groupe~:
-plus il contient d'objets, moins il y aura de nouveaux objets générés. Ce choix
-est paramétrable par une fonction de répartition fournie par l'utilisateur.
+la collection. Ce choix est dynamiquement réalisé en fonction de l'état de la
+collection~: plus il contient d'objets, moins il y aura de nouveaux objets
+générés. Ce choix est réalisé à l'aide de la fonction placée dans l'entrée
+$\avar{decision}$ par l'utilisateur.

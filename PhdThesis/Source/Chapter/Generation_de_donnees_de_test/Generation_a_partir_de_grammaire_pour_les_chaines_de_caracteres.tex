@@ -1,17 +1,20 @@
 \section{Génération à partir de grammaire pour les chaînes de caractères}
 \label{section:data:strings}
 
-Une grammaire est utilisée pour décrire des données textuelles complexes. À
-l'aide d'analyseurs lexicaux et syntaxiques, nous allons nous assurer qu'une
-donnée (textuelle) est conforme à une grammaire. C'est une caractéristique sur
-deux d'un domaine réaliste~: ce qui fait des grammaires de bonnes candidates
-pour être un domaine réaliste.
+Une grammaire formelle permet de décrire avec précisions des données textuelles
+complexes. Nous proposons des domaines réalistes de chaînes de caractères
+définis par une grammaire. Des analyseurs lexicaux et syntaxiques permettent de
+s'assurer qu'une chaîne de caractères est conforme à une grammaire. C'est une
+caractéristique sur deux d'un domaine réaliste~: ce qui fait des grammaires de
+bonnes candidates pour être un domaine réaliste.
 
-Nous allons en premier lieu nous concentrer sur la première caractéristique des
-domaines réalistes, à savoir la prédicabilité, et présenter un langage simple de
-description de grammaire que nous avons créé, ainsi que son interprétation avec
-un compilateur de compilateur dédié. Ensuite, nous allons voir comment exploiter
-une grammaire pour générer des données valides, et ainsi assurer la seconde
+Nous allons, dans les parties~\ref{subsection:data:pp} et
+\ref{subsection:data:compiler-compiler}, nous concentrer sur la première
+caractéristique des domaines réalistes, à savoir la prédicabilité, et présenter
+un langage simple de description de grammaire que nous avons créé, ainsi que son
+interprétation avec un compilateur de compilateur dédié. Ensuite, dans la
+partie~\ref{subsection:data:algorithms}, nous allons voir comment exploiter une
+grammaire pour générer des données valides, et ainsi assurer la seconde
 caractéristique des domaines réalistes, à savoir la générabilité.
 
 \subsection{Langage de description de grammaire}
@@ -29,8 +32,11 @@ d'une langue~;
 
 \item $N$ est l'ensemble fini de {\strong symboles non-terminaux}~;
 
-\item $P$ est l'ensemble fini des {\strong règles de production}~; les règles
-expriment l'enchaînement possible des lexèmes les uns par rapport aux autres~;
+\item $P$ est l'ensemble fini des {\strong règles de production} de la forme
+$(\Sigma \union N)^* N (\Sigma \union N)^* \rightarrow (\Sigma \union N)^*$,
+avec $^*$ représentant l'étoile de Kleene et $\union$ représentant l'union
+d'ensembles~; les règles expriment l'enchaînement possible des lexèmes les uns
+par rapport aux autres~;
 
 \item $S \in N$ est l'axiome de la grammaire, le symbole indiquant le point de
 départ de lecture de la grammaire.
@@ -39,11 +45,33 @@ départ de lecture de la grammaire.
 
 \end{definition}
 
+Selon la hiérarchie de Chomsky~\acite{Chomsky56}, les grammaires sont classées
+en quatre niveaux~:
+%
+\begin{enumerate}
+
+\item grammaires {\strong générales}, ou \inenglish{unrestricted grammars},
+reconnaissant les langages dits de Turing, aucune restriction n'est imposée sur
+les règles~;
+
+\item grammaires {\strong contextuelles}, ou \inenglish{context-sensitive
+grammars}, reconnaissant les langages contextuels~;
+
+\item grammaires {\strong algébriques}, ou \inenglish{context-free grammars},
+reconnaissant les langages algébriques, basés sur les automates à pile~;
+
+\item grammaires {\strong régulières}, ou \inenglish{regular grammars},
+reconnaissant les langages réguliers.
+
+\end{enumerate}
+%
+Chaque niveau reconnaît le niveau suivant.
+
 Nous proposons le langage \inenglish{PHP Parser}, abrégé PP, pour exprimer des
-grammaires \inenglish{top-down} et algébriques. La syntaxe est principalement
-inspirée de JavaCC~\acite{javacc} et un peu de YACC~\acite{Johnson75}, avec
-l'ajout de nouvelles constructions. La déclaration d'un lexème est de la forme
-suivante~:
+grammaires algébriques (et donc également régulières). Sa syntaxe est
+principalement inspirée de JavaCC~\acite{javacc} et un peu de
+YACC~\acite{Johnson75}, avec l'ajout de nouvelles constructions. La déclaration
+d'un lexème est de la forme suivante~:
 %
 \begin{pre}
 %token ns_source:name value -> ns_dest
@@ -51,22 +79,23 @@ suivante~:
 %
 où \code{name} représente son nom, \code{value} sa valeur exprimée avec une
 expression régulière, et \code{ns\_source} et \code{ns\_dest} sont des espaces
-de nom optionnels. Les expressions régulières sont écrites en utilisant la
-syntaxe standard des PCRE~\acite{Hazel05}, très expressives, largement utilisées
-et supportées (par exemple dans PHP, Javascript, Perl, Python, Apache, KDE
-etc.). Les espaces de noms servent à représenter des sous-ensembles disjoint de
-lexèmes pour la phase d'analyse lexicale (détaillée ci-après). Une déclaration
-\code{\%skip} est similaire à une déclaration \code{\%token} excepté qu'elle
-représente un lexème à ne pas retenir pour la suite. Typiquement les espaces
-dans une expression arithmétique n'ont pas d'importance, nous pouvons ne pas les
-retenir, il n'apporte rien à l'expression. Si un espace de nom source n'est pas
-précisé, alors il prendra la valeur \code{default}, qui est l'espace de nom par
-défaut. L'espace de nom de destination peut être de la forme spéciale
+de noms optionnels. Les expressions régulières sont écrites en utilisant la
+syntaxe standard des \inenglish{Perl Compatible Regular Expressions}, abrégé
+PCRE~\acite{Hazel05}, très expressives, largement utilisées et supportées (par
+exemple dans PHP, Javascript, Perl, Python, Apache, KDE etc.). Les espaces de
+noms servent à représenter des sous-ensembles disjoints de lexèmes pour la phase
+d'analyse lexicale (détaillée ci-après). Une déclaration \code{\%skip} est
+similaire à une déclaration \code{\%token} excepté qu'elle représente un lexème
+à ne pas retenir pour la suite. Typiquement les espaces dans une expression
+arithmétique n'ont pas d'importance, nous pouvons ne pas les retenir, ils
+n'apportent rien à l'expression. Si un espace de noms source n'est pas précisé,
+alors il prendra la valeur \code{default}, qui est l'espace de noms par défaut.
+L'espace de noms de destination peut être de la forme spéciale
 \code{\_\_shift\_\_ * $j$}, avec $j \geq 1$, ou simplement \code{\_\_shift\_\_}
-(équivalent à avoir $j = 1$), pour revenir $j$ espaces de nom en arrière. Il est
-parfois possible d'accéder à un lexème depuis plusieurs espaces de nom
-différents~; cette forme spéciale permet de revenir dans les espaces de nom
-d'origines. \\
+(équivalent à avoir $j = 1$), pour revenir de $j$ espaces de noms précédents. Il
+est parfois possible d'accéder à un lexème depuis plusieurs espaces de noms
+différents~; cette forme spéciale permet de revenir dans les espaces de noms
+d'origine. \\
 
 \begin{figure}
 
@@ -98,19 +127,18 @@ tag: \\
 
 \end{figure}
 
-La figure~\ref{figure:data:xml} montre un exemple d'une grammaire simplifiée
-d'un document XML~\acite{xml}. Elle commence par la déclaration des lexèmes, en
-utilisant des espaces de noms pour identifier si l'analyse se déroule à
-l'extérieur ou à l'intérieur d'une balise. Nous avons alors~:
+La figure~\ref{figure:data:xml} montre l'exemple des règles de productions $P$
+d'une grammaire $(\Sigma, N, P, S)$ simplifiée d'un document XML~\acite{xml}.
+Elle commence par la déclaration des lexèmes, en utilisant des espaces de noms
+pour identifier si l'analyse se déroule à l'extérieur ou à l'intérieur d'une
+balise. Nous avons alors~:
 %
-\begin{center}
 \begin{align*}
 \Sigma = \{ & \code{space}, \code{lt}, \code{text}, \code{in\_tag:space},
               \code{in\_tag:name}, \\
             & \code{in\_tag:slash}, \code{in\_tag:gt}, \code{in\_tag:equal},
               \code{in\_tag:value} \}
 \end{align*}
-\end{center}
 %
 Nous avons aussi les non-terminaux~:
 %
@@ -127,26 +155,27 @@ par une règle de production, préfixée par des caractères blancs horizontaux
 types de constructions. La construction \code{::token::} signifie que le lexème
 ne sera pas conservé à la fin du processus de compilation (détaillé ci-après),
 contrairement à la construction \code{<token>}. La construction \code{rule()}
-représente un appel à une règle.  Évidemment, nous pouvons avoir des appels
+représente un appel à une règle. Évidemment, nous pouvons avoir des appels
 récursifs. Les opérations de répétition sont classiques: \code{\{$x$, $y$\}}
-pour répéter le motif $x$ à $y$ fois, \code{?} est identique à \code{\{0, 1\}},
-\code{+} à \code{\{1, \}}, \code{*} à \code{\{0, \}}. Les disjonctions sont
-représentées par le symbole \code{\mvert} et le groupement par \code{(} et
-\code{)}. La construction \code{\#node} (parfois utilisé comme nom de règle) est
-utile pour la fin du processus de compilation.
+pour répéter le motif de $x$ à $y$ fois, \code{?} est identique à \code{\{0,
+1\}}, \code{+} à \code{\{1, \}}, \code{*} à \code{\{0, \}}. Quand $y$ est vide,
+cela signifie l'infini. Les disjonctions sont représentées par le symbole
+\code{\mvert} et le groupement par \code{(} et \code{)}. La construction
+\code{\#node} (parfois utilisé comme nom de règle) est utile pour la fin du
+processus de compilation, comme nous le verrons dans la partie suivante.
 
-Une nouvelle construction présente dans le langage PP est l'unification.
-Présente uniquement sur les lexèmes, elle impose que tous les \code{token[$i$]}
-avec le même $i$ ont la même valeur localement à la règle, avec $i \geq 0$.
-Remarquons la présence d'une unification de lexèmes dans la
-figure~\ref{figure:data:xml}~: \code{name[0]} indique que les balises
-d'ouverture et de fermeture doivent avoir le même nom. Ainsi, la donnée
-\code{<foo>…</foo>} sera considérée comme valide, alors que \code{<foo>…</bar>}
-sera considérée comme invalide. Un autre usage courant est la gestion des
-guillemets représenté par le lexème \code{\%token quote '|"}, soit un guillemet
-simple, soit un double. Ainsi, \code{"…"} comme \code{'…'} doivent être valides,
-alors que \code{"…'} ou \code{'…"} devront être invalides. Pour cela, nous
-écrirons par exemple \code{quote[1]} dans une règle.
+Une nouvelle construction présente dans le langage PP, par rapport aux langages
+de descriptions de gramaires existants, est l'unification. Présente uniquement
+sur les lexèmes, elle impose que tous les \code{token[$i$]} avec le même $i$ ont
+la même valeur localement à la règle, avec $i \geq 0$.  Remarquons la présence
+d'une unification de lexèmes dans la figure~\ref{figure:data:xml}~:
+\code{name[0]} indique que les balises d'ouverture et de fermeture doivent avoir
+le même nom. Ainsi, la donnée \code{<foo>…</foo>} sera considérée comme valide,
+alors que \code{<foo>…</bar>} sera considérée comme invalide. Un autre usage
+courant est la gestion des guillemets représentés par le lexème \code{\%token
+quote '|"}, soit un guillemet simple, soit un double. Ainsi, \code{"…"} comme
+\code{'…'} doivent être valides, alors que \code{"…'} ou \code{'…"} devront être
+invalides. Pour cela, nous écrirons par exemple \code{quote[1]} dans une règle.
 
 Nous trouverons la grammaire du langage PP en langage PP dans
 l'annexe~\ref{appendices:grammar_of_pp} à la
@@ -175,19 +204,17 @@ Nous parlons de {\strong compilateur de compilateur} car la grammaire est tout
 d'abord transformée en compilateur, c'est à dire en un analyseur lexical et un
 syntaxique. La grammaire nous évite d'avoir à écrire un compilateur à la main.
 
-Nous expliquons le fonctionnement de l'analyseur lexical, représenté par
-l'algorithme dans la figure~\ref{figure:data:algo_lexer}
-page~\pageref{figure:data:algo_lexer}. À partir d'une donnée
-textuelle (mot), nous allons calculer une séquence de lexèmes. Nous allons
-appliquer toutes les expressions régulières des lexèmes de l'espace de nom
-courant les uns après les autres sur le début du mot jusqu'à trouver un lexème
-valide (reconnaissant le début du mot). Quand un lexème est trouvé, nous lui
-associons certaines données, comme son nom, sa valeur, sa position et son espace
-de nom. Ensuite, nous mettons à jour l'espace de nom courant à partir de
-l'espace de nom sortant du lexème (soit un nom d'espace, soit le mot-clé
-\code{\_\_shift\_\_ * $j$}). Si aucun lexème n'est trouvé, une erreur sera
-levée, sinon nous ajoutons le lexème à la séquence et nous continuons jusqu'à
-atteindre la fin de la donnée analysée.
+Nous expliquons le fonctionnement de l'analyseur lexical par l'algorithme dans
+la figure~\ref{figure:data:algo_lexer}. À partir d'une donnée textuelle (mot),
+nous allons calculer une séquence de lexèmes. Nous allons appliquer toutes les
+expressions régulières des lexèmes de l'espace de noms courant les uns après les
+autres sur le début du mot jusqu'à trouver un lexème valide (reconnaissant le
+début du mot). Quand un lexème est trouvé, nous lui associons certaines données,
+comme son nom, sa valeur, sa position et son espace de noms. Ensuite, nous
+mettons à jour l'espace de noms courant à partir de l'espace de noms sortant du
+lexème (soit un nom d'espace, soit le mot-clé \code{\_\_shift\_\_ * $j$}). Si
+aucun lexème n'est trouvé, une erreur sera levée, sinon nous ajoutons le lexème
+à la séquence et nous continuons jusqu'à atteindre la fin de la donnée analysée.
 
 \begin{figure}
 
@@ -269,30 +296,30 @@ produit la séquence suivante~:
 %
 \begin{center}
 \begin{longtable}{rlllr}
-   & espace de nom  & lexème       & valeur     & position \\
-0  & \code{default} & \code{lt}    & \code{<}   & 0 \\
-1  & \code{in\_tag} & \code{name}  & \code{a}   & 1 \\
-2  & \code{in\_tag} & \code{name}  & \code{x}   & 3 \\
-3  & \code{in\_tag} & \code{equal} & \code{=}   & 4 \\
-4  & \code{in\_tag} & \code{value} & \code{"y"} & 5 \\
-5  & \code{in\_tag} & \code{gt}    & \code{>}   & 8 \\
-6  & \code{default} & \code{lt}    & \code{<}   & 9 \\
-7  & \code{in\_tag} & \code{name}  & \code{b}   & 10 \\
-8  & \code{in\_tag} & \code{slash} & \code{/}   & 12 \\
-9  & \code{in\_tag} & \code{gt}    & \code{>}   & 13 \\
-10 & \code{default} & \code{lt}    & \code{<}   & 14 \\
-11 & \code{in\_tag} & \code{name}  & \code{c}   & 15 \\
-12 & \code{in\_tag} & \code{gt}    & \code{>}   & 16 \\
-13 & \code{default} & \code{text}  & \code{foo} & 17 \\
-14 & \code{default} & \code{lt}    & \code{<}   & 20 \\
-15 & \code{in\_tag} & \code{slash} & \code{/}   & 21 \\
-16 & \code{in\_tag} & \code{name}  & \code{c}   & 22 \\
-17 & \code{in\_tag} & \code{gt}    & \code{>}   & 23 \\
-18 & \code{default} & \code{lt}    & \code{<}   & 24 \\
-19 & \code{in\_tag} & \code{slash} & \code{/}   & 25 \\
-20 & \code{in\_tag} & \code{name}  & \code{a}   & 26 \\
-21 & \code{in\_tag} & \code{gt}    & \code{>}   & 27 \\
-22 & \code{default} & \code{EOF}   & \code{}    & 29
+   & espace de noms  & lexème       & valeur     & position \\
+0  & \code{default}  & \code{lt}    & \code{<}   & 0 \\
+1  & \code{in\_tag}  & \code{name}  & \code{a}   & 1 \\
+2  & \code{in\_tag}  & \code{name}  & \code{x}   & 3 \\
+3  & \code{in\_tag}  & \code{equal} & \code{=}   & 4 \\
+4  & \code{in\_tag}  & \code{value} & \code{"y"} & 5 \\
+5  & \code{in\_tag}  & \code{gt}    & \code{>}   & 8 \\
+6  & \code{default}  & \code{lt}    & \code{<}   & 9 \\
+7  & \code{in\_tag}  & \code{name}  & \code{b}   & 10 \\
+8  & \code{in\_tag}  & \code{slash} & \code{/}   & 12 \\
+9  & \code{in\_tag}  & \code{gt}    & \code{>}   & 13 \\
+10 & \code{default}  & \code{lt}    & \code{<}   & 14 \\
+11 & \code{in\_tag}  & \code{name}  & \code{c}   & 15 \\
+12 & \code{in\_tag}  & \code{gt}    & \code{>}   & 16 \\
+13 & \code{default}  & \code{text}  & \code{foo} & 17 \\
+14 & \code{default}  & \code{lt}    & \code{<}   & 20 \\
+15 & \code{in\_tag}  & \code{slash} & \code{/}   & 21 \\
+16 & \code{in\_tag}  & \code{name}  & \code{c}   & 22 \\
+17 & \code{in\_tag}  & \code{gt}    & \code{>}   & 23 \\
+18 & \code{default}  & \code{lt}    & \code{<}   & 24 \\
+19 & \code{in\_tag}  & \code{slash} & \code{/}   & 25 \\
+20 & \code{in\_tag}  & \code{name}  & \code{a}   & 26 \\
+21 & \code{in\_tag}  & \code{gt}    & \code{>}   & 27 \\
+22 & \code{default}  & \code{EOF}   & \code{}    & 29
 \end{longtable}
 \end{center}
 
@@ -300,7 +327,7 @@ produit la séquence suivante~:
 
 L'analyseur syntaxique prend la suite en dérivant la séquence par rapport aux
 règles de la grammaire. Cela consiste à dépiler les lexèmes de la séquence un
-par un et de regarder si nous pouvons explorer les règles.
+par un et à regarder si nous pouvons déplier les règles.
 
 \begin{example}[Analyse syntaxique de \code{<a x="y"><b /><c>foo</c></a>}]
 \label{example:data:syntactic_analyze}
@@ -310,31 +337,30 @@ l'exem\-ple~\ref{example:data:lexical_analyze}.
 
 \begin{enumerate}
 
-\item Nous allons dépiler le premier lexème~: \code{lt}. La règle \code{xml} est
-composée de une ou plusieurs règles \code{tag}. La règle \code{tag} commence par
-un lexème \code{lt}. Nous avons une correspondance, nous continuons.
+\item Le premier lexème est déplié~: \code{lt}. La règle \code{xml} est composée
+de une ou plusieurs règles \code{tag}. La règle \code{tag} commence par un
+lexème \code{lt}. Il y a une correspondance, le processus continue.
 
 \item Le deuxième lexème est \code{name}. La règle \code{tag} se poursuit avec
-le lexème \code{name}, nous avons une correspondance. Le lexème \code{name}
-porte une unification. Le prochain lexème \code{name} pour cette règle devra
-avoir comme valeur \code{a}.
+le lexème \code{name}, il y a une correspondance. Le lexème \code{name} porte
+une unification. Le prochain lexème \code{name} pour cette règle devra avoir
+comme valeur \code{a}.
 
-\item Nous continuons avec le troisième lexème de la séquence~: \code{name}. La
-règle \code{tag} poursuit avec un appel à la règle \code{attributes} qui
-commence avec le lexème \code{name}. Encore une fois, nous avons une
-correspondance.
+\item Le troisième lexème de la séquence est \code{name}. La règle \code{tag}
+poursuit avec un appel à la règle \code{attributes} qui commence avec le lexème
+\code{name}. Encore une fois, il y a une correspondance.
 
 \item[4-5.] L'opération est identique pour le quatrième (\code{equal}) et
 cinquième lexème (\code{value}).
 
 \item[6.] Le sixième lexème est \code{gt}. La règle \code{attributes} demande
-soit d'avoir un nouvel attribut, soit nous avons atteint la fin de la règle, ce
-qui est notre cas. Donc nous revenons dans la règle \code{tag}. Nous arrivons
-dans une disjonction~: le premier élément ne peut pas dériver \code{gt} (il
-attend \code{slash}), mais le second élément le permet. Nous avons une
-correspondance, nous continuons.
+soit d'avoir un nouvel attribut, soit la fin de la règle est atteinte, ce qui
+est le cas. Donc le processus revient dans la règle \code{tag}. Il y a une
+disjonction~: le premier élément ne peut pas dériver \code{gt} (il attend
+\code{slash}), mais le second élément le permet. Il y a une correspondance, le
+processus continue.
 
-\item[…] Nous passons au lexème suivant dans la séquence. Et ainsi de suite,
+\item[…] Le lexème suivant dans la séquence est utilisé. Et ainsi de suite,
 jusqu'à atteindre la fin de la séquence.
 
 \end{enumerate}
@@ -342,9 +368,9 @@ jusqu'à atteindre la fin de la séquence.
 \end{example}
 
 Si nous ne pouvons plus dériver la séquence, nous allons revenir en arrière de
-$k$-lexèmes jusqu'à retomber sur un point de choix (une disjonction ou une
+$k$ lexèmes jusqu'à retomber sur un point de choix (une disjonction ou une
 répétition). Cette étape s'appelle le \inenglish{backtracking}. Dans notre cas,
-$k$ est infixé, nous disons que nous revenons en arrière de $\star$-lexèmes,
+$k$ n'est pas fixé, nous disons que nous revenons en arrière de $\star$ lexèmes,
 soit d'autant de lexèmes que nécessaire.
 
 La séquence est construite en analysant la donnée textuelle de gauche à droite
@@ -380,7 +406,7 @@ vérification de typage. \\
 Ce compilateur de compilateur $LL(\star)$ nous permet de valider une donnée
 textuelle complexe. Ainsi, nous respectons la première caractéristique d'un
 domaine réaliste~: la prédicabilité. Les parties suivantes illustrent plusieurs
-algorithmes de générations à partir d'une grammaire.
+algorithmes de générations de chaînes de caractères à partir d'une grammaire.
 
 \subsection{Algorithmes de génération de données à partir de grammaires}
 \label{subsection:data:algorithms}
@@ -389,21 +415,21 @@ Nous décrivons maintenant l'utilisation de grammaires pour la génération de
 données textuelles complexes, afin d'assurer la caractéristique de générabilité
 des domaines réalistes.
 
-Nous proposons trois algorithmes de générations différents~: aléatoire uniforme,
+Nous proposons trois algorithmes de génération différents~: aléatoire uniforme,
 exhaustive bornée et enfin basée sur la couverture. Le principe de ces
-algorithmes est résumé dans la figure~\ref{figure:data:grammar}.
+algorithmes est résumé dans la figure~\ref{figure:data:grammar}~:
 %
 \begin{figure}
 
 \fig{\textwidth}{!}{Grammar_based_generation.tex}
 
-\caption{\label{figure:data:grammar} Principe des algorithmes de générations de
+\caption{\label{figure:data:grammar} Principe des algorithmes de génération de
 données.}
 
 \end{figure}
 %
 Ainsi, ils vont générer différentes séquences de lexèmes à partir d'une
-grammaire. Ces lexèmes vont être concrétiser pour obtenir une donnée
+grammaire. Ces lexèmes vont être concrétisés pour obtenir une donnée
 textuelle. L'algorithme de concrétisation est présenté à la fin de la partie.
 
 Pour générer des séquences de lexèmes, les algorithmes vont explorer les règles
@@ -411,7 +437,7 @@ de la grammaire selon différentes contraintes~: la taille de la séquence, la
 fréquence d'apparition des lexèmes, la quantité de séquences etc. Ces
 contraintes sont extraites d'une étude menée de manière empirique auprès d'une
 demi-douzaine d'ingénieurs de tests qualifiés, ajoutés à notre propre
-expérience. Certains souhaitaient des données de tailles fixes ou bornées,
+expérience. Certains souhaitaient des données de taille fixe ou bornée,
 d'autres insistaient sur la diversité des données, ou encore sur la quantité
 avec par exemple de l'exhaustivité.
 
@@ -430,8 +456,8 @@ Cet algorithme fonctionne donc en deux étapes. La première est le dénombremen
 et la seconde est la génération à proprement parler.
 
 À chaque construction du langage PP est associée une fonction de dénombrement
-$\psi$ qui compte le nombre de sous-structures de taille $n$ qu'il est possible
-de générer. Ainsi~:
+$\psi(n, e)$ qui compte le nombre de sous-structures de taille $n$ qu'il est
+possible de générer pour la construction grammaticale $e$. Ainsi~:
 
 \begin{align*}
 %
@@ -453,7 +479,7 @@ de générer. Ainsi~:
     \\
 %
 \psi(n, e^{\{x, y\}}) & =
-    \sum_{\alpha = x}^y
+    \sum_{\alpha \,=\, x}^y
     \sum_{\gamma \,\in\, \Gamma_\alpha^n}
     \prod_{\beta \,=\, 1}^\alpha
     \psi(\gamma_\beta, e)
@@ -462,11 +488,11 @@ de générer. Ainsi~:
 %
 \end{align*}
 
-Dans la première formule, $\delta_i^j$ est le symbole de Kronecker, défini
-comme 1 si $i = j$, 0 sinon. $\Gamma_k^n$ désigne l'ensemble des $k$-uplets dont
-la somme des éléments est égale à $n$. Pour chaque $k$-uplet $\gamma$ et chaque
-$\alpha \in [1; k]$, $\gamma_\alpha$ désigne le $\alpha$\textsuperscript{ième}
-élément de $\gamma$.
+Dans la première formule, $\delta_i^j$ est le symbole de Kronecker égal à 1 si
+$i = j$, à 0 sinon. $\Gamma_k^n$ désigne l'ensemble des $k$-uplets d'entiers
+naturel dont la somme des éléments est égale à $n$. Pour chaque $k$-uplet
+$\gamma$ et chaque $\alpha \in [1; k]$, $\gamma_\alpha$ désigne le
+$\alpha$\textsuperscript{ième} élément de $\gamma$.
 %
 Par exemple~:
 %
@@ -475,34 +501,43 @@ $$\Gamma_3^2 = \{(2, 0, 0), (1, 1, 0), (1, 0, 1), (0, 2, 0), (0, 1, 1), (0, 0,
 %
 et pour le premier $k$-uplet, $\gamma_1 = 2$ et $\gamma_2 = \gamma_3 = 0$.
 
-La concaténation, représentée par l'opérateur $\cdot$, somme la distribution de
-$n$ parmi toutes les sous-structures. La disjonction, représentée par
-l'opérateur $\vert$, somme la taille des sous-structures de taille $n$. Et
-enfin, une répétition, représentée par $\{x, y\}$, est une disjonction de
-concaténations (en effet, $e^{\{2,4\}} \Longleftrightarrow e \cdot e \,\vert\, e
-\cdot e \cdot e \,\vert\, e \cdot e \cdot e \cdot e$). Quand $y$ est non-défini
-(avec \code{*} et \code{+}), il est borné à $n$.
+Pour la concaténation, représentée par l'opérateur $\cdot$, la fonction $\psi$
+somme de la distribution de $n$ parmi toutes les sous-structures. Pour la
+disjonction, représentée par l'opérateur $\vert$, la fonction $\psi$ somme la
+taille des sous-structures de taille $n$. Et enfin, une répétition, représentée
+par $\{x, y\}$, est une disjonction de concaténations (par exemple,
+$e^{\{2,4\}}$ est équivalent à $e \cdot e \,\vert\, e \cdot e \cdot e \,\vert\,
+e \cdot e \cdot e \cdot e$). Quand $y$ est non défini (avec \code{*} et
+\code{+}), il est considéré égal à $n$.
 
 \begin{example}[Exploration aléatoire uniforme]
 \label{example:data:random_uniform_generation}
 
 Soit la grammaire suivante~:
-
+%
 \begin{pre}
 f: <a> g() \\
 g: ( <b> <c> | <d> | f() )\{1,3\}
 \end{pre}
-
+%
 L'axiome est \code{f}. Nous voulons compter le nombre de sous-structures
-possibles de taille 5. Nous commençons avec $f(5)$ qui signifie~: le nombre de
-sous-structures de taille 5 que peut produire la règle \code{f}. Cette règle
-commence par un lexème \code{<a>}, donc le reste de la séquence (donné par la
-règle \code{g}) devra faire une taille de 4. Nous calculons alors $g(4)$. La
-règle \code{g} est une répétition $r \in [1; 3]$ d'une disjonction. Avec $r =
-1$, le seul moyen d'avoir une sous-structure de taille 4 et de passer par
-\code{f}, donc nous devons calculer $f(4)$. Avec $r = 2$, nous pouvons avoir
-\code{<b> <c> <b> <c>}, ou \code{<b> <c>} puis $f(2)$, ou \code{<d>} puis $f(3)$
-etc. Nous arrivons finalement au tableau de la
+possibles de taille 5. Les résultats sont présentés dans la
+figure~\ref{figure:data:random_tabular}.  La première colonne montre les valeurs
+possibles de $n$.  La deuxième colonne montre les résultats pour $f(n)$.
+Ensuite, nous avons les résultats pour $g(n)$, avec le détail~: pour chaque
+branche de la disjonction et pour la répétition avec $r = 1$, 2 et 3. Le symbole
+«~-~» représente une donnée dupliquée sur la même ligne.
+
+Nous commençons avec $f(5)$ qui signifie~: le nombre de sous-structures de
+taille 5 que peut produire la règle \code{f}, soit le résultat de $\psi(5,
+\code{<a>} \cdot \code{g()})$. Cette règle commence par un lexème \code{<a>},
+donc le reste de la séquence (donné par la règle \code{g}) devra faire une
+taille de 4. Nous calculons alors $g(4)$, soit $\psi(4, \code{( <b> <c> | <d> |
+f() )}^{\{1,3\}})$. La règle \code{g} est une répétition $r \in [1; 3]$ d'une
+disjonction. Avec $r = 1$, le seul moyen d'avoir une sous-structure de taille 4
+et de passer par \code{f}, donc nous devons calculer $f(4)$. Avec $r = 2$, nous
+pouvons avoir \code{<b> <c> <b> <c>}, ou \code{<b> <c>} puis $f(2)$, ou
+\code{<d>} puis $f(3)$ etc. Tous les résultats sont présents dans la
 figure~\ref{figure:data:random_tabular}.
 
 \begin{figure}
@@ -530,21 +565,20 @@ $n$ & \code{f:} & $\dots$ & \code{g:} & \code{(} &
 \end{tabular}
 \end{center}
 
-\caption{\label{figure:data:random_tabular} Tableau récapitulatif des résultats
-de la fonction $\psi$. La première colonne montre les valeurs possibles de $n$.
-La deuxième colonne montre les résultats pour $f(n)$. Ensuite, nous avons les
-résultats pour $g(n)$, avec le détail~: pour chaque branche de la disjonction et
-pour la répétition avec $r = 1$, 2 et 3. Le symbole «~-~» représente une donnée
-dupliquée sur la même ligne.}
+\caption{\label{figure:data:random_tabular} Exemple des résultats de la fonction
+$\psi$.}
 
 \end{figure}
 
-Maintenant, nous sommes outillés pour explorer la grammaire. Imaginons que nous
-sommes sur l'exploration de la règle \code{g} avec $n = 3$. Nous avons une
-répétition $r \in [1; 3]$. Nous savons grâce à notre fonction $\psi$ que $g(3) =
-8$, c'est~à~dire que \code{g} peut produire 8 sous-structures de taille 3. Il
-faut choisir aléatoirement et uniformément une valeur pour $r$, grâce aux
-probabilités données par la fonction $\psi$~:
+Maintenant, nous sommes outillés pour générer des chaînes de caractères à partir
+de la grammaire. Imaginons que nous sommes sur l'exploration de la règle
+\code{g} avec $n = 3$. Nous avons une répétition $r \in [1; 3]$. Nous savons
+grâce à la fonction $\psi$ que $g(3) = 8$, c'est~à~dire que \code{g} peut
+produire 8 sous-structures de taille 3. Il faut choisir aléatoirement et
+uniformément une valeur pour $r$, grâce aux probabilités données par la fonction
+$\psi(3, \code{( <b> <c> | <d> | f() )}^r)$. Avec $r = 1$, 3 sous-structures
+peuvent être produites, avec $r = 2$, 4 sous-structures peuvent être produites
+et avec $r = 3$, 1 sous-structure peut être produite. Ainsi~:
 
 $$
 p(r = 1) = \frac{3}{8} \qquad
@@ -552,8 +586,8 @@ p(r = 2) = \frac{4}{8} \qquad
 p(r = 3) = \frac{1}{8}
 $$
 
-Pour cela, nous choisissons un entier $i \in [1; 8]$ aléatoirement et
-uniformément. Disons que $i = 5$. Ainsi nous obtenons $r = 2$.
+Pour appliquer les probabilités, nous choisissons un entier $i \in [1; 8]$
+aléatoirement et uniformément. Avec $i = 5$, nous obtenons $r = 2$.
 %
 %\drawfig{6.5cm}{!}{}{
 %
@@ -573,22 +607,22 @@ uniformément. Disons que $i = 5$. Ainsi nous obtenons $r = 2$.
 %
 %}
 %
-Donc nous allons répéter notre disjonction 2~fois. Nous sommes sur \code{g} avec
-une taille de 3, donc nous avons 3~lexèmes à répartir sur 2~répétitions. Nous
+Donc nous répétons la disjonction 2~fois. Rappelons que nous traitons la règle
+\code{g} avec une taille de 3, donc 3~lexèmes à répartir sur 2~répétitions. Nous
 utilisons la fonction $\Gamma$ pour calculer cette répartition~: $\Gamma_2^3 =
 \{(2, 1), (1, 2)\}$ (tous les $k$-uplets contenant un 0 ont été supprimés car
 c'est impossible de distribuer 0 lexème dans une répétition). Nous allons
 utiliser soit 2~lexèmes lors de la première répétition et 1~lexème pour la
-seconde, soit l'inverse. Pour choisir, nous prenons un entier $j \in [1; 2]$
-aléatoirement et uniformément pour sélectionner le $k$-uplet. Disons que $j =
-1$, donc nous allons utiliser le $k$-uplet $(2, 1)$.
+seconde, soit l'inverse. Pour choisir, nous tirons un entier $j \in [1;
+2]$ aléatoirement et uniformément pour sélectionner le $k$-uplet. Disons que $j
+= 1$, donc nous allons utiliser le $k$-uplet $(2, 1)$.
 
-Pour la première répétition, nous avons $n = 2$ lexèmes à distribuer. La
-disjonction peut produire 2~sous-structures. Nous avons besoin de calculer une
-nouvelle fonction de répartition. La disjonction a trois branches~: la première
-peut produire 1~sous-structure, la deuxième 0 et la dernière 1 sous-structure.
-La probabilité de parcourir la première branche ou la dernière branche est de
-$\tfrac{1}{2}$. Et ainsi de suite.
+Pour la première répétition, il y a $n = 2$ lexèmes à distribuer. La disjonction
+peut produire 2~sous-structures. Nous allons utiliser une nouvelle fonction de
+répartition. La disjonction a trois branches~: la première peut produire
+1~sous-structure, la deuxième 0 et la dernière 1 sous-structure.  La probabilité
+de parcourir la première branche ou la dernière branche est de $\tfrac{1}{2}$.
+Et ainsi de suite.
 
 \end{example}
 
@@ -596,10 +630,10 @@ Cet algorithme est efficace comparé aux autres pour calculer des petites
 séquences de taille fixe avec beaucoup de diversités dans les résultats
 (puisqu'aléatoire). Toutefois, la complexité de l'étape du dénombrement avec la
 fonction $\psi$ est quadratique~: $\m{O}(n^2)$. Et malgré l'utilisation
-d'heuristiques inspirées de la programme dynamique, pour une valeur de $n > 10$,
-au moins 2~heures de calculs sont nécessaires. Ce problème ne concerne que la
-première étape de l'algorithme, car l'étape de génération a une complexité
-linéaire $\m{O}(n)$~: l'exploration d'une séquence est la plus rapide de tous
+d'heuristiques inspirées de la programmation dynamique, pour une valeur de $n >
+10$, au moins 2~heures de calculs sont nécessaires. Ce problème ne concerne que
+la première étape de l'algorithme, car l'étape de génération a une complexité
+linéaire $\m{O}(n)$~: la génération d'une séquence est la plus rapide de tous
 les algorithmes.
 
 \subsubsection{Génération exhaustive bornée}
@@ -611,14 +645,15 @@ expériences~\acite{MarinovK01, SullivanYCKJ04} ont montré que générer énorm
 de données de façon exhaustive peut être efficace pour détecter des erreurs car
 toutes les données sont testées.
 
-À chaque construction du langage PP est associée une fonction $\beta$ qui va
-calculer la prochaine séquence. Cet algorithme se comporte comme un itérateur
-sur tous les éléments du multi-ensemble construits avec la fonction $\beta$. Un
-multi-ensemble, noté $\amultiset{A}$, est un ensemble avec des répétitions~: en
-effet, rien ne nous assure que la grammaire ne puisse pas produire au moins deux
-séquences identiques mais par des dérivations/chemins différents. Pour
-simplifier l'écriture de la fonction $\beta$, nous considérons que la grammaire
-PP est en forme normale de Chomsky~\acite{Chomsky56}. Ainsi~:
+À chaque construction du langage PP est associée une fonction $\beta(n, e)$ qui
+va calculer le multi-ensemble contenant des séquences de lexèmes de taille $n$
+pour la construction grammaticale $e$. Un multi-ensemble, noté $\amultiset{A}$,
+est un ensemble avec des répétitions~: en effet, rien ne nous assure que la
+grammaire ne puisse pas produire au moins deux séquences identiques mais par des
+dérivations/chemins différents. Dans notre implémentation, cette fonction se
+comporte comme un itérateur où chaque pas calcule la séquence de lexèmes
+suivante. Pour simplifier l'écriture de la fonction $\beta$, nous considérons
+que la grammaire PP est en forme normale de Chomsky~\acite{Chomsky56}. Ainsi~:
 
 \begin{align*}
 %
@@ -639,21 +674,21 @@ PP est en forme normale de Chomsky~\acite{Chomsky56}. Ainsi~:
     \\
 %
 \beta(n, e_1 \cdot e_2) & =
-    \Union_{p = 1}^{n - 1}
+    \Union_{p \,=\, 1}^{n - 1}
     \beta(p, e_1) \cdot \beta(n - p, e_2)
     \\
 %
 \beta(n, e^{\{x, y\}}) & =
-    \Union_{p = x}^y \beta(n, e_p)
+    \Union_{p \,=\, x}^y \beta(n, e^p)
     \\
 %
-\beta(n, e^*) & =
-    \Union_{p = 0}^n \beta(n, e_p)
-    \\
-%
-\beta(n, e^+) & =
-    \beta(n, e \cdot e^*)
-    \\
+%\beta(n, e^*) & =
+%    \Union_{p \,=\, 0}^n \beta(n, e^p)
+%    \\
+%%
+%\beta(n, e^+) & =
+%    \beta(n, e \cdot e^*)
+%    \\
 %
 \beta(n, e^0) & =
     \amultiset{}
@@ -671,7 +706,8 @@ PP est en forme normale de Chomsky~\acite{Chomsky56}. Ainsi~:
 \end{align*}
 
 Les opérateurs $\union$ et $\Union$ correspondent à l'union des multi-ensembles.
-Quand $y$ est non-défini (avec \code{*} et \code{+}), il est borné à $n$.
+Quand $y$ est non défini (avec \code{*} et \code{+}), il est considéré égal à
+$n$.
 
 \begin{example}[Exploration exhaustive bornée]
 \label{example:data:bounded_exhaustive_generation}
@@ -684,7 +720,7 @@ f: <a> g() \\
 g: ( <b> <c> | <d> | f() )\{1,3\}
 \end{pre}
 
-Nous allons dérouler l'algorithme pour $n = 10$. Nous commençons par explorer la
+Nous allons dérouler un exemple pour $n = 10$. Nous commençons par explorer la
 règle \code{f}. Nous produisons \code{<a>}, puis nous explorons la règle
 \code{g} qui propose une répétition d'une disjonction.  Nous commençons par la
 borne inférieure de la répétition puis la première branche de la disjonction,
@@ -699,17 +735,17 @@ troisième séquence est donc~: \code{<a> <a> <b> <c>}. Les séquences suivantes
 sont~:
 
 \begin{enumerate}
-\setcounter{enumi}{3}
+%\setcounter{enumi}{3}
 
-\item \code{<a> <a> <d>}
+\item[\phantom{0000}4.] \code{<a> <a> <d>}
 
-\item \code{<a> <a> <a> <b> <c>}
+\item[\phantom{0000}5.] \code{<a> <a> <a> <b> <c>}
 
-\item \code{<a> <a> <a> <d>}
+\item[\phantom{0000}6.] \code{<a> <a> <a> <d>}
 
-\item \code{<a> <a> <a> <a> <b> <c>}
+\item[\phantom{0000}7.] \code{<a> <a> <a> <a> <b> <c>}
 
-\item[…] …
+\item[\phantom{000}…] …
 
 \item[12150.] \code{<a> <a> <a> <a> <a> <a> <a> <a> <a> <d>}
 
@@ -721,9 +757,10 @@ Cet algorithme est rapide pour calculer des petites séquences avec une
 complexité $\m{O}(n)$ dans le meilleur des cas, et l'exhaustivité est très
 efficace pour détecter des erreurs. Toutefois, le nombre de séquences générables
 peut être important. En effet, nous travaillons avec un multi-ensemble, soit un
-ensemble avec des répétitions~: une même séquence peut être produite depuis
-plusieurs chemins différents. Ainsi, dans le pire des cas, l'algorithme est
-expontiel, dans le meilleur des cas il est linéaire.
+ensemble avec des répétitions car une même séquence peut être produite depuis
+plusieurs chemins différents si la grammaire n'est pas déterministe. Ainsi, dans
+le pire des cas, l'algorithme est exponentiel, dans le meilleur des cas, quand
+la grammaire est déterministe, il est linéaire.
 
 \subsubsection{Génération basée sur la couverture}
 \label{subsection:data:coverage_based_generation}
@@ -734,8 +771,8 @@ couvertures sur la grammaire~:
 %
 \begin{itemize}
 
-\item une règle est dit couverte si et seulement toutes ses sous-règles ont été
-couvertes~;
+\item une règle est dite couverte si et si seulement toutes ses sous-règles ont
+été couvertes~;
 
 \item un lexème est dit couvert s'il a été utilisé avec succès dans une
 séquence.
@@ -745,14 +782,16 @@ séquence.
 Pour assurer une diversité dans les séquences générées, les points de choix sont
 résolus aléatoirement parmi les sous-règles non-couvertes. Une heuristique est
 utilisée pour borner les répétitions afin de réduire encore plus l'explosion
-combinatoire et aussi garantir la terminaison de l'algorithme~: l'opérateur
-\code{*} est borné à 0, 1 et 2, \code{+} est déplié 1 ou 2~fois, et $\{x, y\}$
-est déplié $x$, $x + 1$, $y - 1$ et $y$~fois.
+combinatoire et garantir la terminaison de l'algorithme~: l'opérateur \code{*}
+est déplié 0, 1 ou 2~fois, \code{+} est déplié 1 ou 2~fois, et $\{x, y\}$ est
+déplié $x$, $x + 1$, $y - 1$ et $y$~fois. L'aspect aléatoire est représenté par
+la fonction $\mathrm{rand}(i, j)$ dans la fonction $\phi$.
 
-À chaque construction du langage PP est associée une fonction $\phi$ qui va nous
-calculer la prochaine séquence. Cette fonction prend en argument $p$, qui est le
-préfixe de la séquene déjà produite (vide au départ). Cet algorithme se comporte
-comme un itérateur Ainsi~:
+À chaque construction du langage PP est associée une fonction $\phi(p, e)$ qui
+va calculer la prochaine séquence. Cette fonction prend en argument $p$, qui est
+le préfixe de la séquence déjà produite (vide au départ), et $e$ est la
+construction grammaticale traitée. Dans notre implémentation, cet algorithme se
+comporte également comme un itérateur. Ainsi~:
 
 \begin{align*}
 %
@@ -775,12 +814,13 @@ comme un itérateur Ainsi~:
     \\
 %
 \phi(p, e^*) & =
-    [] \oplus \bigoplus_{i = 1}^\infty
+    [] \oplus \bigoplus_{i = 1}^{\mathrm{rand}(0, 2)}
     \phi(p, \underbrace{e \cdot \dotso \cdot e}_i)
     \\
 %
 \phi(p, e^+) & =
-    \bigoplus_{i = 1}^\infty \phi(p, \underbrace{e \cdot \dotso \cdot e}_i)
+    \bigoplus_{i = 1}^{\mathrm{rand}(1, 2)}
+    \phi(p, \underbrace{e \cdot \dotso \cdot e}_i)
     \\
 %
 \phi(p, e^{\{x, y\}}) & =
@@ -801,25 +841,25 @@ f: <a> g() \\
 g: ( <b> <c> | <d> | f() )\{1,3\}
 \end{pre}
 
-Nous commençons par explorer la règle \code{f}. Nous produisons \code{<a>} avant
-d'explorer la règle \code{g}. Là, nous choisissons aléatoirement de répéter
-3~fois la disjonction. La première fois, nous choisissons le lexème \code{<d>}.
-La seconde fois, nous avons le choix entre \code{<b> <c>} ou \code{f}
-(\code{<d>} ayant déjà été couvert, nous ne voulons pas le choisir). Nous
-choisissons \code{<b> <c>}. Enfin, à la troisième répétition, il n'y a plus
-qu'un seul choix n'ayant pas été couvert dans la disjonction~: nous explorons
-\code{f} à nouveau. Nous produisons \code{<a>} et nous continuons dans \code{g}.
-Là, tout a été couvert, nous choisissions alors aléatoirement une répétition
-(disons 1~fois), puis \code{<a>} dans la disjonction. L'unique séquence
-\code{<a> <d> <b> <c> <a> <d>} couvre toutes les règles et tous les lexèmes de
-la grammaire.
+Nous déroulons un exemple. Nous commençons par déplier la règle \code{f}. Nous
+produisons \code{<a>} avant d'explorer la règle \code{g}. Puis nous choisissons
+aléatoirement de répéter 3~fois la disjonction. La première fois, nous
+choisissons le lexème \code{<d>}. La seconde fois, nous avons le choix entre
+\code{<b> <c>} ou \code{f} (\code{<d>} ayant déjà été couvert, nous ne voulons
+pas le choisir). Nous choisissons \code{<b> <c>}. Enfin, à la troisième
+répétition, il n'y a plus qu'un seul choix n'ayant pas été couvert dans la
+disjonction~: nous déplions \code{f} à nouveau. Nous produisons \code{<a>} et
+nous continuons dans \code{g}. Tout a été couvert, nous choisissons alors
+aléatoirement une répétition (disons 1~fois), puis \code{<a>} dans la
+disjonction. L'unique séquence \code{<a> <d> <b> <c> <a> <d>} couvre toutes les
+règles et tous les lexèmes de la grammaire.
 
 \end{example}
 
 Cet algorithme est rapide pour des séquences de taille moyenne ou grande avec
 une complexité logarithmique $\m{O}(\mathrm{log}~n)$. En pratique, l'algorithme
 de génération aléatoire uniforme est plus rapide pour calculer des séquences
-avec $n \leq 10$, mais il se fait vite dépassé par celui-ci au-delà. La
+avec $n \leq 10$, mais il est rapidement dépassé par celui-ci au-delà. La
 diversité entre les séquences générées est dû au choix aléatoire sur les points
 de choix. Il génère peu de données mais il couvre toutes les règles et tous les
 lexèmes. Enfin, contrairement aux algorithmes précédents, nous ne pouvons pas
@@ -830,16 +870,16 @@ contrôler la taille de la séquence.
 
 Les trois algorithmes génèrent des séquences de lexèmes, mais nous n'avons pas
 de données concrètes. Pour cela, nous devons transformer les lexèmes en données
-afin de produit un mot.
+afin de produire un mot.
 
 Nous rappelons que les lexèmes sont exprimés avec des expressions régulières au
 format PCRE, qui est un langage comme un autre~! Afin d'être capable de
-transformer les lexèmes en données concrètes, nous devions les analyser. C'est
+transformer les lexèmes en données concrètes, nous devons les analyser. C'est
 pourquoi nous avons écrit la grammaire du langage PCRE avec le langage PP.
 Ainsi, nous analysons une expression régulière avec cette grammaire, le
-compilateur de compilateurs nous produit un AST que nous allons parcourir pour
-générer une donnée valide correspondant à l'expression régulière de départ. Ce
-processus est détaillé dans la figure~\ref{figure:data:regex}.
+compilateur de compilateurs produit un AST que nous parcourons pour générer une
+donnée valide correspondant à l'expression régulière de départ. Ce processus est
+détaillé dans la figure~\ref{figure:data:regex}.
 %
 \begin{figure}
 
@@ -855,7 +895,7 @@ choix, et non pas parmi toutes les sous-structures possibles. C'est une approche
 nettement plus naïve qu'avec les algorithmes précédents, mais la phase de
 concrétisation ne nécessite pas autant d'attention que la génération des
 séquences de lexèmes. Les lexèmes représentent l'unité atomique de nos langages,
-leur valeur n'est pas censé avoir d'influence lorsque nous utilisons la donnée
+leur valeur n'est pas censée avoir d'influence lorsque nous utilisons la donnée
 concrétisée pour du test ou d'autres applications. De plus, nous sommes plus
 intéressés par la forme de la séquence (comme toutes les séquences de manière
 exhaustive ou couvrant toute la grammaire) car elle caractérise véritablement
@@ -910,20 +950,20 @@ Chaque tirage a été fait aléatoirement et uniformément, mais localement.
 
 \end{example}
 
-Chaque opérateur non-borné, comme \code{*} ou \code{+}, est borné à un entier
+Chaque opérateur non borné, comme \code{*} ou \code{+}, est borné à un entier
 arbitraire, par défaut 2. \\
 
 Nous nous permettons une petite parenthèse afin d'être complet dans notre
 discours. Si nous souhaitons utiliser les algorithmes vus précédemment pour
 concrétiser les lexèmes (exprimés avec le langage PCRE), ceci demanderait un
-travail supplémentaire. En effet, il faudra transformer le langage des PCRE vers
-le langage PP, et ainsi, nous nous retrouvons dans la même position qu'au début
-de cette partie où nous avons une grammaire et nos algorithmes de générations.
-Dans une telle grammaire, les nouveaux lexèmes seraient alors des litéraux
-(comme \code{a}, \code{b}, \code{0} et autre symbole «~unitaire~») facilement
-générables avec un algorithme aléatoire isotropique. Pour résumé, cela
-reviendrait à écrire un compilateur PCRE vers PP. Ce travail a été commencé par
-un étudiant d'une autre école~\acite{Kuhner14} suite à un projet sur la
+travail supplémentaire. En effet, il faudrait transformer le langage des PCRE
+vers le langage PP, et ainsi, nous nous retrouvons dans la même position qu'au
+début de cette partie où nous avons une grammaire et nos algorithmes de
+génération. Dans une telle grammaire, les nouveaux lexèmes seraient alors des
+littéraux (comme \code{a}, \code{b}, \code{0} et autre symbole «~unitaire~»)
+facilement générables avec un algorithme aléatoire isotropique. Pour résumer,
+cela reviendrait à écrire un compilateur PCRE vers PP. Ce travail a été commencé
+par un étudiant d'une autre école~\acite{Kuhner14} suite à un projet sur la
 visualisation graphique d'expressions régulières, réalisé avec notre compilateur
 et notre grammaire des PCRE. \\
 
@@ -943,13 +983,13 @@ où $F$ est le chemin vers le fichier PP contenant la grammaire. Par défaut, ce
 domaine réaliste utilise la génération basée sur la couverture car elle produit
 peu de données différentes, relativement vite et couvrant toute la grammaire.
 Bien sûr, il est possible de modifier l'algorithme à utiliser pour la
-génération, et dans ce cas, $L$ représentera la taille de la séquence souhaitée.
+génération. Dans ce cas, $L$ représentera la taille de la séquence souhaitée.
 
 \begin{example}[Utilisation du domaine réaliste \code{Grammar}]
 
 La précondition du contrat suivant spécifie que l'argument \code{\$payload} de
-la fonction \code{handle\-Re\-quest} doit être au format XML et doit retourner
-un booléen~:
+la fonction \code{handle\-Re\-quest} doit être au format XML et que la fonction
+doit retourner un booléen~:
 
 \begin{pre}
 /** \\
@@ -961,10 +1001,10 @@ function handleRequest ( \$payload ) \{ … \}
 
 \end{example}
 
-Toutefois, l'expérience nous a montrés que les développeurs utilisent plus
-souvent des expressions régulières plutôt que des grammaires. En effet, ils
-utilisent les PCRE quasi-quotidiennement. C'est pourquoi nous ajoutons à la
-bibliothèque standard le domaine réaliste~:
+Toutefois, l'expérience nous a montré que les développeurs utilisent plus
+souvent des expressions régulières que des grammaires. En effet, ils utilisent
+les PCRE quasi-quotidiennement. C'est pourquoi nous ajoutons à la bibliothèque
+standard le domaine réaliste~:
 %
 $$\code{regex($R$)}$$
 %
@@ -974,7 +1014,7 @@ S'il y a besoin d'utiliser les autres algorithmes, il sera nécessaire de passer
 par une grammaire qui offre également plus de finesse dans les résultats. Ce
 domaine réaliste est tellement utilisé que Praspel propose une syntaxe
 simplifiée pour l'utiliser encore plus rapidement. Ainsi, une expression
-régulière doit être encadrée de délimiteurs, par exemple \code{/}, et peut-être
+régulière doit être encadrée de délimiteurs, par exemple \code{/}, et peut être
 suivie d'options (un caractère active une option, comme \code{i} pour modifier
 la sensibilité à la casse). La syntaxe simplifiée de Praspel impose le
 délimiteur \code{/}.
@@ -983,7 +1023,7 @@ délimiteur \code{/}.
 
 La précondition du contrat suivant spécifie que l'argument \code{\$ip} est une
 IPv4 valide, avec ou sans port~:
-
+%
 \begin{pre}
 /** \\
  * \arequires ip: regex( \\
@@ -991,11 +1031,11 @@ IPv4 valide, avec ou sans port~:
  *               ); \\
  */
 \end{pre}
-
+%
 Cette expression régulière accepte des adresses IP de la forme~: \code{*},
 \code{*:80}, \code{127.0.0.1} ou \code{127.0.0.1:80}. Si nous devions l'écrire
 avec la syntaxe simplifiée, nous aurions~:
-
+%
 \begin{pre}
 /** \\
  * \arequires ip: /^(\(\bslash\)*|\(\bslash\)d\{1,3\}(\(\bslash\).\(\bslash\)d\{1,3\})\{3\})(:\(\bslash\)d+)?$/; \\
