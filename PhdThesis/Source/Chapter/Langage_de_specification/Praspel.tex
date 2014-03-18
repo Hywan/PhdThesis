@@ -425,40 +425,43 @@ Une {\em déclaration} assigne un ou plusieurs domaines réalistes à une variab
 spécifié dans une clause \ainvariant, soit un paramètre de la méthode, spécifié
 dans les autres clauses. La valeur d'une variable peut appartenir à plusieurs
 domaines réalistes si la variable est définie par une {\strong disjonction} de
-domaines réalistes, représentée par le mot-clé \code{or}. Dans la
+domaines réalistes, représentée par le mot-clé \code{or}. Dans l'exemple de la
 figure~\ref{figure:language:short_contract}, la variable \code{index} du contrat
 de la méthode \code{store} peut avoir deux valeurs~: soit un entier entre 0 et
 65535, soit \code{null}. Une disjonction de domaines réalistes peut contenir
-n'importe quelle sorte de domaine réaliste~: ce afin de mimer l'aspect dynamique
+n'importe quelle sorte de domaine réaliste, similairement à l'aspect dynamique
 de PHP.
 
-Si une variable est précédée par le mot-clé \code{let}, cela signifie que c'est
-une variable {\strong locale}, qui appartient au modèle et non pas au système
-(attribut de classe ou paramètre d'une méthode). C'est très utile pour
-manipuler des représentations intermédiaires de données.
+Toutes les variables utilisées dans le contrat appartiennent au système,
+c'est~à~dire qu'elles existent en tant qu'argument d'une méthode ou attribut de
+classe. Toutefois, il est possible de déclarer une variable qui appartient au
+modèle si elle est précédée par le mot-clé \code{let}. Nous pouvons voir cette
+variable comme étant {\strong locale} au modèle. Cette catégorie de variables
+est très utile pour manipuler des représentations intermédiaires de données,
+comme une longueur qui serait utilisée par plusieurs tableaux par exemple.
 
-La clause \aensures a une particularité~: elle peut contenir la variable
-spéciale \aresult qui représente la valeur {\strong retournée} par la méthode.
-Les clauses \aensures et \athrowable peuvent également faire {\strong référence}
-à la valeur d'une variable dans le pré-état grâce à la construction \aold{i}, où
-$i$ est le nom d'une variable.
+La variable spéciale \aresult représente la valeur {\strong retournée} par la
+méthode. Elle ne peut être déclarée que dans la clause \aensures. Les clauses
+\aensures et \athrowable peuvent également faire {\strong référence} à la valeur
+d'une variable dans le pré-état grâce à la construction \aold{i}, où $i$ est le
+nom d'une variable.
 
 \subsubsection{Prédicats}
 
-Toutes les constructions présentent dans Praspel supportent la validation et la
-vérification, \ie par les caractéristiques de prédicabilité et de générabilité
-des domaines réalistes. Chaque concept introduit dans le langage doit supporter
-ces deux aspects. Mais ils arrivent que certaines choses ne puissent pas être
-exprimées avec les constructions actuelles. C'est pourquoi nous avons la
-construction «~boîte-noire~» \apred{p}, où $p$ est du code PHP. Cette
+Toutes les constructions présentes dans Praspel supportent deux aspects~: la
+validation et la génération, à travers les caractéristiques de prédicabilité et
+de générabilité des domaines réalistes. Chaque concept introduit dans le langage
+doit supporter ces deux aspects. Mais il arrive qu'il soit impossible d'exprimer
+certaines contraintes avec les constructions actuelles. C'est pourquoi nous
+avons la construction «~boîte-noire~» \apred{p}, où $p$ est du code PHP. Cette
 construction permet à l'utilisateur d'exprimer des contraintes arbitraires en
 utilisant PHP lui-même au lieu de Praspel. Le code $p$ doit être un prédicat en
 forme normal {\strong conjonctive} (CNF). La construction \apred{p} ne supporte
-que la validation (prédicabilité) et non pas la vérification (générabilité). Le
-prédicat \apred{\code{'\$this->getUsage() + \$file->getSize() > static::SIZE'}}
-dans la figure~\ref{figure:language:short_contract} signifie que s'il n'y a plus
-de place pour ajouter un nouveau fichier, alors cette partie de la précondition
-est satisfaite.
+que la validation et non pas la génération. Le prédicat
+\apred{\code{'\$this->getUsage() + \$file->getSize()
+> static::SIZE'}} dans la figure~\ref{figure:language:short_contract} signifie
+que s'il n'y a plus de place pour ajouter un nouveau fichier, alors cette partie
+de la précondition est satisfaite.
 
 Parce que la construction \apred{p} est une boîte-noire, elle introduit du rejet
 lors de la génération de données car les contraintes $p$ ne sont pas
@@ -471,10 +474,10 @@ journalisée.
 
 Une tâche récurrente est d'observer et analyser ce que les utilisateurs écrivent
 le plus dans cette construction, et l'extraire dans Praspel afin de supporter
-les deux aspects~: validation et vérification. L'objectif est de faire évoluer
-le langage en supportant plus de constructions usuelles nativement au lieu de
-les avoir dans une boîte-noire, et ainsi, entre autre, réduire le rejet lors de
-la génération de données. Ce processus est illustré dans la
+les deux aspects~: validation et génération. L'objectif est de faire évoluer le
+langage en supportant plus de constructions usuelles nativement au lieu de les
+avoir dans une boîte-noire, et ainsi, entres autres, réduire le rejet lors de la
+génération de données. Ce processus est illustré dans la
 partie~\ref{section:data:arrays} page~\pageref{section:data:arrays}.
 
 \subsubsection{Contraintes}
@@ -486,26 +489,57 @@ partie~\ref{section:data:arrays} page~\pageref{section:data:arrays}.
 
 \subsubsection{Identifiants}
 
-Un mot sur les identifiants. Dans la figure~\ref{figure:language:short_contract}
-ainsi que dans la règle \grule{identifier} de la grammaire de la
-figure~\ref{figure:language:grammar_part3}, nous pouvons voir l'utilisation de
-mot-clés comme \code{this}, \code{self} etc. Pour faire référence à un
-identifiant sur un objet, nous utiliserons \code{this}. Pour faire référence à
-la classe courante, nous utiliserons \code{self}, pour la classe parente, nous
-utiliserons \code{parent}. Et pour faire référence à l'enfant courant d'une
-classe, nous utiliserons \code{static}. Par exemple, si nous créons la classe
-\code{BigFilesystem} qui hérite de \code{Filesystem} et redéfinit la constante
-\code{SIZE}, alors dans \code{Filesystem}, utiliser \code{self::SIZE} sera
-équivalent à \code{Filesystem::SIZE} alors que \code{static::SIZE} sera
-équivalent à \code{BigFilesystem::SIZE}. Ce mécanisme est appelé le
-\inenglish{Late Static Binding}\footnote{Voir \url{http://php.net/lsb}.}.
+Dans la figure~\ref{figure:language:short_contract} ainsi que dans la règle
+\grule{identifier} de la grammaire de la
+figure~\ref{figure:language:grammar_part3}, pour manipuler un identifiant, nous
+voyons les mots-clés spéciaux \code{this}, \code{self}, \code{static} et
+\code{parent}, avec deux opérateurs différents \code{->} et \code{::}. Tout
+d'abord, pour un accès sur un objet (accès dynamique), nous utilisons
+l'opérateur \code{->}, sinon, pour un accès sur une classe (accès statique),
+nous utilisons l'opérateur \code{::}. Nous faisons référence à l'objet courant
+avec le mot-clé \code{this}, et nous faisons référence à la classe courante avec
+les mots-clés \code{self} et \code{static}. Enfin, nous faisons référence à la
+classe parente avec le mot-clé \code{parent}.
+
+La différence entre \code{self} et \code{static} est que \code{self} fera
+toujours référence à la classe qui déclare, alors que \code{static} fera
+référence à la classe qui utilise. Le mot-clé \code{static} est un équivalent à
+un \code{this} statique. Ce mécanisme est appelé le \inenglish{Late Static
+Binding}\footnote{Voir \url{http://php.net/lsb}.}.
+
+\begin{example}[Différence entre \code{self} et \code{static}]
+
+Soit une classe \code{Big\-File\-system} qui hérite de \code{Filesystem} et
+redéfinit uniquement la constante \code{SIZE}~:
+%
+\begin{pre}
+class BigFilesystem extends Filesystem \{ \
+\\
+\\
+    const SIZE = 1048576; // \(2\sp{20}\) \\
+\}
+\end{pre}
+%
+Et soit la méthode \code{getUsage} de \code{Filesystem} qui utilise la constante
+avec \code{self::SIZE}. Alors, lorsque nous appelons la méthode \code{getUsage}
+depuis \code{File\-system}, ce sera la constante \code{SIZE} de
+\code{Filesystem} qui sera utilisée. La même chose se produira lorsque nous
+appelons la méthode \code{getUsage} depuis \code{Big\-File\-system} malgré le
+fait que \code{Big\-File\-system} ait sa propre constante \code{SIZE}, car
+\code{self} fait référence à la classe qui déclare. Dans ce cas, ce n'est pas le
+comportement attendu. Si maintenant \code{getUsage} utilise la constante avec
+\code{static::SIZE}, alors lorsque nous appelons la méthode \code{getUsage}
+depuis \code{Filesystem}, ce sera la constante \code{SIZE} de \code{Filesystem}
+qui sera utilisée. Et lorsque nous appelons la méthode \code{getUsage} depuis
+\code{BigFilesystem}, ce sera la constante \code{SIZE} de \code{BigFilesytem}
+qui sera utilisé.
+
+\end{example}
 
 \subsection{Description de tableaux}
 \label{subsection:language:array}
 
-La description de tableaux est une partie très importante de Praspel, contrôlant
-la génération de collections présentée dans la
-partie~\ref{section:data:arrays}.
+La description de tableaux est une partie très importante de Praspel.
 
 Dans PHP, un tableau est toujours un {\strong tableau associatif} (ou une
 \inenglish{map}, un {\strong dictionnaire}), \ie une collection de paires
@@ -558,9 +592,17 @@ alors que \code{a3} ne peut pas la contenir.
 
 \end{example}
 
-En fait, nous introduisons une {\strong forme normale} pour supprimer les
-disjonctions dans les descriptions des paires, en appliquant itérativement la
-règle de réécriture suivante~:
+Dans la figure~\ref{figure:language:short_contract}, l'attribut \code{\_map} est
+spécifié comme un tableau d'objets \code{File} d'une longueur de 0 et 65535,
+avec~:
+%
+\begin{pre}
+\ainvariant _map: array([to class('File')], 0..0xffff);
+\end{pre}
+
+Nous introduisons une {\strong forme normale} pour supprimer les disjonctions
+dans les descriptions des paires, en appliquant itérativement la règle de
+réécriture suivante~:
 %
 \begin{center}
 \begin{tabular}{c}
@@ -588,9 +630,6 @@ a4: array([from  0..10 to boolean(), \\
 \end{pre}
 
 \end{example}
-
-Dans la figure~\ref{figure:language:short_contract}, l'attribut \code{\_map} est
-spécifié comme un tableau d'objets \code{File}, d'une longueur entre 0 et 65535.
 
 \subsection{Exécution et assignement du verdict de tests}
 \label{subsection:language:verdict}
