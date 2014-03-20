@@ -2,3 +2,300 @@
 \label{chapter:experimentations}
 
 \minitoc
+
+% En vrac~:
+%     ext/jsond
+%     Hoa\Compiler
+%     Hoa\Math
+%     Hoa\Ruler
+%     Rezzza et son million d'utilisateur
+
+Ce chapitre présente l'utilisation de Praspel et de ses algorithmes dans
+principalement deux contextes. D'une part sur un projet d'enseignement utilisant
+un robot appelé UniTestor développé par nos soins dans le cadre des JDév' à
+l'École Polytechnique, et d'autre part auprès d'un panel bénévol d'ingénieurs de
+tests et d'entreprises pour avoir des retours concrets sur des programmes du
+«~monde réel~».
+
+Ce chapitre se décompose de la manière suivante. Tout d'abord, dans la
+partie~\ref{section:experimentation:atoum}, nous présentons comment nous avons
+intégré Praspel à un outil industriel très populaire afin de faciliter son
+utilisation et sa diffusion. Ensuite, dans la
+partie~\ref{section:experimentation:unitestor}, nous présentons le cas d'étude
+du robot UniTestor où nous comparons deux suites de tests~: une manuelle et une
+générée automatiquement avec Praspel.  Puis, pour valider nos résultats, nous
+réappliquons une méthodologie similaire dans la
+partie~\ref{section:experimentation:real} avec un panel bénévol d'ingénieurs de
+tests et d'entreprises. Nous en profitons pour obtenir des retours de personnes
+expérimentées sur notamment la pertinence de notre approche ou encore son
+intégration dans des projets existants. Enfin, dans la
+partie~\ref{section:experimentation:other}, nous analysons des cas d'études
+spécifiques qui ont été réalisés ponctuellement.
+
+\section{Intégration dans atoum}
+\label{section:experimentation:atoum}
+
+atoum~\acite{atoum}, sans majuscule, est aujourd'hui l'un des
+\inenglish{frameworks} de tests unitaires les plus utilisés dans l'industrie.
+Gratuit et \inenglish{open-source}, il compte une communauté active et plusieurs
+utilisateurs et partenaires industriels importants. atoum est également inclue
+dans plusieurs IDE et outils majeurs, comme Netbeans\footnote{Voir
+\url{https://netbeans.org/}.}, Eclipse\footnote{Voir
+\url{http://eclipse.org/}.}, Vim\footnote{Voir \url{http://vim.org/}.},
+Travis-CI\footnote{Voir \url{http://travis-ci.com/}.}, Jenkins\footnote{Voir
+\url{http://jenkins-ci.org/}.}, Coveralls\footnote{Voir
+\url{https://coveralls.io/}.} etc. L'outil se définit comme {\em simple}, {\em
+moderne} et {\em intuitif}. Tous ses atouts nous ont conduit à l'élaboration
+d'un pont, sous la forme d'une extension~\acite{atoum/praspel-extension}, entre
+Praspel et atoum.  Cette extension est incluse dans la distribution standard
+d'atoum «~sous-stéroide~», c'est~à~dire avec des outils qui ajoutent des
+fonctionnalités à atoum.
+
+Cette extension propose deux fonctionnalités~:
+%
+\begin{itemize}
+
+\item la génération automatique de données de test~;
+
+\item la compilation de suites de tests générées avec Praspel en suite de tests
+écrites avec l'API d'atoum.
+
+\end{itemize}
+
+De cette manière, nous n'avons pas à nous préoccuper de l'exécution des tests,
+de leur isolation, de l'écriture et de la publication de divers rapports, de
+l'intégration aux IDE etc. Les utilisateurs de Praspel profitent de toutes ses
+fonctionnalités gratuitement.
+
+\section{Étude de cas~: UniTestor}
+\label{section:experimentation:unitestor}
+
+Les Journées nationales du Développement Logiciel, abrégé JDév'\footnote{Voir
+\url{http://devlog.cnrs.fr/jdev2013}.}, est une Action Nationale de Formation
+inter-établissements, soutenue par la Mission pour l'interdisciplinité du
+CNRS\footnote{Voir \url{http://mrct.cnrs.fr/}.}, l'INRIA\footnote{Voir
+\url{http://www.inria.fr/}.} et l'INRA\footnote{Voir
+\url{http://www.inra.fr/}.}, organisée en 2013 à l'École Polytechnique. Une
+équipe de notre laboratoire a été invité afin d'y donner des cours et des
+ateliers. C'est dans ce cadre que nous avons développé UniTestor, un robot écrit
+en PHP nous permettant d'aborder la majorité des aspects du tests unitaires~:
+écrire un préambule de test, définir des assertions, boucher des objets etc. 16
+élèves ont alors écrits manuellement une suite de tests pour ce robot, que nous
+avons complété. Nous la comparons avec une suite de tests générée
+automatiquement avec Praspel.
+
+\subsection{Présentation générale}
+
+UniTestor est une émulation de robot pour l'exploration spatiale. Son diagramme
+de classes UML est présenté dans la
+figure~\ref{figure:experimentation:unitestor}. Le robot est représenté par la
+classe \code{Robot}. Il est constitué de plusieurs périphériques lui envoyant
+des informations. L'ensemble du robot comporte 5 classes dont 21 méthodes, ce
+qui représente 340 lignes de code (sans les contrats Praspel).
+%
+\begin{figure}
+
+\tikzstyle{class}=[rectangle, draw=black, thick, text centered, text width=4cm]
+\tikzstyle{umlarrow}=[->, >=latex, shorten >=1pt, thick]
+\tikzstyle{umlline}=[-, shorten >=3pt, thick]
+
+\drawfig{\textwidth}{!}{node distance=6.5cm}{
+    \node (Robot) [class, rectangle split, rectangle split parts=2]
+    {
+        \code{Robot}
+        \nodepart{second}
+        \code{move} \\
+        \code{moveTo} \\
+        \code{getTimeToReach} \\
+        \code{getClock} \\
+        \code{getCoordinates} \\
+        \code{getEnergy} \\
+        \code{getLandSensor}
+    };
+
+    \node (Coordinates) [class, rectangle split, rectangle split parts=2, below left of=Robot]
+    {
+        \code{Coordinates}
+        \nodepart{second}
+        \code{getX} \\
+        \code{getY}
+    };
+
+    \node (Clock) [class, rectangle split, rectangle split parts=2, below of=Robot]
+    {
+        \code{Clock}
+        \nodepart{second}
+        \code{reset} \\
+        \code{getDifference} \\
+        \code{getTimestamp} \\
+        \code{getCurrentTime}
+    };
+
+    \node (LandSensor) [class, rectangle split, rectangle split parts=2, below right of=Robot]
+    {
+        \code{LandSensor}
+        \nodepart{second}
+        \code{getNeededEnergy}
+    };
+
+    \node (Vector) [class, rectangle split, rectangle split parts=2, above left of=Coordinates, text width=5cm]
+    {
+        \code{Vector}
+        \nodepart{second}
+        \code{getFirstCoordinates} \\
+        \code{getSecondCoordinates} \\
+        \code{getLength}
+    };
+
+    \draw[umlarrow] (Coordinates.north) -- ++(0,0.5)  -| (Robot.south);
+    \draw[umlline]  (LandSensor.north)  -- ++(0,0.75) -| (Robot.south);
+    \draw[umlline]  (Clock.north)                     -| (Robot.south);
+    \draw[umlarrow] (Coordinates.west)                -| (Vector.south);
+
+}
+
+\caption{\label{figure:experimentation:unitestor} Diagramme de classes UML du
+robot UniTestor.}
+
+\end{figure}
+
+\subsubsection{Équipements et capteurs}
+
+Le robot est capable de se déplacer en utilisant des coordonnées relatives ou
+absolues avec respectivement les méthodes \code{move} et \code{moveTo}. Pour se
+déplacer, il utilise une balise de géolocalisation représentée par la classe
+\code{Coordinates}. À tout moment, il peut connaître la nature du terrain avec
+le capteur de sol représenté par la classe \code{LandSensor}. La nature et la
+configuration du terrain influent sur l'énergie utile à un déplacement. Le robot
+a également sa propre horloge, représentée par la classe \code{Clock}, lui
+permettant de connaître des informations sur le temps. Enfin, la classe
+\code{Vector} permet de manipuler des paires de coordonnées.
+
+\subsubsection{Les opérations de UniTestor}
+
+La seule opération importante est le déplacement. Lorsqu'il se déplace, il
+consomme de l'énergie, représentée par un pourcentage. En fonction du terrain,
+plus ou moins d'énergie sera nécessaire. L'énergie nécessaire est calculée par
+la fonction \code{getNeededEnergy} du capteur de sol. Mais le robot a des
+batteries qui se recharge en fonction du temps. Le temps qui s'écoule est donné
+par l'horloge et la recharge est linéaire (paramétrable par une constante).
+
+\subsection{Génération de tests pour l'application}
+
+Nous avons commencé par annoter le code du robot par des contrats Praspel.
+Ensuite, nous avons générer automatiquement une suite de tests AGT
+(\inenglish{Automatically Generated Tests}) satisfaisant le critère de
+couverture de contrat \inenglish{All}-$G$ (défini dans la
+partie~\ref{subsection:test:combination}).  Nous avons comparé cette suite de
+test avec celle des étudiants, appelé MT (\inenglish{Manual Tests}).
+
+%\subsubsection{Calcul des séquences de tests}
+%\subsubsection{Exécution des tests}
+
+Le nombre moyen de tests générés par les étudiants est de 53~MT, alors que pour
+21 méthodes, soit 21 contrats, Praspel a généré 29~AGT, soit une réduction de
+45\%. Pour caractériser la pertinence des tests, nous avons utiliser comme
+métrique la couverture de code. Le critère de couverture de code le plus fin que
+nous propose atoum est le critère tous-les-nœuds. Ainsi, nous avons observé que
+les deux suites de tests avaient un score de 100\%. De plus, 1h30 a été
+nécessaire aux étudiants pour rédiger en moyenne 53~tests, alors qu'il nous a
+fallu 15~minutes pour écrire 21~contrats.  La phase de génération de tests a
+pris moins d'une seconde~: cela comprend la génération automatique des données
+de tests, à savoir des entiers, des réels, des chaînes de caractères spécifiées
+par des expressions régulières et des objets, en particulier plusieurs instances
+complètes du robot (avec ses périphériques).
+
+Ainsi, nous obtenons le même score de couverture du code avec pratiquement
+moitié moins de tests et en 6~fois moins de temps. Ces premiers résultats
+montrent l'efficacité de l'approche du test automatisé et le gain qu'apporte les
+contrats~: écrire des contrats est moins difficile et nécessite moins de temps
+que d'écrire une suite de tests complète.
+
+Cependant, cette expérimentation est biaisée~: les étudiants étaient en
+apprentissage de l'outil, et même s'il est {\em simple} et {\em intuitif}, un
+temps d'adaptation est nécessaire. De plus, nous sommes des experts de Praspel,
+donc nous rédigeons des contrats très rapidement. Afin d'évaluer notre approche
+de manière plus objective, nous avons demandé à un panel de bénévoles, composé
+d'ingénieurs de test et d'entreprises, d'appliquer une expérimentation similaire
+sur leur propre code.
+
+\section{Étude de cas concrète~: ingénieurs bénévoles}
+\label{section:experimentation:real}
+
+Nous avons sélectionné un panel de ???\footnote{TODO}~ingénieurs, dont
+???\footnote{TODO}~entreprises. Tous ont une expérience dans dans la
+qualité logiciel allant de ???\footnote{TODO} à ???\footnote{TODO}~années. Les
+entreprises travaillent dans le domaine de ???\footnote{TODO}. Nous leur avons
+demandé d'appliquer une méthodologie similaire à celle présentée dans la partie
+précédente mais sur leur propre code.
+
+\subsection{Présentation générale}
+
+Nous avons demandé au panel d'appliquer le protocole expérimental suivant~:
+
+\begin{enumerate}
+
+\item sélectionner plusieurs méthodes déjà testées\footnote{Selon quels
+critères~?}~;
+
+\item annoter ces méthodes avec des contrats Praspel~;
+
+\item générer automatiquement une suite de tests satisfaisant le critère de
+couverture de contrat \inenglish{All}-$G$, et l'exécuter~;
+
+\item comparer la suite MT avec la suite AGT.
+
+\end{enumerate}
+
+%On présente les ingénieurs et ce qu'on va faire~: groupe de méthodes, 2 TS etc.
+%Que va-t-on comparer~? Les métriques sont~: nombres de tests, code coverage,
+%temps.
+
+\subsection{Comparaison de la couverture de code des suites de tests}
+
+Ici, on compare les suites de test en fonction de la couverture de tests.
+Regarder les données manipulées des deux côtés, comment ça a été testé (aux
+limites, aléatoirement etc.). Donner un sens aux chiffres (100\% ne veut rien
+dire). La couverture de code tous-les-nœuds n'est probablement pas la meilleure,
+ça devrait se voir à un moment ou un autre.
+
+\subsection{Temps de rédaction des suites de tests}
+
+Ils sont tous habitués à écrire des tests. Personne ne connaît Praspel. Est-ce
+qu'on compte le temps d'apprentissage~? Ils n'ont peut-être pas le temps
+d'écriture de la suite MT en tête~: on travaillera pas estimation.
+
+\subsection{Générations de données de tests}
+
+Les suites AGT ne sont pas toutes complètes. Il faut compléter avec des MT.
+Est-ce que les algos de génération de données sont utiles~? Sont-ils aussi
+efficaces~? Ont-ils réécrit des tests en utilisant la génération de données~?
+Quels résultats a-t-il apporté~?
+
+\subsubsection{Tests paramétrés}
+
+Certains auront probablement fait des tests paramétrés (ça se fait déjà un peu
+dans atoum, ça s'est fait dans UniTestor, je les encouragerai à le faire). Quels
+résultats~? C'est une approche «~hybride~», est-ce qu'elle comble certains
+manques de Praspel~? Ou même des MT~?
+
+\subsection{Retours des ingénieurs}
+
+Plutôt sous la forme d'une interview~? Est-ce que l'approche des contrats est
+pertinente~? Est-ce que vous avez l'impression de gagner du temps~? De
+l'argent~? De la qualité logiciel~? Qu'est-ce qu'il faudrait pour gagner en
+maturité~? Les bugs qui ont été trouvés (s'il y en a), peut-on estimer leurs
+coût~: en temps, en personne, en argent (par rapport à la criticité du bug)~?
+
+\subsubsection{Bénéfices des contrats}
+
+Qu'est-ce que cela apporte à votre méthodologie~? Vous travaillez plus
+lentement, plus rapidement~? Facile à prendre en main et à comprendre~?
+
+\section{Autre cas d'études ponctuels}
+
+Parler de ext/jsond (remplaçant de ext/json dans PHP)~? Test de non-régression
+et de performance, basé sur notre article A-MOST'12.
+
+\section{Synthèse}
+\label{section:experimentation:other}

@@ -85,17 +85,17 @@ contrats ont totallement disparu. UDITA ajoute à Java deux extensions~: des
 primitives de choix non-déterministes et une primitive pour restreindre ces
 choix. Ces constructions sont familiaires aux utilisateurs de vérificateur de
 modèle comme Java PathFinder~\acite{VisserHBPL03}, sur lequel il s'appuye. UDITA
-est d'ailleurs intégré au framework Java PathFinder en tant qu'extension. Grâce
-aux points de choix non-déterministes, l'utilisateur n'écrit qu'une seule
-méthode de génération de données, et UDITA est capable d'en générer plusieurs.
-L'outil propose aussi à l'utilisateur des générateurs basiques, comme un
-générateur de booléens, d'entiers, de nouveaux objets ou d'objets déjà créés.
-Ces deux derniers permettent à l'utilisateur de créer des structures de données
-récursives ou liées. En plus d'une méthode de génération de données, UDITA
-demande à l'utilisateur d'écrire un filtre, notion identique aux prédicats de
-Korat, si ce n'est qu'UDITA ne va pas s'en servir pour la génération de données,
-mais uniquement pour filtrer les données générées~: chaque donnée qui passe le
-filtre sera mise de côté pour servir de données de test.
+est d'ailleurs intégré au \inenglish{framework} Java PathFinder en tant
+qu'extension. Grâce aux points de choix non-déterministes, l'utilisateur n'écrit
+qu'une seule méthode de génération de données, et UDITA est capable d'en générer
+plusieurs.  L'outil propose aussi à l'utilisateur des générateurs basiques,
+comme un générateur de booléens, d'entiers, de nouveaux objets ou d'objets déjà
+créés.  Ces deux derniers permettent à l'utilisateur de créer des structures de
+données récursives ou liées. En plus d'une méthode de génération de données,
+UDITA demande à l'utilisateur d'écrire un filtre, notion identique aux prédicats
+de Korat, si ce n'est qu'UDITA ne va pas s'en servir pour la génération de
+données, mais uniquement pour filtrer les données générées~: chaque donnée qui
+passe le filtre sera mise de côté pour servir de données de test.
 
 Contrairement à Korat, UDITA ne demande pas de méthode de
 \inenglish{finitization}, mais s'appuye sur ces points de choix
