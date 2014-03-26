@@ -1,0 +1,481 @@
+\chapter{Description des outils}
+\label{chapter:tools}
+
+\minitoc
+
+Ce chapitre est consacré à la description des outils~: comment est implémenté
+Praspel, comment il est maintenu, bla bla.
+
+\section{Praspel}
+\label{section:tools:praspel}
+
+Cette partie est consacrée à présenter l'implémentation et l'outillage de
+Praspel. Tout d'abord, la partie~\ref{subsection:tools:model} présente
+l'architecture de Praspel, ses différentes bibliothèques et composants, comment
+ils s'articulent entre eux etc. Ensuite, la
+partie~\ref{subsection:tools:interpretation} présente comment interpréter
+Praspel, suivie de la partie~\ref{subsection:tools:compilation} qui présente
+comment compiler Praspel. Enfin, la partie~\ref{subsection:tools:evaluation}
+présente comment est évalué Praspel.
+
+\subsection{Modèle objet}
+\label{subsection:tools:model}
+
+\begin{figure}
+
+\drawfig{10cm}{!}{node distance=3cm}{
+    \tikzstyle{rectangle}=[draw=black, thick, text centered, text width=2cm]
+    \tikzstyle{arrow}=[->, >=latex, shorten >=1pt, thick]
+
+    \node (model)    [rectangle, minimum height=3cm                   ] { Object model };
+    \node (language) [left of=model                                   ] { Language };
+    \node (php)      [right of=model                                  ] { PHP };
+    \node (verdict)  [rectangle, below of=model, minimum height=1cm,
+                      node distance=4cm                               ] { Verdict };
+    \node (callable) [left of=verdict                                 ] { Callable };
+
+    \draw[arrow] (language.north)
+                     -- node[auto] {\small interpreter}
+                     ++(0,  1.68)
+                     -| ([xshift=-5pt] model.north);
+    \draw[arrow] ([xshift=+5pt] model.north)
+                     --
+                     ++(0,  0.5)
+                     -| node[auto, yshift=-.9cm] {\small compiler} (php.north);
+    \draw[arrow] (php.south)
+                     -- node[auto] {\small execution}
+                     ++(0, -1.72)
+                     -| ([xshift=+5pt] model.south);
+    \draw[arrow] ([xshift=-5pt] model.south)
+                     --
+                     ++(0, -0.5)
+                     -| node[auto, yshift=.8cm] {\small disassembler} (language.south);
+    \draw[arrow] (model.south)
+                     --
+                     node[auto, yshift=-.13cm] {evaluation} (verdict.north);
+    \draw[arrow] (callable.east)
+                     --
+                     (verdict.west);
+}
+
+\caption{\label{figure:tools:praspel} Fonctionnement schématique de Praspel.}
+
+\end{figure}
+
+Praspel est un langage qui peut être aussi bien interprété que compilé, pour
+être ensuite évalué. La figure~\ref{figure:tools:praspel} présente les
+différents processus autour de Praspel. La pièce centrale de Praspel est le
+modèle objet~: une variable est un objet, une clause est un objet, une
+spécification (un contrat) est objet etc. Tous ces objets sont imbriqués et
+forme une structure qui s'apparente à un arbre. La racine de ce modèle est
+représenté par un objet appelé
+\code{Hoa\bslash{}Praspel\bslash{}Model\bslash{}Specification}.
+
+Dans les parties suivantes, nous détaillons les différents processus autour de
+ce modèle objet.
+
+\subsection{Interprétation}
+\label{subsection:tools:interpretation}
+
+Le processus qui transforme le langage Praspel en modèle objet est appelé une
+interprétation. Grâce à la grammaire de Praspel exprimée avec le langage PP et
+un compilateur, un AST sera produit. Cet AST sera par la suite visité afin de
+construire le modèle objet. Pour y arriver, nous avons deux façons de faire. La
+première consiste à utiliser la méthode \code{Hoa\bslash Praspel::interprete}
+qui est raccourci~; ainsi~:
+%
+\begin{pre}
+\$model = Hoa\bslash{}Praspel::interprete('@requires i: 7..42;');
+\end{pre}
+%
+La seconde façon de faire détail tous les outils, à savoir l'utilisation du
+compilateur pour produire un AST, puis l'appel d'un visiteur pour interpréter
+cet AST et produire le modèle objet~; ainsi~:
+%
+\begin{pre}
+\$compiler    = Hoa\bslash{}Compiler\bslash{}Llk::load( \\
+    new Hoa\bslash{}File\bslash{}Read('hoa://Library/Praspel/Grammar.pp') \\
+); \\
+\$ast         = \$compiler->parse('@requires i: 7..42;'); \\
+\$interpreter = new Hoa\bslash{}Praspel\bslash{}Visitor\bslash{}Interpreter(); \\
+\$model       = \$interpreter->visit(\$ast);
+\end{pre}
+
+Durant la production de l'AST, les erreurs syntaxiques seront détectées. Et
+durant la production du modèle objet, les erreurs sémantiques seront détectées.
+
+\subsection{Compilation}
+\label{subsection:tools:compilation}
+
+Le processus qui transforme le modèle en code PHP est appelé une compilation.
+Cette transformation est appliquée par un visiteur sur le modèle objet. Quand
+le code PHP produit est exécuté, il reconstruit le modèle objet depuis lequel il
+a été généré. Cela permet de «~sauvegarder~» le modèle en évitant la phase
+d'interprétation qui peut être coûteuse dans certaines situations. Pour y
+arriver, nous devons faire~:
+%
+\begin{pre}
+\$compiler = new Hoa\bslash{}Praspel\bslash{}Visitor\bslash{}Compiler(); \\
+echo \$compiler->visit(\$model);
+\end{pre}
+%
+Cet exemple produira le code PHP suivant~:
+%
+\begin{pre}
+\$praspel = new \bslash{}Hoa\bslash{}Praspel\bslash{}Model\bslash{}Specification(); \\
+ \\
+\$requires = \$praspel->getClause('requires'); \\
+\$requires['i']->in = realdom()->boundinteger(7, 42);
+\end{pre}
+%
+qui permet de construire le modèle objet contenu dans \code{\$model}. Cet
+exemple nous permet également d'avoir un aperçu de l'API du modèle objet. Elle
+se veut le plus simple et compréhensible possible.
+
+\subsection{Désassemblage}
+\label{subsection:tools:disassembler}
+
+Le processus qui transforme le modèle objet vers le langage Praspel est appelé
+un désassemblage~: c'est l'opération inverse de l'interprétation. Il permet par
+exemple d'indiquer des erreurs avec précisions sous la forme originale de
+Praspel~; ainsi~:
+%
+\begin{pre}
+\$disassembler = new Hoa\bslash{}Praspel\bslash{}Visitor\bslash{}Praspel(); \\
+echo \$disassembler->visit(\$model);
+\end{pre}
+Cette exemple produira le résultat suivant~:
+%
+\begin{pre}
+@requires i: boundinteger(7, 42);
+\end{pre}
+%
+Notons que le sucre syntaxique \code{7..42} a disparu.
+
+Ce dernier processus, complété des précédents, nous permet de passer d'une
+représentation vers n'importe quelle autre représentation de Praspel~: soit
+textuelle, soit objet, soit PHP.
+
+\subsection{Évaluation avec un \inenglish{Runtime Assertion Checker}}
+\label{subsection:tools:evaluation}
+
+Ce sont les \inenglish{assertion checkers} qui sont responsables d'évaluer
+Praspel. À partir d'une spécification (racine du modèle objet) et d'un
+\inenglish{callable} (c'est~à~dire une méthode ou une fonction qui représente
+notre système sous test), un \inenglish{assertion checker} est capable d'évaluer
+la spécification sur le système sous test. Soit des données nécessaires à
+l'évaluation lui sont fournies, soit il va les générer de lui-même à partir de
+la spécification.
+
+Nous nous appuyons sur un \inenglish{runtime assertion checker} (RAC) pour
+calculer le verdict du test. Ce verdict est basé sur la vérification
+d'assertions à l'exécution. Le RAC manipule trois informations~: un système sous
+test, un contrat et des données. Dans la
+figure~\ref{figure:language:short_contract}, le système sous test peut être la
+méthode \code{store}, le contrat est le contrat associé à cette méthode et les
+données sont soit fournies, soit générées automatiquement (nous verrons comment
+dans les chapitres suivants).
+
+Quand la vérification d'une assertion échoue, une erreur spécifique est
+produite. Les erreurs du RAC (aussi appelées les \inenglish{Praspel failures}
+ou erreurs Praspel) peuvent être de cinq sortes~:
+
+\begin{enumerate}
+
+\item \inenglish{precondition failure}, quand une précondition n'est pas
+satisfaite lors de l'invocation de la méthode~;
+
+\item \inenglish{postcondition failure}, quand une postcondition n'est pas
+satisfaite après l'exécution de la méthode~;
+
+\item \inenglish{throwable failure}, quand l'exécution de la méthode lève une
+exception inattendue~;
+
+\item \inenglish{invariant failure}, quand un invariant de classe est cassé~; et
+
+\item \inenglish{internal precondition failure}, qui correspond à la propagation
+d'une \inenglish{precondition failure} à un niveau supérieur.
+
+\end{enumerate}
+
+Le test réussit si aucune erreur Praspel n'est détectée. Autrement, il échoue,
+et l'erreur avec des informations supplémentaires est consignée.
+
+\begin{example}[Vérifications des assertions]
+
+Considérons par exemple la méthode \code{store} et son contrat dans la
+figure~\ref{figure:language:short_contract}.
+%
+Avec le jeu (\code{'foo'}, \code{null}), nous aurons une \inenglish{precondition
+failure}~: la contrainte \code{file: class('File')} n'est pas respectée car la
+méthode \code{predicate(\$q)} du domaine réaliste \code{Class} avec $\code{\$q}
+= \code{'foo'}$ retourne \code{false}, et aucun autre domaine réaliste n'est
+spécifié pour cette variable.
+%
+Avec le jeu de paramètres (\code{new File(…)}, \code{null}), avec un fichier
+vide, nous activerons le comportement par défaut et nous n'observerons aucune
+erreur sur les préconditions. Nous sommes maintenant dans le post-état. Si la
+méthode \code{store} retourne un booléen et que la méthode \code{isAttached} de
+l'objet \code{File} retourne \code{true}, aucune erreur non plus sur la
+postcondition.  Si cette méthode retourne autre chose que \code{true} ou que la
+méthode \code{store} retourne autre chose qu'un booléen, nous aurons une
+\inenglish{postcondition failure}. Si une exception est levée, nous aurons une
+\inenglish{throwable failure}.
+%
+Avec le même jeu de paramètres mais un fichier de grande taille ne pouvant être
+enregistré, nous activerons le comportement \code{full}. Nous devrons avoir une
+exception levée de type \code{AllocationException}, avec une méthode
+\code{getFilesystem} qui retournera l'instance de notre système de fichier. Le
+fichier ne devra pas non plus être attaché, \ie sa méthode \code{isAttached}
+devra retourner \code{false}. Si une autre exception est levée ou que la
+postcondition exceptionnelle n'est pas respectée, nous aurons une
+\inenglish{throwable failure}. Si aucune exception n'est levée, nous aurons une
+\inenglish{postcondition failure}.
+%
+Si avant ou après l'exécution de la méthode \code{store}, un invariant est
+cassé, nous aurons une \inenglish{invariant failure}. Par exemple, si l'attribut
+\code{\_map} contient autre chose que des objets \code{File} ou que sa taille
+dépasse 65535.
+%
+Enfin, si la méthode \code{store} fait appel à la méthode \code{getUsage} en ne
+respectant pas sa précondition (ici en lui donnant un argument par exemple),
+alors une \inenglish{precondition failure} sera émise depuis la méthode
+\code{getUsage}, qui sera ensuite traduite en \inenglish{internal precondition
+failure} depuis la méthode \code{store}.
+
+\end{example}
+
+Voici comment utiliser le RAC de Praspel~:
+%
+\begin{pre}
+function f ( \$i ) \{ \} \\
+ \\
+\$rac = new Hoa\bslash{}Praspel\bslash{}AssertionChecker\bslash{}Runtime( \\
+    \$model, \\
+    xcallable('f') \\
+); \\
+\$rac->setData(['i' => 13]); \\
+\$verdict = \$rac->evaluate();
+\end{pre}
+%
+Dans ce cas, la variable \code{\$verdict} contiendra \code{true} car la
+pré-condition (\code{\arequires i: 7..42}) est bien respectée. Si nous voulons
+que les données soient générées automatiquement, nous devrons appeler la méthode
+\code{\$ac->au\-to\-ma\-ti\-cal\-ly\-Ge\-ne\-ra\-te\-Data(true)} en plus de
+définir le générateur numérique par défaut des domaines réalistes (afin de
+pouvoir appeler les méthodes \code{sample} sur ces derniers sans soucis)~:
+%
+\begin{pre}
+Hoa\bslash{}Realdom::setDefaultSampler(new Hoa\bslash{}Sampler\bslash{}Random()); \\
+\$rac = new Hoa\bslash{}Praspel\bslash{}AssertionChecker\bslash{}Runtime( \\
+    \$model, \\
+    xcallable('f') \\
+); \\
+\$rac->automaticallyGenerateData(true); \\
+\$verdict = \$rac->evaluate();
+\end{pre}
+
+\subsection{Hoa, un ensemble de bibliothèques PHP}
+
+Praspel est un langage de spécification destiné à PHP et qui est construit de
+façon modulaire et extensible. Afin de faciliter son développement et sa
+maintenance, nous avons choisi de nous appuyer sur le projet Hoa.
+
+Hoa~\acite{Hoa} se définit comme {\em un ensemble de bibliothèques PHP}
+modulaires{\em , } extensibles {\em et } structurées. De plus, {\em Hoa souhaite
+être un pont entre le monde de la recherche et de l'industrie}. Ce projet
+comporte des bibliothèques solides pour une multitude de domaines. Entre autre,
+il offre une consistence entre les versions de PHP et est très respectueux des
+standards. Hoa est également impliqué dans plusieurs consortiums ou groupes de
+décisions concernant plusieurs standards de l'Informatique ou du Web. Par
+conséquent, il est plus facile d'écrire, de maintenir et de s'assurer de la
+qualité des programmes constituants Praspel.
+
+De plus, le fait que Hoa se veut être un pont entre le monde de la recherche et
+de l'industrie nous offre l'opportunité de faire valider nos expérimentations
+par sa communauté ou ses utilisateurs. Mais aussi, Hoa est développé sous la
+licence libre \inenglish{New BSD License}\footnote{Voir
+\url{http://hoa-project.net/En/About.html\#License}.}, soit une licence
+\inenglish{open-source}. Cela implique que les outils que nous avons développé
+durant cette thèse, comme Praspel, le compilateur etc., sont gratuits et libres.
+Cette approche offre deux avantages majeurs. Tout d'abord, des contributeurs de
+tout horizon peuvent nous aider à corriger ou améliorer nos outils. Ça a été le
+cas à plusieurs reprises où des contributeurs ont corrigé des erreurs dans
+Praspel ou ont amélioré considérablement le compilateur, notamment en y ajoutant
+le support Unicode, en améliorant les performances de l'analyseur lexical (pour
+l'analyse de très grandes données) etc. Ensuite, puisque les outils sont
+gratuits, des entreprises peuvent l'utiliser et nous offrir des retours
+pertinents, comme nous le verrons dans le
+chapitre~\ref{chapter:experimentations} avec les expérimentations.
+
+Nous outils prennent la forme de bibliothèques dans Hoa, à savoir
+\code{Hoa\bslash Realdom} pour les domaines réalistes, \code{Hoa\bslash
+Praspel} pour le langage Praspel, \code{Hoa\bslash Compiler} pour le compilateur
+et \code{Hoa\bslash Regex} pour les expressions régulières.
+
+\subsubsection{\code{Hoa\bslash Realdom}}
+
+La bibliothèque \code{Hoa\bslash Realdom} représente la bibliothèque standard
+des domaines. Ils sont implémentés comme présenté dans la
+partie~\ref{section:language:realdoms} page~\ref{section:language:realdoms}, à
+savoir que chaque domaine réaliste est représenté par une classe.
+
+Actuellement, une liste de 28~domaines réalistes est proposée~:
+%
+\begin{itemize}
+
+\item \code{Array}, représentant des tableaux~;
+
+\item \code{Bag}, un sac pouvant contenir plusieurs domaines réalistes de
+natures différentes~;
+
+\item \code{Boolean}, représentant les booléens~;
+
+\item \code{Boundfloat}, représentant un intervalle de réels~;
+
+\item \code{Boundinteger}, représentant un intervalle d'entiers~;
+
+\item \code{Class}, représentant des instances de classes~;
+
+\item \code{Color}, représentant des couleurs au format \code{\#{\em rrggbb}}~;
+
+\item \code{Constarray}, représentant les tableaux de Praspel, c'est~à~dire une
+description de tableau~;
+
+\item \code{Constboolean}, représentant les booléens de Praspel~;
+
+\item \code{Constfloat}, représentant les réels de Praspel~;
+
+\item \code{Constinteger}, représentant les entiers de Praspel~;
+
+\item \code{Constnull}, représentant la valeur nulle de Praspel~;
+
+\item \code{Conststring}, représentant les chaînes de caractères de Praspel~;
+
+\item \code{Date}, représentant une date formatée~;
+
+\item \code{Empty}, représentant une donnée vide~;
+
+\item \code{Even}, représentant les nombres pairs~;
+
+\item \code{Float}, représentant les réels~;
+
+\item \code{Grammar}, représentant les chaînes de caractères spécifiées par une
+grammaire~;
+
+\item \code{Integer}, représentant les entiers~;
+
+\item \code{Natural}, représentant les naturels (entiers auto-incrémentés)~;
+
+\item \code{Number}, représentant les nombres (entiers ou réels)~;
+
+\item \code{Object}, représentant un objet donné~;
+
+\item \code{Odd}, représentant les nombres impairs~;
+
+\item \code{Regex}, représentant les chaînes de caractères spécifiées par une
+expression régulière~;
+
+\item \code{Smallfloat}, représentant des petits réels~;
+
+\item \code{Smallinteger}, représentant des petits entiers~;
+
+\item \code{String}, représentant des chaînes de caractères~;
+
+\item \code{Timestamp}, représentant des valeurs dans le temps~;
+
+\item \code{Undefined}, représentant des valeurs non-définies.
+
+\end{itemize}
+
+Pour obtenir toutes les informations sur un domaine réaliste, nous pouvons nous
+aider de l'outil en ligne de commande \code{hoa realdom:reflection}.
+
+\begin{example}[Informations sur le domaine réaliste \code{Boundinteger}]
+
+Par exemple, pour obtenir des informations sur le domaine réaliste
+\code{Boundinteger}, en ligne de commande, nous ferons~:
+%
+\begin{bigpre}
+\$ hoa realdom:reflection boundinteger \\
+Realdom boundinteger \{ \\
+ \\
+    Implementation Hoa\(\bslash\)Realdom\(\bslash\)Boundinteger; \\
+ \\
+    Parent Hoa\(\bslash\)Realdom\(\bslash\)Integer; \\
+ \\
+    Interfaces \{ \\
+ \\
+        ArrayAccess; \\
+        Countable; \\
+        IteratorAggregate; \\
+        Traversable; \\
+        Hoa\(\bslash\)Realdom\(\bslash\)IRealdom\(\bslash\)Enumerable; \\
+        Hoa\(\bslash\)Realdom\(\bslash\)IRealdom\(\bslash\)Finite; \\
+        Hoa\(\bslash\)Realdom\(\bslash\)IRealdom\(\bslash\)Interval; \\
+        Hoa\(\bslash\)Realdom\(\bslash\)IRealdom\(\bslash\)Nonconvex; \\
+        Hoa\(\bslash\)Realdom\(\bslash\)Number; \\
+        Hoa\(\bslash\)Visitor\(\bslash\)Element; \\
+    \} \\
+ \\
+    Parameters \{ \\
+ \\
+        [#0 optional] Constinteger lower = -9223372036854775808; \\
+        [#1 optional] Constinteger upper = 9223372036854775807; \\
+    \} \\
+\}
+\end{bigpre}
+%
+Comme informations, nous avons le nom de la classe qui représente
+l'implémentation du domaine réaliste, nous avons toutes les interfaces utilisées
+par cette implémentation (ici plusieurs de PHP et des domaines réalistes, comme
+présenté dans la partie~\ref{subsection:language:realdom:classification}
+page~\pageref{subsection:language:realdom:classification}), ainsi que les
+paramètres avec leurs positions, filtres et valeurs par défaut.
+
+\end{example}
+
+Cette bibliothèque peut être utilisée seule, sans Praspel.
+
+\subsubsection{\code{Hoa\bslash Praspel}}
+
+La bibliothèque \code{Hoa\bslash Praspel} est responsable de tout le support de
+Praspel, de l'interprétation à l'évaluation en passant par la compilateur, la
+couverture des contrats etc.
+
+La bibliothèque est découpée de la façon suivante~:
+%
+\begin{itemize}
+
+\item \code{AssertionChecker}, permet d'évaluer le langage~;
+
+\item \code{Bin}, contient des scripts, dont un \inenglish{shell} permettant
+d'analyser et évaluer du code Praspel à la volée~;
+
+\item \code{Exception}, contient toutes les catégories d'exceptions de Praspel~;
+
+\item \code{Iterator}, contient entre autre les générateurs de tests unitaires à
+partir de plusieurs critères de couverture sur un contrat~;
+
+\item \code{Model}, le cœur du langage Praspel est représenté par un modèle
+objet~;
+
+\item \code{Preambler}, permet de créer un préambule de test pour n'importe quel
+système sous test~;
+
+\item \code{Visitor}, contient l'interpréteur et plusieurs compilateurs.
+
+\end{itemize}
+
+À la racine de la bibliothèque, nous trouvons entre autre la grammaire, une
+classe nommée \code{Hoa\bslash Praspel\bslash Praspel} qui rassemble les
+opérations usuelles sur le langage et une classe représantant une trace
+d'évaluation d'un contrat.
+
+\subsubsection{\code{Hoa\bslash Compiler}}
+
+\subsubsection{\code{Hoa\bslash Regex}}
+
+\section{atoum}
+
+\section{Synthèse}

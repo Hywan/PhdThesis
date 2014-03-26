@@ -196,7 +196,7 @@ Le nombre moyen de tests générés par les étudiants est de 53~MT, alors que p
 21 méthodes, soit 21 contrats, Praspel a généré 29~AGT, soit une réduction de
 45\%. Pour caractériser la pertinence des tests, nous avons utiliser comme
 métrique la couverture de code. Le critère de couverture de code le plus fin que
-nous propose atoum est le critère tous-les-nœuds. Ainsi, nous avons observé que
+nous propose atoum est le critère tous-les-arcs. Ainsi, nous avons observé que
 les deux suites de tests avaient un score de 100\%. De plus, 1h30 a été
 nécessaire aux étudiants pour rédiger en moyenne 53~tests, alors qu'il nous a
 fallu 15~minutes pour écrire 21~contrats.  La phase de génération de tests a
@@ -235,8 +235,8 @@ Nous avons demandé au panel d'appliquer le protocole expérimental suivant~:
 
 \begin{enumerate}
 
-\item sélectionner plusieurs méthodes déjà testées\footnote{Selon quels
-critères~?}~;
+\item sélectionner plusieurs méthodes déjà testées manuellement\footnote{Selon
+quels critères~?}~;
 
 \item annoter ces méthodes avec des contrats Praspel~;
 
@@ -256,7 +256,7 @@ couverture de contrat \inenglish{All}-$G$, et l'exécuter~;
 Ici, on compare les suites de test en fonction de la couverture de tests.
 Regarder les données manipulées des deux côtés, comment ça a été testé (aux
 limites, aléatoirement etc.). Donner un sens aux chiffres (100\% ne veut rien
-dire). La couverture de code tous-les-nœuds n'est probablement pas la meilleure,
+dire). La couverture de code tous-les-arcs n'est probablement pas la meilleure,
 ça devrait se voir à un moment ou un autre.
 
 \subsection{Temps de rédaction des suites de tests}
@@ -264,6 +264,8 @@ dire). La couverture de code tous-les-nœuds n'est probablement pas la meilleure
 Ils sont tous habitués à écrire des tests. Personne ne connaît Praspel. Est-ce
 qu'on compte le temps d'apprentissage~? Ils n'ont peut-être pas le temps
 d'écriture de la suite MT en tête~: on travaillera pas estimation.
+
+Faire 2 fois l'XP en fait. Une fois avec apprentissage, une fois sans.
 
 \subsection{Générations de données de tests}
 
@@ -279,13 +281,25 @@ dans atoum, ça s'est fait dans UniTestor, je les encouragerai à le faire). Que
 résultats~? C'est une approche «~hybride~», est-ce qu'elle comble certains
 manques de Praspel~? Ou même des MT~?
 
-\subsection{Retours des ingénieurs}
+\subsection{Retours des ingénieurs/expertise humaine}
 
 Plutôt sous la forme d'une interview~? Est-ce que l'approche des contrats est
 pertinente~? Est-ce que vous avez l'impression de gagner du temps~? De
 l'argent~? De la qualité logiciel~? Qu'est-ce qu'il faudrait pour gagner en
 maturité~? Les bugs qui ont été trouvés (s'il y en a), peut-on estimer leurs
 coût~: en temps, en personne, en argent (par rapport à la criticité du bug)~?
+
+Autre question, moins empirique~: est-ce que l'ingénieur aurait écrit ces tests
+là, ou pas, des tests trop simples, des tests trop complexes, pertinents, ça
+remplit nos objectifs qualités, de couverture etc.
+
+Expressivité de Praspel~: est-ce que ce le langage est assez complet, est-ce
+qu'ils peuvent tout exprimer avec ou pas~?
+
+Est-ce qu'ils sont limités par les générateurs de données~? Est-ce qu'ils les
+ont un peu hacker pour obtenir la donnée qu'ils voulaient~? Est-ce qu'ils
+voulaient faire quelque chose qui n'était pas possible~? Est-ce qu'ils se
+s'auraient poser la question sans Praspel~?
 
 \subsubsection{Bénéfices des contrats}
 
@@ -296,6 +310,10 @@ lentement, plus rapidement~? Facile à prendre en main et à comprendre~?
 
 Parler de ext/jsond (remplaçant de ext/json dans PHP)~? Test de non-régression
 et de performance, basé sur notre article A-MOST'12.
+
+\section{Autre}
+
+Est-ce qu'ils ont trouvé des bugs dans Praspel~?
 
 \section{Synthèse}
 \label{section:experimentation:other}
