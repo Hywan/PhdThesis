@@ -1,7 +1,27 @@
 % Theorem.
-\theoremstyle{definition}
-\newtheorem{definition}{Définition}[chapter]
-\newtheorem{example}{Exemple}[chapter]
+%\theoremstyle{definition}
+%\newtheorem{definition}{Définition}[chapter]
+%\newtheorem{example}{Exemple}[chapter]
+
+\declaretheoremstyle[
+    spaceabove=.4cm,
+    spacebelow=.4cm,
+    bodyfont=\normalfont
+]{mytheoremstyle}
+\declaretheorem[style=mytheoremstyle, parent=chapter, title=Définition]{definition}
+\declaretheorem[style=mytheoremstyle, parent=chapter, title=Exemple]{example}
+
+\makeatletter
+\def\ll@definition{%
+  \protect\numberline{\thedefinition}\thmt@shortoptarg%
+}
+\makeatother
+
+\makeatletter
+\def\ll@example{%
+  \protect\numberline{\theexample}\thmt@shortoptarg%
+}
+\makeatother
 
 % Style.
 \newcommand{\code}[1]{\texttt{#1}}
