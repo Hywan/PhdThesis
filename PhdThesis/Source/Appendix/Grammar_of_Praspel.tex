@@ -35,7 +35,7 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \\
 // POSSIBILITY OF SUCH DAMAGE. \\
 // \\
-// Grammar \(\bslash\)Hoa\(\bslash\)Praspel\(\bslash\)Grammar. \\
+// Grammar \bslash{}Hoa\bslash{}Praspel\bslash{}Grammar. \\
 // \\
 // Provide grammar for Praspel. \\
 // \\
@@ -45,9 +45,9 @@
 // \\
  \\
  \\
-%skip   s               \(\bslash\)s \\
-%skip   block_comment   /\(\bslash\)*(.|\(\bslash\)n)*?\(\bslash\)*/ \\
-%skip   inline_comment  //[^\(\bslash\)n]* \\
+%skip   s               \bslash{}s \\
+%skip   block_comment   /\bslash{}*(.|\bslash{}n)*?\bslash{}*/ \\
+%skip   inline_comment  //[^\bslash{}n]* \\
  \\
 // Clauses. \\
 %token  at_is           @is \\
@@ -60,29 +60,29 @@
 %token  at_description  @description \\
  \\
 // Constructions. \\
-%token  old             \(\bslash\)\(\bslash\)old \\
-%token  result          \(\bslash\)\(\bslash\)result \\
-%token  pred            \(\bslash\)\(\bslash\)pred \\
+%token  old             \bslash{}\bslash{}old \\
+%token  result          \bslash{}\bslash{}result \\
+%token  pred            \bslash{}\bslash{}pred \\
  \\
 // Symbols. \\
-%token  parenthesis_    \(\bslash\)( \\
-%token _parenthesis     \(\bslash\)) \\
-%token  brace_          \(\bslash\)\{ \\
-%token _brace           \(\bslash\)\} \\
-%token  bracket_        \(\bslash\)[ \\
-%token _bracket         \(\bslash\)] \\
+%token  parenthesis_    \bslash{}( \\
+%token _parenthesis     \bslash{}) \\
+%token  brace_          \bslash{}\{ \\
+%token _brace           \bslash{}\} \\
+%token  bracket_        \bslash{}[ \\
+%token _bracket         \bslash{}] \\
 %token  comma           , \\
-%token  backslash       \(\bslash\)\(\bslash\) \\
-%token  arrow           \(\bslash\)-> \\
+%token  backslash       \bslash{}\bslash{} \\
+%token  arrow           \bslash{}-> \\
 %token  resolution      :: \\
 %token  colon           : \\
 %token  semicolon       ; \\
-%token  range           \(\bslash\).\(\bslash\). \\
+%token  range           \bslash{}.\bslash{}. \\
 %token  count           #|count \\
 %token  heredoc_        <<<                       -> hd \\
 %token  hd:quote        ' \\
 %token  hd:identifier   [A-Z]+ \\
-%token  hd:content      ((\(\bslash\)h[^\(\bslash\)n]+)?\(\bslash\)n)+ \\
+%token  hd:content      ((\bslash{}h[^\bslash{}n]+)?\bslash{}n)+ \\
 %token  hd:_heredoc     ;                         -> default \\
  \\
 // Keywords. \\
@@ -106,18 +106,18 @@
 %token  null            null|void \\
 %token  true            true \\
 %token  false           false \\
-%token  binary          [\(\bslash\)+\(\bslash\)-]?0b[01]+ \\
-%token  octal           [\(\bslash\)+\(\bslash\)-]?0[0-7]+ \\
-%token  hexa            [\(\bslash\)+\(\bslash\)-]?0[xX][0-9a-fA-F]+ \\
-%token  decimal         [\(\bslash\)+\(\bslash\)-]?(0|[1-9]\(\bslash\)d*)(\(\bslash\).\(\bslash\)d+)?([eE][\(\bslash\)+\(\bslash\)-]?\(\bslash\)d+)? \\
+%token  binary          [\bslash{}+\bslash{}-]?0b[01]+ \\
+%token  octal           [\bslash{}+\bslash{}-]?0[0-7]+ \\
+%token  hexa            [\bslash{}+\bslash{}-]?0[xX][0-9a-fA-F]+ \\
+%token  decimal         [\bslash{}+\bslash{}-]?(0|[1-9]\bslash{}d*)(\bslash{}.\bslash{}d+)?([eE][\bslash{}+\bslash{}-]?\bslash{}d+)? \\
 %token  quote_          '                         -> string \\
-%token  string:escaped  \(\bslash\)\(\bslash\)(['nrtvef\(\bslash\)\(\bslash\)b]|[0-7]\{1,3\}|[xX][0-9a-fA-F]\{1,2\}) \\
-%token  string:accepted \(\bslash\)\(\bslash\) \\
-%token  string:string   [^'\(\bslash\)\(\bslash\)]+ \\
-%token  string:concat   '\(\bslash\)s*\(\bslash\).\(\bslash\)s*' \\
+%token  string:escaped  \bslash{}\bslash{}(['nrtvef\bslash{}\bslash{}b]|[0-7]\{1,3\}|[xX][0-9a-fA-F]\{1,2\}) \\
+%token  string:accepted \bslash{}\bslash{} \\
+%token  string:string   [^'\bslash{}\bslash{}]+ \\
+%token  string:concat   '\bslash{}s*\bslash{}.\bslash{}s*' \\
 %token  string:_quote   '                         -> default \\
-%token  regex           /.*?(?<!\(\bslash\)\(\bslash\))/[imsxADSUXJu]* \\
-%token  identifier      [a-zA-Z_\(\bslash\)x7f-\(\bslash\)xff][a-zA-Z0-9_\(\bslash\)x7f-\(\bslash\)xff]* \\
+%token  regex           /.*?(?<!\bslash{}\bslash{})/[imsxADSUXJu]* \\
+%token  identifier      [a-zA-Z_\bslash{}x7f-\bslash{}xff][a-zA-Z0-9_\bslash{}x7f-\bslash{}xff]* \\
  \\
 #specification: \\
     method()* \\

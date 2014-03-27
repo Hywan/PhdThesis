@@ -100,15 +100,15 @@ d'origine. \\
 \begin{figure}
 
 \begin{bigpre}
-%skip          space    \(\bslash\)s \\
+%skip          space    \bslash{}s \\
 %token         lt       <            -> in_tag \\
 %token         text     [^<]* \\
-%skip   in_tag:space    \(\bslash\)s \\
-%token  in_tag:name     \(\bslash\)w+ \\
+%skip   in_tag:space    \bslash{}s \\
+%token  in_tag:name     \bslash{}w+ \\
 %token  in_tag:slash    / \\
 %token  in_tag:gt       >            -> default \\
 %token  in_tag:equal    = \\
-%token  in_tag:value    ".*?(?<!\(\bslash\bslash\))" \\
+%token  in_tag:value    ".*?(?<!\bslash{}\bslash{})" \\
 \\
 xml: \\
     tag()+ #root \\
@@ -1027,7 +1027,7 @@ IPv4 valide, avec ou sans port~:
 \begin{pre}
 /** \\
  * \arequires ip: regex( \\
- *                   '/^(\(\bslash\)*|\(\bslash\)d\{1,3\}(\(\bslash\).\(\bslash\)d\{1,3\})\{3\})(:\(\bslash\)d+)?$/' \\
+ *                   '/^(\bslash{}*|\bslash{}d\{1,3\}(\bslash{}.\bslash{}d\{1,3\})\{3\})(:\bslash{}d+)?$/' \\
  *               ); \\
  */
 \end{pre}
@@ -1038,7 +1038,7 @@ avec la syntaxe simplifiée, nous aurions~:
 %
 \begin{pre}
 /** \\
- * \arequires ip: /^(\(\bslash\)*|\(\bslash\)d\{1,3\}(\(\bslash\).\(\bslash\)d\{1,3\})\{3\})(:\(\bslash\)d+)?$/; \\
+ * \arequires ip: /^(\bslash{}*|\bslash{}d\{1,3\}(\bslash{}.\bslash{}d\{1,3\})\{3\})(:\bslash{}d+)?$/; \\
  */
 \end{pre}
 

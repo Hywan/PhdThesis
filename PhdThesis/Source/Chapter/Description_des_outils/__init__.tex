@@ -11,12 +11,14 @@ Praspel, comment il est maintenu, bla bla.
 
 Cette partie est consacrée à présenter l'implémentation et l'outillage de
 Praspel. Tout d'abord, la partie~\ref{subsection:tools:model} présente
-l'architecture de Praspel, ses différentes bibliothèques et composants, comment
-ils s'articulent entre eux etc. Ensuite, la
-partie~\ref{subsection:tools:interpretation} présente comment interpréter
-Praspel, suivie de la partie~\ref{subsection:tools:compilation} qui présente
-comment compiler Praspel. Enfin, la partie~\ref{subsection:tools:evaluation}
-présente comment est évalué Praspel.
+l'architecture et le modèle objet de Praspel. Ensuite, la
+partie~\ref{subsection:tools:interpretation} présente comment l'interpréter,
+suivie de la partie~\ref{subsection:tools:compilation} qui présente comment le
+compiler. Puis, la partie~\ref{subsection:tools:evaluation} présente comment
+l'évaluer. Et enfin, comme Praspel est un langage de spécification destiné à PHP
+construit de façon modulaire et extensible, pour faciliter son développement et
+sa maintenance, nous avons choisi de nous appuyer sur le projet Hoa, présenté
+dans la partie~\ref{subsection:tools:hoa}.
 
 \subsection{Modèle objet}
 \label{subsection:tools:model}
@@ -101,7 +103,7 @@ Le processus qui transforme le langage Praspel en modèle objet est appelé une
 interprétation. Grâce à la grammaire de Praspel exprimée avec le langage PP et
 un compilateur, un AST sera produit. Cet AST sera par la suite visité afin de
 construire le modèle objet. Pour y arriver, nous avons deux façons de faire. La
-première consiste à utiliser la méthode \code{Hoa\bslash Praspel::interprete}
+première consiste à utiliser la méthode \code{Hoa\bslash{}Praspel::interprete}
 qui est raccourci~; ainsi~:
 %
 \begin{pre}
@@ -148,9 +150,10 @@ Cet exemple produira le code PHP suivant~:
 \$requires['i']->in = realdom()->boundinteger(7, 42);
 \end{pre}
 %
-qui permet de construire le modèle objet contenu dans \code{\$model}. Cet
-exemple nous permet également d'avoir un aperçu de l'API du modèle objet. Elle
-se veut le plus simple et compréhensible possible.
+qui permet de construire le modèle objet contenu dans \code{\$model},
+c'est~à~dire que \code{\$model} est strictement équivalent à \code{\$praspel}.
+Cet exemple nous permet également d'avoir un aperçu de l'API du modèle objet~:
+elle se veut le plus simple et compréhensible possible.
 
 \subsection{Désassemblage}
 \label{subsection:tools:disassembler}
@@ -180,21 +183,19 @@ textuelle, soit objet, soit PHP.
 \label{subsection:tools:evaluation}
 
 Ce sont les \inenglish{assertion checkers} qui sont responsables d'évaluer
-Praspel. À partir d'une spécification (racine du modèle objet) et d'un
-\inenglish{callable} (c'est~à~dire une méthode ou une fonction qui représente
-notre système sous test), un \inenglish{assertion checker} est capable d'évaluer
-la spécification sur le système sous test. Soit des données nécessaires à
-l'évaluation lui sont fournies, soit il va les générer de lui-même à partir de
-la spécification.
+Praspel. À partir d'une spécification, racine du modèle objet, et d'un
+\inenglish{callable}, c'est~à~dire une méthode ou une fonction qui représente
+notre système sous test, un \inenglish{assertion checker} est capable d'évaluer
+la spécification sur le système sous test. Les données nécessaires à
+l'évaluation lui sont soit fournies, soit générer par lui-même à partir de la
+spécification.
 
 Actuellement, nous nous appuyons sur un \inenglish{runtime assertion checker}
 (RAC) pour calculer le verdict du test. Ce verdict est basé sur la vérification
-d'assertions à l'exécution.
-
-Quand la vérification d'une assertion échoue, une erreur spécifique est
-produite. Les erreurs du RAC (aussi appelées les \inenglish{Praspel failures}
-ou erreurs Praspel) peuvent être de cinq sortes~:
-
+d'assertions à l'exécution. Quand la vérification d'une assertion échoue, une
+erreur spécifique est produite. Les erreurs du RAC (aussi appelées les
+\inenglish{Praspel failures} ou erreurs Praspel) peuvent être de cinq sortes~:
+%
 \begin{enumerate}
 
 \item \inenglish{precondition failure}, quand une précondition n'est pas
@@ -212,12 +213,12 @@ exception inattendue~;
 d'une \inenglish{precondition failure} à un niveau supérieur.
 
 \end{enumerate}
-
+%
 Le test réussit si aucune erreur Praspel n'est détectée. Autrement, il échoue,
 et l'erreur avec des informations supplémentaires est consignée.
 
 À présent, illustrons comment utiliser le RAC de Praspel où le système sous test
-est une fonction \code{f}
+est une fonction \code{f}~:
 %
 \begin{pre}
 function f ( \$i ) \{ \} \\
@@ -231,11 +232,11 @@ function f ( \$i ) \{ \} \\
 \end{pre}
 %
 Dans ce cas, la variable \code{\$verdict} contiendra \code{true} car la
-pré-condition (\code{\arequires i: 7..42}) est bien respectée. Si nous voulons
+précondition (\code{\arequires i: 7..42}) est bien respectée. Si nous voulons
 que les données soient générées automatiquement, nous devrons appeler la méthode
 \code{\$ac->au\-to\-ma\-ti\-cal\-ly\-Ge\-ne\-ra\-te\-Data(true)} en plus de
-définir le générateur numérique par défaut des domaines réalistes (afin de
-pouvoir appeler les méthodes \code{sample} sur ces derniers sans soucis)~:
+définir le générateur numérique par défaut des domaines réalistes afin de
+pouvoir appeler les méthodes \code{sample} sur ces derniers~:
 %
 \begin{pre}
 Hoa\bslash{}Realdom::setDefaultSampler(new Hoa\bslash{}Sampler\bslash{}Random()); \\
@@ -252,9 +253,8 @@ Hoa\bslash{}Realdom::setDefaultSampler(new Hoa\bslash{}Sampler\bslash{}Random())
 Dans la figure~\ref{figure:language:short_contract}
 page~\pageref{figure:language:short_contract}, le système sous test peut être la
 méthode \code{store}, le contrat est le contrat associé à cette méthode et les
-données sont soit fournies, soit générées automatiquement.
-
-Considérons par exemple la méthode \code{store} et son contrat dans la
+données sont soit fournies, soit générées automatiquement.  Considérons par
+exemple la méthode \code{store} et son contrat dans la
 figure~\ref{figure:language:short_contract}.
 %
 Avec le jeu (\code{'foo'}, \code{null}), nous aurons une \inenglish{precondition
@@ -297,10 +297,7 @@ failure} depuis la méthode \code{store}.
 \end{example}
 
 \subsection{Hoa, un ensemble de bibliothèques PHP}
-
-Praspel est un langage de spécification destiné à PHP et qui est construit de
-façon modulaire et extensible. Afin de faciliter son développement et sa
-maintenance, nous avons choisi de nous appuyer sur le projet Hoa.
+\label{subsection:tools:hoa}
 
 Hoa~\acite{Hoa} se définit comme {\em un ensemble de bibliothèques PHP}
 modulaires{\em , } extensibles {\em et } structurées. De plus, {\em Hoa souhaite
@@ -312,7 +309,7 @@ décisions concernant plusieurs standards de l'Informatique ou du Web. Par
 conséquent, il est plus facile d'écrire, de maintenir et de s'assurer de la
 qualité des programmes constituants Praspel.
 
-De plus, le fait que Hoa se veut être un pont entre le monde de la recherche et
+De plus, le fait que Hoa souhaite être un pont entre le monde de la recherche et
 de l'industrie nous offre l'opportunité de faire valider nos expérimentations
 par sa communauté ou ses utilisateurs. Mais aussi, Hoa est développé sous la
 licence libre \inenglish{New BSD License}\footnote{Voir
@@ -329,17 +326,17 @@ gratuits, des entreprises peuvent l'utiliser et nous offrir des retours
 pertinents, comme nous le verrons dans le
 chapitre~\ref{chapter:experimentations} avec les expérimentations.
 
-Nous outils prennent la forme de bibliothèques dans Hoa, à savoir
-\code{Hoa\bslash Realdom} pour les domaines réalistes, \code{Hoa\bslash
-Praspel} pour le langage Praspel, \code{Hoa\bslash Compiler} pour le compilateur
-et \code{Hoa\bslash Regex} pour les expressions régulières.
+Nos outils prennent la forme de bibliothèques dans Hoa, à savoir
+\code{Hoa\bslash{}Realdom} pour les domaines réalistes, \code{Hoa\bslash{}Praspel}
+pour le langage Praspel, \code{Hoa\bslash{}Compiler} pour le compilateur et
+\code{Hoa\bslash{}Regex} pour les expressions régulières.
 
-\subsubsection{\code{Hoa\bslash Realdom}}
+\subsubsection{\code{Hoa\bslash{}Realdom}}
 
-La bibliothèque \code{Hoa\bslash Realdom} représente la bibliothèque standard
-des domaines. Ils sont implémentés comme présenté dans la
-partie~\ref{section:language:realdoms} page~\ref{section:language:realdoms}, à
-savoir que chaque domaine réaliste est représenté par une classe.
+La bibliothèque \code{Hoa\bslash{}Realdom} représente la bibliothèque standard
+des domaines réalistes. Ils sont implémentés comme présenté dans la
+partie~\ref{section:language:realdoms} page~\pageref{section:language:realdoms},
+à savoir que chaque domaine réaliste est représenté par une classe.
 
 Actuellement, une liste de 28~domaines réalistes est proposée~:
 %
@@ -421,9 +418,9 @@ Par exemple, pour obtenir des informations sur le domaine réaliste
 \$ hoa realdom:reflection boundinteger \\
 Realdom boundinteger \{ \\
  \\
-    Implementation Hoa\(\bslash\)Realdom\(\bslash\)Boundinteger; \\
+    Implementation Hoa\bslash{}Realdom\bslash{}Boundinteger; \\
  \\
-    Parent Hoa\(\bslash\)Realdom\(\bslash\)Integer; \\
+    Parent Hoa\bslash{}Realdom\bslash{}Integer; \\
  \\
     Interfaces \{ \\
  \\
@@ -431,12 +428,12 @@ Realdom boundinteger \{ \\
         Countable; \\
         IteratorAggregate; \\
         Traversable; \\
-        Hoa\(\bslash\)Realdom\(\bslash\)IRealdom\(\bslash\)Enumerable; \\
-        Hoa\(\bslash\)Realdom\(\bslash\)IRealdom\(\bslash\)Finite; \\
-        Hoa\(\bslash\)Realdom\(\bslash\)IRealdom\(\bslash\)Interval; \\
-        Hoa\(\bslash\)Realdom\(\bslash\)IRealdom\(\bslash\)Nonconvex; \\
-        Hoa\(\bslash\)Realdom\(\bslash\)Number; \\
-        Hoa\(\bslash\)Visitor\(\bslash\)Element; \\
+        Hoa\bslash{}Realdom\bslash{}IRealdom\bslash{}Enumerable; \\
+        Hoa\bslash{}Realdom\bslash{}IRealdom\bslash{}Finite; \\
+        Hoa\bslash{}Realdom\bslash{}IRealdom\bslash{}Interval; \\
+        Hoa\bslash{}Realdom\bslash{}IRealdom\bslash{}Nonconvex; \\
+        Hoa\bslash{}Realdom\bslash{}Number; \\
+        Hoa\bslash{}Visitor\bslash{}Element; \\
     \} \\
  \\
     Parameters \{ \\
@@ -458,9 +455,9 @@ paramètres avec leurs positions, filtres et valeurs par défaut.
 
 Cette bibliothèque peut être utilisée seule, sans Praspel.
 
-\subsubsection{\code{Hoa\bslash Praspel}}
+\subsubsection{\code{Hoa\bslash{}Praspel}}
 
-La bibliothèque \code{Hoa\bslash Praspel} est responsable de tout le support de
+La bibliothèque \code{Hoa\bslash{}Praspel} est responsable de tout le support de
 Praspel, de l'interprétation à l'évaluation en passant par la compilateur, la
 couverture des contrats etc.
 
@@ -489,13 +486,13 @@ système sous test~;
 \end{itemize}
 
 À la racine de la bibliothèque, nous trouvons entre autre la grammaire, une
-classe nommée \code{Hoa\bslash Praspel\bslash Praspel} qui rassemble les
+classe nommée \code{Hoa\bslash{}Praspel\bslash{}Praspel} qui rassemble les
 opérations usuelles sur le langage et une classe représantant une trace
 d'évaluation d'un contrat.
 
-\subsubsection{\code{Hoa\bslash Compiler}}
+\subsubsection{\code{Hoa\bslash{}Compiler}}
 
-\subsubsection{\code{Hoa\bslash Regex}}
+\subsubsection{\code{Hoa\bslash{}Regex}}
 
 \section{atoum}
 

@@ -12,7 +12,7 @@ digraph {
         ast   -> word [label=" ", texlbl="isotropique"];
     }
 
-    regexX [shape=plaintext, label=" ", texlbl="\code{$\bslash$w[3-7]+}"];
+    regexX [shape=plaintext, label=" ", texlbl="\code{\bslash{}w[3-7]+}"];
     astX   [shape=plaintext, label=" ", texlbl="\begin{tikzpicture}[node distance=2cm] \node [state, scale=.3] (foo1) {}; \node [state, scale=.3, below left of=foo1] (foo2) {}; \node [state, scale=.3, below right of=foo1] (foo3) {}; \node [state, scale=.3, below left of=foo3] (foo4) {}; \node [state, scale=.3, below right of=foo3] (foo5) {}; \draw [thick] (foo1) -- (foo2) (foo1) -- (foo3) (foo3) -- (foo4) (foo3) -- (foo5); \end{tikzpicture}"];
     wordX  [shape=plaintext, label=" ", texlbl="\code{f377}"            ];
 

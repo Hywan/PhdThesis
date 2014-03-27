@@ -15,19 +15,19 @@ IRC.
 
 \begin{bigpre}
 /** \\
- * \arequires server: class('\(\bslash\)Irc\(\bslash\)Server'); \\
+ * \arequires server: class('\bslash{}Irc\bslash{}Server'); \\
  * \abehavior message \{ \\
  *     \arequires buffer: /^privmessage .+/ or /^message .+/; \\
  *     \aensures  \aresult: 1..; \\
  * \} \\
  * \abehavior ping \{ \\
  *     \arequires buffer: /^ping\$/ and \\
- *               \(\bslash\)pred('\$server->bufferState   >= 0 or \\
+ *               \bslash{}pred('\$server->bufferState   >= 0 or \\
  *                      network\_buffer\_state() >  0'); \\
  *     \aensures  \aresult: 1..; \\
  * \} \\
  * \adefault \{ \\
- *     \athrowable \(\bslash\)Irc\(\bslash\)Exception\(\bslash\)MalformedMessage e \\
+ *     \athrowable \bslash{}Irc\bslash{}Exception\bslash{}MalformedMessage e \\
  *                    with e->code: 400..491; \\
  * \} \\
  */ \\
@@ -67,7 +67,7 @@ d'une exception doit être un entier entre 400 et 491.
 Le Critère de Clause vise à couvrir la structure d'un contrat. Ainsi, le Critère
 de Clause est satisfait par une suite de tests $S$ d'une méthode \code{f} de
 graphe de contrat $G(\code{f}) = (V, D, i, N, E, U)$ si tous les états de $V
-\bslash U$ sont dans une route de $R_\code{f}(S)$.
+\bslash{}U$ sont dans une route de $R_\code{f}(S)$.
 
 \begin{example}[Suite de tests satisfaisant le Critère de Clause]
 

@@ -263,7 +263,7 @@ class Filesystem \{ \\
 \\
     /** \\
      * @is pure; \\
-     * @ensures \(\bslash\)result: this->_usage; \\
+     * @ensures \bslash{}result: this->_usage; \\
      */ \\
     public function getUsage ( ) \{ /* … */ \} \\
 \\
@@ -272,7 +272,7 @@ class Filesystem \{ \\
      *           index: 0..0xffff or void; \\
      * @behavior full \{ \\
      *     @description 'The filesystem is full.'; \\
-     *     @requires  \(\bslash\)pred('\$this->getUsage() + \$file->getSize() \\
+     *     @requires  \bslash{}pred('\$this->getUsage() + \$file->getSize() \\
      *                          > static::SIZE'); \\
      *     @throwable AllocationException e with \\
      *                    file->isAttached(): false and \\
@@ -280,7 +280,7 @@ class Filesystem \{ \\
      * \} \\
      * @default \{ \\
      *     @ensures file->isAttached(): true and \\
-     *              \(\bslash\)result: boolean(); \\
+     *              \bslash{}result: boolean(); \\
      * \} \\
      */ \\
     public function store ( File \$file, \$index = null ) \{ /* … */ \} \\
@@ -361,7 +361,7 @@ entités syntaxiques d'expressions.}
     \grule{extended-identifier} \code{contains} \grule{constant}$^+_\code{or}$ \\
 
 \grule{predicate} & \gsep &
-    \code{\bslash pred(} \gtoken{string} \code{)} \\
+    \code{\bslash{}pred(} \gtoken{string} \code{)} \\
 
 \grule{disjunction} & \gsep &
     $($
@@ -408,8 +408,8 @@ entités syntaxiques d'expressions.}
     \mvert \code{this} $($ \code{->} \gtoken{identifier} $)^*$ \\ & &
     \mvert $($ \code{self} \mvert \code{static} \mvert \code{parent} $)$ \\ & &
     \mvertp $($ \code{::} \gtoken{identifier} $)^+$ \\ & &
-    \mvert \code{\bslash old(} \grule{extended-identifier} \code{)} \\ & &
-    \mvert \code{\bslash result} \\
+    \mvert \code{\bslash{}old(} \grule{extended-identifier} \code{)} \\ & &
+    \mvert \code{\bslash{}result} \\
 \end{tabular}
 \end{center}
 

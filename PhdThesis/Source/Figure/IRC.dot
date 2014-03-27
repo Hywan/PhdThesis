@@ -2,7 +2,7 @@ digraph {
     graph [rankdir=TB];
     node [shape=circle, width=0.5, style="state"];
 
-    v_1 -> v_2 [label=" ", texlbl="$\quad\quad\code{class('\bslash Irc\bslash Server')}$"];
+    v_1 -> v_2 [label=" ", texlbl="$\quad\quad\code{class('\bslash{}Irc\bslash{}Server')}$"];
 
     subgraph {
         v_2 -> w_1 [label=" ", texlbl="$\varepsilon$"];
@@ -32,11 +32,11 @@ digraph {
 
     subgraph {
         v_2 -> y_1 [label=" ", texlbl="$\neg \code{/\^\empty priv…} \land \neg \code{/\^\empty ping\$/}$"];
-        y_1 -> y_2 [label=" ", texlbl="$\quad\quad\code{\bslash Irc\bslash Excep...  e}\quad$"];
+        y_1 -> y_2 [label=" ", texlbl="$\quad\quad\code{\bslash{}Irc\bslash{}Excep...  e}\quad$"];
         y_2 -> y_3 [label=" ", texlbl="$\varepsilon$"];
         y_3 -> y_4 [label=" ", texlbl="$\quad\code{400..491}$"];
         y_4 -> y_5 [label=" ", texlbl="$\varepsilon$"];
-        y_1 -> y_6 [label=" ", texlbl="$\quad\neg \code{\bslash Irc\bslash Excep... e}$"];
+        y_1 -> y_6 [label=" ", texlbl="$\quad\neg \code{\bslash{}Irc\bslash{}Excep... e}$"];
         y_1 -> y_5 [style="dotted"];
     }
 
