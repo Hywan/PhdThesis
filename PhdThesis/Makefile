@@ -31,6 +31,9 @@ dot:
 open:
 	@open -g -F Dist/PhdThesis.pdf
 
+open-new:
+	@open -g -F -n Dist/PhdThesis.pdf
+
 clean:
 	@find Dist -type f \
 		-not -name '.*' \
@@ -44,4 +47,5 @@ reload: tex open
 c: clean
 dc: distclean
 o: open
+O: open-new
 r: reload
