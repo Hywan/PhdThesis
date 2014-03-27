@@ -27,12 +27,32 @@ présente comment est évalué Praspel.
     \tikzstyle{rectangle}=[draw=black, thick, text centered, text width=2cm]
     \tikzstyle{arrow}=[->, >=latex, shorten >=1pt, thick]
 
-    \node (model)    [rectangle, minimum height=3cm                   ] { Object model };
-    \node (language) [left of=model                                   ] { Language };
-    \node (php)      [right of=model                                  ] { PHP };
-    \node (verdict)  [rectangle, below of=model, minimum height=1cm,
-                      node distance=4cm                               ] { Verdict };
-    \node (callable) [left of=verdict                                 ] { Callable };
+    \node (model) [rectangle, minimum height=3cm] {
+        Object model
+
+        \raisebox{0cm}[1.5cm]{
+            \begin{tikzpicture}[node distance=4cm]
+            \node [state, scale=.15] (foo1) {};
+            \node [state, scale=.15, below left of=foo1] (foo2) {};
+            \node [state, scale=.15, below right of=foo1] (foo3) {};
+            \node [state, scale=.15, below left of=foo3] (foo4) {};
+            \node [state, scale=.15, below right of=foo3] (foo5) {};
+            \draw [thick] (foo1) -- (foo2) (foo1) -- (foo3) (foo3) -- (foo4) (foo3) -- (foo5);
+            \end{tikzpicture}
+        }
+    };
+    \node (language) [left of=model] {
+        Language
+    };
+    \node (php) [right of=model] {
+        PHP
+    };
+    \node (verdict) [rectangle, below of=model, minimum height=1cm, node distance=4cm] {
+        Verdict
+    };
+    \node (callable) [left of=verdict] {
+        Callable
+    };
 
     \draw[arrow] (language.north)
                      -- node[auto] {\small interpreter}
@@ -66,7 +86,7 @@ Praspel est un langage qui peut être aussi bien interprété que compilé, pour
 être ensuite évalué. La figure~\ref{figure:tools:praspel} présente les
 différents processus autour de Praspel. La pièce centrale de Praspel est le
 modèle objet~: une variable est un objet, une clause est un objet, une
-spécification (un contrat) est objet etc. Tous ces objets sont imbriqués et
+spécification (un contrat) est un objet etc. Tous ces objets sont imbriqués et
 forme une structure qui s'apparente à un arbre. La racine de ce modèle est
 représenté par un objet appelé
 \code{Hoa\bslash{}Praspel\bslash{}Model\bslash{}Specification}.
@@ -167,14 +187,9 @@ la spécification sur le système sous test. Soit des données nécessaires à
 l'évaluation lui sont fournies, soit il va les générer de lui-même à partir de
 la spécification.
 
-Nous nous appuyons sur un \inenglish{runtime assertion checker} (RAC) pour
-calculer le verdict du test. Ce verdict est basé sur la vérification
-d'assertions à l'exécution. Le RAC manipule trois informations~: un système sous
-test, un contrat et des données. Dans la
-figure~\ref{figure:language:short_contract}, le système sous test peut être la
-méthode \code{store}, le contrat est le contrat associé à cette méthode et les
-données sont soit fournies, soit générées automatiquement (nous verrons comment
-dans les chapitres suivants).
+Actuellement, nous nous appuyons sur un \inenglish{runtime assertion checker}
+(RAC) pour calculer le verdict du test. Ce verdict est basé sur la vérification
+d'assertions à l'exécution.
 
 Quand la vérification d'une assertion échoue, une erreur spécifique est
 produite. Les erreurs du RAC (aussi appelées les \inenglish{Praspel failures}
@@ -201,7 +216,43 @@ d'une \inenglish{precondition failure} à un niveau supérieur.
 Le test réussit si aucune erreur Praspel n'est détectée. Autrement, il échoue,
 et l'erreur avec des informations supplémentaires est consignée.
 
+À présent, illustrons comment utiliser le RAC de Praspel où le système sous test
+est une fonction \code{f}
+%
+\begin{pre}
+function f ( \$i ) \{ \} \\
+ \\
+\$rac = new Hoa\bslash{}Praspel\bslash{}AssertionChecker\bslash{}Runtime( \\
+    \$model, \\
+    xcallable('f') \\
+); \\
+\$rac->setData(['i' => 13]); \\
+\$verdict = \$rac->evaluate();
+\end{pre}
+%
+Dans ce cas, la variable \code{\$verdict} contiendra \code{true} car la
+pré-condition (\code{\arequires i: 7..42}) est bien respectée. Si nous voulons
+que les données soient générées automatiquement, nous devrons appeler la méthode
+\code{\$ac->au\-to\-ma\-ti\-cal\-ly\-Ge\-ne\-ra\-te\-Data(true)} en plus de
+définir le générateur numérique par défaut des domaines réalistes (afin de
+pouvoir appeler les méthodes \code{sample} sur ces derniers sans soucis)~:
+%
+\begin{pre}
+Hoa\bslash{}Realdom::setDefaultSampler(new Hoa\bslash{}Sampler\bslash{}Random()); \\
+\$rac = new Hoa\bslash{}Praspel\bslash{}AssertionChecker\bslash{}Runtime( \\
+    \$model, \\
+    xcallable('f') \\
+); \\
+\$rac->automaticallyGenerateData(true); \\
+\$verdict = \$rac->evaluate();
+\end{pre}
+
 \begin{example}[Vérifications des assertions]
+
+Dans la figure~\ref{figure:language:short_contract}
+page~\pageref{figure:language:short_contract}, le système sous test peut être la
+méthode \code{store}, le contrat est le contrat associé à cette méthode et les
+données sont soit fournies, soit générées automatiquement.
 
 Considérons par exemple la méthode \code{store} et son contrat dans la
 figure~\ref{figure:language:short_contract}.
@@ -244,36 +295,6 @@ alors une \inenglish{precondition failure} sera émise depuis la méthode
 failure} depuis la méthode \code{store}.
 
 \end{example}
-
-Voici comment utiliser le RAC de Praspel~:
-%
-\begin{pre}
-function f ( \$i ) \{ \} \\
- \\
-\$rac = new Hoa\bslash{}Praspel\bslash{}AssertionChecker\bslash{}Runtime( \\
-    \$model, \\
-    xcallable('f') \\
-); \\
-\$rac->setData(['i' => 13]); \\
-\$verdict = \$rac->evaluate();
-\end{pre}
-%
-Dans ce cas, la variable \code{\$verdict} contiendra \code{true} car la
-pré-condition (\code{\arequires i: 7..42}) est bien respectée. Si nous voulons
-que les données soient générées automatiquement, nous devrons appeler la méthode
-\code{\$ac->au\-to\-ma\-ti\-cal\-ly\-Ge\-ne\-ra\-te\-Data(true)} en plus de
-définir le générateur numérique par défaut des domaines réalistes (afin de
-pouvoir appeler les méthodes \code{sample} sur ces derniers sans soucis)~:
-%
-\begin{pre}
-Hoa\bslash{}Realdom::setDefaultSampler(new Hoa\bslash{}Sampler\bslash{}Random()); \\
-\$rac = new Hoa\bslash{}Praspel\bslash{}AssertionChecker\bslash{}Runtime( \\
-    \$model, \\
-    xcallable('f') \\
-); \\
-\$rac->automaticallyGenerateData(true); \\
-\$verdict = \$rac->evaluate();
-\end{pre}
 
 \subsection{Hoa, un ensemble de bibliothèques PHP}
 
