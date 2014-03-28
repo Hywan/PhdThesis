@@ -90,7 +90,7 @@ différents processus autour de Praspel. La pièce centrale de Praspel est le
 modèle objet~: une variable est un objet, une clause est un objet, une
 spécification (un contrat) est un objet etc. Tous ces objets sont imbriqués et
 forme une structure qui s'apparente à un arbre. La racine de ce modèle est
-représenté par un objet appelé
+représentée par un objet appelé
 \code{Hoa\bslash{}Praspel\bslash{}Model\bslash{}Specification}.
 
 Dans les parties suivantes, nous détaillons les différents processus autour de
@@ -100,17 +100,17 @@ ce modèle objet.
 \label{subsection:tools:interpretation}
 
 Le processus qui transforme le langage Praspel en modèle objet est appelé une
-interprétation. Grâce à la grammaire de Praspel exprimée avec le langage PP et
-un compilateur, un AST sera produit. Cet AST sera par la suite visité afin de
-construire le modèle objet. Pour y arriver, nous avons deux façons de faire. La
-première consiste à utiliser la méthode \code{Hoa\bslash{}Praspel::interprete}
-qui est un raccourci~; ainsi~:
+interprétation. À l'aide de la grammaire de Praspel exprimée avec le langage PP
+et un compilateur, un AST représentant un contrat Praspel sera produit. Cet AST
+sera par la suite visité afin de construire le modèle objet. Pour y arriver,
+nous avons deux façons de faire. La première consiste à utiliser la méthode
+\code{Hoa\bslash{}Praspel::interprete} qui est un raccourci~; ainsi~:
 %
 \begin{pre}
 \$model = Hoa\bslash{}Praspel::interprete('@requires i: 7..42;');
 \end{pre}
 %
-La seconde façon de faire détail tous les outils, à savoir l'utilisation du
+La seconde façon de faire détaille tous les outils, à savoir l'utilisation du
 compilateur pour produire un AST, puis l'appel d'un visiteur pour interpréter
 cet AST et produire le modèle objet~; ainsi~:
 %
@@ -122,7 +122,7 @@ cet AST et produire le modèle objet~; ainsi~:
 \$interpreter = new Hoa\bslash{}Praspel\bslash{}Visitor\bslash{}Interpreter(); \\
 \$model       = \$interpreter->visit(\$ast);
 \end{pre}
-
+%
 Durant la production de l'AST, les erreurs syntaxiques seront détectées. Et
 durant la production du modèle objet, les erreurs sémantiques seront détectées.
 
@@ -151,9 +151,14 @@ Cet exemple produira le code PHP suivant~:
 \end{pre}
 %
 qui permet de construire le modèle objet contenu dans \code{\$model},
-c'est~à~dire que \code{\$model} est strictement équivalent à \code{\$praspel}.
-Cet exemple nous permet également d'avoir un aperçu de l'API du modèle objet~:
-elle se veut le plus simple et compréhensible possible.
+c'est~à~dire que la valeur de la variable \code{\$model} est strictement égale à
+la valeur de la variable \code{\$praspel}. Cet exemple nous permet également
+d'avoir un aperçu de l'API du modèle objet~: elle se veut le plus simple et
+compréhensible possible. Une spécification est instanciée. Sur cette
+spécification, la clause \arequires est obtenue pour y déclarer une variable
+\code{i} dont les valeurs sont décrites par (ou présentent dans, \code{->in}) la
+disjonction de domaines réalistes, créée à l'aide de la fonction \code{realdom}.
+Cette fonction se comporte comme un macro.
 
 \subsection{Désassemblage}
 \label{subsection:tools:disassembler}
@@ -336,11 +341,13 @@ fonctionnalités dans la bibliothèque \code{Hoa\bslash{}Math}.
 
 \subsubsection{\code{Hoa\bslash{}Realdom}}
 
-La bibliothèque \code{Hoa\bslash{}Realdom} représente la bibliothèque standard
-des domaines réalistes. Ils sont implémentés comme présenté dans la
-partie~\ref{section:language:realdoms} page~\pageref{section:language:realdoms},
-à savoir que chaque domaine réaliste est représenté par une classe.
-Actuellement, une liste de 28~domaines réalistes est proposée~:
+La bibliothèque \code{Hoa\bslash{}Realdom}\footnote{Voir
+\url{http://central.hoa-project.net/Resource/Library/Realdom}.} représente la
+bibliothèque standard des domaines réalistes. Ils sont implémentés comme
+présenté dans la partie~\ref{section:language:realdoms}
+page~\pageref{section:language:realdoms}, à savoir que chaque domaine réaliste
+est représenté par une classe.  Actuellement, une liste de 28~domaines réalistes
+est proposée~:
 %
 \begin{itemize}
 
@@ -459,9 +466,11 @@ Cette bibliothèque peut être utilisée seule, sans Praspel.
 
 \subsubsection{\code{Hoa\bslash{}Praspel}}
 
-La bibliothèque \code{Hoa\bslash{}Praspel} est responsable de tout le support de
-Praspel, de l'interprétation à l'évaluation en passant par la compilation, la
-couverture des contrats etc. La bibliothèque est découpée de la façon suivante~:
+La bibliothèque \code{Hoa\bslash{}Praspel}\footnote{Voir
+\url{http://central.hoa-project.net/Resource/Library/Praspel}.} est responsable
+de tout le support de Praspel, de l'interprétation à l'évaluation en passant par
+la compilation, la couverture des contrats etc. La bibliothèque est découpée de
+la façon suivante~:
 %
 \begin{itemize}
 
@@ -498,7 +507,9 @@ modèle objet dans la classe
 
 Le compilateur LL($\star$) que nous avons développé dans la
 partie~\ref{section:data:strings} page~\pageref{section:data:strings} est
-représenté par la bibliothèque \code{Hoa\bslash{}Compiler\bslash{}Llk} (un autre
+représenté par la bibliothèque
+\code{Hoa\bslash{}Compiler\bslash{}Llk}\footnote{Voir
+\url{http://central.hoa-project.net/Resource/Library/Compiler}.} (un autre
 compilateur LL(1) existait préalablement). Cette bibliothèque comprend aussi le
 support du langage PP ainsi que des algorithmes de générations à partir de
 grammaires, soient~: aléatoire uniforme, exhaustif borné et par couverture. Ces
@@ -536,7 +547,9 @@ page~\pageref{subsection:data:isotropic_generation}.
 \end{example}
 
 La grammaire des expressions régulières se trouve également dans la bibliothèque
-\code{Hoa\bslash{}Regex} dans \code{hoa://Library/Regex/Grammar.pp}.
+\code{Hoa\bslash{}Regex}\footnote{Voir
+\url{http://central.hoa-project.net/Resource/Library/Regex}.} dans
+\code{hoa://Library/Regex/Grammar.pp}.
 
 \section{atoum}
 \label{section:tools:atoum}
@@ -695,8 +708,8 @@ accessibles facilement.
 \subsection{\code{atoum/praspel-extension}}
 
 Cette extension\footnote{Voir
-\url{https://github.com/Hywan/Atoum-PraspelExtension}.} introduit Praspel dans
-atoum. Elle propose deux fonctionnalités~:
+\url{http://central.hoa-project.net/Resource/Contributions/Atoum/PraspelExtension}.}
+introduit Praspel dans atoum. Elle propose deux fonctionnalités~:
 %
 \begin{itemize}
 
