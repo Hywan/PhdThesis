@@ -20,12 +20,12 @@ documentations API etc., et est par conséquent celle où nous écrirons Praspel
 
 Praspel est un \inenglish{Behavioral Interface Specification Language} ({\strong
 BISL}) basé sur les contrats. Un {\strong contrat} est un modèle du comportement
-du code, décrit à travers des contraintes formelles, alors appelées {\strong
-clauses}, comme les préconditions, les postconditions et les invariants. Ces
-contraintes sont généralement localisées dans le code source autour des données.
-Dans le cas de Praspel, les invariants sont localisés sur les attributs des
-classes et les préconditions avec les postconditions sont localisées sur les
-paramètres des méthodes. La sémantique d'un contrat est la suivante~:
+du code, décrit à travers des contraintes formelles, appelées {\strong clauses},
+comme les préconditions, les postconditions et les invariants. Ces contraintes
+sont généralement localisées dans le code source autour des données.  Dans le
+cas de Praspel, les invariants sont localisés sur les attributs des classes et
+les préconditions et postconditions sont localisées sur les paramètres des
+méthodes. La sémantique d'un contrat est la suivante~:
 
 \begin{itemize}
 
@@ -34,7 +34,7 @@ paramètres des méthodes. La sémantique d'un contrat est la suivante~:
 \item seulement dans ce cas, la méthode appelée s'engage à satisfaire sa
 postcondition~;
 
-\item les invariants, quant à eux, doivent être satisfait avant et après
+\item les invariants, quant à eux, doivent être satisfaits avant et après
 l'exécution de la méthode.
 
 \end{itemize}
@@ -70,13 +70,13 @@ page~\pageref{appendices:grammar_of_praspel}.
     $)$ \\
 \end{tabular}
 
-\caption{\label{figure:language:grammar_part0} Grammaire de Praspel~: les
-entités syntaxiques de plus haut niveau.}
+\caption{\label{figure:language:grammar_part0} Entités syntaxiques Praspel de
+plus haut niveau.}
 
 \end{figure}
 
 Un contrat est composé de clauses, dont la syntaxe est décrite dans les
-figures~\ref{figure:language:grammar_part0},
+figures~\ref{figure:language:grammar_part0} et
 \ref{figure:language:grammar_part1}. Dans ces figures, le style \code{token}
 représente un lexème de la grammaire de Praspel, \grule{rule} représente une
 entité syntaxique (règle) de la grammaire, et \gtoken{token} représente un
@@ -128,20 +128,19 @@ avec toutes les clauses.}
 
 La figure~\ref{figure:language:grammar_part0} montre les familles de clauses,
 dont le contenu est décrit par la figure~\ref{figure:language:grammar_part1}.
-Ainsi, nous apprenons que les entités syntaxiques \grule{attribute-clauses} et
-\grule{method-clauses} définissent respectivement les clauses annotant les
-attributs d'une classe et ses méthodes.  L'entité syntaxique
-\grule{method-clauses} montre l'ordre des clauses en forme normale. La grammaire
-actuelle de Praspel est bien plus souple~: elle accepte des clauses dans
-n'importe quel ordre mais pour faciliter le raisonnement, nous ne présenterons
-et ne travaillerons que sur une forme normale. La
-figure~\ref{figure:language:typical_contract} illustre la localisation typique
-des clauses sur une classe \code{C} avec un attribut \code{a} et une méthode
-\code{f}. La clause \ainvariant est localisée juste avant l'attribut \code{a}.
-Les autres clauses sont des clauses de méthode.  Elles sont localisées juste
-avant l'en-tête des méthodes. La plupart de ces clauses introduisent des
-expressions Praspel, représentée par les entités syntaxiques \grule{expression}
-ou \grule{exceptional-expression}, détaillées dans la
+Les entités syntaxiques \grule{attribute-clauses} et \grule{method-clauses}
+définissent respectivement les clauses annotant les attributs d'une classe et
+ses méthodes. L'entité syntaxique \grule{method-clauses} montre l'ordre des
+clauses en forme normale. La grammaire réelle de Praspel est bien plus souple~:
+elle accepte des clauses dans n'importe quel ordre. Mais, pour faciliter le
+raisonnement, nous ne présenterons et ne travaillerons que sur une forme
+normale. La figure~\ref{figure:language:typical_contract} montre la localisation
+typique des clauses sur une classe \code{C} avec un attribut \code{a} et une
+méthode \code{f}. La clause \ainvariant est localisée avant l'attribut \code{a}.
+Les autres clauses sont des clauses de méthode. Elles sont localisées avant
+l'en-tête des méthodes. La plupart de ces clauses introduisent des expressions
+Praspel, définies par les entités syntaxiques \grule{expression} et
+\grule{exceptional-expression}, détaillées dans la
 partie~\ref{subsection:language:expressions}.
 
 \begin{figure}
@@ -199,31 +198,31 @@ une nouvelle exécution). La syntaxe de $T$ ($T_{\alpha.\beta}$ et $T_\m{D}$ dan
 la figure~\ref{figure:language:typical_contract}) est définie par l'entité
 syntaxique \grule{exceptional-expression} dans la
 figure~\ref{figure:language:grammar_part2}. $T$ est de la forme \code{$T_C$ with
-$T_E$} où $T_C$ est une liste de nom de classes asssociée à un identifiant et
+$T_E$} où $T_C$ est une liste de noms de classes asssociée à un identifiant et
 $T_E$ est une expression, appelée {\strong postcondition exceptionnelle}, dont
 la syntaxe est détaillée dans la partie~\ref{subsection:language:expressions}.
 Tous les identifiants définis dans $T_C$ peuvent apparaître dans $T_E$. La
 sémantique est la suivante~: si l'exception levée est une instance d'une classe
 représentant une exception listée dans $T_C$, alors elle est assignée à
-l'identifiant associée et la postcondition exceptionnelle $T_E$ doit être
+l'identifiant associé et la postcondition exceptionnelle $T_E$ doit être
 satisfaite.
 
 Une méthode peut avoir différents {\strong comportements} relatifs à ses
-arguments et l'état du système. Praspel propose la clause \abehavior pour
-représenter un comportement, identifié par un nom, et peut potentiellement
-contenir une description informelle, grâce à la clause \adescription~; ces deux
-informations peuvent s'avérer très utiles pour offrir un retour à l'utilisateur.
-Les clauses \arequires, \aensures, \athrowable et \abehavior elle-même peuvent
-apparaître à l'intérieur d'une clause \abehavior. Cette structure décrit des
-comportements {\strong imbriqués}, comme illustré dans la
-figure~\ref{figure:language:typical_contract} dans laquelle le comportement
-$\beta$ est imbriqué dans le comportement $\alpha$. À côté de ça, nous pouvons
-également décrire des comportements {\strong alternatifs} en juxtaposant des
-clauses \abehavior. Ceci est toujours illustré dans la
+arguments et à l'état du système. Praspel propose la clause \abehavior pour
+représenter un comportement, identifié par un nom, et peut contenir une
+description informelle, grâce à la clause \adescription~; ces deux informations
+peuvent s'avérer très utiles pour offrir un retour à l'utilisateur.  Les clauses
+\arequires, \aensures, \athrowable et \abehavior elle-même peuvent apparaître à
+l'intérieur d'une clause \abehavior. Cette structure décrit des comportements
+{\strong imbriqués}, comme illustré dans la
+figure~\ref{figure:language:typical_contract}, dans laquelle le comportement
+$\beta$ est imbriqué dans le comportement $\alpha$. Nous pouvons également
+décrire des comportements {\strong alternatifs} en juxtaposant des clauses
+\abehavior. Ceci est illustré dans la
 figure~\ref{figure:language:typical_contract} avec le comportement $\gamma$,
 frère du comportement $\alpha$. Les comportements sont, dans la pratique,
 {\strong mutuellement exclusifs}. Cependant, la syntaxe autorise l'écriture de
-comportements non-déterministes.
+comportements non-exclusifs.
 
 La clause \adefault est strictement équivalente à une clause \abehavior avec une
 clause \arequires implicite décrivant la conjonction de toutes les négations des
@@ -243,7 +242,7 @@ qualificatif actuel est \code{pure}, pour contrôler la mutabilité de
 l'environnement. En effet, une méthode peut modifier ou pas son environnement
 lors de son exécution. Si elle ne le modifie pas, alors nous parlons d'une
 méthode {\strong pure}, sinon nous parlons d'une méthode {\strong impure} (par
-défaut). Seules les méthodes pures peuvent être utilisées dans les contrats. \\
+défaut). \\
 
 \begin{figure}
 \begin{bigpre}
@@ -293,14 +292,14 @@ class Filesystem \{ \\
 \end{figure}
 
 \begin{example}[Contrat d'un système de fichier] La
-figure~\ref{figure:language:short_contract} montre un exemple concret d'une
-classe \code{Filesystem} annotée, avec deux méthodes \code{getUsage} et
+figure~\ref{figure:language:short_contract} montre l'exem\-ple concret d'une
+classe \code{Filesystem} annotée, avec deux méthodes \code{get\-Usa\-ge} et
 \code{store}. Cet exemple sera utilisé pour illustrer chaque notion introduite
 dans la suite de cette partie.
 
 La méthode \code{getUsage} est déclarée comme \code{pure}, ce qui veut dire
 qu'elle ne modifie pas son environnement. Elle n'a pas de clause \arequires,
-donc elle refusera tous les arguments. Elle a une postcondition que nous
+donc elle acceptera tous les arguments. Elle a une postcondition que nous
 décrirons dans les parties suivantes. La méthode \code{store} a deux
 comportements~: un comportement \code{full} quand le système de fichier est
 plein, et un comportement par défaut. Le premier comportement décrit une
@@ -420,9 +419,9 @@ syntaxiques de construction des expressions.}
 
 \subsubsection{Déclarations}
 
-Une {\em déclaration} assigne un ou plusieurs domaines réalistes à une variable
+Une {\em déclaration} associe un ou plusieurs domaines réalistes à une variable,
 à travers l'opérateur \code{:}. Une variable est soit un attribut de classe,
-spécifié dans une clause \ainvariant, soit un paramètre de la méthode, spécifié
+spécifié dans une clause \ainvariant, soit un paramètre de méthode, spécifié
 dans les autres clauses. La valeur d'une variable peut appartenir à plusieurs
 domaines réalistes si la variable est définie par une {\strong disjonction} de
 domaines réalistes, représentée par le mot-clé \code{or}. Dans l'exemple de la
@@ -441,44 +440,46 @@ est très utile pour manipuler des représentations intermédiaires de données,
 comme une longueur qui serait utilisée par plusieurs tableaux par exemple.
 
 La variable spéciale \aresult représente la valeur {\strong retournée} par la
-méthode. Elle ne peut être déclarée que dans la clause \aensures. Les clauses
+méthode. Elle ne peut apparaître que dans la clause \aensures. Les clauses
 \aensures et \athrowable peuvent également faire {\strong référence} à la valeur
 d'une variable dans le pré-état grâce à la construction \aold{i}, où $i$ est le
 nom d'une variable.
 
 \subsubsection{Prédicats}
 
-Toutes les constructions présentes dans Praspel supportent deux aspects~: la
-validation et la génération, à travers les caractéristiques de prédicabilité et
-de générabilité des domaines réalistes. Chaque concept introduit dans le langage
-doit supporter ces deux aspects. Mais il arrive qu'il soit impossible d'exprimer
-certaines contraintes avec les constructions actuelles. C'est pourquoi nous
-avons la construction «~boîte-noire~» \apred{p}, où $p$ est du code PHP. Cette
-construction permet à l'utilisateur d'exprimer des contraintes arbitraires en
-utilisant PHP lui-même au lieu de Praspel. Le code $p$ doit être un prédicat en
-forme normal {\strong conjonctive} (CNF). La construction \apred{p} ne supporte
-que la validation et non pas la génération. Le prédicat
-\apred{\code{'\$this->getUsage() + \$file->getSize()
+Toutes les constructions décrivant les données dans Praspel supportent deux
+aspects~: la validation et la génération, à travers les caractéristiques de
+prédicabilité et de générabilité des domaines réalistes. Chaque concept
+introduit dans le langage doit supporter ces deux aspects. Mais il arrive qu'il
+soit impossible d'exprimer certaines contraintes avec les constructions
+actuelles. C'est pourquoi nous avons la construction «~boîte noire~» \apred{p},
+où $p$ est du code PHP. Cette construction permet à l'utilisateur d'exprimer des
+contraintes arbitraires en utilisant PHP lui-même au lieu de Praspel. Le code
+$p$ doit être un prédicat en forme normale {\strong conjonctive} (CNF). La
+construction \apred{p} ne supporte que la validation et non pas la génération.
+Le prédicat \apred{\code{'\$this->getUsage() + \$file->getSize()
 > static::SIZE'}} dans la figure~\ref{figure:language:short_contract} signifie
 que s'il n'y a plus de place pour ajouter un nouveau fichier, alors cette partie
 de la précondition est satisfaite.
 
-Parce que la construction \apred{p} est une boîte-noire, elle introduit du rejet
-lors de la génération de données car les contraintes $p$ ne sont pas
-considérées. En effet, quand nous générons des données, nous les validons auprès
-des prédicats. Si un prédicat est trop fort, il invalide la donnée, et nous en
+Parce que la construction \apred{p} est une boîte noire, elle introduit du rejet
+lors de la génération de données car les contraintes $p$ ne sont pas considérées
+immédiatement. En effet, quand nous générons des données, nous les validons
+auprès des prédicats mais ces derniers ne sont pas utilisés pour orienter la
+génération. Si un prédicat est trop fin, il invalide la donnée, et nous en
 générons de nouvelles. Une telle situation peut conduire à une boucle infinie.
 Heureusement, il existe un nombre maximum d'essais (qui est paramétrable). Quand
 ce nombre est atteint, le générateur abandonne et émet une erreur qui sera
 journalisée.
 
-Une tâche récurrente est d'observer et analyser ce que les utilisateurs écrivent
-le plus dans cette construction, et l'extraire dans Praspel afin de supporter
-les deux aspects~: validation et génération. L'objectif est de faire évoluer le
-langage en supportant plus de constructions usuelles nativement au lieu de les
-avoir dans une boîte-noire, et ainsi, entres autres, réduire le rejet lors de la
-génération de données. Ce processus est illustré dans la
-partie~\ref{section:data:arrays} page~\pageref{section:data:arrays}.
+Une tâche récurrente durant nos travaux de recherche est d'observer et analyser
+ce que les utilisateurs écrivent le plus dans cette construction, et l'extraire
+dans Praspel afin de supporter les deux aspects~: validation et génération.
+L'objectif est de faire évoluer le langage en supportant plus de constructions
+usuelles nativement au lieu de les avoir dans une boîte noire, et ainsi, entre
+autres, réduire le rejet lors de la génération de données. Ce processus est
+illustré dans la partie~\ref{section:data:arrays}
+page~\pageref{section:data:arrays}.
 
 \subsubsection{Contraintes}
 
@@ -520,19 +521,19 @@ class BigFilesystem extends Filesystem \{ \
 \}
 \end{pre}
 %
-Et soit la méthode \code{getUsage} de \code{Filesystem} qui utilise la constante
-avec \code{self::SIZE}. Alors, lorsque nous appelons la méthode \code{getUsage}
-depuis \code{File\-system}, ce sera la constante \code{SIZE} de
-\code{Filesystem} qui sera utilisée. La même chose se produira lorsque nous
+Supposons que la méthode \code{getUsage} de \code{Filesystem} qui utilise la
+constante avec \code{self::SIZE}. Alors, lorsque nous appelons la méthode
+\code{getUsage} depuis \code{File\-system}, ce sera la constante \code{SIZE} de
+\code{Filesystem} qui sera utilisée. La même chose se produit lorsque nous
 appelons la méthode \code{getUsage} depuis \code{Big\-File\-system} malgré le
 fait que \code{Big\-File\-system} ait sa propre constante \code{SIZE}, car
 \code{self} fait référence à la classe qui déclare. Dans ce cas, ce n'est pas le
 comportement attendu. Si maintenant \code{getUsage} utilise la constante avec
-\code{static::SIZE}, alors lorsque nous appelons la méthode \code{getUsage}
-depuis \code{Filesystem}, ce sera la constante \code{SIZE} de \code{Filesystem}
-qui sera utilisée. Et lorsque nous appelons la méthode \code{getUsage} depuis
-\code{BigFilesystem}, ce sera la constante \code{SIZE} de \code{BigFilesytem}
-qui sera utilisé.
+\code{static::SIZE}, alors lorsque nous appellerons la méthode \code{getUsage}
+depuis \code{Filesystem}, la constante \code{SIZE} de \code{Filesystem} sera
+utilisée. Et lorsque nous appellerons la méthode \code{getUsage} depuis
+\code{BigFilesystem}, la constante \code{SIZE} de \code{BigFilesytem} sera
+utilisée.
 
 \end{example}
 
@@ -554,13 +555,13 @@ tout comme les valeurs.  Les clés peuvent être {\strong auto-incrémentées}, 
 ajoutant 1 à la dernière clé entière, à partir de 0. La {\strong longueur} (ou
 la {\strong taille}) d'un tableau est son nombre de paires. Un tableau n'a pas
 de longueur prédéfinie, mais sa longueur (stockée en interne par le moteur PHP)
-peut être connu grâce à la fonction PHP \code{count()}. Un tableau n'a également
-pas de profondeur prédéfinie, \ie il peut contenir un nombre arbitraire de
-sous-tableaux.
+peut être connue grâce à la fonction PHP \code{count()}. Un tableau n'a
+également pas de profondeur prédéfinie, \ie il peut contenir un nombre
+arbitraire de sous-tableaux.
 
 Dans Praspel, \code{array($D$, $L$)} dénote le domaine réaliste des tableaux
 dont les domaines et codomaines sont décrits par $D$ et dont la longueur
-appartient à la disjonction $L$ de domaines réalistes d'entiers non-négatifs.
+appartient à la disjonction $L$ de domaines réalistes d'entiers naturels.
 $D$ est une liste séparée par une virgule, entre \code{[} et \code{]}, de
 {\strong descriptions} de paires de la forme \code{from $K$ to $V$}, où $K$ et
 $V$ sont des disjonctions de domaines réalistes, respectivement pour les clés et
@@ -605,12 +606,11 @@ dans les descriptions des paires, en appliquant itérativement la règle de
 réécriture suivante~:
 %
 \begin{center}
-\begin{tabular}{c}
-\code{from $F_1$ or $F_2$ to $T_1$ or $T_2$} \\
-\hline
-\code{from $F_1$ to $T_1$} \\
-\code{from $F_1$ to $T_2$} \\
-\code{from $F_2$ to $T_1$} \\
+\code{from $F_1$ or $F_2$ to $T_1$ or $T_2$} $\;\,\longrightarrow$
+\begin{tabular}{l}
+\code{from $F_1$ to $T_1$,} \\
+\code{from $F_1$ to $T_2$,} \\
+\code{from $F_2$ to $T_1$,} \\
 \code{from $F_2$ to $T_2$}
 \end{tabular}
 \end{center}

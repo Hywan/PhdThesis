@@ -21,21 +21,21 @@ syntaxiquement, il est culturellement admis d'écrire une documentation API qui
 décrit la nature des données manipulées par le programme, comme ses types.
 
 Nous profitons du fait que les développeurs connaissent bien les systèmes de
-typage grâce à leur présence quasi permanente dans tous les langages pour
+typage grâce à leur présence dans de nombreux langages de programmation pour
 introduire la notion de {\strong domaine réaliste}. Naïvement, nous pouvons dire
 qu'ils raffinent les types usuels comme les entiers, les chaînes de caractères,
-les tableaux etc., et qu'ils permettent d'exprimer des types plus complexes,
+les tableaux etc., et qu'ils permettent d'exprimer des données plus complexes,
 comme des grammaires, des graphes etc. Le mot {\strong réaliste} signifie qu'ils
 sont conçus pour spécifier des domaines de données {\strong pertinentes} pour un
 contexte {\strong spécifique}. Par exemple, une adresse email peut être un
 domaine réaliste. En effet, plusieurs logiciels identifient leurs utilisateurs
-avec leur adresse email. C'est plus qu'une chaîne de caractères~: il y a une
+avec leur adresse email. C'est plus qu'une chaîne de caractères~: il y a
 certaines règles, notamment syntaxiques, à respecter.
 
-\begin{definition}[Caractéristiques d'un domaine réalistes]
+\begin{definition}[Caractéristiques d'un domaine réaliste]
 \label{definition:language:realdom}
 
-Les domaines réalistes ont été conçus afin de répondre aux problématiques de
+Les domaines réalistes ont été conçus afin de répondre aux problématiques du
 test. C'est pourquoi ils ont les deux caractéristiques suivantes~:
 
 \begin{itemize}
@@ -58,8 +58,8 @@ Ces deux caractéristiques permettent respectivement de {\strong valider} et de
 
 Nous proposons une implémentation des domaines réalistes en PHP. Dans cette
 implémentation, un domaine réaliste est représenté par une {\strong classe}.
-Ses propriétés de prédicabilité et de générabilité sont représentées par les
-{\strong méthodes} respectives suivantes~:
+Ses propriétés de prédicabilité et de générabilité sont respectivement
+représentées par les {\strong méthodes} suivantes~:
 
 \begin{itemize}
 
@@ -68,7 +68,7 @@ Ses propriétés de prédicabilité et de générabilité sont représentées pa
 \item \code{sample(\$sampler)}, où \code{\$sampler} est un {\strong générateur
 numérique}~: il génère uniquement des entiers et des réels, et permet de guider
 la génération d'une donnée~; par exemple nous allons utiliser ce générateur
-numérique pour choisir un caractère parmi une plage de caractères donnés.  Pour
+numérique pour choisir un caractère parmi une plage de caractères donnée.  Pour
 l'instant, le seul générateur numérique disponible est pseudo-aléatoire.
 
 \end{itemize}
@@ -77,13 +77,14 @@ l'instant, le seul générateur numérique disponible est pseudo-aléatoire.
 \label{subsection:language:realdom:hierarchy}
 
 Les domaines réalistes étant implémentés à travers des classes et PHP étant
-orienté objet, nous pouvons faire de l'{\strong héritage}. Par conséquent, un
-domaine réaliste enfant peut hériter et {\strong raffiner} les propriétés de son
-parent. Par exemple, le domaine réaliste \code{Color} (qui représente une
+orienté objet, nous pouvons appliquer de l'{\strong héritage}. Par conséquent,
+un domaine réaliste enfant peut hériter et {\strong raffiner} les propriétés de
+son parent. Par exemple, le domaine réaliste \code{Color} (qui représente une
 couleur) hérite de \code{String} (qui représente une chaîne de caractères), et
-\code{Boundinteger} (qui représnte un intervalle d'entiers) hérite de
+\code{Boundinteger} (qui représente un intervalle d'entiers) hérite de
 \code{Integer} (qui représente un entier). Tous les domaines réalistes doivent
-être enfant de la classe \code{Realdom}.
+être enfant de la classe \code{Realdom}, qui assure le fonctionnement des
+domaines réalistes.
 
 \begin{figure}[t]
 \begin{bigpre}
@@ -140,19 +141,20 @@ structures de données complexes, telles que des tableaux imbriqués, des graphe
 des automates, des arbres etc., tous sont des imbrications de types scalaires et
 structurels.
 
-\begin{example}[Paramétrer un domaine réaliste]
+\begin{example}[Paramétrage d'un domaine réaliste]
 
 Par exemple, le domaine réaliste \code{string(0x61, 0x7a, boundinteger(4, 12))}
 représente une chaîne de caractères dont la taille est comprise entre 4 et 12 et
-dont les code-points des caractères sont entre \code{0x61} et \code{0x7a}.
+dont les code-points (Unicode) des caractères sont entre \code{0x61} et
+\code{0x7a}.
 
 \end{example}
 
 Quand nous décrivons les paramètres d'un domaine réaliste, nous pouvons les
-fitrer. Le filtre est exprimé avec un ou des noms de domaines réalistes, séparés
-par le symbole \code{$\vert$}. En effet, un domaine réaliste accepte plusieurs
-sortes d'arguments et est capable de faire la traduction d'un domaine réaliste
-vers un autre lui-même. Ainsi, nous restons proche de la philosophie de PHP et
+filtrer. Le filtre est exprimé avec un ou des noms de domaines réalistes,
+séparés par le symbole \code{$\vert$}. En effet, un domaine réaliste accepte
+plusieurs sortes d'arguments et est capable de faire la traduction d'un domaine
+réaliste vers un autre. Ainsi, nous restons proche de la philosophie de PHP et
 de son typage dynamique. La figure~\ref{figure:language:boundinteger} montre la
 déclaration de deux paramètres~: \code{lower} et \code{upper} en \circled{4},
 qui ont pour domaine réaliste \code{Constinteger}, avec respectivement en valeur
@@ -162,9 +164,9 @@ de PHP. Si aucune valeur par défaut n'est précisée, alors le paramètre est
 
 \begin{example}[Multi-typage des paramètres]
 
-Un exemple de multi-typage de paramètres avec le domaine réaliste \code{String},
-dont ses deux premiers paramètres peuvent être des entiers ou des caractères,
-déclarés comme suit~:
+Nous présentons un exemple de multi-typage de paramètres avec le domaine
+réaliste \code{String}, dont les deux premiers paramètres peuvent être des
+entiers ou des caractères, déclarés comme suit~:
 %
 \begin{pre}
 protected \$_arguments = [ \\
@@ -214,7 +216,7 @@ inférieure et supérieure, qui peuvent être réduites dynamiquement (à
 l'exécution)~;
 
 \item \code{Finite}, pour représenter un domaine réaliste avec un ensemble de
-valeurs dénombrable~;
+valeurs fini~;
 
 \item \code{Nonconvex}, pour représenter un domaine réaliste avec des trous, \ie
 où des valeurs ont été exclues~;
