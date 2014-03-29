@@ -75,6 +75,46 @@ plus haut niveau.}
 
 \end{figure}
 
+\begin{figure}
+\centering
+\begin{tabular}{rcl}
+\grule{invariant-clause} & \gsep &
+    \ainvariant \grule{expression} \\
+
+\grule{requires-clause} & \gsep &
+    \arequires \grule{expression} \\
+
+\grule{behavior-clause} & \gsep &
+    \abehavior \gtoken{identifier} \code{\{} \\ & &
+    \quad $($ \grule{description-clause} \code{;} $)^?$ \\ & &
+    \quad \grule{rbdet-clauses} \\ & &
+    \code{\}} \\
+
+\grule{default-clause} & \gsep &
+    \adefault \code{\{} \\ & &
+    \quad $($ \grule{description-clause} \code{;} $)^?$ \\ & &
+    \quad $($ \grule{ensures-clause} \code{;} $)^?$ \\ & &
+    \quad $($ \grule{throwable-clause} \code{;} $)^?$ \\ & &
+    \code{\}} \\
+
+\grule{ensures-clause} & \gsep &
+    \aensures \grule{expression} \\
+
+\grule{throwable-clause} & \gsep &
+    \athrowable \grule{exceptional-expression} \\
+
+\grule{is-clause} & \gsep &
+    \ais \code{pure} \\
+
+\grule{description-clause} & \gsep &
+    \adescription \gtoken{string} \\
+\end{tabular}
+
+\caption{\label{figure:language:grammar_part1} Grammaire de Praspel~: les
+entités syntaxiques des clauses.}
+
+\end{figure}
+
 Un contrat est composé de clauses, dont la syntaxe est décrite dans les
 figures~\ref{figure:language:grammar_part0} et
 \ref{figure:language:grammar_part1}. Dans ces figures, le style \code{token}
@@ -84,7 +124,19 @@ lexème de la grammaire de PHP (pour être le plus proche possible du langage
 manipulé par le développeur). La notation $e^r_s$ signifie que le motif $e$ est
 répété $r$ fois, et séparé par $s$. $r$ peut être $?$, $+$ ou $*$,
 respectivement pour 0 ou 1 fois, 1 ou plusieurs fois et 0 ou plusieurs fois. Si
-$s$ n'est pas vide, alors $s$ doit être un lexème.
+$s$ n'est pas vide, alors $s$ doit être un lexème. Ainsi, la construction
+$\code{a}^+_\code{.}$ reconnaîtra \code{a}, \code{a.a}, \code{a.a.a} etc., mais
+pas \code{a.a.} car ici le lexème \code{.} n'est pas utilisé comme sépérateur.
+
+La figure~\ref{figure:language:grammar_part0} montre les familles de clauses,
+dont le contenu est décrit par la figure~\ref{figure:language:grammar_part1}.
+Les entités syntaxiques \grule{attribute-clauses} et \grule{method-clauses}
+définissent respectivement les clauses annotant les attributs d'une classe et
+ses méthodes. L'entité syntaxique \grule{method-clauses} montre l'ordre des
+clauses en forme normale. La grammaire réelle de Praspel est bien plus souple~:
+elle accepte des clauses dans n'importe quel ordre. Mais, pour faciliter le
+raisonnement, nous ne présenterons et ne travaillerons que sur une forme
+normale.
 
 \begin{figure}
 \begin{bigpre}
@@ -126,62 +178,14 @@ avec toutes les clauses.}
 
 \end{figure}
 
-La figure~\ref{figure:language:grammar_part0} montre les familles de clauses,
-dont le contenu est décrit par la figure~\ref{figure:language:grammar_part1}.
-Les entités syntaxiques \grule{attribute-clauses} et \grule{method-clauses}
-définissent respectivement les clauses annotant les attributs d'une classe et
-ses méthodes. L'entité syntaxique \grule{method-clauses} montre l'ordre des
-clauses en forme normale. La grammaire réelle de Praspel est bien plus souple~:
-elle accepte des clauses dans n'importe quel ordre. Mais, pour faciliter le
-raisonnement, nous ne présenterons et ne travaillerons que sur une forme
-normale. La figure~\ref{figure:language:typical_contract} montre la localisation
-typique des clauses sur une classe \code{C} avec un attribut \code{a} et une
-méthode \code{f}. La clause \ainvariant est localisée avant l'attribut \code{a}.
-Les autres clauses sont des clauses de méthode. Elles sont localisées avant
+La figure~\ref{figure:language:typical_contract} montre la localisation typique
+des clauses sur une classe \code{C} avec un attribut \code{a} et une méthode
+\code{f}. La clause \ainvariant est localisée avant l'attribut \code{a}.  Les
+autres clauses sont des clauses de méthode. Elles sont localisées avant
 l'en-tête des méthodes. La plupart de ces clauses introduisent des expressions
 Praspel, définies par les entités syntaxiques \grule{expression} et
 \grule{exceptional-expression}, détaillées dans la
 partie~\ref{subsection:language:expressions}.
-
-\begin{figure}
-\centering
-\begin{tabular}{rcl}
-\grule{invariant-clause} & \gsep &
-    \ainvariant \grule{expression} \\
-
-\grule{requires-clause} & \gsep &
-    \arequires \grule{expression} \\
-
-\grule{behavior-clause} & \gsep &
-    \abehavior \gtoken{identifier} \code{\{} \\ & &
-    \quad $($ \grule{description-clause} \code{;} $)^?$ \\ & &
-    \quad \grule{rbdet-clauses} \\ & &
-    \code{\}} \\
-
-\grule{default-clause} & \gsep &
-    \adefault \code{\{} \\ & &
-    \quad $($ \grule{description-clause} \code{;} $)^?$ \\ & &
-    \quad $($ \grule{ensures-clause} \code{;} $)^?$ \\ & &
-    \quad $($ \grule{throwable-clause} \code{;} $)^?$ \\ & &
-    \code{\}} \\
-
-\grule{ensures-clause} & \gsep &
-    \aensures \grule{expression} \\
-
-\grule{throwable-clause} & \gsep &
-    \athrowable \grule{exceptional-expression} \\
-
-\grule{is-clause} & \gsep &
-    \ais \code{pure} \\
-
-\grule{description-clause} & \gsep &
-    \adescription \gtoken{string} \\
-\end{tabular}
-
-\caption{\label{figure:language:grammar_part1} Grammaire de Praspel~: les
-entités syntaxiques des clauses.}
-
-\end{figure}
 
 La précondition d'une méthode est exprimée à l'aide de la clause \arequires, la
 postcondition à l'aide de la clause \aensures. La précondition exprime des
