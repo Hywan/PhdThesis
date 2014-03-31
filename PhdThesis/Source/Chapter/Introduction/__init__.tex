@@ -7,7 +7,7 @@ Les travaux présentés dans cette thèse sont liés à des activités relatives
 validation et à la vérification de programmes PHP à travers un nouveau langage
 de spécification accompagné de ses outils. Ces activités s'articulent autour de
 trois axes majeurs~: langage de spécification, génération de données et
-génération automatique de tests.
+génération automatique de tests unitaires.
 
 \section{Vérification et validation}
 
@@ -75,16 +75,16 @@ Les langages de spécification sont conçus pour répondre à des problèmes gé
 ou spécialisés. Les langages de spécifications généraux, tels que
 Z~\acite{Spivey89} ou OCL~\acite{RichtersG98}, ne sont pas conçus pour une
 méthodologie particulière ou des outils de vérifications. Cependant, les
-langages de spécifications sont très souvent spécialisés, en fonction du type de
-langage qu'ils visent~: typage statique et fort, ou dynamique et faible, orienté
-objet ou fonctionnel etc.
+langages de spécifications sont très souvent spécialisés, en fonction de la
+catégorie de langage qu'ils visent~: typage statique et fort, ou dynamique et
+faible, orienté objet ou fonctionnel etc.
 
 Par ailleurs, comme une notation est formelle, elle peut être exploitée par une
 machine pour y appliquer un traitement automatique. Les spécifications
 formelles peuvent alors aider à {\strong automatiser le test}, autant pour
 générer les données de test~\acite{BernotGM91, KorelA98, SankarH94, Jalote92}
 que pour calculer le verdict du test~\acite{CheonL02}. C'est dans ces deux
-directions que nous allons nous tourner\footnote{TODO: en introduction}.
+directions que nous allons nous tourner.
 
 Les spécifications peuvent documenter les {\strong interfaces} d'un programme.
 Par interfaces, il faut comprendre les parties du programme permettant de
@@ -94,19 +94,19 @@ exemple, ils facilitent la maintenance du code, qui n'est généralement pas
 suffisament expressif pour faire comprendre au développeur ses tenants et ses
 aboutissants. Par ailleurs, lors d'une phase de \inenglish{debugging}, les
 annotations permettent de localiser plus facilement la faute. Dans le cas où
-nous travaillons en boîte-blanche (\inenglish{white-box}), c'est~à~dire où nous
+nous travaillons en boîte blanche (\inenglish{white-box}), c'est~à~dire où nous
 avons accès au code source du programme, les annotations peuvent faire partie de
 la grammaire du langage, ou alors, elles sont écrites dans des {\strong
-commentaires}. Dans le cas où nous travaillons en boîte-noire
+commentaires}. Dans le cas où nous travaillons en boîte noire
 (\inenglish{black-box}), c'est~à~dire où nous n'avons pas ou partiellement
 d'accès au code source, les annotations peuvent parfois être externes au
 programme, par exemple sur un langage de définition d'interface
 (\inenglish{Interface Definition Language}, abrégé IDL) ou sur un modèle, ce qui
 nous rapprocherait du \inenglish{Model-based Testing}, abrégé
-MbT~\acite{Utting07}. La différence entre boîte-noire et boîte-blanche peut
+MbT~\acite{Utting07}. La différence entre boîte noire et boîte blanche peut
 parfois être plus subtile~\acite{Gaudel11}~: nous considérons que nous sommes en
-boîte-noire quand nous n'exploitons pas la structure du code, basiquement le
-contenu des fonctions et méthodes, sinon, nous sommes en boîte-blanche.
+boîte noire quand nous n'exploitons pas la structure du code, basiquement le
+contenu des fonctions et méthodes, sinon, nous sommes en boîte blanche.
 
 Les langages d'annotations sont des \inenglish{Behavioral Interface
 Specification Language}, abrégé BISL. C'est dans cette catégorie de langage que
@@ -221,7 +221,7 @@ la contribution précédente.
 
 \section{Plan du mémoire}
 
-Ce mémoire s'articule en 7~chapitres plus annexes et bibliographie~:
+Ce mémoire s'articule en 8~chapitres plus annexes et bibliographie~:
 %
 \begin{enumerate}[$\mathrm{chapitre}$ 1,]
 
@@ -239,6 +239,9 @@ données de test~;
 
 \item présente les critères de couverture pour obtenir des objectifs de test à
 satisfaire afin de produire des tests unitaires pertinents~;
+
+\item décrit les outils développés durant ce mémoire ou les outils incluant nos
+travaux~;
 
 \item valide nos contributions à travers une expérimentation~;
 
