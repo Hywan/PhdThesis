@@ -42,7 +42,19 @@ Les langages décrivant une spécification formelle à travers des contrats pour
 comportement des programmes, et utilisés comme annotations, sont appelés des
 {\strong langages de contrats}. Il en existe plusieurs~\acite{HatcliffLLMP12}.
 
-\paragraph{Eiffel} Rappel sur Eiffel (à placer un peu avant).
+\paragraph{Eiffel} Le langage Eiffel~\acite{MeyerNM87} est un langage de
+programmation orienté objet. Sa plus grosse contribution au domaine a été
+l'utilisation importante du \inenglish{Design by Contract} au sein même du
+langage (c'est~à~dire sans être placé en annotation), dont les assertions,
+préconditions postconditions et invariants étaient utilisés pour assurer la
+conformité du programme. Les contributions originales comprenaient l'application
+au paradigme orienté objet, le support des exceptions et une documentation
+automatique. L'aspect objet apporte quelques spécificités, comme les invariants
+de classes, la gestion de l'héritage multiple, la résolution de conflit avec
+l'héritage multiple, comme le renommage de certains attributs ou méthodes, sans
+oublier la gestion du \inenglish{dynamic binding} (aussi appelé \inenglish{late
+binding}, représenté en général par la variable \code{this}), c'est~à~dire que
+la résolution des appels se fait à l'exécution et non pas à la compilation.
 
 \paragraph{JML} Le \inenglish{Java Modeling Language}~\acite{JML} est un langage
 de contrats pour Java~\acite{Java}. À la différence de Eiffel qui utilise

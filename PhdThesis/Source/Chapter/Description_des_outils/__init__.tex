@@ -3,8 +3,13 @@
 
 \minitoc
 
-Ce chapitre est consacré à la description des outils~: comment est implémenté
-Praspel, comment il est maintenu, bla bla.
+Ce chapitre est consacré à la description des outils. Ils sont organisés en deux
+parties. Tout d'abord dans la partie~\ref{section:tools:praspel}, nous
+présentons notre implémentation de Praspel, son fonctionnement, son découpage et
+l'outil avec lequel nous l'avons implémenté. Et ensuite, dans la
+partie~\ref{section:tools:atoum}, nous présentons l'intégration de ces outils
+dans atoum, un \inenglish{framework} de tests unitaires, ainsi qu'une extension
+qui fait le pont entre Praspel et atoum.
 
 \section{Praspel}
 \label{section:tools:praspel}
@@ -13,12 +18,13 @@ Cette partie est consacrée à présenter l'implémentation et l'outillage de
 Praspel. Tout d'abord, la partie~\ref{subsection:tools:model} présente
 l'architecture et le modèle objet de Praspel. Ensuite, la
 partie~\ref{subsection:tools:interpretation} présente comment l'interpréter,
-suivie de la partie~\ref{subsection:tools:compilation} qui présente comment le
-compiler. Puis, la partie~\ref{subsection:tools:evaluation} présente comment
-l'évaluer. Et enfin, comme Praspel est un langage de spécification destiné à PHP
-construit de façon modulaire et extensible, pour faciliter son développement et
-sa maintenance, nous avons choisi de nous appuyer sur le projet Hoa, présenté
-dans la partie~\ref{subsection:tools:hoa}.
+suivie des partie~\ref{subsection:tools:compilation}
+et~\ref{subsection:tools:disassembler} qui présentent respectivement comment le
+compiler et le désassembler. Puis, la partie~\ref{subsection:tools:evaluation}
+présente comment l'évaluer. Et enfin, comme Praspel est un langage de
+spécification destiné à PHP construit de façon modulaire et extensible, pour
+faciliter son développement et sa maintenance, nous avons choisi de nous appuyer
+sur le projet Hoa, présenté dans la partie~\ref{subsection:tools:hoa}.
 
 \subsection{Modèle objet}
 \label{subsection:tools:model}
@@ -158,7 +164,7 @@ compréhensible possible. Une spécification est instanciée. Sur cette
 spécification, la clause \arequires est obtenue pour y déclarer une variable
 \code{i} dont les valeurs sont décrites par (ou présentent dans, \code{->in}) la
 disjonction de domaines réalistes, créée à l'aide de la fonction \code{realdom}.
-Cette fonction se comporte comme un macro.
+Cette fonction se comporte comme une macro.
 
 \subsection{Désassemblage}
 \label{subsection:tools:disassembler}
@@ -245,7 +251,7 @@ définir le générateur numérique par défaut des domaines réalistes afin de
 pouvoir appeler les méthodes \code{sample} sur ces derniers~:
 %
 \begin{pre}
-Hoa\bslash{}Realdom::setDefaultSampler(new Hoa\bslash{}Sampler\bslash{}Random()); \\
+Hoa\bslash{}Realdom::setDefaultSampler(new Hoa\bslash{}Math\bslash{}Sampler\bslash{}Random()); \\
 \$rac = new Hoa\bslash{}Praspel\bslash{}AssertionChecker\bslash{}Runtime( \\
     \$model, \\
     xcallable('f') \\
@@ -257,11 +263,11 @@ Hoa\bslash{}Realdom::setDefaultSampler(new Hoa\bslash{}Sampler\bslash{}Random())
 \begin{example}[Vérifications des assertions]
 
 Dans la figure~\ref{figure:language:short_contract}
-page~\pageref{figure:language:short_contract}, le système sous test peut être la
-méthode \code{store}, le contrat est le contrat associé à cette méthode et les
-données sont soit fournies, soit générées automatiquement. Considérons par
-exemple la méthode \code{store} et son contrat dans la
-figure~\ref{figure:language:short_contract}.
+page~\pageref{figure:language:short_contract}\footnote{On la replace ici~?}, le
+système sous test peut être la méthode \code{store}, le contrat est le contrat
+associé à cette méthode et les données sont soit fournies, soit générées
+automatiquement. Considérons par exemple la méthode \code{store} et son contrat
+dans la figure~\ref{figure:language:short_contract}.
 %
 Avec le jeu (\code{'foo'}, \code{null}), nous aurons une \inenglish{precondition
 failure}~: la contrainte \code{file: class('File')} n'est pas respectée car la
@@ -328,9 +334,9 @@ cas à plusieurs reprises où des contributeurs ont corrigé des erreurs dans
 Praspel ou ont amélioré considérablement le compilateur, notamment en y ajoutant
 le support Unicode, en améliorant les performances de l'analyseur lexical (pour
 l'analyse de très grandes données) etc. Ensuite, puisque les outils sont
-gratuits, des entreprises peuvent l'utiliser et nous offrir des retours
-pertinents, comme nous le verrons dans le
-chapitre~\ref{chapter:experimentations} avec les expérimentations.
+gratuits, l'industrie peut l'utiliser et nous offrir des retours pertinents,
+comme nous le verrons dans le chapitre~\ref{chapter:experimentations} avec les
+expérimentations.
 
 Nos contributions et outils prennent la forme de bibliothèques dans Hoa, à
 savoir \code{Hoa\bslash{}Realdom} pour les domaines réalistes,
@@ -574,7 +580,7 @@ de créer une extension pour introduire Praspel dans atoum. De plus, atoum ne
 possède aucun générateur de données, alors que Praspel en propose plusieurs.
 Cela a donc été encore plus naturel de rapprocher les deux projets. Cette
 extension, appelée \code{atoum/praspel-extension}, est incluse dans la
-distribution standard d'atoum «~sous-stéroide~», c'est~à~dire avec des outils
+distribution standard d'atoum «~sous-stéroïde~», c'est~à~dire avec des outils
 qui ajoutent des fonctionnalités à atoum.
 
 Dans un premier temps, nous allons montrer comment utiliser atoum avec
@@ -653,7 +659,7 @@ d'asserteurs \code{float}~:
 \begin{pre}
 \$this->float(1 - 0.97)->isNearlyEqualTo(0.33);
 \end{pre}
-
+%
 De même, nous pouvons trouver l'asserteur \code{containsValues} sur le groupe
 \code{array} qui va vérifier que certaines valeurs sont bien présentes dans un
 tableau~:
@@ -661,7 +667,7 @@ tableau~:
 \begin{pre}
 \$this->array([1, 1, 2, 3, 5, 8])->containsValues([1, 3]);
 \end{pre}
-
+%
 Il existe encore plusieurs autres groupes d'asserteurs, notamment \code{output}
 qui permet de tester les sorties du programme. Notons que ce groupe hérite du
 groupe \code{string}~: l'héritage entre groupes est une autre fonctionnalité
@@ -695,7 +701,7 @@ class HelloWorld extends \bslash{}atoum\bslash{}test \{ \\
 \}
 \end{pre}
 %
-Nous avons créer un \inenglish{mock} puis nous avons spécifié que la méthode
+Nous avons créé un \inenglish{mock} puis nous avons spécifié que la méthode
 \code{say} retournera toujours \code{Hello!}.
 
 \end{example}
@@ -789,7 +795,7 @@ date( \\
     ) \\
 )
 \end{pre}
-
+%
 Ensuite, nous allons générer des chaînes de caractères qui contiennent
 le mots-clé \code{foo} suivi des mots-clés \code{bar} ou \code{baz}~:
 %
@@ -837,7 +843,7 @@ Nous allons ensuite générer automatiquement les tests associés en utilisant l
 ligne de commande suivante~:
 %
 \begin{pre}
-\$ praspel --class 'Project\bslash{}HelloWorld' --test-root .
+\$ praspel generate --class 'Project\bslash{}HelloWorld' --test-root .
 \end{pre}
 %
 L'option \code{-\empty{}-class} précise la ou les classes à analyser. L'option
@@ -881,3 +887,29 @@ suivante~:
 Sans surprise, la suite de tests a été exécutée avec succès.
 
 \section{Synthèse}
+
+Dans ce chapitre, nous avons présenté l'implémentation de Praspel sous forme de
+plusieurs bibliothèques dans le projet Hoa (\code{Hoa\bslash{}Praspel},
+\code{Hoa\bslash{}Real\-dom}, \code{Hoa\bslash{}Compiler},
+\code{Hoa\bslash{}Regex} etc.). Nous avons vu que la pièce centrale de Praspel
+est son modèle objet. Le langage peut-être interprété, compilé ou désassemblé.
+Un \inenglish{runtime assertion checker} est proposé pour évaluer un contrat
+représenté par son modèle objet et accompagné d'un \inenglish{callable}
+représant le SUT. L'évaluation peut se faire avec des données de tests fournies
+manuellement ou générées automatiquement.
+
+Praspel a été intégré dans atoum, un \inenglish{framework} de tests unitaires,
+afin de profiter du moteur d'exécution, de la production des rapports, de
+l'intégration à plusieurs IDE et outils industriels, des API puissantes à
+l'intérieur d'atoum etc. atoum n'avait par ailleurs pas de générateurs de
+données de tests~: c'est pourquoi à travers l'extension
+\code{atoum\bslash{}praspel-extension}, nous proposons de nouvelles API pour
+générer des données de tests grâce aux travaux présentés dans ce mémoire. En
+plus, cette extension permet de transformer une suite de tests générées par
+Praspel en une suite de tests exécutables avec atoum. Enfin, cette extension est
+incluse dans la distribution standard d'atoum «~sous-stéroïde~».
+
+Grâce à cette extension, aux utilisateurs et aux licences
+\inenglish{open-source} de Hoa et d'atoum, nous avons pu mener une
+expérimenattion auprès d'ingénieurs de tests bénévoles, présentée dans le
+chapitre suivant.
