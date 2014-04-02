@@ -9,6 +9,69 @@ section va s'intéresser aux travaux concernant la génération de chaînes de
 caractères ainsi que de tableaux, qui sont des types très utilisés au sein de
 programmes Web.
 
+\subsection{Technique de générations}
+
+\paragraph{EXE} \inenglish{EXecution generated Executions}, abrégé
+EXE~\acite{CadarGPDE06, CadarGPDE08}, est un outil d'exécution symbolique pour
+programmes C. Au lieu d'exécuter le programme avec des valeurs construites
+manuellement ou aléatoirement, EXE va exécuter le programme, préalablement
+instrumenté, de manière symbolique. Durant cette exécution symbolique, EXE va
+analyser et indexer toutes les contraintes sur les entrées symboliques (comme
+les paramètres des fonctions) et ainsi calculer tous les chemins possibles dans
+le programme.  Si EXE rencontre une instruction contenant une valeur symbolique,
+alors il va analyser son environnement et générer de nouvelles contraintes.
+Quand des embranchements sont rencontrés (comme une condition par exemple), EXE
+va dupliquer les exécutions et les contraindre à emprunter chaque chemin de
+l'embranchement (pour une condition, ce sera un chemin à vrai et un à faux).
+Quand EXE arrive à la fin d'un chemin ou qu'il trouve une erreur, alors il va
+automatiquement générer des données de tests à partir des contraintes récoltées.
+EXE est accompagné de STP~\acite{GaneshD07}, un solveur de constraintes maison
+conçu à l'origine pour EXE. C'est grâce à ce solveur que les valeurs vont être
+concrétisées et utilisées comme données de tests sur le programme
+non-instrumenté. Les mêmes chemins seront empruntés et les mêmes erreurs seront
+trouvées, mais avec des valeurs concrètes, donc exploitables par le développeur.
+
+\paragraph{DART} \inenglish{Directed Automated Random Testing}, abrégé
+DART~\acite{GodefroidKS05}, est également un outil de génération de données de
+test à partir de l'analyse du programme. DART opère en trois étapes. Il commence
+par extraire les interfaces du programme pour connaître ses entrées. Ensuite il
+va générer aléatoirement des données pour ses entrées, et l'exécuter. Et enfin,
+il analyse le comportement du programme pendant son exécution pour détecter
+quels sont les chemins ou zones qui n'ont pas été atteints. Cette analyse va
+permettre de guider la génération des nouvelles entrées pour la prochaine
+exécution.
+
+DART et EXE ont une approche similaire pour l'analyse des chemins. À chaque
+embranchement du programme, DART va extraire des contraintes symboliques. Pour
+générer les données de tests suivantes, il prendra la négation des contraintes
+une par une, générer de nouvelles valeurs et le processus continue. Toutefois,
+DART ne sait gérer que les contraintes sur les entiers alors qu'EXE sait gérer
+des contraintes sur les entiers, les tableaux, les vecteurs de bits, le
+transtypage, les opérations arithmétiques etc.
+
+\paragraph{KLEE} L'outil KLEE~\acite{CadarDE08} est la suite d'EXE. Ses auteurs
+font le constat suivant~: malgré le fait que les travaux sur l'exécution
+symbolique sont encourageants, les outils ne sont toujours pas capables de
+passer à l'échelle. En effet, le nombre de chemins dans les programmes sont
+exponentiels, et les techniques d'exécutions symboliques n'arrivent plus à
+résoudre toutes les contraintes générées. De même, l'exécution symbolique ne
+prenait pas en compte l'environnement du programme, comme l'OS, le réseau ou
+l'utilisateur. Ce sont ces deux problèmes qu'adresse KLEE grâce à de la
+réduction et simplifications de contraintes, des améliorations sur l'exploration
+des chemins et des optimisations de la réprésentation de l'environnement.
+
+KLEE utilise toujours STP comme solveur de contraintes. \\
+
+Nous voyons qu'il existe de nombreuses techniques avancées pour la génération de
+données de test à partir d'exécution symbolique. Nous pouvons citer
+CUTE~\acite{SenMA05}, Pex~\acite{HalleuxT08} ou ARTOO~\acite{CiupaLOM08} qui
+sont aussi des travaux du même genre. Toutefois, si nous repensons aux contrats
+et que nous prenons du recul, nous remarquons que l'exécution symbolique ne
+permet pas de vérifier qu'un programme fait bien ce que nous souhaitons. Les
+erreurs à l'exécution (comme des pointeurs nuls, des dépassements de tableaux,
+de tampons etc.) seront détectées, mais rien ne nous assure que le programme est
+correct par rapport à une spécification.
+
 \paragraph{Génération aléatoire} Beaucoup de travaux et d'outils considèrent la
 génération de données aléatoires comme efficace. Elle permet de très rapidement
 explorer un modèle, une spécification ou une structure de code à moindre coût.
@@ -23,6 +86,8 @@ utiliser de l'aléatoire pour éliminer les cas triviaux et éviter l'utilisatio
 systématique de techniques de résolutions plus gourmandes. D'autres techniques
 vont guider l'aléatoire afin de conserver un certain degré de non-déterminisme
 tout en respectant par exemple des critères de couverture.
+
+\subsection{Données générées}
 
 \paragraph{Génération de chaînes de caractères} Les chaînes de caractères sont
 intensivement utilisées dans des programmes Web.  Leurs formes sont très
@@ -132,17 +197,3 @@ cette fonction permettra de détecter plus ou moins d'erreurs. \\
 
 Nous voyons que les outils se mélangent de plus en plus afin d'obtenir des
 données plus pertinentes et plus rapidement.
-
-\section{Synthèse}
-
-Nous voyons que tout ça est éparpillé.
-
-Nous avons choisi de créer un nouveau langage de spécification plutôt que de
-reprendre et améliorer un langage existant.
-%Une des raisons est la complexité des autres langages par rapport au niveau des
-%ingénieurs de tests. Nous voulions un langage simple, abordable et pragmatique.
-La raison principale est qu'il n'existe pas de langage de spécification unifiant
-plusieurs théories de l'état de l'art. Plusieurs langages ont permis à des
-théories intéressantes d'émerger, mais malheureusement, ces théories sont
-trop souvent éparpillées, et donc inutilisables par un ingénieur de test car la
-chaîne de développement deviendrait trop complexe.

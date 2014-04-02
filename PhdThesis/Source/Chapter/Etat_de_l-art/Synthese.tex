@@ -1,11 +1,14 @@
-\section{Praspel}
-\label{section:language:praspel}
+\section{Synthèse}
+\label{section:sota:summary}
 
-Dans un langage de contrat, ce qui est important c'est : de spécifier au plus
-juste les données manipulées afin de mieux les générer. Mieux les générer
-implique de les générer rapidement, avec le moins de rejet possible (expliquer
-ou virer) et réalistes (concrêtes pour le contexte). Un contrat peut spécifier
-plusieurs comportements. Il faut donc couvrir tous les aspects/comportements du
-contrat : ça nous fait des objectifs de tests. La finalité : générer des tests
-que l'on va exécuter avec des données de tests elles-mêmes générées
-automatiquement.
+Nous voyons que tout ça est éparpillé.
+
+Nous avons choisi de créer un nouveau langage de spécification plutôt que de
+reprendre et améliorer un langage existant.
+%Une des raisons est la complexité des autres langages par rapport au niveau des
+%ingénieurs de tests. Nous voulions un langage simple, abordable et pragmatique.
+La raison principale est qu'il n'existe pas de langage de spécification unifiant
+plusieurs théories de l'état de l'art. Plusieurs langages ont permis à des
+théories intéressantes d'émerger, mais malheureusement, ces théories sont
+trop souvent éparpillées, et donc inutilisables par un ingénieur de test car la
+chaîne de développement deviendrait trop complexe.

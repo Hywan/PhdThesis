@@ -18,15 +18,19 @@ des données} de test~;
 verdict du test à l'exécution.
 
 \end{itemize}
-
+%
 Rappelons qu'un test est composé de trois parties~: un SUT, des données de test
 et un oracle. La première partie est présente du fait de la proximité entre les
 contrats et le programme, et les deux dernières nous sont données en exploitant
-le contrat. À partir d'une spécification formelle, sous la forme d'un contrat,
-nous sommes capable de générer des tests automatiquement. Comme nous sommes au
+le contrat.
+
+À partir d'une spécification formelle, sous la forme d'un contrat, nous sommes
+capable de générer des suites de tests automatiquement. Comme nous sommes au
 niveau du code source du programme, et plus précisément, sur les méthodes des
 classes (dans un contexte orienté objet), les tests seront {\strong unitaires}.
-Nous nous intéressons aux outils qui génèrent des objectifs de tests. \\
+
+Différents outils exploitant des contrats pour générer des suites de tests sont
+maintenant présentés.
 
 \paragraph{JMLUnit} L'outil JMLUnit~\acite{CheonL02, ZimmermanN10} permet de
 transformer un contrat JML en une suite de tests exécutable avec JUnit. L'outil
@@ -56,7 +60,7 @@ postcondition n'a été violée.
 
 Enfin, le rapport de test est le même que produit habituellement JUnit.
 
-\paragraph{Jartage} L'outil Jartege~\acite{Oriat05} est un générateur de tests
+\paragraph{Jartege} L'outil Jartege~\acite{Oriat05} est un générateur de tests
 aléatoires pour des programmes écrits en Java. Jartege produit des séquences de
 test d'une certaine taille et un nombre de séquences, fixés par
 l'utilisateur.
