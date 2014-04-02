@@ -25,27 +25,211 @@ contrats et le programme, et les deux dernières nous sont données en exploitan
 le contrat. À partir d'une spécification formelle, sous la forme d'un contrat,
 nous sommes capable de générer des tests automatiquement. Comme nous sommes au
 niveau du code source du programme, et plus précisément, sur les méthodes des
-classes (dans un contexte orienté objet), les tests seront {\strong unitaires}. \\
+classes (dans un contexte orienté objet), les tests seront {\strong unitaires}.
+Nous nous intéressons aux outils qui génèrent des objectifs de tests. \\
 
-Le test à partir de contrat répond au constat suivant. La validation dynamique
-souffre d'une limitation majeure~: elle fournit des résultats limités. Les
-spécifications sont souvent vérifiées avec les données des exécutions courantes
-et rarement de manière exhaustive. Ainsi, la validation dynamique résulte
-souvent à une détection incomplète et tardive (potentiellement en production) de
-défauts. Et pourtant, «~un test montre la présence, jamais l'absence d'une
-erreur~» (Edsger W.~Dijkstra dans~\acitep{Buxton70}). Et un bon test est un test
-qui échoue.  Pour savoir ce qu'est un «~bon test~», il existe plusieurs
-métriques pour le qualifier~: les critères de couverture de
+\paragraph{JMLUnit} L'outil JMLUnit~\acite{CheonL02, ZimmermanN10} permet de
+transformer un contrat JML en une suite de tests exécutable avec JUnit. L'outil
+assure un moyen simple et efficace d'automatiser la génération d'oracle de
+tests.  L'objectif est de décharger l'utilisateur de calculer le verdict du
+test, à savoir si le test unitaire est un succès ou un échec. L'outil génère
+automatiquement deux classes pour chaque interfaces ou classes Java annotées par
+du JML~: un squelette où déclarer les données de tests et les oracles permettant
+de calculer le verdict des tests.
+
+Les données de tests ne sont pas générées automatiquement~: un dictionnaire de
+données de tests pré-définies selon certaines stratégies est utilisé à la place.
+Pour des types de données non-primitifs au langage (donc des données de tests
+qui ne sont pas des booléens, des nombres, des chaînes de caractères etc.), le
+dictionnaire ne contient qu'une valeur nulle. C'est alors à l'utilisateur de
+calculer lui-même les données de tests.
+
+Comme l'outil se concentre sur le test unitaire, chaque test ne concerne qu'une
+seule méthode. Les postconditions et invariants JML sont transformés en
+prédicats Java et constituent les oracles de tests. Si l'exécution d'une méthode
+avec un certain ensemble de données de tests ne lève aucune une erreur, alors le
+test considéré comme un succès, sinon il est considéré comme un échec.
+Toutefois, il est également possible d'avoir un troisième résultat qui est une
+violation d'une précondition d'une autre méthode appelée par la méthode testée.
+Ce cas est considéré comme inconclusif par l'outil car aucune précondition ou
+postcondition n'a été violée.
+
+Enfin, le rapport de test est le même que produit habituellement JUnit.
+
+\paragraph{Jartage} L'outil Jartege~\acite{Oriat05} est un générateur de tests
+aléatoires pour des programmes écrits en Java. Jartege produit des séquences de
+test d'une certaine taille et un nombre de séquences, fixés par
+l'utilisateur.
+
+Jartege sélectionne aléatoirement des méthodes à exécuter. Chaque méthode est
+annoté par un contrat JML. Les données de tests, soit les valeurs des paramètres
+de ces méthodes, sont également générer aléatoirement à partir de la
+précondition. Cette dernière sert aussi de filtre pour sélectionner les méthodes
+à exécuter. L'exécution des méthodes et les postconditions et invariants sont
+utilisés pour confronter pour connaître la conformité du programme avec sa
+spécification. La vérifications des contraintes est ainsi conjointe à la
+création des séquences de test.
+
+Pour les types primitifs de Java, Jartege demande à l'utilisateur de leurs
+définir des bornes pour la génération aléatoire, ceci afin de générer des
+données de tests plus pertinentes. L'outil permet à l'utilisateur de fournir une
+fonction qui détermine la probabilité de créer un nouvel objet ou d'en
+réutiliser un déjà existant. Selon les structures de données manipulées, cette
+fonction permettra de détecter plus ou moins d'erreurs.
+
+\paragraph{JML-Testing-Tools} L'outil JML-Testing-Tool~\acite{BouquetDLU05,
+BouquetDL06} est développé comme une extension aux outils BZ Testing
+Tools~\acite{LegeardPU02}, un ensemble d'outils d'animation et de génération
+automatique de programmes B~\acite{Abrial05}, Z~\acite{Spivey89} ou de
+spécifications Statechart~\acite{Harel87}. L'outil JML-Testing-Tool comprend un
+animateur symbolique et un générateur de tests.
+
+Le premier permet d'animer symboliquement des méthodes Java en utilisant des
+spécifications écrites en JML. Le code des méthodes n'est jamais utilisé car
+l'outil manipule des modèles. JML-Testing-Tool permet d'appeler des méthodes
+avec des paramètres symboliques. Les valeurs de ces paramètres sont des
+contraintes définies sur le domaine lié au type des paramètres. Ces contraintes
+sont supportées par un solveur spécifique. Par conséquent, JML-Testing-Tool est
+capable de représenter un grand nombre d'états d'un programme. Une valuation
+pour obtenir l'ensemble de tous les états concrets est possible. L'outil est
+également capable de vérifier les propriétés JML à la volée et d'afficher un
+contre-exemple si l'une d'entre elles est violée.
+
+Le générateur de tests mélange les spécifications JML et le modèle. L'outil va
+tout d'abord extraire un ensemble de comportements (normaux et exceptionnels) à
+partir de la spécification JML. Un comportement est représenté par un prédicat
+en forme disjonctive. Cet ensemble de comportements va être réduit en fonction
+du critère de couverture du modèle choisi par l'utilisateur. L'outil propose
+quatre critères de couverture qui représentent des règles de réécritures de ces
+prédicats. Les données de tests sont générées automatiquement en utilisant les
+valeurs aux limites des paramètres des méthodes. Cette approche fonctionne pour
+les types primitifs de Java avec un domaine ordonné. L'outil considère également
+qu'une valeur aux limites d'un objet est une valeur aux limites d'un de ses
+attributs. Quand toutes les valeurs sont spécifiées, elles sont instanciées
+grâce à l'animateur symbolique et les tests peuvent être exécutées.
+
+\paragraph{TestEra} L'outil TestEra~\acite{MarinovK01} est un langage
+d'annotation de code Java. Ses préconditions, postconditions et invariants
+expriment des contraintes avec le langage Alloy~\acite{Jackson02}. Alloy est un
+langage de spécification déclaratif pour exprimer des contraintes structurelles
+complexes. Son objectif est d'instancier des micro-modèles, à l'aide de son
+propre analyseur Alcoa~\acite{JacksonSS00}. TestEra passe des invariants
+accompagnés de préconditions à l'analyseur d'Alloy, qui va lui générer plusieurs
+instances de modèles satisfaisants cette spécification. Chaque instance générée
+par Alcoa représente un test. TestEra va concrétiser ces instances une par une,
+afin de produire des données valides en Java. Ces dernières sont utilisées en
+tant que données de tests, c'est~à~dire qu'elles vont servir à exécuter le SUT.
+Ensuite, TestEra regarde les sorties produites par le SUT ainsi que son
+post-état, qui sont abstraits pour se ramener au formalisme d'Alloy afin d'y
+être confrontés à la postcondition et aux invariants. Si cette dernière
+vérification échoue, un contre-exemple est produit. Sinon, le processus itère à
+l'instance suivante.
+
+\paragraph{Korat} L'outil Korat~\acite{BoyapatiKM02} est la suite de TestEra.
+L'objectif de Korat est de couvrir des structures de données
+complexes non-isomorphiques de taille finie. Pour cela, il demande à
+l'utilisateur d'écrire un prédicat en Java (appelé \code{repOK}), qui va valider
+ou invalider les structures générées automatiquement. Il y a plusieurs avantages
+à cette démarche~: l'utilisateur est familier avec le langage puisqu'il
+l'utilise pour développer, il y a plusieurs outils et environnements de
+développement qui peuvent aider à la rédaction ou l'analyse de ce prédicat, et
+enfin, le prédicat peut potentiellement déjà exister dans le programme. Korat va
+ensuite générer des structures à partir des entrées de ce prédicat. Pour cela,
+Korat va analyser le prédicat et indexer quels sont les accès aux méthodes et
+attributs sur la structure qui influencent la décision du prédicat. Korat va
+ensuite jouer sur ces méthodes et attributs afin de générer plusieurs structures
+candidates. Korat demande également à l'utilisateur d'écrire une méthode de
+\inenglish{finitization} qui précise la taille et la nature des données portées
+par la structure. L'idée est de préciser à Korat dans quelle mesure il peut
+modifier la structure pour générer de nouvelles structures candidates. Cette
+technique assure qu'il y a un ensemble fini de structures candidates qui vont
+être sélectionnées.
+
+Comme TestEra avant lui, Korat est utilisé depuis des annotations d'un programme
+Java. Plus précisément, les prédicats de Korat sont appelés depuis JML et la
+postcondition fournit l'oracle du test. Les tests sont alors exécutés sur un
+programme Java enrichie.
+
+Korat se démarque de TestEra en proposant ses propres algorithmes de génération
+de données candidates à partir de prédicats Java. Cette approche demande un
+effort supplémentaire à l'utilisateur, car en plus d'écrire des contrats en JML,
+il doit écrire une méthode pour un prédicat et une autre pour une
+\inenglish{finitization}. Notons que cet effort est partiellement compensé par
+le fait que, d'une part, écrire des spécifications est une bonne pratique, et
+que d'autre part, l'utilisateur connaît déjà le langage dans lequel écrire ces
+méthodes et que les prédicats lui seront très propablement utiles dans son
+programme.
+
+\paragraph{UDITA} Le langage UDITA~\acite{GligoricGJKKM10} répond à l'objectif
+suivant~: s'assurer que des structures de données complexes sont bien supportées
+par un programme Java, c'est~à~dire qu'un programme sait manipuler sans erreur
+toutes les formes d'une certaine structure de données complexes.  Pour atteindre
+cet objectif, UDITA se présente comme un langage étendu du langage Java
+permettant de décrire des structures de données complexes. Ces descriptions vont
+être utilisées pour générer des ensembles finis de ces structures. UDITA est la
+suite de Korat. Nous retrouvons ainsi la démarche de demander à l'utilisateur
+d'écrire lui-même des méthodes de génération de données (description des
+structures) mais les contrats ont totallement disparu. UDITA ajoute à Java deux
+extensions~: des primitives de choix non-déterministes et une primitive pour
+restreindre ces choix. Ces constructions sont familiaires aux utilisateurs de
+vérificateur de modèle comme Java PathFinder~\acite{VisserHBPL03}, sur lequel il
+s'appuye. UDITA est d'ailleurs intégré au \inenglish{framework} Java PathFinder
+en tant qu'extension. Grâce aux points de choix non-déterministes, l'utilisateur
+ne décrit qu'une seule fois sa structure, et UDITA est capable d'en générer
+plusieurs. L'outil propose aussi à l'utilisateur des générateurs basiques, comme
+un générateur de booléens, d'entiers, de nouveaux objets ou d'objets déjà créés.
+Ces deux derniers permettent à l'utilisateur de décrire des structures de
+données récursives ou liées. En plus d'une description, UDITA demande à
+l'utilisateur d'écrire un filtre, notion identique aux prédicats de Korat, si ce
+n'est qu'UDITA ne va pas s'en servir pour la génération de données, mais
+uniquement pour filtrer les données générées~: chaque donnée qui passe le filtre
+sera mise de côté pour servir de données de test.
+
+Contrairement à Korat, UDITA ne demande pas de méthode de
+\inenglish{finitization}, mais s'appuye sur ces points de choix
+non-déterministes pour explorer l'espace de la structure tout en restant
+borné~\acite{Marinov03, SullivanYCKJ04}. L'efficacité de la méthode s'appuye
+sur les choix retardés~\acite{NollS07}, c'est~à~dire sur des évaluations
+non-déterministes tardives~\acite{FischerKS09}.
+
+\paragraph{JSConTest} Le langage JSConTest~\acite{HeideggerT12} permet d'annoter
+des programmes Javascript avec des contrats. Javascript est un langage à typage
+non déclaré. C'est pourquoi JSConTest propose que le contrat ne contienne que
+la signature de la fonction annotée, soit ses entrées et sa sortie,
+respectivement une précondition et une postcondition. JSConTest ne permet pas
+d'exprimer d'invariants ni de comportements. Le fait de préciser les types
+permet à JSConTest de réduire l'effort d'inférence en se limitant à un minimum
+de fonctions à analyser. Les résultats de l'inférence servent à guider la
+génération aléatoire de données de test. Le langage permettant d'exprimer la
+signature est enrichi de quelques constructions également pour guider la
+génération aléatoire. Un outil permet d'exécuter les tests et d'en calculer le
+verdict grâce à un RAC.
+
+JSConTest, contrairement à JML ou UDITA, demande très peu d'effort à
+l'utilisateur. Les auteurs pensent qu'écrire la signature ne peut pas être
+négatif pour le développeur, surtout dans un langage où les types ne sont pas
+déclarés. Cependant, le niveau d'expressivité sur les préconditions et
+postconditions reste très faible. En revanche, comme démontré dans le travail
+sur les types graduels~\acite{SiekT07}, pour un langage à typage dynamique et
+faible comme Javascript ou PHP, même un contrat très simple qui spécifie le
+typage des données peut être très utile et offrir de bons résultats, notamment
+dans la détection de régressions. \\
+
+Le test à partir de contrat répond au constat suivant. La validation
+dynamique souffre d'une limitation majeure~: elle fournit des résultats limités.
+Les spécifications sont souvent vérifiées avec les données des exécutions
+courantes et rarement de manière exhaustive. Ainsi, la validation dynamique
+résulte souvent à une détection incomplète et tardive (potentiellement en
+production) de défauts. Et pourtant, «~un test montre la présence, jamais
+l'absence d'une erreur~» (Edsger W.~Dijkstra dans~\acitep{Buxton70}). Et un bon
+test est un test qui échoue.  Pour savoir ce qu'est un «~bon test~», il existe
+plusieurs métriques pour le qualifier~: les critères de couverture de
 code~\acite{MillerM63, Myers04, GargantiniGM12}. Si plusieurs tests remplissent
 les critères les plus élevés de la couverture de code, alors une importante
 partie des erreurs serait détectée. Toutefois, il faut être conscient que ces
 critères ne sont pas non plus exhaustives. En effet, ce n'est pas parce qu'un
 test à activer tous les chemins que toutes les erreurs ont été évitées. De plus,
 des erreurs peuvent se cacher dans l'environnement d'exécution du programme.
-Notons que si nous travaillons en boîte-noire, ces critères ne sont pas
+Notons que si nous travaillons en boîte noire, ces critères ne sont pas
 appliquables, et nous pouvons uniquement nous référer aux postconditions des
 contrats.
-
-Une façon de pallier ces limitations est de générer des données de tests les
-plus pertinentes possible afin de tenter de couvrir tous les comportements de la
-spécification. C'est un des grands défis du test à partir de contrat.

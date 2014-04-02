@@ -46,31 +46,48 @@ comportement des programmes, et utilisés comme annotations, sont appelés des
 programmation orienté objet. Sa plus grosse contribution au domaine a été
 l'utilisation importante du \inenglish{Design by Contract} au sein même du
 langage (c'est~à~dire sans être placé en annotation), dont les assertions,
-préconditions postconditions et invariants étaient utilisés pour assurer la
-conformité du programme. Les contributions originales comprenaient l'application
-au paradigme orienté objet, le support des exceptions et une documentation
-automatique. L'aspect objet apporte quelques spécificités, comme les invariants
-de classes, la gestion de l'héritage multiple, la résolution de conflit avec
-l'héritage multiple, comme le renommage de certains attributs ou méthodes, sans
-oublier la gestion du \inenglish{dynamic binding} (aussi appelé \inenglish{late
-binding}, représenté en général par la variable \code{this}), c'est~à~dire que
-la résolution des appels se fait à l'exécution et non pas à la compilation.
+préconditions, postconditions et invariants étaient utilisés pour assurer la
+conformité du programme. Les contributions originales importantes comprenaient
+l'application au paradigme orienté objet et le support des exceptions. L'aspect
+objet apporte quelques spécificités, comme les invariants de classes, la gestion
+de l'héritage multiple ou la résolution de conflits avec l'héritage multiple
+comme le renommage de certains attributs ou méthodes. Mais également la gestion
+du \inenglish{dynamic binding} (aussi appelé \inenglish{late binding},
+représenté en général par la variable \code{this}), c'est~à~dire que la
+résolution des appels se fait à l'exécution et non pas à la compilation. Les
+exceptions nécessitent également de définir dans quels contextes elles peuvent
+être levées et dans quel état se trouve l'objet après qu'un exception ait été
+levée. Cette information est d'autant plus importante que le langage Eiffel
+permet de ré-exécuter la routine (méthode) qui a déclenché l'exception. Les
+préconditions et postconditions sont exprimées avec les mots-clés \code{require}
+et \code{ensure}. Le contenu de ces constructions est exprimé avec le langage
+Eiffel lui-même. Le langage introduit également le mot-clé \code{assert} pour
+exprimer des assertions ou des invariants de boucles.
+
+Les contrats sont compilés avec le reste du programme mais sont placés dans des
+fichiers à part. Lors de la construction finale de l'exécutable du programme, il
+est possible d'y inclure ou exclure un ensemble de contrats. Le programme peut
+être intensivement testé avec tous les contrats puis être distribués avec
+seulement un sous-ensemble de ses contrats pour des parties plus critiques.
+Moins il y a de contrats présents dans le programme, plus son exécution sera
+rapide, mais il est nécessaire de s'assurer de la fiabilité du programme.
 
 \paragraph{JML} Le \inenglish{Java Modeling Language}~\acite{JML} est un langage
-de contrats pour Java~\acite{Java}. À la différence de Eiffel qui utilise
-\code{require} et \code{ensure}, JML utilise les mots-clés \code{requires} et
-\code{ensures} pour introduire les préconditions et les postconditions. Dans
-Eiffel, une postcondition exceptionnelle est introduite par le mot-clé
-\code{rescue} alors que dans JML, nous avons \code{signals}. Les invariants sont
-dans les deux cas introduits par le mot-clé \code{invariant}. JML propose
-également des identifiants réservés, comme \aresult, présent uniquement dans une
-postcondition normale, et qui fait référence au résultat de la méthode.  De
-même, nous trouvons la construction \aold{i}, présente uniquement dans une
-postcondition, qui fait référence à la valeur de la données $i$ dans le
-pré-état. JML propose également des constructions logiques, comme la relation
-d'implication ($\implies$), d'équivalence ($\Longleftrightarrow$) ou des
-quantificateurs comme \code{\bslash{}forall} ($\forall$) et
-\code{\bslash{}exists} ($\exists$).
+de contrats pour Java~\acite{Java}. À l'inverse du langage Eiffel, JML est un
+langage d'annotation pour Java. Classiquement, il utilise les mots-clés
+\code{requires} et \code{ensures} pour introduire les préconditions et les
+postconditions. Une postcondition exceptionnelle est introduite par le mot-clé
+\code{signals}. Les invariants sont introduits par le mot-clé \code{invariant}.
+JML propose la clause \code{also} qui permet de raffiner, par un nouveau
+contrat, des contrats hérités d'une classe parente. Les expressions de JML sont
+exprimées à l'aide du langage Java mais il propose également des identifiants
+réservés, comme \aresult, présent uniquement dans une postcondition normale, et
+qui fait référence au résultat de la méthode. De même, nous trouvons la
+construction \aold{i}, présente uniquement dans une postcondition, qui fait
+référence à la valeur de la données $i$ dans le pré-état. JML propose également
+des constructions logiques, comme la relation d'implication ($\implies$),
+d'équivalence ($\Longleftrightarrow$) ou des quantificateurs comme
+\code{\bslash{}forall} ($\forall$) et \code{\bslash{}exists} ($\exists$).
 
 La distribution officielle de JML fournit principalement deux outils.  Le
 premier, le \inenglish{Runtime Assertion Checker}, sert de
