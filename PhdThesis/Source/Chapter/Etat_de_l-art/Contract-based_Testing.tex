@@ -219,21 +219,21 @@ faible comme Javascript ou PHP, même un contrat très simple qui spécifie le
 typage des données peut être très utile et offrir de bons résultats, notamment
 dans la détection de régressions. \\
 
-Le test à partir de contrat répond au constat suivant. La validation
-dynamique souffre d'une limitation majeure~: elle fournit des résultats limités.
-Les spécifications sont souvent vérifiées avec les données des exécutions
-courantes et rarement de manière exhaustive. Ainsi, la validation dynamique
-résulte souvent à une détection incomplète et tardive (potentiellement en
-production) de défauts. Et pourtant, «~un test montre la présence, jamais
-l'absence d'une erreur~» (Edsger W.~Dijkstra dans~\acitep{Buxton70}). Et un bon
-test est un test qui échoue.  Pour savoir ce qu'est un «~bon test~», il existe
-plusieurs métriques pour le qualifier~: les critères de couverture de
-code~\acite{MillerM63, Myers04, GargantiniGM12}. Si plusieurs tests remplissent
-les critères les plus élevés de la couverture de code, alors une importante
-partie des erreurs serait détectée. Toutefois, il faut être conscient que ces
-critères ne sont pas non plus exhaustives. En effet, ce n'est pas parce qu'un
-test à activer tous les chemins que toutes les erreurs ont été évitées. De plus,
-des erreurs peuvent se cacher dans l'environnement d'exécution du programme.
-Notons que si nous travaillons en boîte noire, ces critères ne sont pas
-appliquables, et nous pouvons uniquement nous référer aux postconditions des
-contrats.
+%Le test à partir de contrat répond au constat suivant. La validation
+%dynamique souffre d'une limitation majeure~: elle fournit des résultats limités.
+%Les spécifications sont souvent vérifiées avec les données des exécutions
+%courantes et rarement de manière exhaustive. Ainsi, la validation dynamique
+%résulte souvent à une détection incomplète et tardive (potentiellement en
+%production) de défauts. Et pourtant, «~un test montre la présence, jamais
+%l'absence d'une erreur~» (Edsger W.~Dijkstra dans~\acitep{Buxton70}). Et un bon
+%test est un test qui échoue.  Pour savoir ce qu'est un «~bon test~», il existe
+%plusieurs métriques pour le qualifier~: les critères de couverture de
+%code~\acite{MillerM63, Myers04, GargantiniGM12}. Si plusieurs tests remplissent
+%les critères les plus élevés de la couverture de code, alors une importante
+%partie des erreurs serait détectée. Toutefois, il faut être conscient que ces
+%critères ne sont pas non plus exhaustives. En effet, ce n'est pas parce qu'un
+%test à activer tous les chemins que toutes les erreurs ont été évitées. De plus,
+%des erreurs peuvent se cacher dans l'environnement d'exécution du programme.
+%Notons que si nous travaillons en boîte noire, ces critères ne sont pas
+%appliquables, et nous pouvons uniquement nous référer aux postconditions des
+%contrats.
