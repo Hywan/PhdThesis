@@ -331,8 +331,8 @@ contraintes, respectivement présentées dans les parties suivantes.
 \begin{tabular}{rcl}
 \grule{expression} & \gsep &
   (\grule{declaration}$^+_\code{and}$ $\code{and})^?$ \\ & &
-  (\grule{qualification}$^+_\code{and}$ $\code{and})^?$  \\ & &
-   \grule{predicate}$^?_\code{and}$ \\
+  (\grule{predicate}$^?_\code{and}$ $\code{and})^?$  \\ & &
+   \grule{qualification}$^+_\code{and}$ \\
 
 \grule{exceptional-expression} & \gsep &
     $($ $($ \grule{exception-identifier} $)^+_\code{or}$ \\ & &
@@ -356,15 +356,15 @@ entités syntaxiques d'expressions.}
 %
 %\grule{constraint} & \gsep &
 %    \grule{qualification} \mvert \grule{contains} \\
-
-\grule{qualification} & \gsep &
-    \grule{identifier} \code{is} \gtoken{identifier}$^+_\code{,}$ \\
 %
 %\grule{contains} & \gsep &
 %    \grule{extended-identifier} \code{contains} \grule{constant}$^+_\code{or}$ \\
 
 \grule{predicate} & \gsep &
     \code{\bslash{}pred(} \gtoken{string} \code{)} \\
+
+\grule{qualification} & \gsep &
+    \grule{identifier} \code{is} \gtoken{identifier}$^+_\code{,}$ \\
 
 \grule{disjunction} & \gsep &
     $($
