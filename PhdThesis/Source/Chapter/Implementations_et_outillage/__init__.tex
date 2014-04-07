@@ -50,12 +50,12 @@ sur le projet Hoa, présenté dans la partie~\ref{subsection:tools:hoa}.
         }
     };
     \node (language) [left of=model] {
-        Langage
+        Praspel
     };
     \node (php) [right of=model] {
         PHP
     };
-    \node (verdict) [rectangle, below of=model, minimum height=1cm, node distance=4cm] {
+    \node (verdict) [below of=model, minimum height=1cm, node distance=4cm] {
         Verdict
     };
     \node (callable) [left of=verdict] {
@@ -63,15 +63,15 @@ sur le projet Hoa, présenté dans la partie~\ref{subsection:tools:hoa}.
     };
 
     \draw[arrow] (language.north)
-                     -- node[auto] {\small interprétation}
+                     -- node[auto] {\small analyses}
                      ++(0,  1.68)
                      -| ([xshift=-5pt] model.north);
     \draw[arrow] ([xshift=+5pt] model.north)
                      --
                      ++(0,  0.5)
-                     -| node[auto, yshift=-.9cm] {\small compilation} (php.north);
+                     -| node[auto, yshift=-.9cm] {\small exportation} (php.north);
     \draw[arrow] (php.south)
-                     -- node[auto] {\small exécution}
+                     -- node[auto] {\small importation}
                      ++(0, -1.72)
                      -| ([xshift=+5pt] model.south);
     \draw[arrow] ([xshift=-5pt] model.south)
@@ -80,7 +80,7 @@ sur le projet Hoa, présenté dans la partie~\ref{subsection:tools:hoa}.
                      -| node[auto, yshift=.8cm] {\small désassemblage} (language.south);
     \draw[arrow] (model.south)
                      --
-                     node[auto, yshift=-.13cm] {évaluation} (verdict.north);
+                     node[auto, yshift=-.13cm] {\small \inenglish{Runtime Asserter Checking}} (verdict.north);
     \draw[arrow] (callable.east)
                      --
                      (verdict.west);
@@ -102,7 +102,7 @@ représentée par un objet appelé
 Dans les parties suivantes, nous détaillons les différents processus autour de
 ce modèle objet.
 
-\subsection{Interprétation}
+\subsection{Analyses}
 \label{subsection:tools:interpretation}
 
 Le processus qui transforme le langage Praspel en modèle objet est appelé une
@@ -132,7 +132,7 @@ cet AST et produire le modèle objet~; ainsi~:
 Durant la production de l'AST, les erreurs syntaxiques seront détectées. Et
 durant la production du modèle objet, les erreurs sémantiques seront détectées.
 
-\subsection{Compilation}
+\subsection{Exportation et importation}
 \label{subsection:tools:compilation}
 
 Le processus qui transforme le modèle en code PHP est appelé une compilation.
@@ -557,7 +557,7 @@ La grammaire des expressions régulières se trouve également dans la biblioth�
 \url{http://central.hoa-project.net/Resource/Library/Regex}.} dans
 \code{hoa://Library/Regex/Grammar.pp}.
 
-\section{atoum}
+\section{Intégration dans atoum}
 \label{section:tools:atoum}
 
 atoum~\acite{atoum}, sans majuscule, est aujourd'hui l'un des
@@ -587,7 +587,7 @@ Dans un premier temps, nous allons montrer comment utiliser atoum avec
 quelqu'uns de ces avantages, puis dans un second temps, nous montrerons les
 fonctionnalités offertes par l'extension.
 
-\subsection{Écrire et exécuter un test}
+\subsection{Présentation d'atoum}
 
 atoum fonctionne basiquement en deux étapes~: écrire et exécuter des tests. Un
 test est une méthode et une suite de tests est une classe. Ainsi, nous allons
@@ -711,7 +711,7 @@ son troisième appel par exemple. Nous pouvons également bouchonner des fonctio
 et objets standards de PHP. En somme, les fonctionnalités sont avancées et sont
 accessibles facilement.
 
-\subsection{\code{atoum/praspel-extension}}
+\subsection{Extension~: Praspel dans atoum}
 
 Cette extension\footnote{Voir
 \url{http://central.hoa-project.net/Resource/Contributions/Atoum/PraspelExtension}.}
