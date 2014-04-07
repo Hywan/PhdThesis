@@ -95,7 +95,7 @@ $\dots$ and $i_m$: $D_m$} est~:
 %
 $$G = (\{\mathit{dom}\} \union \{v_s \;\vert\; s \in S\}, D, \mathit{dom}, v_{i_m})$$
 %
-avec~:
+avec $\mathit{dom}$ une étiquette permettant de typer le graphe et~:
 %
 $$D = \Union_{d \,\in\, D_1} \{(\mathit{dom}, \code{$i_1$: $d$}, v_{i_1})\} \union
       \Union_{2 \,\leq\, j \,\leq\, m}
@@ -148,7 +148,8 @@ $\dots$ and $P_m$}'} est~:
 %
 $$G = (\{\mathit{pred}\} \union \{v_j \;\vert\; j \in [1; m]\}, D, \mathit{pred}, v_m)$$
 %
-avec~:
+avec $\mathit{pred}$ une étiquette permettant de typer le graphe et~:
+%
 $$D = \Union_{p \,\in\, P_1} \{(\mathit{pred}, p, v_1)\} \union
       \Union_{2 \,\leq\, j \,\leq\, m}
       \Union_{p \,\in\, P_j} \{(v_{j - 1}, p, v_j)\}$$
@@ -188,9 +189,11 @@ où $P$ et $Q$ sont des expressions de sorte \grule{expression} respectivement
 associées aux clauses \arequires et \aensures. L'expression de sorte
 \grule{exceptional-expression} associée à la clause \athrowable est composée de
 deux parties~: $T_C$ représente le nom de la classe de l'exception et
-l'identifiant qui porte l'exception, et $T_E$ représente la postcondition
+l'identifiant qui porte l'exception, soit une construction de sorte
+\grule{exception-identifier}, et $T_E$ représente la postcondition
 exceptionnelle, qui est aussi une expression de sorte \grule{expression}. Le
-graphe de contrat associé à ce contrat atomique est~:
+graphe de contrat $G$ associé à ce contrat atomique est~:
+
 
 $$G = (
   \{v_1, v_2, v_3, v_4, v_5, v_6\},
@@ -238,20 +241,22 @@ seule clause \athrowable. Dans cette partie, nous voyons comment un contrat est
 modifié quand nous ajoutons une clause \code{\athrowable $T_C$ with $T_E$} à un
 contrat dont le graphe est $G = (V, D, i, N, E, U)$. Nous pouvons montrer par
 récurrence sur le nombre de clauses \athrowable que l'ensemble des sommets $V$
-contient au moins les six sommets $v_1 = i$, $v_2$, $v_3$, $v_4$, $v_5$, $v_6$
+contient au moins les six sommets $v_1 = i$, $v_2$, $v_3$, $v_4$, $v_5$ et $v_6$
 introduits dans la partie~\ref{subsection:test:atomic_graph}.
 
 Le graphe résultant est $G' = (V \union \{v'\}, D', i, N, E, U)$ avec un nouveau
 sommet $v' \notin V$ et un ensemble d'arcs~:
 %
-\begin{equation*}
-\centering
-\begin{aligned}
-D' =\; & D \union \{(v_2, T_C, v'), (v', T_E, v_5)\} \\
-     & - \{(v_2, \varphi, v_6) \,\vert\, (v_2, \varphi, v_6) \in D\} \union
-       \{(v_2, \varphi \land \neg T_C, v_6) \,\vert\, (v_2, \varphi, v_6) \in D\}
-\end{aligned}
-\end{equation*}
+\begin{align*}
+%
+D' =\;
+  & D \union \{(v_2, T_C, v'), (v', T_E, v_5)\} \\
+  & - \{(v_2, \varphi, v_6) \,\vert\, (v_2, \varphi, v_6) \in D\} \union
+      \{(v_2, \varphi \land \neg T_C, v_6) \,\vert\, (v_2, \varphi, v_6) \in D\}
+%
+\end{align*}
+%
+avec une expression $\varphi \in A$ quelconque.
 
 \begin{figure}
 
@@ -385,7 +390,8 @@ qu'une seule clause \athrowable.
 Après un groupe de clauses \abehavior, nous pouvons avoir une clause \adefault.
 Rappelons qu'une clause \adefault est strictement équivalente à une clause
 \abehavior avec une clause \arequires implicite (voir la
-partie~\ref{subsection:language:clauses}). Ainsi, ajouter une clause \adefault
+partie~\ref{subsection:language:clauses}
+page~\pageref{subsection:language:clauses}). Ainsi, ajouter une clause \adefault
 est un cas spécial d'ajout d'une clause \abehavior, considéré dans la
 partie~\ref{subsection:test:behaviors_graph}.
 

@@ -94,21 +94,24 @@ satisfait le Critère de Couverture de Clause, c'est~à~dire que ces cas de test
 couvrent toutes les clauses avec les chemins respectifs suivants (sur les
 routes)~:
 %
-\begin{itemize}
-
-\item[$R_\code{compute}(\{t_1\}).$]
+\begin{align*}
 %
-$v_1 \cdot v_2 \cdot v_5 \cdot v_8$~;
-
-\item[$R_\code{compute}(\{t_2\}).$]
+R_\code{compute}(\{t_1\}) =\;
+          & (v_1, P, v_4) \\
+  \cdot\; & (v_4, P_\code{message}, v_7) \\
+  \cdot\; & (v_7, Q_\code{message}, v_{10}) \\
 %
-$v_1 \cdot v_2 \cdot v_{13} \cdot v_{16}$~;
-
-\item[$R_\code{compute}(\{t_3\}).$]
+R_\code{compute}(\{t_2\}) =\;
+          & (v_1, P, v_4) \\
+  \cdot\; & (v_4, P_\code{ping}, v_{15}) \\
+  \cdot\; & (v_{15}, Q_\code{ping}, v_{18}) \\
 %
-$v_1 \cdot v_3 \cdot v_{17} \cdot v_{21}$.
-
-\end{itemize}
+R_\code{compute}(\{t_3\}) =\;
+          & (v_1, P, v_4) \\
+  \cdot\; & (v_4, P_\m{D}, v_{19}) \\
+  \cdot\; & (v_{19}, T_\m{D}, v_{23})
+%
+\end{align*}
 
 \end{example}
 
@@ -138,24 +141,44 @@ satisfait le Critère de Couverture de Domaine: les deux déclarations de domain
 réalistes de la variable \code{buffer} sont couverts. Cette suite de test
 produit les chemins respectifs suivants (sur les sentiers)~:
 %
-\begin{itemize}
-
-\item[$T_\code{compute}(\{t_1\}).$]
+\begin{align*}
 %
-$v_1 \cdot v_2 \cdot v_3 \cdot v_4 \cdot v_5 \cdot v_6 \cdot v_7 \cdot v_8$, \\
-avec la transition $(v_3, \code{/\^\empty message .+/}, v_4)$ d'activée~;
-
-\item[$T_\code{compute}(\{t_2\}).$]
+T_\code{compute}(\{t_1\}) =\;
+          & (v_1, \varepsilon, v_2) \\
+  \cdot\; & (v_2, \code{server: class('\bslash{}Irc\bslash{}Server')}, v_3) \\
+  \cdot\; & (v_3, \varepsilon, v_4) \\
+  \cdot\; & (v_4, \varepsilon, v_5) \\
+  \cdot\; & (v_5, \code{buffer: /\^\empty message .+/}, v_6) \\
+  \cdot\; & (v_6, \varepsilon, v_7) \\
+  \cdot\; & (v_7, \varepsilon, v_8) \\
+  \cdot\; & (v_8, \code{\aresult: 1..}, v_9) \\
+  \cdot\; & (v_9, \varepsilon, v_{10}) \\
 %
-$v_1 \cdot v_2 \cdot v_9 \cdot v_{10} \cdot v_{11} \cdot v_{12} \cdot v_{13}
-\cdot v_{14} \cdot v_{15} \cdot v_{16}$~;
-
-\item[$T_\code{compute}(\{t_4\}).$]
+T_\code{compute}(\{t_2\}) =\;
+          & (v_1, \varepsilon, v_2) \\
+  \cdot\; & (v_2, \code{server: class('\bslash{}Irc\bslash{}Server')}, v_3) \\
+  \cdot\; & (v_3, \varepsilon, v_4) \\
+  \cdot\; & (v_4, \varepsilon, v_{11}) \\
+  \cdot\; & (v_{11}, \code{buffer: /\^\empty ping\$/}, v_{12}) \\
+  \cdot\; & (v_{12}, \varepsilon, v_{13}) \\
+  \cdot\; & (v_{13}, \apred{…}, v_{14}) \\
+  \cdot\; & (v_{14}, \varepsilon, v_{15}) \\
+  \cdot\; & (v_{15}, \varepsilon, v_{16}) \\
+  \cdot\; & (v_{16}, \code{\aresult: 1..}, v_{17}) \\
+  \cdot\; & (v_{17}, \varepsilon, v_{18}) \\
 %
-$v_1 \cdot v_2 \cdot v_3 \cdot v_4 \cdot v_5 \cdot v_6 \cdot v_7 \cdot v_8$, \\
-avec la transition $(v_3, \code{/\^\empty privmessage .+/}, v_4)$ d'activée.
-
-\end{itemize}
+T_\code{compute}(\{t_4\}) =\;
+          & (v_1, \varepsilon, v_2) \\
+  \cdot\; & (v_2, \code{server: class('\bslash{}Irc\bslash{}Server')}, v_3) \\
+  \cdot\; & (v_3, \varepsilon, v_4) \\
+  \cdot\; & (v_4, \varepsilon, v_5) \\
+  \cdot\; & (v_5, \code{buffer: /\^\empty privmessage .+/}, v_6) \\
+  \cdot\; & (v_6, \varepsilon, v_7) \\
+  \cdot\; & (v_7, \varepsilon, v_8) \\
+  \cdot\; & (v_8, \code{\aresult: 1..}, v_9) \\
+  \cdot\; & (v_9, \varepsilon, v_{10}) \\
+%
+\end{align*}
 
 \end{example}
 
@@ -187,23 +210,35 @@ avec \apred{\code{'network\_buffer\_state() > 0'}}.
 satisfait le Critère de Couverture de Prédicat. Cette suite de test produit les
 chemins respectifs suivants (sur les sentiers)~:
 %
-\begin{itemize}
-
-\item[$T_\code{compute}(\{t_5\}).$]
+\begin{align*}
 %
-$v_1 \cdot v_2 \cdot v_9 \cdot v_{10} \cdot v_{11} \cdot v_{11} \cdot v_{12}
-\cdot v_{13} \cdot v_{14} \cdot v_{15} \cdot v_{16}$ \\
-avec la transition $(v_{11}, \code{\$server->bufferState >= 0}, v_{12})$
-d'activée~;
-
-\item[$T_\code{compute}(\{t_6\}).$]
+T_\code{compute}(\{t_5\}) =\;
+          & (v_1, \varepsilon, v_2) \\
+  \cdot\; & (v_2, \code{server: class('\bslash{}Irc\bslash{}Server')}, v_3) \\
+  \cdot\; & (v_3, \varepsilon, v_4) \\
+  \cdot\; & (v_4, \varepsilon, v_{11}) \\
+  \cdot\; & (v_{11}, \code{buffer: /\^\empty ping\$/}, v_{12}) \\
+  \cdot\; & (v_{12}, \varepsilon, v_{13}) \\
+  \cdot\; & (v_{13}, \apred{\code{'\$server->bufferState >= 0'}}, v_{14}) \\
+  \cdot\; & (v_{14}, \varepsilon, v_{15}) \\
+  \cdot\; & (v_{15}, \varepsilon, v_{16}) \\
+  \cdot\; & (v_{16}, \code{\aresult: 1..}, v_{17}) \\
+  \cdot\; & (v_{17}, \varepsilon, v_{18}) \\
 %
-$v_1 \cdot v_2 \cdot v_9 \cdot v_{10} \cdot v_{11} \cdot v_{11} \cdot v_{12}
-\cdot v_{13} \cdot v_{14} \cdot v_{15} \cdot v_{16}$ \\
-avec la transition $(v_{11}, \code{network\_buffer\_state() > 0}, v_{12})$
-d'activée.
-
-\end{itemize}
+T_\code{compute}(\{t_6\}) =\;
+          & (v_1, \varepsilon, v_2) \\
+  \cdot\; & (v_2, \code{server: class('\bslash{}Irc\bslash{}Server')}, v_3) \\
+  \cdot\; & (v_3, \varepsilon, v_4) \\
+  \cdot\; & (v_4, \varepsilon, v_{11}) \\
+  \cdot\; & (v_{11}, \code{buffer: /\^\empty ping\$/}, v_{12}) \\
+  \cdot\; & (v_{12}, \varepsilon, v_{13}) \\
+  \cdot\; & (v_{13}, \apred{\code{'network\_buffer\_state() > 0'}}, v_{14}) \\
+  \cdot\; & (v_{14}, \varepsilon, v_{15}) \\
+  \cdot\; & (v_{15}, \varepsilon, v_{16}) \\
+  \cdot\; & (v_{16}, \code{\aresult: 1..}, v_{17}) \\
+  \cdot\; & (v_{17}, \varepsilon, v_{18}) \\
+%
+\end{align*}
 
 \end{example}
 
