@@ -27,15 +27,6 @@
 \newcommand{\code}[1]{\texttt{#1}}
 \newcommand{\mem}[1]{\mathit{#1}}
 \newcommand{\m}[1]{\mathcal{#1}}
-\newcommand{\drawfig}[4]{
-    \begin{center}
-    \resizebox{#1}{#2}{
-        \begin{tikzpicture}[#3]
-            #4
-        \end{tikzpicture}
-    }
-    \end{center}
-}
 \newcommand{\fig}[3]{
     \begin{center}
     \resizebox{#1}{#2}{
@@ -144,6 +135,45 @@
 % Color
 \definecolor{light-gray}{gray}{0.65}
 \newcommand{\ingray}[1]{\textcolor{light-gray}{#1}}
+
+% Tikz
+\tikzstyle{myoverlay}=[
+    overlay,
+    remember picture
+]
+\tikzstyle{mybrace}=[
+    decoration={brace, amplitude=.8em},
+    decorate,
+    thick
+]
+\tikzstyle{mybracetext}=[
+    right,
+    xshift=1.2em
+]
+\newcommand{\tikzref}[1]{\tikz[myoverlay, baseline=(#1.base)] { \node [minimum height=1em] (#1) {}; }}
+\newenvironment{tikzbox}[2]{
+    \begin{tikzpicture}[remember picture]
+    \node [#2] (#1) \bgroup
+    \begin{varwidth}{\linewidth}
+}{
+    \end{varwidth}
+    \egroup;
+    \end{tikzpicture}
+}
+\newcommand{\tikzdraw}[2]{
+    \begin{tikzpicture}[#1]
+        #2
+    \end{tikzpicture}
+}
+\newcommand{\drawfig}[4]{
+    \begin{center}
+    \resizebox{#1}{#2}{
+        \begin{tikzpicture}[#3]
+            #4
+        \end{tikzpicture}
+    }
+    \end{center}
+}
 
 % Others.
 \def\aand{\code{and}\xspace}
