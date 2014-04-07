@@ -11,6 +11,50 @@ partie~\ref{section:tools:atoum}, nous présentons l'intégration de ces outils
 dans atoum, un \inenglish{framework} de tests unitaires, ainsi qu'une extension
 qui fait le pont entre Praspel et atoum.
 
+\begin{figure}
+
+\centering
+
+\begin{tikzbox}{boxtoolsdispatching}{}
+\begin{pre}
+class C \{ \\
+ \\
+    /** \tikzref{a} \\
+     * \arequires …; \\
+     * \aensures  …; \\
+     */ \tikzref{b} \\
+    public function f ( ) \{ \tikzref{c} \\
+ \\
+        // … \\
+    \} \tikzref{d} \\
+\}
+\end{pre}
+\end{tikzbox}
+%
+\begin{tikzpicture}[myoverlay]
+    \draw [mybrace]
+        (a.north -| boxtoolsdispatching.east)
+        -- node [mybracetext] {Praspel} 
+        (b.south -| boxtoolsdispatching.east);
+    \draw [mybrace]
+        (c.north -| boxtoolsdispatching.east)
+        -- node [mybracetext] {SUT}
+        (d.south -| boxtoolsdispatching.east);
+\end{tikzpicture}
+
+\caption{\label{figure:tools:dispatching} Répartitions des composants d'un
+programme.}
+
+\end{figure}
+
+En s'appuyant sur la figure~\ref{figure:tools:dispatching}, nous rappelons qu'à
+partir d'une classe, les commentaires qui annotent les méthodes contiennent des
+contrats écrits en Praspel. Les contrats seront donc extraits de ces
+commentaires pour être envoyés dans les outils de Praspel. Les méthodes vont
+constituées le SUT et sera utilisé lors de l'exécution des tests. Les prochaines
+figurent vont reprendre ces «~mots-clés~» à plusieurs reprises pour illustrer le
+flux de ces différents composants.
+
 \section{Praspel}
 \label{section:tools:praspel}
 
@@ -55,12 +99,6 @@ sur le projet Hoa, présenté dans la partie~\ref{subsection:tools:hoa}.
     \node (php) [right of=model] {
         PHP
     };
-    \node (verdict) [below of=model, minimum height=1cm, node distance=4cm] {
-        Verdict
-    };
-    \node (callable) [left of=verdict] {
-        \inenglish{Callable}
-    };
 
     \draw[arrow] (language.north)
                      -- node[auto] {\small analyses}
@@ -78,12 +116,6 @@ sur le projet Hoa, présenté dans la partie~\ref{subsection:tools:hoa}.
                      --
                      ++(0, -0.5)
                      -| node[auto, yshift=.8cm] {\small désassemblage} (language.south);
-    \draw[arrow] (model.south)
-                     --
-                     node[auto, yshift=-.13cm] {\small \inenglish{Runtime Asserter Checking}} (verdict.north);
-    \draw[arrow] (callable.east)
-                     --
-                     (verdict.west);
 }
 
 \caption{\label{figure:tools:praspel} Fonctionnement schématique de Praspel.}
@@ -311,15 +343,14 @@ failure} depuis la méthode \code{store}.
 \subsection{Hoa, un ensemble de bibliothèques PHP}
 \label{subsection:tools:hoa}
 
-Hoa~\acite{Hoa} se définit comme «~un ensemble de bibliothèques PHP {\em
-modulaires}, {\em extensibles} et {\em structurées}~». De plus, «~Hoa souhaite
-être un pont entre le monde de la recherche et de l'industrie~». Ce projet
-comporte des bibliothèques solides pour une multitude de domaines. Entre autre,
-il offre une consistence entre les versions de PHP et est très respectueux des
-standards. Hoa est également impliqué dans plusieurs consortiums ou groupes de
-décisions concernant plusieurs standards de l'Informatique ou du Web. Par
-conséquent, il est plus facile d'écrire, de maintenir et de s'assurer de la
-qualité des programmes constituants Praspel.
+Hoa~\acite{Hoa} est un ensemble de bibliothèques PHP. De plus, Hoa est un pont
+entre le monde de la recherche et de l'industrie. Ce projet comporte des
+bibliothèques solides pour une multitude de domaines. Entre autre, il offre une
+consistence entre les versions de PHP et est très respectueux des standards. Hoa
+est également impliqué dans plusieurs consortiums ou groupes de décisions
+concernant plusieurs standards de l'Informatique ou du Web. Par conséquent, il
+est plus facile d'écrire, de maintenir et de s'assurer de la qualité des
+programmes constituants Praspel.
 
 De plus, le fait que Hoa souhaite être un pont entre le monde de la recherche et
 de l'industrie nous offre l'opportunité de faire valider nos expérimentations
@@ -561,16 +592,15 @@ La grammaire des expressions régulières se trouve également dans la biblioth�
 \label{section:tools:atoum}
 
 atoum~\acite{atoum}, sans majuscule, est aujourd'hui l'un des
-\inenglish{frameworks} de tests unitaires les plus utilisés dans l'industrie.
-Gratuit et \inenglish{open-source}, il compte une communauté active et plusieurs
+\inenglish{frameworks} de tests unitaires les plus utilisés dans l'industrie. Gratuit et
+\inenglish{open-source}, il compte une communauté active et plusieurs
 utilisateurs et partenaires industriels importants. atoum est également inclue
 dans plusieurs IDE et outils majeurs, comme Netbeans\footnote{Voir
 \url{https://netbeans.org/}.}, Eclipse\footnote{Voir
 \url{http://eclipse.org/}.}, Vim\footnote{Voir \url{http://vim.org/}.},
 Travis-CI\footnote{Voir \url{http://travis-ci.com/}.}, Jenkins\footnote{Voir
 \url{http://jenkins-ci.org/}.}, Coveralls\footnote{Voir
-\url{https://coveralls.io/}.} etc. L'outil se définit comme «~{\em simple}, {\em
-moderne} et {\em intuitif}~».
+\url{https://coveralls.io/}.} etc.
 
 Les suites de tests générées par Praspel doivent être exécutables de plusieurs
 façons (en ligne, isolée ou autre), des rapports doivent être produits, les
@@ -583,17 +613,30 @@ extension, appelée \code{atoum/praspel-extension}, est incluse dans la
 distribution standard d'atoum «~sous-stéroïde~», c'est~à~dire avec des outils
 qui ajoutent des fonctionnalités à atoum.
 
-Dans un premier temps, nous allons montrer comment utiliser atoum avec
-quelqu'uns de ces avantages, puis dans un second temps, nous montrerons les
-fonctionnalités offertes par l'extension.
+Dans un premier temps, nous allons présenter atoum, puis dans un second temps,
+nous montrerons les fonctionnalités offertes par l'extension.
 
 \subsection{Présentation d'atoum}
 
-atoum fonctionne basiquement en deux étapes~: écrire et exécuter des tests. Un
-test est une méthode et une suite de tests est une classe. Ainsi, nous allons
-tester que le résultat retourné par une certaine méthode \code{say} d'une classe
+\begin{figure}
+
+\fig{10cm}{!}{atoum.tex}
+
+\caption{\label{figure:tools:atoum} Fonctionnement schématique d'atoum.}
+
+\end{figure}
+
+
+La figure~\ref{figure:tools:atoum} illustre le fonctionnement schématique
+d'atoum et de tous les \inenglish{framework} de tests unitaires~: ils permettent
+d'exécuter un ensemble d'assertions sur un SUT et est capable de produire
+différents rapports. Pour utiliser atoum, il faudra alors basiquement procéder
+en deux étapes~: écrire des assertions et les exécuter. Dans le vocabulaire
+d'atoum, un test est une méthode qui contient plusieurs assertions sur le SUT et
+une suite de tests est une classe. Ainsi, nous allons tester que le résultat
+retourné par une certaine méthode \code{say}, en \circled{1}, d'une classe
 \code{Project\bslash{}HelloWorld} retourne bien la chaîne de caractères
-\code{Hello World!}~:
+\code{Hello World!}, en \circled{2}~:
 %
 \begin{pre}
 class HelloWorld extends \bslash{}atoum\bslash{}test \{ \\
@@ -601,8 +644,8 @@ class HelloWorld extends \bslash{}atoum\bslash{}test \{ \\
     public function testSay ( ) \{ \\
  \\
         \$helloWorld = new \bslash{}Project\bslash{}HelloWorld(); \\
-        \$this->string(\$helloWorld->say()) \\
-                  ->isEqualTo('Hello World!'); \\
+        \$this->string(\$helloWorld->say())      \circled{1} \\
+                  ->isEqualTo('Hello World!'); \circled{2} \\
     \} \\
 \}
 \end{pre}

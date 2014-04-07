@@ -1,0 +1,13 @@
+digraph {
+    graph [rankdir=LR];
+    node  [shape=rect];
+
+    SUT        -> atoum;
+    assertions -> atoum;
+    atoum      -> rapports [label=" ", texlbl="exécution"];
+
+    SUT        [label=" ", texlbl="SUT"       ];
+    assertions [label=" ", texlbl="assertions"];
+    atoum      [label=" ", texlbl="atoum"     ];
+    rapports   [label=" ", texlbl="rapports"  ];
+}

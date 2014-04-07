@@ -1,0 +1,40 @@
+%%
+\pgfsetcolor{black}
+  % Edge: assertions -> atoum
+  \draw [->] (65.7bp,26.916bp) .. controls (74.764bp,29.465bp) and (84.709bp,32.262bp)  .. (103.78bp,37.625bp);
+  % Edge: SUT -> atoum
+  \draw [->] (60.232bp,64.622bp) .. controls (70.603bp,61.705bp) and (82.694bp,58.305bp)  .. (103.8bp,52.369bp);
+  % Edge: atoum -> rapports
+  \draw [->] (158.26bp,45bp) .. controls (180.64bp,45bp) and (213.11bp,45bp)  .. (248.46bp,45bp);
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (203bp,54.5bp) node {exécution};
+  % Node: atoum
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (158bp,63bp) -- (104bp,63bp) -- (104bp,27bp) -- (158bp,27bp) -- cycle;
+  \draw (131bp,45bp) node {atoum};
+\end{scope}
+  % Node: SUT
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (60bp,90bp) -- (6bp,90bp) -- (6bp,54bp) -- (60bp,54bp) -- cycle;
+  \draw (33bp,72bp) node {SUT};
+\end{scope}
+  % Node: rapports
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (308bp,63bp) -- (249bp,63bp) -- (249bp,27bp) -- (308bp,27bp) -- cycle;
+  \draw (278bp,45bp) node {rapports};
+\end{scope}
+  % Node: assertions
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (66bp,36bp) -- (1bp,36bp) -- (1bp,0bp) -- (66bp,0bp) -- cycle;
+  \draw (33bp,18bp) node {assertions};
+\end{scope}
+%
