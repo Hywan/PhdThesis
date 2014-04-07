@@ -34,7 +34,7 @@ digraph {
     }
 
     subgraph {
-        v_4 -> y_1 [label=" ", texlbl="$\quad P_\m{D} = \neg P_\code{message} \land \neg P_\code{ping}$"];
+        v_4 -> y_1 [style="dotted", label=" ", texlbl="$\quad P_\m{D} = \neg P_\code{message} \land \neg P_\code{ping}$"];
         y_1 -> y_2 [label=" ", texlbl="$\quad\quad\code{\bslash{}Irc\bslash{}Excep...  e}\quad$"];
         y_2 -> y_3 [label=" ", texlbl="$\varepsilon$"];
         y_3 -> y_4 [label=" ", texlbl="$\quad\code{400..491}$"];
