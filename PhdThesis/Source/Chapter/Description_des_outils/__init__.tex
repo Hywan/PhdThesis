@@ -598,7 +598,7 @@ tester que le résultat retourné par une certaine méthode \code{say} d'une cla
 \begin{pre}
 class HelloWorld extends \bslash{}atoum\bslash{}test \{ \\
  \\
-    public function testSay() \{ \\
+    public function testSay ( ) \{ \\
  \\
         \$helloWorld = new \bslash{}Project\bslash{}HelloWorld(); \\
         \$this->string(\$helloWorld->say()) \\
@@ -691,7 +691,7 @@ contrôler le résultat de certaines méthodes~:
 \begin{pre}
 class HelloWorld extends \bslash{}atoum\bslash{}test \{ \\
  \\
-    public function testSay() \{ \\
+    public function testSay ( ) \{ \\
  \\
         \$helloWorld = new \bslash{}Mock\bslash{}Project\bslash{}HelloWorld(); \\
         \$this->calling(\$helloWorld)->say = 'Hello!'; \\
