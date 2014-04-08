@@ -6,7 +6,7 @@
 Ce chapitre est consacré à la description des outils. Ils sont organisés en deux
 parties. Tout d'abord dans la partie~\ref{section:tools:praspel}, nous
 présentons notre implémentation de Praspel, son fonctionnement, son découpage et
-l'outil avec lequel nous l'avons implémenté. Et ensuite, dans la
+l'outil avec lequel nous l'avons implémenté. Ensuite, dans la
 partie~\ref{section:tools:atoum}, nous présentons l'intégration de ces outils
 dans atoum, un \inenglish{framework} de tests unitaires, ainsi qu'une extension
 qui fait le pont entre Praspel et atoum.
@@ -19,65 +19,69 @@ qui fait le pont entre Praspel et atoum.
 \begin{pre}
 class C \{ \\
  \\
-    /** \tikzref{a} \\
+    /** \tikzref{boxtoolsdispatchingA} \\
      * \arequires …; \\
      * \aensures  …; \\
-     */ \tikzref{b} \\
-    public function f ( ) \{ \tikzref{c} \\
+     */ \tikzref{boxtoolsdispatchingB} \\
+    public function f ( ) \{ \tikzref{boxtoolsdispatchingC} \\
  \\
         // … \\
-    \} \tikzref{d} \\
+    \} \tikzref{boxtoolsdispatchingD} \\
 \}
 \end{pre}
 \end{tikzbox}
 %
-\begin{tikzpicture}[myoverlay]
+\begin{tikzannotation}
     \draw [mybrace]
-        (a.north -| boxtoolsdispatching.east)
-        -- node [mybracetext] {Praspel} 
-        (b.south -| boxtoolsdispatching.east);
+        (boxtoolsdispatchingA.north -| boxtoolsdispatching.east)
+        -- node (P) [mybracetext] {Praspel}
+        (boxtoolsdispatchingB.south -| boxtoolsdispatching.east);
     \draw [mybrace]
-        (c.north -| boxtoolsdispatching.east)
-        -- node [mybracetext] {SUT}
-        (d.south -| boxtoolsdispatching.east);
-\end{tikzpicture}
+        (boxtoolsdispatchingC.north -| boxtoolsdispatching.east)
+        -- node (S) [mybracetext] {SUT}
+        (boxtoolsdispatchingD.south -| boxtoolsdispatching.east);
+
+    \node (Pc) [right of=P, node distance=1.8cm] {\circled{P}};
+    \draw [mywavyarrow] (P) -- (Pc);
+
+    \node (Sc) at (S -| Pc) {\circled{S}};
+    \draw [mywavyarrow] (S) -- (Sc);
+\end{tikzannotation}
 
 \caption{\label{figure:tools:dispatching} Répartitions des composants d'un
 programme.}
 
 \end{figure}
 
-En s'appuyant sur la figure~\ref{figure:tools:dispatching}, nous rappelons qu'à
-partir d'une classe, les commentaires qui annotent les méthodes contiennent des
-contrats écrits en Praspel. Les contrats seront donc extraits de ces
-commentaires pour être envoyés dans les outils de Praspel. Les méthodes vont
-constituées le SUT et sera utilisé lors de l'exécution des tests. Les prochaines
-figurent vont reprendre ces «~mots-clés~» à plusieurs reprises pour illustrer le
-flux de ces différents composants.
+La figure~\ref{figure:tools:dispatching} nous rappelle que, dans une classe, les
+commentaires qui annotent les méthodes contiennent des contrats écrits en
+Praspel. Les contrats seront donc extraits de ces commentaires pour être envoyés
+dans les outils de Praspel. Les méthodes vont constituer le SUT et seront
+utilisées lors de l'exécution des tests. Dans les prochaines figures, ces
+données sont identifiées par une lettre cerclée afin d'indiquer leur flux dans
+les différents outils. Ainsi, la notation Praspel \tikz { \draw
+[mywavyarrow] (0, 0) -- (1, 0); }\circled{P} signifie que le composant Praspel
+sera représenté par \circled{P} dans les figures suivantes.
 
 \section{Praspel}
 \label{section:tools:praspel}
 
 Cette partie est consacrée à présenter l'implémentation et l'outillage de
-Praspel. Tout d'abord, la partie~\ref{subsection:tools:model} présente
-l'architecture et le modèle objet de Praspel. Ensuite, la
-partie~\ref{subsection:tools:interpretation} présente comment l'interpréter,
+Praspel. Tout d'abord, la partie~\ref{subsection:tools:interpretation} présente
+comment le langage est analysé. Ensuite, la partie~\ref{subsection:tools:model}
+présente l'architecture de Praspel et son modèle objet, la pièce centrale,
 suivie des partie~\ref{subsection:tools:compilation}
-et~\ref{subsection:tools:disassembler} qui présentent respectivement comment le
-compiler et le désassembler. Puis, la partie~\ref{subsection:tools:evaluation}
-présente comment l'évaluer. Et enfin, comme Praspel est un langage de
-spécification destiné à PHP construit de façon modulaire et extensible, pour
-faciliter son développement et sa maintenance, nous avons choisi de nous appuyer
-sur le projet Hoa, présenté dans la partie~\ref{subsection:tools:hoa}.
-
-\subsection{Modèle objet}
-\label{subsection:tools:model}
+et~\ref{subsection:tools:disassembler} qui présentent respectivement comment
+exporter ou importer le modèle et comment le désassembler. Puis, la
+partie~\ref{subsection:tools:evaluation} présente comment l'évaluer. Enfin,
+comme Praspel est un langage de spécification destiné à PHP construit de façon
+modulaire et extensible, pour faciliter son développement et sa maintenance,
+nous avons choisi de nous appuyer sur le projet Hoa, présenté dans la
+partie~\ref{subsection:tools:hoa}.
 
 \begin{figure}
 
-\drawfig{10.2cm}{!}{node distance=3cm}{
-    \tikzstyle{rectangle}=[draw=black, thick, text centered, text width=2cm]
-    \tikzstyle{arrow}=[->, >=latex, shorten >=1pt, thick]
+\drawfig{10.4cm}{!}{node distance=3cm}{
 
     \node (model) [rectangle, minimum height=3cm] {
         Modèle objet
@@ -94,91 +98,144 @@ sur le projet Hoa, présenté dans la partie~\ref{subsection:tools:hoa}.
         }
     };
     \node (language) [left of=model] {
-        Praspel
+        \tikzref{boxtoolsomA} Langage
     };
     \node (php) [right of=model] {
         PHP
     };
 
-    \draw[arrow] (language.north)
-                     -- node[auto] {\small analyses}
-                     ++(0,  1.68)
-                     -| ([xshift=-5pt] model.north);
-    \draw[arrow] ([xshift=+5pt] model.north)
-                     --
-                     ++(0,  0.5)
-                     -| node[auto, yshift=-.9cm] {\small exportation} (php.north);
-    \draw[arrow] (php.south)
-                     -- node[auto] {\small importation}
-                     ++(0, -1.72)
-                     -| ([xshift=+5pt] model.south);
-    \draw[arrow] ([xshift=-5pt] model.south)
-                     --
-                     ++(0, -0.5)
-                     -| node[auto, yshift=.8cm] {\small désassemblage} (language.south);
+    \draw [arrow] (language.north)
+                      -- node[auto] {\small analyses}
+                      ++(0, 1.68)
+                      -| ([xshift=-5pt] model.north);
+    \draw [arrow] ([xshift=+5pt] model.north)
+                      --
+                      ++(0, 0.5)
+                      -| node[auto, yshift=-.9cm] {\small exportation} (php.north);
+    \draw [arrow] (php.south)
+                      -- node[auto] {\small importation}
+                      ++(0, -1.72)
+                      -| ([xshift=+5pt] model.south);
+    \draw [arrow] ([xshift=-5pt] model.south)
+                      --
+                      ++(0, -0.5)
+                      -| node[auto, yshift=.8cm] {\small désassemblage} (language.south);
+
+    % does not work in annotations, don't know why…
+    \node (Mc) [above of=model, node distance=3.5cm] {\circled{M}};
+    \draw [mywavyarrow] (model) -- (Mc);
 }
+%
+\begin{tikzannotation}
+    \node (Pc) [left of=boxtoolsomA, node distance=1.8cm] {\circled{P}};
+    \draw [mywavyarrow] (Pc) -- (boxtoolsomA);
+\end{tikzannotation}
 
 \caption{\label{figure:tools:praspel} Fonctionnement schématique de Praspel.}
 
 \end{figure}
 
-Praspel est un langage qui peut être aussi bien interprété que compilé, pour
-être ensuite évalué. La figure~\ref{figure:tools:praspel} présente les
-différents processus autour de Praspel. La pièce centrale de Praspel est le
-modèle objet~: une variable est un objet, une clause est un objet, une
-spécification (un contrat) est un objet etc. Tous ces objets sont imbriqués et
-forme une structure qui s'apparente à un arbre. La racine de ce modèle est
-représentée par un objet appelé
-\code{Hoa\bslash{}Praspel\bslash{}Model\bslash{}Specification}.
+Praspel existe sous différentes formes. Nous les expliquons en nous appyant sur
+la figure~\ref{figure:tools:praspel} qui montre l'agencement de ces différentes
+formes et le passage de l'une vers l'autre~:
+%
+\begin{itemize}
 
-Dans les parties suivantes, nous détaillons les différents processus autour de
-ce modèle objet.
+\item le langage est la forme textuelle de Praspel, provenant des commentaires
+des méthodes. Il est défini par la grammaire dans la
+section~\ref{section:language:praspel}. En utilisant des analyseurs, le langage
+est transformé en modèle objet~;
+
+\item le modèle objet est la pièce centrale de Praspel~: c'est un ensemble
+d'objets en mémoire réprésentant chaque partie du langage (clause, variable,
+opérateur etc.). Tous ces objets sont imbriqués et forme une structure qui
+s'apparente à un arbre~;
+
+\item le modèle objet peut être exporté sous forme de code PHP qui, quand il est
+exécuté, reconstruit en mémoire le modèle objet depuis lequel il a été généré~;
+
+\item le désassemblage permet de transformer le modèle objet sous sa forme
+textuelle.
+
+\end{itemize}
+%
+Les parties suivantes détaillent ses différentes étapes.
 
 \subsection{Analyses}
 \label{subsection:tools:interpretation}
 
-Le processus qui transforme le langage Praspel en modèle objet est appelé une
-interprétation. À l'aide de la grammaire de Praspel exprimée avec le langage PP
-et un compilateur, un AST représentant un contrat Praspel sera produit. Cet AST
-sera par la suite visité afin de construire le modèle objet. Pour y arriver,
-nous avons deux façons de faire. La première consiste à utiliser la méthode
-\code{Hoa\bslash{}Praspel::interprete} qui est un raccourci~; ainsi~:
+À l'aide de la grammaire de Praspel, définie dans la
+section~\ref{section:language:praspel}, exprimée avec le langage PP (voir
+l'annexe~\ref{appendices:grammar_of_praspel}) et un compilateur, défini dans les
+sections~\ref{subsection:data:pp} et \ref{subsection:data:compiler-compiler},
+l'AST du contrat analysé sera produit. Cet AST sera ensuite visité afin de
+construire le modèle objet. Pour y arriver, nous avons deux façons de faire. La
+première détaille toutes les étapes, à savoir l'utilisation du compilateur pour
+produire un AST, puis l'appel d'un visiteur pour construire le modèle objet~;
+ainsi~:
+%
+\begin{pre}
+\$compiler    = Hoa\bslash{}Compiler\bslash{}Llk::load( \\
+    new Hoa\bslash{}File\bslash{}Read('hoa://Library/Praspel/Grammar.pp') \\
+);                                          \tikzref{codetoolspraspel} \\
+\$ast         = \$compiler->parse('@requires i: 7..42;'); \\
+\$interpreter = new Hoa\bslash{}Praspel\bslash{}Visitor\bslash{}Interpreter(); \\
+\tikzref{codetoolsom}\$model       = \$interpreter->visit(\$ast);
+\end{pre}
+%
+\begin{tikzannotation}
+    \node (Pc) [right of=codetoolspraspel, node distance=3cm, yshift=-.5cm] {\circled{P}};
+    \draw [mywavyarrow] (Pc) to[out=135, in=45, distance=.5cm] (codetoolspraspel.center);
+
+    \node (Mc) [above of=codetoolsom, node distance=1.4cm, xshift=-.6cm] {\circled{M}};
+    \draw [mywavyarrow] (codetoolsom.north west) to[out=180, in=-90] (Mc);
+\end{tikzannotation}
+
+La variable \code{\$compiler} contient le compilateur chargé depuis une
+grammaire. La variable \code{\$ast} contient l'AST produit par l'analyse
+lexicale et l'analyse syntaxique d'une chaîne de caractères représentant du code
+Praspel. Ces analyses sont exécutées en appelant la méthode \code{parse} sur le
+compilateur. Ensuite, nous instancions un visiteur dans la variable
+\code{\$interpreter} qui va visiter, grâce à la méthode \code{viist}, l'AST pour
+le transformer en modèle objet.
+
+La seconde façon de faire consiste à utiliser un raccourci qui est la méthode
+(statique) \code{interprete}~; ainsi~:
 %
 \begin{pre}
 \$model = Hoa\bslash{}Praspel::interprete('@requires i: 7..42;');
 \end{pre}
 %
-La seconde façon de faire détaille tous les outils, à savoir l'utilisation du
-compilateur pour produire un AST, puis l'appel d'un visiteur pour interpréter
-cet AST et produire le modèle objet~; ainsi~:
-%
-\begin{pre}
-\$compiler    = Hoa\bslash{}Compiler\bslash{}Llk::load( \\
-    new Hoa\bslash{}File\bslash{}Read('hoa://Library/Praspel/Grammar.pp') \\
-); \\
-\$ast         = \$compiler->parse('@requires i: 7..42;'); \\
-\$interpreter = new Hoa\bslash{}Praspel\bslash{}Visitor\bslash{}Interpreter(); \\
-\$model       = \$interpreter->visit(\$ast);
-\end{pre}
-%
-Durant la production de l'AST, les erreurs syntaxiques seront détectées. Et
-durant la production du modèle objet, les erreurs sémantiques seront détectées.
+produira le même résultat.
+
+Durant la production de l'AST, les erreurs {\strong lexicales} et {\strong
+syntaxiques} seront détectées. Et durant la production du modèle objet, les
+erreurs {\strong sémantiques} seront détectées.
+
+\subsection{Modèle objet}
+\label{subsection:tools:model}
 
 \subsection{Exportation et importation}
 \label{subsection:tools:compilation}
 
-Le processus qui transforme le modèle en code PHP est appelé une compilation.
-Cette transformation est appliquée par un visiteur sur le modèle objet. Quand
-le code PHP produit est exécuté, il reconstruit le modèle objet depuis lequel il
-a été généré. Cela permet de «~sauvegarder~» le modèle en évitant la phase
-d'interprétation qui peut être coûteuse dans certaines situations. Pour y
-arriver, nous devons faire~:
+Le modèle objet peut être exporté de la mémoire vers un fichier sous la forme
+de code PHP. Quand ce code PHP est exécuté, c'est une importation car il
+construit en mémoire le modèle objet depuis lequel il a été généré.
+Cela permet de «~sauvegarder~» le modèle en évitant la phase
+des analyses qui peuvent être coûteuses dans certaines situations. Ainsi, à
+partir d'un modèle contenu dans la variable \code{\$model} et d'un visiteur,
+nous allons produire du code PHP que nous allons afficher~:
 %
 \begin{pre}
 \$compiler = new Hoa\bslash{}Praspel\bslash{}Visitor\bslash{}Compiler(); \\
-echo \$compiler->visit(\$model);
+echo \$compiler->visit(\$mo\tikzref{codetoolsom}del);
 \end{pre}
 %
+\begin{tikzannotation}
+    \node (Mc) [right of=codetoolsom, node distance=1.6cm] {\circled{M}};
+    \draw [mywavyarrow] (Mc) to[out=-150, in=-70, distance=.2cm] (codetoolsom);
+\end{tikzannotation}
+
 Cet exemple produira le code PHP suivant~:
 %
 \begin{pre}
@@ -201,16 +258,25 @@ Cette fonction se comporte comme une macro.
 \subsection{Désassemblage}
 \label{subsection:tools:disassembler}
 
-Le processus qui transforme le modèle objet vers le langage Praspel est appelé
-un désassemblage~: c'est l'opération inverse de l'interprétation. Il permet par
-exemple d'indiquer des erreurs avec précisions sous la forme originale de
-Praspel~; ainsi~:
+Le désassemblage permet de passer le modèle objet en mémoire sous sa forme
+textuelle. C'est l'opération inverse des analyses de la
+section~\ref{subsection:tools:interpretation}. Il permet par exemple d'indiquer
+des erreurs avec précisions sous la forme originale de Praspel. C'est tout à
+fait comparable à un \inenglish{pretty-printer}. Ainsi~:
 %
 \begin{pre}
 \$disassembler = new Hoa\bslash{}Praspel\bslash{}Visitor\bslash{}Praspel(); \\
-echo \$disassembler->visit(\$model);
+echo \$disassembler->visit(\$mo\tikzref{codetoolsom}del);
 \end{pre}
-Cette exemple produira le résultat suivant~:
+%
+\begin{tikzannotation}
+    \node (Mc) [right of=codetoolsom, node distance=1.6cm] {\circled{M}};
+    \draw [mywavyarrow] (Mc) to[out=-150, in=-70, distance=.2cm] (codetoolsom);
+\end{tikzannotation}
+
+Encore une fois, nous instancions une visiteur dans la variable
+\code{\$disas\-sem\-bler} pour ensuite visiter le modèle objet. Cette exemple
+produira le résultat suivant~:
 %
 \begin{pre}
 @requires i: boundinteger(7, 42);
