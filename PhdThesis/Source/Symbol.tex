@@ -38,8 +38,8 @@
     \end{center}
 }
 \newcommand{\circled}[1]{
-    \protect\tikz[baseline=(char.base)]{
-        \protect\node[shape=circle,draw,inner sep=2pt](char){\scriptsize $#1$};
+    \protect\tikz [baseline=(char.base)] {
+        \protect\node [shape=circle,draw,inner sep=2pt, minimum height=1.2em] (char) {\scriptsize $#1$};
     }
 }
 
@@ -160,7 +160,7 @@
     \egroup;
     \end{tikzpicture}
 }
-\newenvironment{tikzannotate}{
+\newenvironment{tikzannotation}{
     \begin{tikzpicture}[myoverlay]
 }{
     \end{tikzpicture}
