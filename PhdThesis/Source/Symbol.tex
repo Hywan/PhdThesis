@@ -137,6 +137,18 @@
 \newcommand{\ingray}[1]{\textcolor{light-gray}{#1}}
 
 % Tikz
+\tikzstyle{rectangle}=[
+    draw=black,
+    thick,
+    text centered,
+    text width=2cm
+]
+\tikzstyle{arrow}=[
+    ->,
+    >=latex,
+    shorten >=1pt,
+    thick
+]
 \tikzstyle{myoverlay}=[
     overlay,
     remember picture
@@ -149,6 +161,12 @@
 \tikzstyle{mybracetext}=[
     right,
     xshift=1.2em
+]
+\tikzstyle{mywavyarrow}=[
+    ->,
+    >=latex,
+    decorate,
+    decoration={snake, amplitude=.4mm, segment length=2mm, post length=1.5mm}
 ]
 \newcommand{\tikzref}[1]{\tikz[myoverlay, baseline=(#1.base)] { \node [minimum height=1em] (#1) {}; }}
 \newenvironment{tikzbox}[2]{
