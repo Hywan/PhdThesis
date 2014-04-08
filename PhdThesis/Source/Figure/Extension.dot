@@ -1,0 +1,37 @@
+digraph {
+    graph [rankdir=LR];
+    node  [style="state", width=1.2];
+
+    subgraph {
+        a -> b   [style=invis];
+        b -> SUT [style=invis];
+    }
+
+    subgraph {
+        model     -> suite;
+        suite     -> extension [label=" ", texlbl="sélection"];
+        extension -> reports   [label=" ", texlbl="exécution"];
+    }
+
+    subgraph {
+        x -> y    [style=invis];
+        y -> data [style=invis];
+    }
+
+    edge  [constraint=false];
+
+    SUT  -> extension;
+    data -> extension;
+
+    model     [label=" ", texlbl="\tikzref{boxextom}modèle objet"];
+    suite     [label=" ", texlbl="suite de tests"                ];
+    SUT       [label=" ", texlbl="\tikzref{boxextsut}SUT"        ];
+    data      [label=" ", texlbl="données"                       ];
+    extension [label=" ", texlbl="atoum"                         ];
+    reports   [label=" ", texlbl="rapports"                      ];
+
+    a [style=invis];
+    b [style=invis];
+    x [style=invis];
+    y [style=invis];
+}
