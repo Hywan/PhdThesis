@@ -1,22 +1,22 @@
 %%
 \pgfsetcolor{black}
   % Edge: data -> RAC
-  \draw [->] (96.212bp,32.899bp) .. controls (114.48bp,40.853bp) and (136.8bp,50.575bp)  .. (164bp,62.42bp);
+  \draw [->] (97.642bp,32.471bp) .. controls (116.25bp,40.026bp) and (139bp,49.264bp)  .. (167.28bp,60.744bp);
   % Edge: model -> RAC
-  \draw [->] (96.212bp,111.1bp) .. controls (114.48bp,103.15bp) and (136.8bp,93.425bp)  .. (164bp,81.58bp);
+  \draw [->] (97.642bp,111.53bp) .. controls (116.25bp,103.97bp) and (139bp,94.736bp)  .. (167.28bp,83.256bp);
   % Edge: RAC -> verdict
-  \draw [->] (214.1bp,72bp) .. controls (237.31bp,72bp) and (271.5bp,72bp)  .. (307.63bp,72bp);
+  \draw [->] (232.18bp,72bp) .. controls (256.61bp,72bp) and (289.37bp,72bp)  .. (325.88bp,72bp);
   \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
   \pgfsetstrokecolor{strokecol}
-  \draw (261bp,81.5bp) node {évaluation};
+  \draw (279bp,81.5bp) node {évaluation};
   % Edge: SUT -> RAC
-  \draw [->] (122.18bp,72bp) .. controls (131.57bp,72bp) and (141.02bp,72bp)  .. (159.73bp,72bp);
+  \draw [->] (122.27bp,72bp) .. controls (131.46bp,72bp) and (140.81bp,72bp)  .. (159.64bp,72bp);
   % Node: verdict
 \begin{scope}
   \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
   \pgfsetstrokecolor{strokecol}
-  \draw [state] (335bp,72bp) ellipse (27bp and 18bp);
-  \draw (335bp,72bp) node {verdict};
+  \draw [state] (362bp,72bp) ellipse (36bp and 18bp);
+  \draw (362bp,72bp) node {verdict};
 \end{scope}
   % Node: model
 \begin{scope}
@@ -43,7 +43,7 @@
 \begin{scope}
   \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
   \pgfsetstrokecolor{strokecol}
-  \draw [state] (187bp,72bp) ellipse (27bp and 18bp);
-  \draw (187bp,72bp) node {RAC};
+  \draw [state] (196bp,72bp) ellipse (36bp and 18bp);
+  \draw (196bp,72bp) node {RAC};
 \end{scope}
 %

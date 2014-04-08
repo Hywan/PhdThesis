@@ -4,10 +4,10 @@ digraph {
 
     SUT        -> atoum;
     assertions -> atoum;
-    atoum      -> rapports [label=" ", texlbl="exécution"];
+    atoum      -> reports [label=" ", texlbl="exécution"];
 
-    SUT        [label=" ", texlbl="SUT"       ];
-    assertions [label=" ", texlbl="assertions"];
-    atoum      [label=" ", texlbl="atoum"     ];
-    rapports   [label=" ", texlbl="rapports"  ];
+    SUT        [label=" ", texlbl="SUT", width=1.2       ];
+    assertions [label=" ", texlbl="assertions", width=1.2];
+    atoum      [label=" ", texlbl="atoum", width=1       ];
+    reports    [label=" ", texlbl="rapports", width=1    ];
 }

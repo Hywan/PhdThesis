@@ -1,40 +1,40 @@
 %%
 \pgfsetcolor{black}
   % Edge: assertions -> atoum
-  \draw [->] (62.284bp,25.955bp) .. controls (72.87bp,28.932bp) and (85.005bp,32.345bp)  .. (105.81bp,38.198bp);
+  \draw [->] (81.02bp,26.692bp) .. controls (92.497bp,29.386bp) and (105.23bp,32.375bp)  .. (127.08bp,37.505bp);
   % Edge: SUT -> atoum
-  \draw [->] (58.225bp,65.187bp) .. controls (69.708bp,61.957bp) and (83.62bp,58.044bp)  .. (105.78bp,51.811bp);
-  % Edge: atoum -> rapports
-  \draw [->] (158.26bp,45bp) .. controls (180.64bp,45bp) and (213.11bp,45bp)  .. (248.46bp,45bp);
+  \draw [->] (81.02bp,63.308bp) .. controls (92.497bp,60.614bp) and (105.23bp,57.625bp)  .. (127.08bp,52.495bp);
+  % Edge: atoum -> reports
+  \draw [->] (196.11bp,45bp) .. controls (219.56bp,45bp) and (250.61bp,45bp)  .. (285.97bp,45bp);
   \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
   \pgfsetstrokecolor{strokecol}
-  \draw (203bp,54.5bp) node {exécution};
+  \draw (241bp,54.5bp) node {exécution};
   % Node: atoum
 \begin{scope}
   \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
   \pgfsetstrokecolor{strokecol}
-  \draw [state] (131bp,45bp) ellipse (27bp and 18bp);
-  \draw (131bp,45bp) node {atoum};
+  \draw [state] (160bp,45bp) ellipse (36bp and 18bp);
+  \draw (160bp,45bp) node {atoum};
 \end{scope}
   % Node: SUT
 \begin{scope}
   \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
   \pgfsetstrokecolor{strokecol}
-  \draw [state] (33bp,72bp) ellipse (27bp and 18bp);
-  \draw (33bp,72bp) node {SUT};
-\end{scope}
-  % Node: rapports
-\begin{scope}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
-  \draw [state] (278bp,45bp) ellipse (30bp and 18bp);
-  \draw (278bp,45bp) node {rapports};
+  \draw [state] (43bp,72bp) ellipse (43bp and 18bp);
+  \draw (43bp,72bp) node {SUT};
 \end{scope}
   % Node: assertions
 \begin{scope}
   \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
   \pgfsetstrokecolor{strokecol}
-  \draw [state] (33bp,18bp) ellipse (33bp and 18bp);
-  \draw (33bp,18bp) node {assertions};
+  \draw [state] (43bp,18bp) ellipse (43bp and 18bp);
+  \draw (43bp,18bp) node {assertions};
+\end{scope}
+  % Node: reports
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw [state] (322bp,45bp) ellipse (36bp and 18bp);
+  \draw (322bp,45bp) node {rapports};
 \end{scope}
 %

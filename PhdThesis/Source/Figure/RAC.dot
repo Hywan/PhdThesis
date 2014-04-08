@@ -10,6 +10,6 @@ digraph {
     model   [label=" ", texlbl="\tikzref{boxracom}modèle objet", width=1.7];
     SUT     [label=" ", texlbl="\tikzref{boxracsut}SUT", width=1.7        ];
     data    [label=" ", texlbl="données", width=1.7                       ];
-    RAC     [label=" ", texlbl="RAC"                                      ];
-    verdict [label=" ", texlbl="verdict"                                  ];
+    RAC     [label=" ", texlbl="RAC", width=1                             ];
+    verdict [label=" ", texlbl="verdict", width=1                         ];
 }
