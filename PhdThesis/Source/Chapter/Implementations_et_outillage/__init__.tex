@@ -15,14 +15,15 @@ qui fait le pont entre Praspel et atoum.
 
 \centering
 
-\begin{tikzbox}{boxtoolsdispatching}{}
+\begin{tikzbox}{boxtoolsdispatching}{xshift=-2.2cm}
 \begin{pre}
 class C \{ \\
  \\
-    /** \tikzref{boxtoolsdispatchingA} \\
-     * \arequires …; \\
-     * \aensures  …; \\
-     */ \tikzref{boxtoolsdispatchingB} \\
+    /** \\
+     * \arequires  …; \tikzref{boxtoolsdispatchingA} \\
+     * \aensures   …; \\
+     * \athrowable …; \tikzref{boxtoolsdispatchingB} \\
+     */ \\
     public function f ( ) \{ \tikzref{boxtoolsdispatchingC} \\
  \\
         // … \\
@@ -84,7 +85,7 @@ partie~\ref{subsection:tools:hoa}.
 \drawfig{10.4cm}{!}{node distance=3cm}{
 
     \node (model) [rectangle, minimum height=3cm] {
-        Modèle objet
+        modèle objet
 
         \raisebox{0cm}[1.5cm]{
             \begin{tikzpicture}[node distance=4cm]
@@ -98,7 +99,7 @@ partie~\ref{subsection:tools:hoa}.
         }
     };
     \node (language) [left of=model] {
-        \tikzref{boxtoolsomA} Langage
+        \tikzref{boxtoolsomA} langage
     };
     \node (php) [right of=model] {
         PHP
@@ -127,8 +128,9 @@ partie~\ref{subsection:tools:hoa}.
 }
 %
 \begin{tikzannotation}
-    \node (Pc) [left of=boxtoolsomA, node distance=1.8cm] {\circled{P}};
-    \draw [mywavyarrow] (Pc) -- (boxtoolsomA);
+    \node (pc) [yshift=-.1cm] at (boxtoolsomA -| boxtoolsomA) {};
+    \node (Pc) [left of=pc, node distance=1.8cm] {\circled{P}};
+    \draw [mywavyarrow] (Pc) -- (pc);
 \end{tikzannotation}
 
 \caption{\label{figure:tools:praspel} Fonctionnement schématique de Praspel.}
@@ -291,20 +293,42 @@ textuelle, soit objet, soit PHP.
 \subsection{Évaluation avec un \inenglish{Runtime Assertion Checker}}
 \label{subsection:tools:evaluation}
 
+\begin{figure}
+
+\centering
+
+\begin{tikzbox}{boxtoolsrac}{xshift=1.1cm}
+    \fig{11cm}{!}{RAC.tex}
+\end{tikzbox}
+%
+\begin{tikzannotation}
+    \node (mc) [xshift=.3cm, yshift=-1.05cm] at (boxracom -| boxtoolsrac.west) {};
+    \node (Mc) [left of=mc, node distance=1.3cm] {\circled{M}};
+    \draw [mywavyarrow] (Mc) -- (mc);
+
+    \node (sc) [xshift=.3cm, yshift=-.55cm] at (boxracsut -| boxtoolsrac.west) {};
+    \node (Sc) [left of=sc, node distance=1.3cm] {\circled{S}};
+    \draw [mywavyarrow] (Sc) -- (sc);
+\end{tikzannotation}
+
+\caption{\label{figure:tools:rac} Fonctionnement schématique du
+\inenglish{Runtime Assertion Checker}.}
+
+\end{figure}
+
 Ce sont les \inenglish{assertion checkers} qui sont responsables d'évaluer
-Praspel. À partir d'une spécification, racine du modèle objet, et d'un
-\inenglish{callable}, c'est~à~dire une méthode ou une fonction qui représente
-notre système sous test, un \inenglish{assertion checker} est capable d'évaluer
-la spécification sur le système sous test. Les données nécessaires à
-l'évaluation lui sont soit fournies, soit générer par lui-même à partir de la
-spécification.
+Praspel. Le fonctionnement d'un \inenglish{assertion checker} est illustré dans
+la figure~\ref{figure:tools:rac}. Il travaille avec 3~composants~: un modèle
+objet qui représente un contrat (provenant par exemple des commentaires des
+méthodes), un SUT (par exemple la méthode commentée) et des données. Ces
+composants forment un test~! Un \inenglish{assertion checker} est donc capable
+de calculer le verdict d'un test.
 
 Actuellement, nous nous appuyons sur un \inenglish{Runtime Assertion Checker},
 abrégé RAC, pour calculer le verdict du test. Ce verdict est basé sur la
 vérification d'assertions à l'exécution. Quand la vérification d'une assertion
 échoue, une erreur spécifique est produite. Les erreurs du RAC (aussi appelées
-les \inenglish{Praspel failures} ou erreurs Praspel) peuvent être de cinq
-sortes~:
+les \inenglish{Praspel failures} ou erreurs Praspel) peuvent être de 5~sortes~:
 %
 \begin{enumerate}
 
@@ -328,18 +352,24 @@ Le test réussit si aucune erreur Praspel n'est détectée. Autrement, il échou
 et l'erreur avec des informations supplémentaires est consignée.
 
 À présent, illustrons comment utiliser le RAC de Praspel où le système sous test
-est une fonction \code{f}~:
+est une fonction \code{f} avec un seul paramètre \code{\$i}~:
 %
 \begin{pre}
-function f ( \$i ) \{ \} \\
- \\
 \$rac = new Hoa\bslash{}Praspel\bslash{}AssertionChecker\bslash{}Runtime( \\
-    \$model, \\
-    xcallable('f') \\
+   \tikzref{codetoolsom} \$model, \\
+    xcallable('f')\tikzref{codetoolssut} \\
 ); \\
 \$rac->setData(['i' => 13]); \\
 \$verdict = \$rac->evaluate();
 \end{pre}
+%
+\begin{tikzannotation}
+    \node (Mc) [left of=codetoolsom, node distance=1.7cm] {\circled{M}};
+    \draw [mywavyarrow] (Mc) -- (codetoolsom.center);
+
+    \node (Sc) [right of=codetoolssut, node distance=1.9cm] {\circled{S}};
+    \draw [mywavyarrow] (Sc) -- (codetoolssut.east);
+\end{tikzannotation}
 %
 Dans ce cas, la variable \code{\$verdict} contiendra \code{true} car la
 précondition (\code{\arequires i: 7..42}) est bien respectée. Si nous voulons
@@ -350,12 +380,7 @@ pouvoir appeler les méthodes \code{sample} sur ces derniers~:
 %
 \begin{pre}
 Hoa\bslash{}Realdom::setDefaultSampler(new Hoa\bslash{}Math\bslash{}Sampler\bslash{}Random()); \\
-\$rac = new Hoa\bslash{}Praspel\bslash{}AssertionChecker\bslash{}Runtime( \\
-    \$model, \\
-    xcallable('f') \\
-); \\
 \$rac->automaticallyGenerateData(true); \\
-\$verdict = \$rac->evaluate();
 \end{pre}
 
 \begin{example}[Vérifications des assertions]
@@ -686,7 +711,7 @@ nous montrerons les fonctionnalités offertes par l'extension.
 
 \begin{figure}
 
-\fig{10cm}{!}{atoum.tex}
+\fig{10.5cm}{!}{atoum.tex}
 
 \caption{\label{figure:tools:atoum} Fonctionnement schématique d'atoum.}
 
@@ -919,18 +944,51 @@ foreach(\$this->sampleMany(\$data, 7) as \$string) \\
 
 \subsubsection{Générations de suites de test unitaires}
 
+\begin{figure}
+
+\centering
+
+\begin{tikzbox}{boxtoolsext}{}
+    \fig{\textwidth}{!}{Extension.tex}
+\end{tikzbox}
+%
+\begin{tikzannotation}
+    \node (sc) [left of=boxextsut, xshift=-4.25cm, yshift=-2cm] {};
+    \node (Sc) [left of=sc, node distance=1.5cm] {\circled{S}};
+    \draw [mywavyarrow] (Sc) -- (sc);
+
+    \node (mc) [above of=boxextom, xshift=.4cm, yshift=-1.8cm] {};
+    \node (Mc) at (Sc -| mc) {\circled{M}};
+    \draw [mywavyarrow] (Mc) -- (mc);
+\end{tikzannotation}
+
+\caption{\label{figure:tools:extension} Fonctionnement de la génération de tests
+unitaires avec l'extension.}
+
+\end{figure}
+
 Dans la partie~\ref{section:test:criteria} page~\pageref{section:test:criteria},
 nous avons défini des critères de couvertures sur les contrats. Les critères
 sont satisfaits par un ensemble de chemins dans les contrats. Un chemin est
 représenté par un test. Praspel est capable de générer des tests correspondant à
-ces chemins. Ces tests que nous pourrions qualifiés d'abstraits (car non
+ces chemins à partir d'un modèle objet d'un contrat. C'est le point de départ du
+processus illustré dans la figure~\ref{figure:tools:extension}. Nous y
+retrouvons \circled{M} et \circled{S}. À partir du modèle objet, une suite de
+tests est générée. Ces tests que nous pourrions qualifiés d'abstraits (car non
 exécutables) sont compilés vers des tests écrits avec l'API d'atoum (donc
-exécutables). Cette compilation s'effectue en ligne de commande~: plusieurs
-classes seront analysées pour en extraire des contrats Praspel, qui seront à
-leurs tours interprétés pour pouvoir appliquer les algorithmes de générations de
-tests unitaires. Puis, l'extension va compiler ces tests vers des tests écrits
-au format atoum. Ces tests seront enregistrés dans les fichiers appropriés
-que nous pourrons par la suite exécuter avec atoum.
+exécutables). Cette étape est regroupée en un seul nœud dans la figure. atoum va
+ensuite sélectionner chaque test dans cette suite et les exécuter en utilisant
+le SUT associé et des données. Le nœud atoum dans la figure applique le même
+processus que dans la figure~\ref{figure:tools:rac}.
+
+La compilation de la suite de tests abstraits vers concrets s'effectue en ligne
+de commande~: plusieurs classes seront analysées pour en extraire des contrats
+Praspel, qui seront à leurs tours analysés pour pouvoir appliquer les
+algorithmes de générations de tests unitaires sur leur modèle objet. Puis,
+l'extension va compiler ces tests vers des tests écrits au format atoum. Ces
+tests seront enregistrés dans les fichiers appropriés grâce à l'exportation,
+décrite dans la section~\ref{subsection:tools:compilation}. Nous pourrons par la
+suite exécuter ces fichiers avec atoum.
 
 Si nous reprenons notre classe \code{Project\bslash{}HelloWorld} avec sa méthode
 \code{say}, nous aurons le contrat suivant~:
@@ -960,7 +1018,7 @@ L'option \code{-\empty{}-class} précise la ou les classes à analyser. L'option
 l'occurence à l'endroit où nous exécutons la ligne de commande. Un fichier par
 classe sera généré. Le résultat du fichier que nous venons de générer est le
 suivant~:
-%
+
 \begin{bigpre}
 class HelloWorld extends \bslash{}Atoum\bslash{}PraspelExtension\bslash{}Test \{ \\
  \\
@@ -978,9 +1036,9 @@ class HelloWorld extends \bslash{}Atoum\bslash{}PraspelExtension\bslash{}Test \{
     \} \\
 \}
 \end{bigpre}
-%
-Nous pouvons enfin exécuter ce test avec atoum grâce à la ligne de commande
-suivante~:
+
+\noindent Nous pouvons enfin exécuter ce test avec atoum grâce à la ligne de
+commande suivante~:
 %
 \begin{pre}
 \$ atoum --file Path/To/Our/Generated/Test.php \\
