@@ -168,10 +168,14 @@
     decorate,
     decoration={snake, amplitude=.4mm, segment length=2mm, post length=1.5mm}
 ]
-\newcommand{\tikzref}[1]{\tikz[myoverlay, baseline=(#1.base)] { \node [minimum height=1em] (#1) {}; }}
+\newcommand{\tikzref}[1]{\tikz[myoverlay, anchor=base, baseline] {
+    \node (#1) {\phantom{x}};
+}}
 \newenvironment{tikzbox}[2]{
     \begin{tikzpicture}[remember picture]
-    \node [#2] (#1) \bgroup
+    % create a fake node and set a another node to allow to shift the figure.
+    \node (0, 0) {};
+    \node [#2] (#1) at (5, 0) \bgroup
     \begin{varwidth}{\linewidth}
 }{
     \end{varwidth}
