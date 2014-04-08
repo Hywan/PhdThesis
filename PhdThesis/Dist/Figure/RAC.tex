@@ -1,0 +1,49 @@
+%%
+\pgfsetcolor{black}
+  % Edge: data -> RAC
+  \draw [->] (96.212bp,32.899bp) .. controls (114.48bp,40.853bp) and (136.8bp,50.575bp)  .. (164bp,62.42bp);
+  % Edge: model -> RAC
+  \draw [->] (96.212bp,111.1bp) .. controls (114.48bp,103.15bp) and (136.8bp,93.425bp)  .. (164bp,81.58bp);
+  % Edge: RAC -> verdict
+  \draw [->] (214.1bp,72bp) .. controls (237.31bp,72bp) and (271.5bp,72bp)  .. (307.63bp,72bp);
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (261bp,81.5bp) node {évaluation};
+  % Edge: SUT -> RAC
+  \draw [->] (122.18bp,72bp) .. controls (131.57bp,72bp) and (141.02bp,72bp)  .. (159.73bp,72bp);
+  % Node: verdict
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw [state] (335bp,72bp) ellipse (27bp and 18bp);
+  \draw (335bp,72bp) node {verdict};
+\end{scope}
+  % Node: model
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw [state] (61bp,126bp) ellipse (61bp and 18bp);
+  \draw (61bp,126bp) node {\tikzref{boxracom}modèle objet};
+\end{scope}
+  % Node: SUT
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw [state] (61bp,72bp) ellipse (61bp and 18bp);
+  \draw (61bp,72bp) node {\tikzref{boxracsut}SUT};
+\end{scope}
+  % Node: data
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw [state] (61bp,18bp) ellipse (61bp and 18bp);
+  \draw (61bp,18bp) node {données};
+\end{scope}
+  % Node: RAC
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw [state] (187bp,72bp) ellipse (27bp and 18bp);
+  \draw (187bp,72bp) node {RAC};
+\end{scope}
+%
