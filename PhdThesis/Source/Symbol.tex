@@ -160,6 +160,11 @@
     \egroup;
     \end{tikzpicture}
 }
+\newenvironment{tikzannotate}{
+    \begin{tikzpicture}[myoverlay]
+}{
+    \end{tikzpicture}
+}
 \newcommand{\tikzdraw}[2]{
     \begin{tikzpicture}[#1]
         #2
