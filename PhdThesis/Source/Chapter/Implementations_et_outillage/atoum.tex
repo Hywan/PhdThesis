@@ -1,0 +1,372 @@
+\section{Intégration dans atoum}
+\label{section:tools:atoum}
+
+atoum~\acite{atoum}, sans majuscule, est aujourd'hui l'un des
+\inenglish{frameworks} de tests unitaires les plus utilisés dans l'industrie. Gratuit et
+\inenglish{open-source}, il compte une communauté active et plusieurs
+utilisateurs et partenaires industriels importants. atoum est également inclue
+dans plusieurs IDE et outils majeurs, comme Netbeans\footnote{Voir
+\url{https://netbeans.org/}.}, Eclipse\footnote{Voir
+\url{http://eclipse.org/}.}, Vim\footnote{Voir \url{http://vim.org/}.},
+Travis-CI\footnote{Voir \url{http://travis-ci.com/}.}, Jenkins\footnote{Voir
+\url{http://jenkins-ci.org/}.}, Coveralls\footnote{Voir
+\url{https://coveralls.io/}.} etc.
+
+Les suites de tests générées par Praspel doivent être exécutables de plusieurs
+façons (en ligne, isolée ou autre), des rapports doivent être produits, les
+outils doivent être intégrés à des IDE etc. Tout ceci représente un important
+travail. atoum comporte déjà toutes ces fonctionnalités. Nous avons donc choisi
+de créer une extension pour introduire Praspel dans atoum. De plus, atoum ne
+possède aucun générateur de données, alors que Praspel en propose plusieurs.
+Cela a donc été encore plus naturel de rapprocher les deux projets. Cette
+extension, appelée \code{atoum/praspel-extension}, est incluse dans la
+distribution standard d'atoum «~sous-stéroïde~», c'est~à~dire avec des outils
+qui ajoutent des fonctionnalités à atoum.
+
+Dans un premier temps, nous allons présenter atoum, puis dans un second temps,
+nous montrerons les fonctionnalités offertes par l'extension.
+
+\subsection{Présentation d'atoum}
+
+\begin{figure}
+
+\fig{10.5cm}{!}{atoum.tex}
+
+\caption{\label{figure:tools:atoum} Fonctionnement schématique d'atoum.}
+
+\end{figure}
+
+La figure~\ref{figure:tools:atoum} illustre le fonctionnement schématique
+d'atoum et de tous les \inenglish{framework} de tests unitaires~: ils permettent
+d'exécuter un ensemble d'assertions sur un SUT et est capable de produire
+différents rapports. Pour utiliser atoum, il faudra alors basiquement procéder
+en deux étapes~: écrire des assertions et les exécuter. Dans le vocabulaire
+d'atoum, un test est une méthode qui contient plusieurs assertions sur le SUT et
+une suite de tests est une classe. Ainsi, nous allons tester que le résultat
+retourné par une certaine méthode \code{say}, en \circled{1}, d'une classe
+\code{Project\bslash{}HelloWorld} retourne bien la chaîne de caractères
+\code{Hello World!}, en \circled{2}~:
+%
+\begin{pre}
+class HelloWorld extends \bslash{}atoum\bslash{}test \{ \\
+ \\
+    public function testSay ( ) \{ \\
+ \\
+        \$helloWorld = new \bslash{}Project\bslash{}HelloWorld(); \\
+        \$this->string(\$helloWorld->say())      \circled{1} \\
+                  ->isEqualTo('Hello World!'); \circled{2} \\
+    \} \\
+\}
+\end{pre}
+%
+Puis nous exécutons le test en ligne de commande (modulo une intégration dans un
+IDE)~:
+%
+\begin{pre}
+\$ atoum --file Path/To/Our/Test.php \\
+… \\
+> Total test duration: 0.00 second. \\
+> Total test memory usage: 0.25 Mb. \\
+> Code coverage value: 100.00\% \\
+> Running duration: 0.08 second. \\
+> Success (1 test, 1/1 method, 0 void method, \\
+           0 skipped method, 2 assertions)!
+\end{pre}
+%
+Le rapport simple nous informe que le test s'est exécuté en moins de
+0.005~seconde, que la mémoire utilisée a été de 0.25~Mb, que la couverture de
+code (avec le critère tous-les-arcs) a été de 100\%, que l'ensemble s'est
+exécuté en 0.08~seconde et que l'exécution de la seule suite de tests, ne
+contenant qu'un seul test représentant deux assertions, a été un succès. \\
+
+Au delà de l'intégration avec plusieurs outils industiels ou la production de
+rapports détaillés, nous pouvons citer trois points forts de cet outil.
+
+\subsubsection{Moteurs d'exécution}
+
+Tout d'abord, il permet nativement (comprendre sans \inenglish{plugin}
+supplémentaire) l'exécution des tests en ligne, en isolation ou en parallèle.
+Une exécution en ligne va exécuter tous les tests les uns après les autres de
+manière séquentielle dans le même processus. Une exécution en isolation va
+exécuter tous les tests les uns après les autres mais dans un processus
+nouvellement crée à chaque fois afin d'isoler le test des exécutions
+précédentes. Et enfin, une exécution en parallèle va exécuter tous les tests en
+isolation mais de manière concurrente. Cela permet d'accélérer les exécutions ou
+d'assurer une fiabilité dans les résultats des tests.
+
+\subsubsection{Collection d'asserteurs}
+
+Le second point fort est sa collection importante d'asserteurs. Bien plus que de
+simples \code{assertTrue} ou \code{assertFalse} que nous retrouvons dans la
+majorité des autres \inenglish{frameworks} de tests unitaires, atoum propose des
+asserteurs personnalisés pour chaque type de données.
+
+\begin{example}[Asserteurs spécifiques avec atoum]
+
+Par exemple, une simple assertion \code{1 - 0.97 === 0.33} sera fausse dans tous
+les langages malgré le fait que ce résultat nous paraisse naturel. C'est
+pourquoi atoum propose l'asserteur \code{isNearlyEqualTo} sur le groupe
+d'asserteurs \code{float}~:
+%
+\begin{pre}
+\$this->float(1 - 0.97)->isNearlyEqualTo(0.33);
+\end{pre}
+%
+De même, nous pouvons trouver l'asserteur \code{containsValues} sur le groupe
+\code{array} qui va vérifier que certaines valeurs sont bien présentes dans un
+tableau~:
+%
+\begin{pre}
+\$this->array([1, 1, 2, 3, 5, 8])->containsValues([1, 3]);
+\end{pre}
+%
+Il existe encore plusieurs autres groupes d'asserteurs, notamment \code{output}
+qui permet de tester les sorties du programme. Notons que ce groupe hérite du
+groupe \code{string}~: l'héritage entre groupes est une autre fonctionnalité
+intéressante.
+
+\end{example}
+
+\subsubsection{\inenglish{Mock}}
+
+Enfin, le dernier point fort d'atoum est son système de \inenglish{mock}
+(bouchon). Pour obtenir le \inenglish{mock} de n'importe quel objet, il suffit
+de l'instancier sur l'espace de nom \code{Mock}.
+
+\begin{example}[Bouchonner avec atoum]
+
+Si nous voulons obtenir le \inenglish{mock} de la classe
+\code{Project\bslash{}HelloWorld}, nous instancierons simplement la classe
+\code{Mock\bslash{}Project\bslash{}HelloWorld}, où nous pourrons ensuite
+contrôler le résultat de certaines méthodes~:
+%
+\begin{pre}
+class HelloWorld extends \bslash{}atoum\bslash{}test \{ \\
+ \\
+    public function testSay ( ) \{ \\
+ \\
+        \$helloWorld = new \bslash{}Mock\bslash{}Project\bslash{}HelloWorld(); \\
+        \$this->calling(\$helloWorld)->say = 'Hello!'; \\
+        \$this->string(\$helloWorld->say()) \\
+                  ->isEqualTo('Hello!'); \\
+    \} \\
+\}
+\end{pre}
+%
+Nous avons créé un \inenglish{mock} puis nous avons spécifié que la méthode
+\code{say} retournera toujours \code{Hello!}.
+
+\end{example}
+
+Nous pouvons également forcer une méthode à retourner une exception à partir de
+son troisième appel par exemple. Nous pouvons également bouchonner des fonctions
+et objets standards de PHP. En somme, les fonctionnalités sont avancées et sont
+accessibles facilement.
+
+\subsection{Extension~: Praspel dans atoum}
+
+Cette extension\footnote{Voir
+\url{http://central.hoa-project.net/Resource/Contributions/Atoum/PraspelExtension}.}
+introduit Praspel dans atoum. Elle propose deux fonctionnalités~:
+%
+\begin{itemize}
+
+\item la génération automatique de données de test, qui n'est pas présente dans
+atoum~;
+
+\item la compilation de suites de tests générées avec Praspel en suite de tests
+écrites avec l'API d'atoum~; les tests seront donc exécutables avec atoum.
+
+\end{itemize}
+
+\subsubsection{Asserteurs de générations de données de tests}
+
+Dans un premier temps, nous donnons accès aux domaines réalistes dans atoum à
+travers l'asserteur \code{realdom} qui permet de créer des disjonctions de
+domaines réalistes. La syntaxe utilisée dans PHP est la plus proche possible de
+la syntaxe utilisée dans Praspel.
+
+\begin{example}[Déclaration de domaines réalistes dans atoum]
+
+Pour déclarer l'intervalle d'entiers $[7; 13] \union [42; 153]$, nous écrirons~:
+%
+\begin{pre}
+\$data = \$this->realdom->boundinteger( 7,  13) \\
+                  ->or->boundinteger(42, 153);
+\end{pre}
+%
+L'équivalent en Praspel serait \code{boundinteger(7, 13) or boundinteger(42,
+153)} ou plus simplement \code{7..13 or 42..153}.
+
+\end{example}
+
+Ensuite, nous pouvons utiliser au choix l'asserteur \code{sample} ou
+\code{sampleMany} pour générer une ou plusieurs données.
+
+\begin{example}[Génération d'entiers avec atoum]
+
+Pour générer respectivement 1 entier ou 7 entiers représentés par l'intervalle
+de l'exemple précédent, nous devons écrire~:
+%
+\begin{pre}
+\$integer  = \$this->sample(\$data); \\
+\$integers = \$this->sampleMany(\$data, 7);
+\end{pre}
+
+\end{example}
+
+\begin{example}[Génération de données plus fines avec atoum]
+
+Nous proposons encore deux exemples pour générer plusieurs dates ou chaînes de
+caractères spécifiées par une expression régulière. Tout d'abord, nous allons
+générer des dates au format \code{d/m H:i} (par exemple \code{28/03 12:34})
+entre hier et lundi prochain, qui sont des repères temporels relatifs~:
+
+%
+\begin{pre}
+\$data = \$this->realdom->date( \\
+    'd/m H:i', \\
+    \$this->realdom->boundinteger( \\
+        \$this->realdom->timestamp('yesterday'), \\
+        \$this->realdom->timestamp('next Monday') \\
+    ) \\
+); \\
+ \\
+foreach(\$this->sampleMany(\$data, 7) as \$date) \\
+    // compute \$date
+\end{pre}
+%
+En Praspel, la déclaration du domaine réaliste s'écrirait de la façon suivante~:
+%
+\begin{pre}
+date( \\
+    'd/m H:i', \\
+    boundinteger( \\
+        timestamp('yesterday'), \\
+        timestamp('next Monday') \\
+    ) \\
+)
+\end{pre}
+%
+Ensuite, nous allons générer des chaînes de caractères qui contiennent
+le mots-clé \code{foo} suivi des mots-clés \code{bar} ou \code{baz}~:
+%
+\begin{pre}
+\$data = \$this->realdom->regex('/.+foo.+ba(r|z).+/'); \\
+ \\
+foreach(\$this->sampleMany(\$data, 7) as \$string) \\
+    // compute \$string
+\end{pre}
+
+\end{example}
+
+\subsubsection{Générations de suites de test unitaires}
+
+\begin{figure}
+
+\centering
+
+\begin{tikzbox}{boxtoolsext}{}
+    \fig{\textwidth}{!}{Extension.tex}
+\end{tikzbox}
+%
+\begin{tikzannotation}
+    \node (sc) [left of=boxextsut, xshift=-4.25cm, yshift=-1.9cm] {};
+    \node (Sc) [left of=sc, node distance=1.5cm] {\circled{S}};
+    \draw [mywavyarrow] (Sc) -- (sc);
+
+    \node (mc) [above of=boxextom, xshift=.4cm, yshift=-1.75cm] {};
+    \node (Mc) at (Sc -| mc) {\circled{M}};
+    \draw [mywavyarrow] (Mc) -- (mc);
+\end{tikzannotation}
+
+\caption{\label{figure:tools:extension} Fonctionnement de la génération de tests
+unitaires avec l'extension.}
+
+\end{figure}
+
+Dans la partie~\ref{section:test:criteria} page~\pageref{section:test:criteria},
+nous avons défini des critères de couvertures sur les contrats. Les critères
+sont satisfaits par un ensemble de chemins dans les contrats. Un chemin est
+représenté par un test. Praspel est capable de générer des tests correspondant à
+ces chemins à partir d'un modèle objet d'un contrat. C'est le point de départ du
+processus illustré dans la figure~\ref{figure:tools:extension}. Nous y
+retrouvons \circled{M} et \circled{S}. À partir du modèle objet, une suite de
+tests est générée. Ces tests que nous pourrions qualifiés d'abstraits (car non
+exécutables) sont compilés vers des tests écrits avec l'API d'atoum (donc
+exécutables). Cette étape est regroupée en un seul nœud dans la figure. atoum va
+ensuite sélectionner chaque test dans cette suite et les exécuter en utilisant
+le SUT associé et des données. Le nœud atoum dans la figure applique le même
+processus que dans la figure~\ref{figure:tools:rac}.
+
+La compilation de la suite de tests abstraits vers concrets s'effectue en ligne
+de commande~: plusieurs classes seront analysées pour en extraire des contrats
+Praspel, qui seront à leurs tours analysés pour pouvoir appliquer les
+algorithmes de générations de tests unitaires sur leur modèle objet. Puis,
+l'extension va compiler ces tests vers des tests écrits au format atoum. Ces
+tests seront enregistrés dans les fichiers appropriés grâce à l'exportation,
+décrite dans la section~\ref{subsection:tools:compilation}. Nous pourrons par la
+suite exécuter ces fichiers avec atoum.
+
+Si nous reprenons notre classe \code{Project\bslash{}HelloWorld} avec sa méthode
+\code{say}, nous aurons le contrat suivant~:
+%
+\begin{pre}
+class HelloWorld \{ \\
+ \\
+    /** \\
+     * \aensures \aresult: 'Hello World!'; \\
+     */ \\
+    public function say ( ) \{ \\
+ \\
+        return 'Hello World!'; \\
+    \} \\
+\}
+\end{pre}
+%
+Nous allons ensuite générer automatiquement les tests associés en utilisant la
+ligne de commande suivante~:
+%
+\begin{pre}
+\$ praspel generate --class 'Project\bslash{}HelloWorld' --test-root .
+\end{pre}
+%
+L'option \code{-\empty{}-class} précise la ou les classes à analyser. L'option
+\code{-\empty{}-test-root} précise où se trouve la racine des tests, en
+l'occurence à l'endroit où nous exécutons la ligne de commande. Un fichier par
+classe sera généré. Le résultat du fichier que nous venons de générer est le
+suivant~:
+
+\begin{bigpre}
+class HelloWorld extends \bslash{}Atoum\bslash{}PraspelExtension\bslash{}Test \{ \\
+ \\
+    // … \\
+ \\
+    public function test say n\(\sp{\circ}\)1 ( ) \{ \\
+ \\
+        \$this \\
+            ->if(\$this->praspel->ensures['\bslash{}result']->in = \\
+                realdom()->const('Hello World!')) \\
+            ->then \\
+                ->praspel->verdict('\bslash{}Project\bslash{}HelloWorld');  \\
+ \\
+        return; \\
+    \} \\
+\}
+\end{bigpre}
+
+\noindent Nous pouvons enfin exécuter ce test avec atoum grâce à la ligne de
+commande suivante~:
+%
+\begin{pre}
+\$ atoum --file Path/To/Our/Generated/Test.php \\
+… \\
+> Total test duration: 0.01 second. \\
+> Total test memory usage: 0.50 Mb. \\
+> Code coverage value: 100.00\% \\
+> Running duration: 0.06 second. \\
+> Success (1 test, 1/1 method, 0 void method, \\
+           0 skipped method, 1 assertion)!
+\end{pre}
+%
+Sans surprise, la suite de tests a été exécutée avec succès.

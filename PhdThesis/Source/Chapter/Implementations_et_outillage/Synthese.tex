@@ -1,0 +1,29 @@
+\section{Synthèse}
+\label{section:tools:summary}
+
+Dans ce chapitre, nous avons présenté l'implémentation de Praspel sous forme de
+plusieurs bibliothèques dans le projet Hoa (\code{Hoa\bslash{}Praspel},
+\code{Hoa\bslash{}Real\-dom}, \code{Hoa\bslash{}Compiler},
+\code{Hoa\bslash{}Regex} etc.). Nous avons vu que la pièce centrale de Praspel
+est son modèle objet. Le langage peut-être interprété, compilé ou désassemblé.
+Un \inenglish{Runtime Assertion Checker} est proposé pour évaluer un contrat
+représenté par son modèle objet et accompagné d'un \inenglish{callable}
+représant le SUT. L'évaluation peut se faire avec des données de tests fournies
+manuellement ou générées automatiquement.
+
+Praspel a été intégré dans atoum, un \inenglish{framework} de tests unitaires,
+afin de profiter du moteur d'exécution, de la production des rapports, de
+l'intégration à plusieurs IDE et outils industriels, des API puissantes à
+l'intérieur d'atoum etc. atoum n'avait par ailleurs pas de générateurs de
+données de tests~: c'est pourquoi à travers l'extension
+\code{atoum\bslash{}praspel-extension}, nous proposons de nouvelles API pour
+générer des données de tests grâce aux travaux présentés dans ce mémoire. En
+plus, cette extension permet de transformer une suite de tests générées par
+Praspel en une suite de tests exécutables avec atoum. Enfin, cette extension est
+incluse dans la distribution standard d'atoum «~sous-stéroïde~».
+
+Grâce à cette extension, aux utilisateurs et aux licences
+\inenglish{open-source} de Hoa et d'atoum, nous avons pu mener une
+expérimenattion auprès d'ingénieurs de tests bénévoles, présentée dans le
+chapitre suivant.
+
