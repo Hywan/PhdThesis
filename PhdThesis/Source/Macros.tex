@@ -177,7 +177,7 @@
 }}
 \newenvironment{tikzbox}[2]{
     \begin{tikzpicture}[remember picture]
-    % create a fake node and set a another node to allow to shift the figure.
+    % create a fake node and set another node to allow to shift the figure.
     \node (0, 0) {};
     \node [#2] (#1) at (5, 0) \bgroup
     \begin{varwidth}{\linewidth}
