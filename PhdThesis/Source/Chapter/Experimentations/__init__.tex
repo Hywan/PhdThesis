@@ -63,64 +63,7 @@ qui représente 340 lignes de code (sans les contrats Praspel).
 %
 \begin{figure}
 
-\tikzstyle{class}=[rectangle, draw=black, thick, text centered, text width=4cm]
-\tikzstyle{umlarrow}=[->, >=latex, shorten >=1pt, thick]
-\tikzstyle{umlline}=[-, shorten >=3pt, thick]
-
-\drawfig{\textwidth}{!}{node distance=6.5cm}{
-    \node (Robot) [class, rectangle split, rectangle split parts=2]
-    {
-        \code{Robot}
-        \nodepart{second}
-        \code{move} \\
-        \code{moveTo} \\
-        \code{getTimeToReach} \\
-        \code{getClock} \\
-        \code{getCoordinates} \\
-        \code{getEnergy} \\
-        \code{getLandSensor}
-    };
-
-    \node (Coordinates) [class, rectangle split, rectangle split parts=2, below left of=Robot]
-    {
-        \code{Coordinates}
-        \nodepart{second}
-        \code{getX} \\
-        \code{getY}
-    };
-
-    \node (Clock) [class, rectangle split, rectangle split parts=2, below of=Robot]
-    {
-        \code{Clock}
-        \nodepart{second}
-        \code{reset} \\
-        \code{getDifference} \\
-        \code{getTimestamp} \\
-        \code{getCurrentTime}
-    };
-
-    \node (LandSensor) [class, rectangle split, rectangle split parts=2, below right of=Robot]
-    {
-        \code{LandSensor}
-        \nodepart{second}
-        \code{getNeededEnergy}
-    };
-
-    \node (Vector) [class, rectangle split, rectangle split parts=2, above left of=Coordinates, text width=5cm]
-    {
-        \code{Vector}
-        \nodepart{second}
-        \code{getFirstCoordinates} \\
-        \code{getSecondCoordinates} \\
-        \code{getLength}
-    };
-
-    \draw[umlarrow] (Coordinates.north) -- ++(0,0.5)  -| (Robot.south);
-    \draw[umlline]  (LandSensor.north)  -- ++(0,0.75) -| (Robot.south);
-    \draw[umlline]  (Clock.north)                     -| (Robot.south);
-    \draw[umlarrow] (Coordinates.west)                -| (Vector.south);
-
-}
+\fig{\textwidth}{!}{UniTestor.pdf}
 
 \caption{\label{figure:experimentation:unitestor} Diagramme de classes UML du
 robot UniTestor.}
