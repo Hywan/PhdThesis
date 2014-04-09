@@ -27,14 +27,18 @@
 \newcommand{\code}[1]{\texttt{#1}}
 \newcommand{\mem}[1]{\mathit{#1}}
 \newcommand{\m}[1]{\mathcal{#1}}
-\newcommand{\fig}[3]{
-    \begin{center}
-    \resizebox{#1}{#2}{
-        \begin{tikzpicture}[>=latex,line join=bevel]
-        \pgfsetlinewidth{1bp}
-        \requiredist{Figure/#3}
-        \end{tikzpicture}
-    }
+\newcommand{\fig}[3]{%
+    \begin{center}%
+    \resizebox{#1}{#2}{%
+        \IfSubStr{#3}{.tex}{%
+            \begin{tikzpicture}[>=latex,line join=bevel]%
+            \pgfsetlinewidth{1bp}%
+            \requiredist{Figure/#3}%
+            \end{tikzpicture}%
+        }{%
+            \includegraphics{\distdirectory/Figure/#3}%
+        }%
+    }%
     \end{center}
 }
 \newcommand{\circled}[1]{
