@@ -1,7 +1,10 @@
+\def\sourcedirectory{Source/}
+\def\distdirectory{Dist/}
+
 \newcommand{\require}[1]{
-    \input{Source/#1}
+    \input{\sourcedirectory/#1}
 }
 
 \newcommand{\requiredist}[1]{
-    \input{Dist/#1}
+    \input{\distdirectory/#1}
 }
