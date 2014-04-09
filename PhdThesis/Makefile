@@ -14,7 +14,7 @@ tex:
 bib: tex
 	@bibtex Dist/PhdThesis.aux;
 
-figures: dots
+figures: dots umls
 
 dots:
 	@for i in `find Source/Figure -type f -name '*.dot'`; do \
