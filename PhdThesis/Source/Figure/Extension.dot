@@ -28,7 +28,7 @@ digraph {
     SUT       [label=" ", texlbl="\tikzref{boxextsut}SUT"        ];
     data      [label=" ", texlbl="données"                       ];
     extension [label=" ", texlbl="atoum"                         ];
-    reports   [label=" ", texlbl="rapports"                      ];
+    reports   [style="accepting", label=" ", texlbl="rapports"   ];
 
     a [style=invis];
     b [style=invis];

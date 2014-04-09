@@ -6,8 +6,8 @@ digraph {
     assertions -> atoum;
     atoum      -> reports [label=" ", texlbl="exécution"];
 
-    SUT        [label=" ", texlbl="SUT", width=1.2       ];
-    assertions [label=" ", texlbl="assertions", width=1.2];
-    atoum      [label=" ", texlbl="atoum", width=1       ];
-    reports    [label=" ", texlbl="rapports", width=1    ];
+    SUT        [label=" ", texlbl="SUT", width=1.2                      ];
+    assertions [label=" ", texlbl="assertions", width=1.2               ];
+    atoum      [label=" ", texlbl="atoum", width=1                      ];
+    reports    [style="accepting", label=" ", texlbl="rapports", width=1];
 }

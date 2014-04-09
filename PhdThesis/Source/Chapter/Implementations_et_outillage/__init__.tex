@@ -187,7 +187,7 @@ ainsi~:
 %
 \begin{tikzannotation}
     \node (Pc) [right of=codetoolspraspel, node distance=3cm, yshift=-.5cm] {\circled{P}};
-    \draw [mywavyarrow] (Pc) to[out=135, in=45, distance=.5cm] (codetoolspraspel.center);
+    \draw [mywavyarrow] (Pc) to[out=135, in=45, distance=.5cm] (codetoolspraspel.south);
 
     \node (Mc) [above of=codetoolsom, node distance=1.4cm, xshift=-.6cm] {\circled{M}};
     \draw [mywavyarrow] (codetoolsom.north west) to[out=180, in=-90] (Mc);
@@ -953,11 +953,11 @@ foreach(\$this->sampleMany(\$data, 7) as \$string) \\
 \end{tikzbox}
 %
 \begin{tikzannotation}
-    \node (sc) [left of=boxextsut, xshift=-4.25cm, yshift=-2cm] {};
+    \node (sc) [left of=boxextsut, xshift=-4.25cm, yshift=-1.9cm] {};
     \node (Sc) [left of=sc, node distance=1.5cm] {\circled{S}};
     \draw [mywavyarrow] (Sc) -- (sc);
 
-    \node (mc) [above of=boxextom, xshift=.4cm, yshift=-1.8cm] {};
+    \node (mc) [above of=boxextom, xshift=.4cm, yshift=-1.75cm] {};
     \node (Mc) at (Sc -| mc) {\circled{M}};
     \draw [mywavyarrow] (Mc) -- (mc);
 \end{tikzannotation}

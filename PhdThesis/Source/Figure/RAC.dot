@@ -11,5 +11,5 @@ digraph {
     SUT     [label=" ", texlbl="\tikzref{boxracsut}SUT", width=1.7        ];
     data    [label=" ", texlbl="données", width=1.7                       ];
     RAC     [label=" ", texlbl="RAC", width=1                             ];
-    verdict [label=" ", texlbl="verdict", width=1                         ];
+    verdict [style="accepting", label=" ", texlbl="verdict", width=1      ];
 }
