@@ -1,0 +1,51 @@
+@startuml
+
+    skinparam monochrome true
+
+    Robot  *-- "1" Coordinates
+    Robot  *-- "1" Clock
+    Robot  *-- "1" LandSensor
+    Vector *-- "2" Coordinates
+
+    class Robot {
+        # Clock _clock
+        # float _energy
+        # Coordinates _coordinates
+        # LandSensor _landSensor
+
+        + move()
+        + moveTo()
+        + getTimeToReach()
+    }
+
+    class Coordinates {
+        # float _x
+        # float _y
+
+        + getX()
+        + getY()
+    }
+
+    class Clock {
+        # DateTime _date
+
+        + reset()
+        + getDifference()
+        + getTimestamp()
+        + getCurrentTime()
+    }
+
+    class LandSensor {
+        + getNeededEnergy()
+    }
+
+    class Vector {
+        # Coordinates _c1
+        # Coordinates _c2
+
+        + getFirstCoordinates()
+        + getSecondCoordinates()
+        + getLength()
+    }
+
+@enduml
