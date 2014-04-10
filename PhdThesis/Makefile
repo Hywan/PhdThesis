@@ -37,6 +37,7 @@ umls: | External/plantuml.jar
 				   -S"defaultFontName=CMU Serif" \
 				   -S"classFontName=CMU Typewriter Text" \
 				   -S"classAttributeFontName=CMU Typewriter Text" \
+				   -S"packageFontName=CMU Typewriter Text" \
 				   -pipe \
 				   -teps \
 			| epstopdf --filter --outfile=Dist/Figure/`basename $${i%.uml}.pdf`; \
@@ -50,6 +51,7 @@ uml: | External/plantuml.jar
 			   -S"defaultFontName=CMU Serif" \
 			   -S"classFontName=CMU Typewriter Text" \
 			   -S"classAttributeFontName=CMU Typewriter Text" \
+			   -S"packageFontName=CMU Typewriter Text" \
 			   -pipe \
 			   -teps \
 		| epstopdf --filter --outfile=Dist/Figure/`basename $(FILE:%.uml=%.pdf)`;
