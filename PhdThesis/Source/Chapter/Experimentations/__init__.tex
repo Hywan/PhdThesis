@@ -11,7 +11,7 @@ expérimentations {\strong quantitatives} mais {\strong qualitatives}.
 Il est question dans ce mémoire d'introduire un langage de spécification pour
 PHP, qui soit nouveau, simple, pragmatique et rassemblant plusieurs méthodes du
 test. Le but est de présenter toutes ces méthodes et de simplifier leurs
-utilisations dans le quotidien des ingénieurs de tests et développeurs. C'est
+utilisations dans le quotidien des ingénieurs de test et développeurs. C'est
 pour cela que nous avons par ailleurs choisi une approche avec les contrats car
 ils offrent beaucoup de services et demandent peu d'efforts de la part de
 l'utilisateur.
@@ -23,14 +23,14 @@ Puis, nous avons défini des critères de couvertures sur ces contrats pour
 mesurer la pertinence d'une suite de tests. Enfin, nous avons proposé une
 implémentation de toutes ces contributions ainsi qu'une extension dans un outil
 industriel répandu pour qu'elles soient utilisables dans le quotidien des
-ingénieurs de tests. C'est vers eux que nous allons nous tourner pour qu'ils
-jugent notre travail. Nous pensons qu'obtenir leurs retours et remarques mis
-en perspective par leur expérience est plus pertinent.
+ingénieurs de test. C'est vers eux que nous allons nous tourner pour qu'ils
+jugent notre travail. Nous pensons qu'obtenir une expertise humaine à travers
+leurs retours et remarques mis en perspective par leur expérience est pertinent.
 
 La première expérimentation a pour contexte un projet d'enseignement utilisant
 un robot appelé UniTestor développé par nos soins dans le cadre des JDév' à
 l'École Polytechnique. La seconde expérimentation a été réalisée auprès d'un
-panel bénévol d'ingénieurs de tests et d'entreprises afin d'obtenir des retours
+panel bénévol d'ingénieurs de test et d'entreprises afin d'obtenir des retours
 concrets sur des programmes du «~monde réel~».
 
 Ce chapitre se décompose de la manière suivante. Tout d'abord, dans la
@@ -42,8 +42,8 @@ que Praspel et ses outils rivalisent avec les tests manuels à couverture de cod
 rédaction des contrats est nettement inférieur à l'écriture de tests manuels.
 Puis, pour valider nos résultats sur des cas concrets, nous réappliquons une
 méthodologie similaire dans la partie~\ref{section:experimentation:real} avec un
-panel bénévol d'ingénieurs de tests et d'entreprises. En plus des retours et
-remarques, nous verrons que Praspel et ses outils ont été permis de détecter des
+panel bénévol d'ingénieurs de test et d'entreprises. En plus des retours et
+remarques, nous verrons que Praspel et ses outils ont permis de détecter des
 erreurs dans du code déjà testé et en production, et ce rapidement et
 efficacement. Enfin, …
 
@@ -107,12 +107,13 @@ par l'horloge et la recharge est linéaire (paramétrable par une constante).
 \subsection{Protocole expérimental et résultats}
 
 Nous avons commencé par annoter le code du robot par des contrats Praspel.
-Ensuite, nous avons générer automatiquement une suite de tests AGT
-(\inenglish{Automatically Generated Tests}) satisfaisant le critère de
+Ensuite, nous avons générer automatiquement une suite de tests, appelée la suite
+AGT (\inenglish{Automatically Generated Tests}) satisfaisant le critère de
 couverture de contrat \inenglish{All}-$G$ (défini dans la
 partie~\ref{subsection:test:combination}). Nous avons comparé cette suite de
-test avec celle des étudiants, appelé MT (\inenglish{Manual Tests}), complétée
-pour atteindre un taux de couverture de code de 100\%.
+test avec la suite de tests manuels des étudiants, appelé la suite MT
+(\inenglish{Manual Tests}), complétée pour atteindre un taux de couverture de
+code de 100\% quand ce n'était pas le cas.
 
 Nous avons observé que le nombre moyen de tests générés par les étudiants est de
 53~MT, alors que pour 21 méthodes, soit 21 contrats, Praspel a généré 29~AGT,
@@ -147,14 +148,14 @@ Introduction, bla bla.
 
 \subsection{Présentation générale}
 
-Nous avons fait un appel auprès de différents réseaux sociaux et différentes
-commnautés pour rassembler des bénévoles pour cette expérimentation.
-7~ingénieurs de tests de nationalités différentes, dont 1~représentant une
-entreprise, ont répondu à l'appel. Ces ingénieurs font du test depuis en moyenne
-5~ans. Ils ont appliqué l'expérimentation sur leurs propres programmes ou sur
-des programmes sur lesquels ils participent. Ces programmes constituent nos cas
-concrets. Voici la description de ces programmes~:
-
+Nous avons lancé un appel sur différents réseaux sociaux et différentes
+communautés pour rassembler des bénévoles pour cette expérimentation.
+7~ingénieurs de test de nationalités différentes ont répondu à l'appel. Ces
+ingénieurs font du test depuis en moyenne 5~ans. Ils ont appliqué
+l'expérimentation sur leurs propres programmes ou sur des programmes sur
+lesquels ils participent. Ces programmes constituent nos cas concrets. Voici la
+description de ces programmes~:
+%
 \begin{itemize}
 
 \item outil de \inenglish{debugging}~: analyse les performances d'exécutions de
@@ -184,7 +185,7 @@ unitaires et les tests fonctionnels.
 comptabilités. Les parties abordées étaient multiples.
 
 \item outil d'évaluation de formules Mathématiques~: des utilisateurs écrivent
-eux-mêmes des formules algébriques décrivant l'évolution des tarifs en temps
+eux-mêmes des formules arithmétiques décrivant l'évolution des tarifs en temps
 réels pour certains produits. Une bibliothèque de fonctions, de constantes et de
 variables est mise à la disposition de ces utilisateurs. La partie abordée était
 l'évaluation de ces formules analysées avec un compilateur et une grammaire
@@ -208,7 +209,7 @@ demandé au panel d'appliquer le protocole expérimental suivant~:
 \begin{enumerate}
 
 \item sélectionner plusieurs méthodes de toutes sortes déjà testées
-manuellement~;
+manuellement (avec atoum)~;
 
 \item annoter ces méthodes avec des contrats Praspel~;
 
@@ -245,23 +246,39 @@ parties suivantes regroupent toutes les données et informations des deux panels
 %ça devrait se voir à un moment ou un autre.
 
 Un moyen de comparer les suites de tests est d'utiliser la couverture de code
-avec le critère tous-les-arcs, comme pour l'expérimentation précédente.
+avec le critère tous-les-arcs, comme pour l'expérimentation précédente.  Les
+résultats sont les suivants. Nous avons observé que les AGT couvrent autant que
+les MT, à $\pm 5\%$ près.
 
-Nous avons observé que les AGT couvrent autant que les MT, à $\pm 5\%$ près.
+Quand les AGT couvraient moins que les MT, le panel nous a fait remarquer que
+c'était à cause de l'utilisation des bouchons (des \inenglish{mocks}). Un
+bouchon remplace une partie d'un programme et nous prédéfinissons la manière
+dont il va se comporter, c'est~à~dire que nous allons décrire un comportement
+bien spécifique et tester le SUT dans ces conditions.  Les bouchons permettent
+d'améliorer la testabilité des programmes (en plus d'accélérer l'exécution des
+suites de tests par effet de bord). Les bouchons ne concernent que les objets ou
+les fonctions, et Praspel n'est pas capable de générer de tels bouchons. Par
+exemple, si un contrat précise qu'une exception peut être levée quand une
+connexion réseau est interrompue, Praspel ne sera pas capable de couper lui-même
+la connexion. Il faut alors boucher les interfaces réseaux et simuler des
+déconnexions.
 
-Quand les AGT couvraient moins que les MT, c'est que des bouchons étaient
-nécessaires (des \inenglish{mocks}), c'est~à~dire décrire un comportement bien
-spécifique et tester le SUT dans ces conditions. Les bouchons ne concernent que
-les objets ou les fonctions, et Praspel n'est pas capable de générer de tels
-bouchons.
+Et quand les AGT couvraient plus que les MT, c'était à cause d'une limitation
+des outils. En effet, atoum ne permet pas de tester les méthodes avec une
+visibilité autre que publique, alors que Praspel le permet. Le panel devait
+alors tester les méthodes protégées et privées à travers les méthodes publiques.
+Il est évident que certains chemins dans le code n'étaient pas accessibles
+facilement.
 
 Dans certains cas, malgré une couverture de code de 100\% pour les MT et les
 AGT, des erreurs ont été trouvées. En effet, la couverture tous-les-arcs n'est
-pas très précise et des erreurs peuvent apparaître après des conditions qui
+pas très fine et des erreurs peuvent apparaître derrière des conditions qui
 n'auraient pas dû être activées. Comme le critère de couverture
 \inenglish{All}-$G$ sur les contrats combinent tous les domaines réalistes de
 toutes les variables, certaines combinaisons peuvent activer ces conditions
 d'une manière qui n'avait pas été testée manuellement.
+
+Maintenant, comparons le temps de rédactions de ces suites de tests.
 
 \subsection{Temps de rédaction des suites de tests}
 
@@ -276,42 +293,43 @@ dizaines par jour. Aucun d'entre eux n'avaient écrire un contrat en Praspel
 avant cette expérimentation. Nous leur avons demandé de comparer le temps de
 rédaction de la suite MT avec la suite AGT.
 
-Pour ceux qui n'étaient pas habitués à la programmation par contrat, plusieurs
-heures (entre 4 et 10h) ont été nécessaires pour bien comprendre le principe et
-savoir comment l'appliquer. Cette période comprend aussi l'analyse des AGT~:
-savoir les lire, les comprendre et les positionner par rapport aux MT. Durant
-cette période, écrire des MT était bien plus rapide que d'écrire des contrats et
-produire des AGT. Les autres, même s'ils connaissaient la programmation par
-contrat, ne l'avaient jamais pratiquée. Les problèmes rencontrés étaient les
-même~: savoir lire, comprendre et analyser les AGT. Le panel pondère toutefois
-cet effort~: comparer aux autres outils qu'ils manipulent quotidiennement,
-l'installation de Praspel et son extension pour atoum est très rapide, le
-langage est simple à utiliser, et même si les notions sous-jacentes (les
-algorithmes et les méthodes du test utilisées) ne sont pas connues ou comprises,
-les domaines réalistes sont également une notion simple à comprendre et à
-utiliser.
+Pour la partie du panel qui n'était pas habituée à la programmation par contrat,
+plusieurs heures (entre 4 et 10h) ont été nécessaires pour bien comprendre le
+principe et savoir comment l'appliquer. Cette période comprend aussi l'analyse
+des AGT~: savoir les lire, les comprendre et les positionner par rapport aux MT.
+Durant cette période, écrire des MT était bien plus rapide que d'écrire des
+contrats et produire des AGT. Pour l'autre partie du panel, même si elle
+connaissait la programmation par contrat, elle ne l'avait jamais pratiquée. Les
+problèmes rencontrés étaient les même~: savoir lire, comprendre et analyser les
+AGT. Le panel pondère toutefois cet effort~: comparer aux autres outils qu'ils
+manipulent quotidiennement, l'installation de Praspel et son extension pour
+atoum est très rapide (autour d'une minute) et le langage est simple à utiliser.
+Même si les notions sous-jacentes (les algorithmes et les méthodes du test
+utilisées) ne sont pas connues ou comprises, les domaines réalistes sont
+également une notion simple à comprendre et à utiliser.
 
 Une fois le cap de l'apprentissage franchi, le panel a observé que pour peu de
 code à tester (moins de 5 ou 6~méthodes), il était plus rapide d'écrire des MT.
 En revanche, lorsqu'il faut tester plus de code (ce qui représente 95\% des
 cas), l'utilisation des contrats s'avèrent très efficace. Il faut entre 2 et
 4~fois moins de temps pour écrire les contrats et produire les AGT que d'écrire
-les MT à la main (de 2h à 30mn par exemple). Pour mettre ces résultats en
-perspective avec la partie précédente, le temps qui a été gagné est réinvesti
-pour écrire des MT plus «~poussés~», comprendre plus complets.
+les MT à la main (de 2h pour les MT à 30mn pour les AGT par exemple). Pour
+mettre ces résultats en perspective avec la partie précédente, le temps gagné
+est aussitôt réinvesti pour écrire des MT plus «~poussés~», comprendre plus
+complets.
 
-Le panel nous a fait remarquer que malheureusemnt, les tests ne sont pas encore
-une priorité dans les budgets alloués au développement logiciel. Par conséquent,
-ils ont un temps limité pour tester leurs applications. Pendant le temps
-imparti, ils n'étaient capable d'écrire que des tests dits «~basiques~» ou alors
-ils ne testaient que les parties les plus critiques du code. Avec les contrats,
-ils spécifient toutes les méthodes car ils sont écrits en même temps que le
-code. La proximité entre le code et les contrats \via les annotations est un
-avantage. Par conséquent, plus de code est testé sans nécessiter autant de
+Le panel nous a en effet fait remarquer que malheureusemnt, les tests ne sont
+pas encore une priorité dans les budgets alloués au développement logiciel. Par
+conséquent, ils ont un temps limité pour tester leurs applications. Pendant le
+temps imparti, ils n'étaient capable d'écrire que des tests dits «~basiques~» ou
+alors ils ne testaient que les parties les plus critiques du code. Avec les
+contrats, ils spécifient toutes les méthodes car ils sont écrits en même temps
+que le code. La proximité entre le code et les contrats \via les annotations est
+un avantage. Par conséquent, plus de code est testé sans nécessiter autant de
 temps que si ça devait être fait manuellement. Le temps qui a été économisé est
 ainsi réinvesti pour des tests plus complets, qui n'auraient pu être faits en
 temps normal. Autrement dits, les tests «~usuels~» sont gérés par Praspel, ce
-qui permet aux ingénieurs de tests de se concentrer sur les parties plus
+qui permet aux ingénieurs de test de se concentrer sur les parties plus
 critiques.
 
 Nous aurions aimé faire l'expérimentation 2~fois de suite pour comparer la
@@ -329,55 +347,71 @@ Nous avons précisé dans les parties précédentes que les suites d'AGT ne sont
 toujours complètes. En effet, Praspel n'est pas capable de tout spécifier et
 certaines parties du code n'est pas toujours testable facilement. Heureusement,
 la partie précédente nous a montré que le temps gagné grâce aux contrats est
-réinvesti dans l'écriture de MT. Dans cette étape, les ingénieurs de tests ont
+réinvesti dans l'écriture de MT. Dans cette étape, les ingénieurs de test ont
 utilisés nos générateurs de données. Rappelons qu'atoum ne possède aucun
-générateur de données. Le seul outil qu'il propose est de se brancher sur un
+générateur de données. Le seul outil qu'il propose consiste à se brancher sur un
 dictionnaire de données écrit manuellement.
 
-Premier constat. Les domaines réalistes permettent de spécifier simplement et
-facilement une grande majorité des données. Pouvoir utiliser les domaines
-réalistes dans du code PHP directement permet de mixer et d'orienter la
+\paragraph{Premier constat} Les domaines réalistes permettent de spécifier
+simplement et facilement une grande majorité des données. Pouvoir utiliser les
+domaines réalistes dans du code PHP directement permet de mixer et d'orienter la
 génération facilement. Par exemple, écrire des boucles où chaque pas produit une
 donnée légèrement différente de la précédente, ou encore utiliser des données
-générées pour modifier d'autres données provenant de bases de données ou
-d'autres sources. Comme les données de tests ne sont plus déclarées
-manuellement, cela simplifie grandement l'écriture des tests. Le panel a précisé
-que ce n'était même pas comparable~: il n'y avait rien avant et c'était un
-travail pénible, qui a maintenant disparu. Par ailleurs, cela simplifie aussi la
-lecture des tests. En effet, le contenu du test se restreint à la logique du
-test plutôt qu'à la manipulation des données de tests. Le panel insiste sur le
-fait que les tests sont par conséquent plus facilement maintenables.
+générées pour modifier d'autres données provenant de bases ou d'autres sources.
 
-Deuxième constat. Sans générateur automatique de données, le panel nous avoue
-que les données de tests utilisées étaient très peu nombreuses~: entre 1 à 5
-données par tests, 1.3 en moyenne. Avec nos générateurs de données, un grande
-nombre de données sont générables «~instantanément~» pour reprendre leurs
-termes. En effet, le temps de génération est tellement rapide qu'il en devient
-négligeable.
+Par ailleurs, comme les données de tests ne sont plus déclarées manuellement,
+cela simplifie grandement l'écriture des tests. Le panel a précisé que ce
+n'était «~même pas comparable~»~: il n'y avait rien avant et c'était un travail
+pénible, qui a maintenant disparu. Par ailleurs, cela simplifie aussi la lecture
+des tests. En effet, le contenu du test se restreint à sa logique plutôt qu'à la
+manipulation des données de tests. Le panel insiste sur le fait que les tests
+sont par conséquent plus facilement maintenables. Cela implique que les
+ingénieurs n'hésiteront pas à modifier les suites de tests car ce processus est
+simplifié.
 
-Troisième constat. Générer beaucoup de données de tests n'a aucun sens si elles
-sont toutes inutiles. Le panel a à la majorité apprécié les algorithmes de
-générations de chaînes de caractères. Pouvoir spécifier des chaînes de
-caractères avec des expressions régulières ou des grammaires, et ensuite générer
-toutes les données de manière exhaustive ou alors par couverture de la
-grammaire, a été remarquablement apprécié. Plusieurs points sont à noter. Tout
-d'abord, avoir une exhaustivité ou une couverture sur les données manipulées est
-un avantage important~: cela augmente la confiance dans les tests. La notion de
-couverture de données est aussi importante que la couverture du code pour plus
-de la moitié de notre panel. Ensuite, spécifier des chaînes de caractères avec
-des expressions régulières est facile. En effet, il arrive très fréquemment que
-ces expressions régulières soient déjà définies dans l'implémentation. Il suffit
-alors de les réutiliser. Quand nous avons demandé comment le panel générait des
-chaînes de caractères avant, nous avons été surpris de voir qu'un seul ingénieur
-en générait en concaténant des ensembles de sous-chaînes de caractères. Les
-autres écrivaient quelques chaînes de caractères manuellement. Dans le cas des
-grammaires, un ingénieur a fait remarquer qu'en plus d'apprendre le langage
-Praspel, il fallait apprendre le langage PP pour décrire des grammaires. Les
-autres membres du panel n'ont pas relevé cet effort arguant qu'aux vues des
-services rendus, cet effort était très rapidement amorti. Enfin, dans le cas des
-tableaux, le panel a apprécié le fait de pouvoir générer à moindre coût des
-centaines de tableaux respectant certaines contraintes. Là encore, très peu de
-tableaux étaient utilisés en tant que données de tests manuellement avant.
+\paragraph{Deuxième constat} Sans générateur automatique de données, le panel
+nous avoue que les données de tests utilisées étaient très peu nombreuses~:
+entre 1 à 5 données par tests, 1.3 en moyenne. L'objectif était d'assurer une
+certaine couverture du code avec le critère tous-les-arcs. Avec nos générateurs
+de données, un grande nombre de données sont générables «~instantanément~» pour
+reprendre leurs termes. En effet, le temps de génération est tellement rapide
+qu'il en devient «~négligeable~». Le panel souligne qu'«~aucune différence n'est
+perceptible~» entre l'exécution des suites de tests avec ou sans générateurs de
+données\footnote{Nous noterons toutefois que les suites de tests ne comportaient
+que quelques dizaines de tests.}. Dans certaines méthodologies de développement
+comme le \inenglish{Test-Driven Development} ou les méthodes Agile, les tests
+sont exécutés en permanence, plusieurs dizaines de fois par heure. La rapidité
+d'exécution des tests est alors importante pour ne pas impacter la vitesse de
+développement des équipes.
+
+\paragraph{Troisième constat} Générer beaucoup de données de tests n'a aucun
+sens si elles sont toutes inutiles. Le panel a à la majorité apprécié les
+algorithmes de générations de chaînes de caractères. Pouvoir spécifier des
+chaînes de caractères avec des expressions régulières ou des grammaires, et
+ensuite générer toutes les données de manière exhaustive ou alors par couverture
+de la grammaire, a été remarquablement apprécié. Plusieurs points sont à noter.
+
+Tout d'abord, avoir une exhaustivité ou une couverture sur les données
+manipulées est un avantage important~: cela augmente la confiance dans les
+tests. La notion de couverture de données est aussi importante que la couverture
+du code pour plus de la moitié de notre panel.
+
+Ensuite, spécifier des chaînes de caractères avec des expressions régulières est
+facilité par le fait que, très fréquemment, ces expressions régulières soient
+déjà définies dans l'implémentation. Il suffit alors de les réutiliser.  Quand
+nous avons demandé comment le panel générait des chaînes de caractères avant,
+nous avons été surpris de voir qu'un seul ingénieur en générait en concaténant
+des ensembles de sous-chaînes de caractères. Les autres écrivaient quelques
+chaînes de caractères manuellement. Dans le cas des grammaires, un ingénieur a
+fait remarquer qu'en plus d'apprendre le langage Praspel, il fallait apprendre
+le langage PP pour décrire des grammaires. Les autres membres du panel n'ont pas
+relevé cet inconvénient arguant qu'aux vues des services rendus, l'effort
+demandé était très rapidement amorti.
+
+Enfin, dans le cas des tableaux, le panel a apprécié le fait de pouvoir générer
+à moindre coût des centaines de tableaux respectant certaines contraintes. Là
+encore, très peu de tableaux étaient utilisés en tant que données de tests
+manuellement avant. \\
 
 Cette partie de l'expérimentation a révélé plus d'erreurs que dans la
 précédente. L'utilisation des grammaires avec le générateur exhaustive a permi
