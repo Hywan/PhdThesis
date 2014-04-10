@@ -350,7 +350,7 @@ la partie précédente nous a montré que le temps gagné grâce aux contrats es
 réinvesti dans l'écriture de MT. Dans cette étape, les ingénieurs de test ont
 utilisés nos générateurs de données. Rappelons qu'atoum ne possède aucun
 générateur de données. Le seul outil qu'il propose consiste à se brancher sur un
-dictionnaire de données écrit manuellement.
+dictionnaire de données écrit manuellement. Nous présentons trois constats.
 
 \paragraph{Premier constat} Les domaines réalistes permettent de spécifier
 simplement et facilement une grande majorité des données. Pouvoir utiliser les
@@ -413,22 +413,113 @@ Enfin, dans le cas des tableaux, le panel a apprécié le fait de pouvoir géné
 encore, très peu de tableaux étaient utilisés en tant que données de tests
 manuellement avant. \\
 
-Cette partie de l'expérimentation a révélé plus d'erreurs que dans la
-précédente. L'utilisation des grammaires avec le générateur exhaustive a permi
-de détecter des erreurs chez tous les membres du panel ayant utilisé cette
-technique. À un moment, la correction d'une erreur n'a pas invalidé des tests
-qui auraient dû l'être. Par conséquent, cela a montré des erreurs dans les tests
-eux-mêmes. Ceci n'aurait probablement jamais été découvert sans l'utilisation
-exhaustive de données de tests.
+Dans tous les cas, les membres du panel ont remarqué une diminution du nombre de
+tests. En effet, comme un test manipule plus de données pertinentes, les autres
+tests du même genre deviennent inutiles. Cette diminution a été difficile à
+quantifier~: 5\% pour certains, 75\% pour d'autres, mais il y a toujours une
+simplification de la suite de tests~: la quantité, la lecture, l'écriture et la
+maintenance.
 
-Bla bla bla.
+\subsection{Tests paramétrés}
 
-\subsubsection{Tests paramétrés}
+%Certains auront probablement fait des tests paramétrés (ça se fait déjà un peu
+%dans atoum, ça s'est fait dans UniTestor, je les encouragerai à le faire). Quels
+%résultats~? C'est une approche «~hybride~», est-ce qu'elle comble certains
+%manques de Praspel~? Ou même des MT~?
 
-Certains auront probablement fait des tests paramétrés (ça se fait déjà un peu
-dans atoum, ça s'est fait dans UniTestor, je les encouragerai à le faire). Quels
-résultats~? C'est une approche «~hybride~», est-ce qu'elle comble certains
-manques de Praspel~? Ou même des MT~?
+Le test paramétré est une approche hybride entre le test manuel et automatique.
+Le principe est d'écrire un test dont les paramètres sont spécifiés par un
+contrat. À partir d'un test paramétré, nous pouvons alors générer plusieurs
+nouveaux tests. Ils permettent deux choses. La première est d'automatiser des
+tests compliqués à générer automatiquement en décrivant un préambule de test
+non-trivial ou en facilitant le travail de l'oracle. Par exemple, si le succès
+ou l'échec d'un test est déterminé par des informations contenues dans un autre
+programme ou dans une base de données, le test paramétré va synthétiser ces
+informations de telle façon qu'elle soit spécifiable dans le contrat (par
+conséquent avec Praspel). La seconde est d'utiliser des contrats dans un
+contexte de test fonctionnel, c'est~à~dire que le contenu du test sera un
+assemblage de plusieurs briques logiciels de plus haut niveau.
+
+Durant cette expérimentation, seulement 1~ingénieur de test du panel a pu écrire
+des tests paramétrés. L'aspect test fonctionnel n'a pas été abordé. Ce membre
+n'a pas observé de différences particulières avec des MT dans lesquels il
+utilisait les générateurs de données. La raison principal est que les contrats
+qui annotaient les tests paramétrés se ramenaient à décrire le type des données
+pour la précondition dans un seul et unique comportement et la postcondition
+étaient très fréquemment \code{\aresult: true}. L'effort d'écriture du contrat
+est donc équivalent à l'effort d'écriture d'un MT sauf que le processus de
+générations des tests étaient plus compliqués. En effet, l'extension de Praspel
+dans atoum est prévu à l'origine pour scanner des implémentations et non pas des
+tests. Le problème était donc technique car il nécessitait d'instrumenter les
+tests en plus des implémentations ce qui pouvait parfois poser des problèmes.
+
+Cette partie de l'expérimentation s'est arrêtée sur ce constat~: les tests
+paramétrés n'ont pas apporté de réels bénéfices dans ce contexte.
+
+\subsection{Erreurs détectées}
+
+Cette expérimentation a permi de révéler plusieurs erreurs dans tous les
+programmes testés. Nous analysons les plus intéressantes d'entre elles.
+
+\paragraph{Erreurs avec les dates} Les dates sont régulièrement des sources
+d'erreurs dans plusieurs programmes. L'utilisation des domaines réalistes
+\code{Date} et \code{Time\-stamp} permettent de générer et valider finement des
+dates. Comme dans l'exemple de la partie~\ref{subsection:tools:extension}, une
+erreur a été découverte avec des dates relatives comme entre «~le dernier
+vendredi de février~» (spécifié avec \code{time\-stamp('last Friday of
+February')}) et «~le lundi suivant~» (spécifié avec \code{time\-stamp('first
+Monday of March')}). Certains cas avec des samedi et dimanche lors d'années
+bissextiles étaient sources d'erreurs.
+
+Une autre erreur a été détectée dans un programme qui formatait mal les dates.
+Le mois de janvier était formaté en \code{1} au lieu de \code{01}. La donnée de
+test manuelle portait sur le mois de décembre, mois durant lequel a été écrit le
+test (l'ingénieur de test s'est inspiré du mois courant de l'époque pour écrire
+la donnée de test). Lorsqu'il a spécifié sa donnée avec le domaine réaliste
+\code{date('d')}, où \code{d} représente les mois sur deux chiffres, l'erreur
+est apparue.
+
+Une fois qu'un contrat ait été écrit ou qu'un générateur de données ait été
+utilisé manuellement, 2~minutes en moyenne ont été nécessaire pour détecter ces
+erreurs. Le code impacté n'était pas encore en production mais sur le point
+d'être livré. L'ingénieur a estimé que si l'erreur était apparue en production,
+son impact aurait été «~importante~».
+
+\paragraph{Erreurs avec JSON} Un programme devait valider des données formatées
+en JSON. Les données de tests manuelles ne couvraient pas tous les cas et
+l'utilisation d'un générateur de chaînes de caractères exhaustif a permi de
+détecter plusieurs erreurs. Elles ont été détectées en autant de temps qu'il
+était nécessaire pour écrire le test, c'est~à~dire moins de 3~minutes. 
+
+Ce programme n'était pas encore en production, il était en cours de
+développement. L'impact des erreurs auraient pu être important puisqu'il
+s'agissait de valider des données et qu'ils retournaient parfois des
+faux-positifs et parfois des faux-négatifs (ce qui est moins grave dans ce
+contexte). Il a fallu quelques minutes pour corriger les erreurs.
+
+\paragraph{Erreurs arithmétiques} Un programme évaluait des formules
+arithmétiques écrites par des utilisateurs pour caractériser l'évolution de
+tarifs en temps-réel. Une erreur avec les divisions a été trouvée~: elles
+étaient évaluées comme étant associatives gauches au lieu d'associatives
+droites, seulement lorsque l'opérande droit avait une forme particulière. Cette
+erreur a été détectée avec le générateur de chaînes de caractères exhaustif en
+moins de 15~secondes une fois le test écrit.
+
+Ce programme était en production, avec des centaines d'utilisateurs et plusieurs
+centaines de milliers de clients (pratiquement un million). Des tests unitaires
+et fonctionnells étaient même écrits et exécutés très régulièrement.
+Heureusement, aucune formule de cette forme n'a été écrite par les utilisateurs.
+
+\paragraph{Erreurs dans les tests} Dans les deux derniers points abordés, la
+correction des erreurs a permis de détecter d'autres erreurs dans les tests. En
+effet, les tests calculaient mal leurs verdicts. Praspel génèrait des AGT qui
+échouaient alors que les MT équivalent étaient des succès. Après analyses des
+AGT et des MT, il s'est avéré qu'il y avait des erreurs dans les MT.
+
+\paragraph{Autres erreurs} D'autres erreurs ont été détectées notamment avec le
+domaine réaliste \code{Regex} ou \code{Array} qui génèraient des données
+non-prévues par l'implémentation. Ces erreurs ont principalement été détectées
+en 2~minutes en moyenne.
 
 \subsection{Retours des ingénieurs/expertise humaine}
 
@@ -459,8 +550,6 @@ lentement, plus rapidement~? Facile à prendre en main et à comprendre~?
 
 Parler de ext/jsond (remplaçant de ext/json dans PHP)~? Test de non-régression
 et de performance, basé sur notre article A-MOST'12.
-
-\section{Autre}
 
 Est-ce qu'ils ont trouvé des bugs dans Praspel~?
 
