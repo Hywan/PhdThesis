@@ -33,11 +33,13 @@ umls: | External/plantuml.jar
 		echo -n `basename $$i`'…'; \
 		cat $$i \
 			| java -jar External/plantuml.jar \
-				   -Smonochrome=true \
+				   -S"monochrome=true" \
 				   -S"defaultFontName=CMU Serif" \
 				   -S"classFontName=CMU Typewriter Text" \
 				   -S"classAttributeFontName=CMU Typewriter Text" \
 				   -S"packageFontName=CMU Typewriter Text" \
+				   -S"packageBackgroundColor=#FFFFFF" \
+				   -S"packageBorderColor=#CCCCCC" \
 				   -pipe \
 				   -teps \
 			| epstopdf --filter --outfile=Dist/Figure/`basename $${i%.uml}.pdf`; \
@@ -47,11 +49,13 @@ umls: | External/plantuml.jar
 uml: | External/plantuml.jar
 	@cat $(FILE) \
 		| java -jar External/plantuml.jar \
-			   -Smonochrome=true \
+			   -S"monochrome=true" \
 			   -S"defaultFontName=CMU Serif" \
 			   -S"classFontName=CMU Typewriter Text" \
 			   -S"classAttributeFontName=CMU Typewriter Text" \
 			   -S"packageFontName=CMU Typewriter Text" \
+			   -S"packageBackgroundColor=#FFFFFF" \
+			   -S"packageBorderColor=#CCCCCC" \
 			   -pipe \
 			   -teps \
 		| epstopdf --filter --outfile=Dist/Figure/`basename $(FILE:%.uml=%.pdf)`;
