@@ -1,7 +1,5 @@
 @startuml
 
-    skinparam monochrome true
-
     Robot  *-- "1" Coordinates
     Robot  *-- "1" Clock
     Robot  *-- "1" LandSensor
