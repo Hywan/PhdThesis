@@ -1,0 +1,58 @@
+@startuml
+
+    skinparam nodesep 1
+    skinparam ranksep 1
+
+    package Praspel <<Frame>> {
+        class Behavior
+        abstract class Clause
+        class Collection
+        class Description
+        class DefaultBehavior
+        class Declaration
+        class Ensures
+        class Invariant
+        class Is
+        class Requires
+        class Specification
+        class Throwable
+
+        package Variables <<Frame>> {
+            class Variable
+            class Implicit
+            class Borrowing
+        }
+    }
+
+    package Realdom <<Frame>> {
+        class IRealdom_Holder
+    }
+
+    Clause          <|-- Behavior
+    Clause          <|-- Declaration
+    Clause          <|-- Description
+    Clause          <|-- Is
+    Clause          <|-- Throwable
+    Behavior        <|-- DefaultBehavior
+    Behavior        <|-- Specification
+    Declaration     <|-- Ensures
+    Declaration     <|-- Invariant
+    Declaration     <|-- Requires
+
+    Behavior      *-- "1" Requires
+    Behavior      *-- "1" Collection
+    Behavior      *-- "1" DefaultBehavior
+    Behavior      *-- "1" Ensures
+    Behavior      *-- "1" Throwable
+    Behavior      *-- "1" Description
+    Specification *-- "1" Is
+    Specification *-- "1" Invariant
+    Declaration   *-- "n" Variable
+    Specification *-- "n" Implicit
+
+    Variable <|-- Implicit
+    Variable <|-- Borrowing
+
+    IRealdom_Holder <|-- Variable
+
+@enduml
