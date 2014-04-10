@@ -32,14 +32,26 @@ umls: | External/plantuml.jar
 	@for i in `find Source/Figure -type f -name '*.uml'`; do \
 		echo -n `basename $$i`'…'; \
 		cat $$i \
-			| java -jar External/plantuml.jar -pipe -teps \
+			| java -jar External/plantuml.jar \
+				   -Smonochrome=true \
+				   -S"defaultFontName=CMU Serif" \
+				   -S"classFontName=CMU Typewriter Text" \
+				   -S"classAttributeFontName=CMU Typewriter Text" \
+				   -pipe \
+				   -teps \
 			| epstopdf --filter --outfile=Dist/Figure/`basename $${i%.uml}.pdf`; \
 		echo -e '\b, ok'; \
 	done
 
 uml: | External/plantuml.jar
 	@cat $(FILE) \
-		| java -jar External/plantuml.jar -pipe -teps \
+		| java -jar External/plantuml.jar \
+			   -Smonochrome=true \
+			   -S"defaultFontName=CMU Serif" \
+			   -S"classFontName=CMU Typewriter Text" \
+			   -S"classAttributeFontName=CMU Typewriter Text" \
+			   -pipe \
+			   -teps \
 		| epstopdf --filter --outfile=Dist/Figure/`basename $(FILE:%.uml=%.pdf)`;
 
 External/plantuml.jar:
