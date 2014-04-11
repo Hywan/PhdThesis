@@ -241,6 +241,12 @@ du dernier comportement activé doit être satisfaite. Si c'est un post-état
 exceptionel, alors c'est la clause \athrowable qui doit être satisfaite, \ie les
 deux $T_C$ et $T_E$ doivent être satisfaits, comme décrit précédemment.
 
+Quand une clause \arequires est manquante et que le SUT a besoin de paramètres,
+une erreur sera levée car les paramètres seront non-spécifiés. Une clause
+\aensures (respectivement \ainvariant) manquante revient à accepter tous les
+post-états normaux (respectivement tous les invariants de classes). Une clause
+\athrowable manquante revient à refuser tous les post-états exceptionels. Une
+
 Enfin, la clause \ais permet de qualifier la catégorie de la méthode. Le seul
 qualificatif actuel est \code{pure}, pour contrôler la mutabilité de
 l'environnement. En effet, une méthode peut modifier ou pas son environnement
@@ -277,6 +283,7 @@ class Filesystem \{ \\
      *     @description 'The filesystem is full.'; \\
      *     @requires  \bslash{}pred('\$this->getUsage() + \$file->getSize() \\
      *                          > static::SIZE'); \\
+     *     @ensures   \anothing; \\
      *     @throwable AllocationException e with \\
      *                    file->isAttached(): false and \\
      *                    e->getFilesystem(): this; \\
@@ -307,14 +314,14 @@ donc elle acceptera tous les arguments. Elle a une postcondition que nous
 décrirons dans les parties suivantes. La méthode \code{store} a deux
 comportements~: un comportement \code{full} quand le système de fichier est
 plein, et un comportement par défaut. Le premier comportement décrit une
-précondition et une postcondition uniquement exceptionnelle. En l'absence de
-postcondition normale, toute valeur retournée sera invalide. Ici, seule
-l'exception \code{AllocationException} peut être levée. Elle sera associée à
-l'identifiant \code{e}, puis le reste de la clause devra être valide. Dans le
-second comportement (par défaut), aucune exception ne peut être levée car la
-clause \athrowable est absente. Nous pouvons voir également que les attributs
-\code{\_usage} et \code{\_map} sont annotés d'invariants avec la clause
-\ainvariant.
+précondition et une postcondition uniquement exceptionnelle (car \aensures
+refuse tous les post-états normaux à cause de \anothing, nous y reviendrons).
+Ici, seule l'exception \code{AllocationException} peut être levée. Elle sera
+associée à l'identifiant \code{e}, puis le reste de la clause devra être valide.
+Dans le second comportement (par défaut), aucune exception ne peut être levée
+car la clause \athrowable est absente. Nous pouvons voir également que les
+attributs \code{\_usage} et \code{\_map} sont annotés d'invariants avec la
+clause \ainvariant.
 
 \end{example}
 
@@ -330,9 +337,10 @@ contraintes, respectivement présentées dans les parties suivantes.
 \begin{center}
 \begin{tabular}{rcl}
 \grule{expression} & \gsep &
-  (\grule{declaration}$^+_\code{and}$ $\code{and})^?$ \\ & &
-  (\grule{predicate}$^?_\code{and}$ $\code{and})^?$  \\ & &
-   \grule{qualification}$^+_\code{and}$ \\
+  \anothing \\ & &
+  \mvert (\grule{declaration}$^+_\code{and}$ $\code{and})^?$ \\ & &
+  \mvertp (\grule{predicate}$^?_\code{and}$ $\code{and})^?$  \\ & &
+  \mvertp \grule{qualification}$^+_\code{and}$ \\
 
 \grule{exceptional-expression} & \gsep &
     $($ $($ \grule{exception-identifier} $)^+_\code{or}$ \\ & &
@@ -466,6 +474,13 @@ Le prédicat \apred{\code{'\$this->getUsage() + \$file->getSize()
 que s'il n'y a plus de place pour ajouter un nouveau fichier, alors cette partie
 de la précondition est satisfaite.
 
+Le mot-clé \anothing est strictement équivalent à \apred{\code{'fal\-se'}}.
+Ainsi, écrire \code{\aensures \anothing;} signifie que tous les post-états
+normaux seront refusés car la post-condition normale sera toujours fausse. Ce
+mot-clé est plus qu'un sucre syntaxique car, selon la grammaire dans la
+figure~\ref{figure:language:grammar_part2}, il empêche l'utilisation de
+déclarations, d'autres prédicats ou de qualifications.
+
 Parce que la construction \apred{p} est une boîte noire, elle introduit du rejet
 lors de la génération de données car les contraintes $p$ ne sont pas considérées
 immédiatement. En effet, quand nous générons des données, nous les validons
@@ -485,12 +500,12 @@ autres, réduire le rejet lors de la génération de données. Ce processus est
 illustré dans la partie~\ref{section:data:arrays}
 page~\pageref{section:data:arrays}.
 
-\subsubsection{Contraintes}
+\subsubsection{Qualifications}
 
-Praspel a principalement deux sortes de contraintes~: soit en utilisant la
-syntaxe des déclarations, soit en utilisant le mot-clé \code{is} (différent de
-la clause \ais). Des exemples de contraintes sont présentées dans la
-partie~\ref{section:data:arrays} page~\pageref{section:data:arrays}.
+Praspel permet de qualifier une donnée en utilisant le mot-clé \code{is} suivi
+d'une liste d'adjectifs (différent de la clause \ais). Un exemple de
+qualification est présenté dans la partie~\ref{section:data:arrays}
+page~\pageref{section:data:arrays}.
 
 \subsubsection{Identifiants}
 
