@@ -1,9 +1,28 @@
 \section{Étude de cas concrète~: ingénieurs bénévoles}
 \label{section:experimentation:real}
 
-Introduction, bla bla.
+L'expérimentation précédente a été réalisée auprès d'étudiants. Nous voulons
+valider nos résultats auprès d'experts industriels sur des programmes du «~monde
+réel~».
+
+La partie~\ref{subsection:experimentation:presentation} présente les ingénieurs
+bénévoles et les programmes sur lesquels ils ont joué l'expérimentation. La
+partie~\ref{subsection:experimentation:modus_operandi} présente les protocoles
+expérimentaux qu'ils ont appliqué. Les
+parties~\ref{subsection:experimentation:coverage}
+et~\ref{subsection:experimentation:time} présentent les résultats obtenus avec
+la génération automatique de tests. La
+partie~\ref{subsection:experimentation:data}, quant à elle, présente les
+résultats obtenus avec uniquement la génération de données de tests. Beaucoup
+d'erreurs ont été détectées durant cette expérimentation. La
+partie~\ref{subsection:experimentation:parameterized} en présente quelques unes.
+Enfin, cette expérimentation s'est achevée sur une discussion que nous avons
+synthétisé dans la partie~\ref{subsection:experimentation:discuss} concernant
+les bénéfices de l'approche par les contrats pour le test, la pertinence de nos
+algorithmes de générations de données et de Praspel.
 
 \subsection{Présentation générale}
+\label{subsection:experimentation:presentation}
 
 Nous avons lancé un appel sur différents réseaux sociaux et différentes
 communautés pour rassembler des bénévoles pour cette expérimentation.
@@ -59,6 +78,7 @@ Sur ces programmes variés, nous avons demandé à notre panel d'appliquer les
 protocoles expérimentaux suivants.
 
 \subsection{Protocoles expérimentaux}
+\label{subsection:experimentation:modus_operandi}
 
 Cette expérimentation s'est déroulée en deux temps. Tout d'abord, nous avons
 demandé au panel d'appliquer le protocole expérimental suivant~:
@@ -95,6 +115,7 @@ parties suivantes regroupent toutes les données et informations des deux panels
 %temps.
 
 \subsection{Comparaison de la couverture de code des suites de tests}
+\label{subsection:experimentation:coverage}
 
 %Ici, on compare les suites de test en fonction de la couverture de tests.
 %Regarder les données manipulées des deux côtés, comment ça a été testé (aux
@@ -138,6 +159,7 @@ d'une manière qui n'avait pas été testée manuellement.
 Maintenant, comparons le temps de rédactions de ces suites de tests.
 
 \subsection{Temps de rédaction des suites de tests}
+\label{subsection:experimentation:time}
 
 %Ils sont tous habitués à écrire des tests. Personne ne connaît Praspel. Est-ce
 %qu'on compte le temps d'apprentissage~? Ils n'ont peut-être pas le temps
@@ -194,6 +216,7 @@ courbe d'apprentissage, mais nous n'en avons pas eu le temps. Nous rappelons que
 le panel était constitué de bénévoles.
 
 \subsection{Générations de données de tests}
+\label{subsection:experimentation:data}
 %
 %Les suites AGT ne sont pas toutes complètes. Il faut compléter avec des MT.
 %Est-ce que les algos de génération de données sont utiles~? Sont-ils aussi
@@ -315,6 +338,7 @@ Cette partie de l'expérimentation s'est arrêtée sur ce constat~: les tests
 paramétrés n'ont pas apporté de réels bénéfices dans ce contexte.
 
 \subsection{Erreurs détectées}
+\label{subsection:experimentation:errors}
 
 Cette expérimentation a permi de révéler plusieurs erreurs dans tous les
 programmes testés. Nous analysons les plus intéressantes d'entre elles.
@@ -380,6 +404,7 @@ non-prévues par l'implémentation. Ces erreurs ont principalement été détect
 en 2~minutes en moyenne.
 
 \subsection{Expertise humaine~: discussion}
+\label{subsection:experimentation:discuss}
 
 %Plutôt sous la forme d'une interview~? Est-ce que l'approche des contrats est
 %pertinente~? Est-ce que vous avez l'impression de gagner du temps~? De
