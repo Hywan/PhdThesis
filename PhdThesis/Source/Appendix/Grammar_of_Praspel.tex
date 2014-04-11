@@ -63,6 +63,7 @@
 %token  old             \bslash{}\bslash{}old \\
 %token  result          \bslash{}\bslash{}result \\
 %token  pred            \bslash{}\bslash{}pred \\
+%token  nothing         \bslash{}\bslash{}nothing \\
  \\
 // Symbols. \\
 %token  parenthesis_    \bslash{}( \\
@@ -185,6 +186,7 @@ behavior_content: \\
 expression: \\
               ( declaration() | constraint() | domainof() | predicate() ) \\
     ( ::and:: ( declaration() | constraint() | domainof() | predicate() ) )* \\
+  | <nothing> \\
  \\
 exceptional_expression: \\
     exception() ( ::or:: exception() )* \\
