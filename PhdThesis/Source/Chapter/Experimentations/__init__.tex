@@ -5,16 +5,13 @@
 
 Ce chapitre présente majoritairement deux expérimentations. Même si nous pouvons
 noter la présence de certains chiffres, l'objectif n'est pas de faire des
-expérimentations {\strong quantitatives} mais {\strong qualitatives}.
-%Nous ne voulons pas montrer l'efficacité de notre approche par des chiffres sur
-%des «~faux~» problèmes\footnote{Définir}.
-Il est question dans ce mémoire d'introduire un langage de spécification pour
-PHP, qui soit nouveau, simple, pragmatique et rassemblant plusieurs méthodes du
-test. Le but est de présenter toutes ces méthodes et de simplifier leurs
-utilisations dans le quotidien des ingénieurs de test et développeurs. C'est
-pour cela que nous avons par ailleurs choisi une approche avec les contrats car
-ils offrent beaucoup de services et demandent peu d'efforts de la part de
-l'utilisateur.
+expérimentations {\strong quantitatives} mais {\strong qualitatives}. Des
+expérimentations quantitatives ont été réalisées dans nos articles
+précédents~\acite{EnderlinDGO11, EnderlinDGB12, EnderlinGB13}.  Il est question
+dans ce mémoire d'introduire un langage de spécification pour PHP, qui soit
+simple, pragmatique et rassemblant plusieurs méthodes du test. Le but est de
+présenter toutes ces méthodes et de simplifier leurs utilisations dans le
+quotidien des ingénieurs de test et développeurs.
 
 Dans les chapitres précédents, nous avons présenté Praspel, un nouveau langage
 de spécification pour PHP. Nous avons par la suite présenté différents
@@ -25,7 +22,7 @@ implémentation de toutes ces contributions ainsi qu'une extension dans un outil
 industriel répandu pour qu'elles soient utilisables dans le quotidien des
 ingénieurs de test. C'est vers eux que nous allons nous tourner pour qu'ils
 jugent notre travail. Nous pensons qu'obtenir une expertise humaine à travers
-leurs retours et remarques mis en perspective par leur expérience est pertinent.
+leurs retours et remarques mis en perspective de leur expérience est pertinent.
 
 La première expérimentation a pour contexte un projet d'enseignement utilisant
 un robot appelé UniTestor développé par nos soins dans le cadre des JDév' à
@@ -42,10 +39,11 @@ que Praspel et ses outils rivalisent avec les tests manuels à couverture de cod
 rédaction des contrats est nettement inférieur à l'écriture de tests manuels.
 Puis, pour valider nos résultats sur des cas concrets, nous réappliquons une
 méthodologie similaire dans la partie~\ref{section:experimentation:real} avec un
-panel bénévol d'ingénieurs de test et d'entreprises. En plus des retours et
-remarques, nous verrons que Praspel et ses outils ont permis de détecter des
-erreurs dans du code déjà testé et en production, et ce rapidement et
-efficacement. Enfin, …
+panel bénévol d'ingénieurs de test. En plus des retours et remarques, nous
+verrons que Praspel et ses outils ont permis de détecter des erreurs dans du
+code déjà testé. Enfin, un usage innattendu de Praspel sera abordé dans la
+partie~\ref{section:experimentation:php} pour du test de performance et de
+non-régression d'une extension officielle de PHP.
 
 \require{Chapter/Experimentations/UniTestor.tex}
 \require{Chapter/Experimentations/Cas_concrets.tex}

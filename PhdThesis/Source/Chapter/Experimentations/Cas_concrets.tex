@@ -72,10 +72,10 @@ spécifique.
 Tous ces programmes font intervenir tous les types de données, à savoir des
 booléens, des entiers, des réels, des chaînes de caractères, des tableaux et des
 objets. Dans le cas des chaînes de caractères, la plupart pouvaient être
-spécifiées par une expression régulière, et quelqu'unes par des grammaires.
+spécifiées par une expression régulière, et quelques unes par des grammaires.
 
-Sur ces programmes variés, nous avons demandé à notre panel d'appliquer les
-protocoles expérimentaux suivants.
+Sur ces programmes variés, nous avons demandé à notre panel d'appliquer deux
+protocoles expérimentaux.
 
 \subsection{Protocoles expérimentaux}
 \label{subsection:experimentation:modus_operandi}
@@ -114,7 +114,7 @@ parties suivantes regroupent toutes les données et informations des deux panels
 %Que va-t-on comparer~? Les métriques sont~: nombres de tests, code coverage,
 %temps.
 
-\subsection{Comparaison de la couverture de code des suites de tests}
+\subsection{Couverture de code des suites de tests}
 \label{subsection:experimentation:coverage}
 
 %Ici, on compare les suites de test en fonction de la couverture de tests.
@@ -184,22 +184,22 @@ AGT. Le panel pondère toutefois cet effort~: comparer aux autres outils qu'ils
 manipulent quotidiennement, l'installation de Praspel et son extension pour
 atoum est très rapide (autour d'une minute) et le langage est simple à utiliser.
 Même si les notions sous-jacentes (les algorithmes et les méthodes du test
-utilisées) ne sont pas connues ou comprises, les domaines réalistes sont
+utilisés) ne sont pas connues ou comprises, les domaines réalistes sont
 également une notion simple à comprendre et à utiliser.
 
 Une fois le cap de l'apprentissage franchi, le panel a observé que pour peu de
 code à tester (moins de 5 ou 6~méthodes), il était plus rapide d'écrire des MT.
-En revanche, lorsqu'il faut tester plus de code (ce qui représente 95\% des
-cas), l'utilisation des contrats s'avèrent très efficace. Il faut entre 2 et
-4~fois moins de temps pour écrire les contrats et produire les AGT que d'écrire
-les MT à la main (de 2h pour les MT à 30mn pour les AGT par exemple). Pour
-mettre ces résultats en perspective avec la partie précédente, le temps gagné
-est aussitôt réinvesti pour écrire des MT plus «~poussés~», comprendre plus
-complets.
+En revanche, lorsqu'il faut tester plus de code (ce qui est pratiquement
+toujours le cas), l'utilisation des contrats s'avèrent très efficace. Il faut
+entre 2 et 4~fois moins de temps pour écrire les contrats et produire les AGT
+que d'écrire les MT à la main (de 2h pour les MT à 30mn pour les AGT par
+exemple). Pour mettre ces résultats en perspective avec la partie précédente, le
+temps gagné est aussitôt réinvesti pour écrire des MT plus «~poussés~»,
+comprendre plus complets.
 
 Le panel nous a en effet fait remarquer que malheureusemnt, les tests ne sont
 pas encore une priorité dans les budgets alloués au développement logiciel. Par
-conséquent, ils ont un temps limité pour tester leurs applications. Pendant le
+conséquent, ils ont un temps limité pour tester leurs programmes. Pendant le
 temps imparti, ils n'étaient capable d'écrire que des tests dits «~basiques~» ou
 alors ils ne testaient que les parties les plus critiques du code. Avec les
 contrats, ils spécifient toutes les méthodes car ils sont écrits en même temps
@@ -242,25 +242,23 @@ générées pour modifier d'autres données provenant de bases ou d'autres sourc
 Par ailleurs, comme les données de tests ne sont plus déclarées manuellement,
 cela simplifie grandement l'écriture des tests. Le panel a précisé que ce
 n'était «~même pas comparable~»~: il n'y avait rien avant et c'était un travail
-pénible, qui a maintenant disparu. Par ailleurs, cela simplifie aussi la lecture
-des tests. En effet, le contenu du test se restreint à sa logique plutôt qu'à la
-manipulation des données de tests. Le panel insiste sur le fait que les tests
-sont par conséquent plus facilement maintenables. Cela implique que les
-ingénieurs n'hésiteront pas à modifier les suites de tests car ce processus est
-simplifié.
+pénible. De même, cela simplifie aussi la lecture des tests. En effet, le
+contenu du test se restreint à sa logique plutôt qu'à la manipulation des
+données de tests. Le panel insiste sur le fait que les tests sont par conséquent
+plus facilement maintenables. Cela implique que les ingénieurs n'hésiteront pas
+à modifier les suites de tests car ce processus est simplifié.
 
 \paragraph{Deuxième constat} Sans générateur automatique de données, le panel
 nous avoue que les données de tests utilisées étaient très peu nombreuses~:
 entre 1 à 5 données par tests, 1.3 en moyenne. L'objectif était d'assurer une
 certaine couverture du code avec le critère tous-les-arcs. Avec nos générateurs
 de données, un grande nombre de données sont générables «~instantanément~» pour
-reprendre leurs termes. En effet, le temps de génération est tellement rapide
-qu'il en devient «~négligeable~». Le panel souligne qu'«~aucune différence n'est
-perceptible~» entre l'exécution des suites de tests avec ou sans générateurs de
-données\footnote{Nous noterons toutefois que les suites de tests ne comportaient
-que quelques dizaines de tests.}. Dans certaines méthodologies de développement
-comme le \inenglish{Test-Driven Development} ou les méthodes Agile, les tests
-sont exécutés en permanence, plusieurs dizaines de fois par heure. La rapidité
+reprendre leurs termes. En effet, le temps de génération est suffisamment rapide
+pour qu'il en devienne «~négligeable~». Le panel souligne qu'«~aucune différence
+n'est perceptible~» entre l'exécution des suites de tests avec ou sans
+générateurs de données. Dans certaines méthodologies de développement comme le
+\inenglish{Test-Driven Development} ou les méthodes Agile, les tests sont
+exécutés en permanence, plusieurs dizaines de fois par heure. La rapidité
 d'exécution des tests est alors importante pour ne pas impacter la vitesse de
 développement des équipes.
 
@@ -290,8 +288,8 @@ demandé était très rapidement amorti.
 
 Enfin, dans le cas des tableaux, le panel a apprécié le fait de pouvoir générer
 à moindre coût des centaines de tableaux respectant certaines contraintes. Là
-encore, très peu de tableaux étaient utilisés en tant que données de tests
-manuellement avant. \\
+encore, très peu de tableaux étaient utilisés avant en tant que données de tests
+manuelles. \\
 
 Dans tous les cas, les membres du panel ont remarqué une diminution du nombre de
 tests. En effet, comme un test manipule plus de données pertinentes, les autres
@@ -389,17 +387,17 @@ moins de 15~secondes une fois le test écrit.
 
 Ce programme était en production, avec des centaines d'utilisateurs et plusieurs
 centaines de milliers de clients (pratiquement un million). Des tests unitaires
-et fonctionnells étaient même écrits et exécutés très régulièrement.
+et fonctionnels étaient même écrits et exécutés très régulièrement.
 Heureusement, aucune formule de cette forme n'a été écrite par les utilisateurs.
 
 \paragraph{Erreurs dans les tests} Dans les deux derniers points abordés, la
 correction des erreurs a permis de détecter d'autres erreurs dans les tests. En
-effet, les tests calculaient mal leurs verdicts. Praspel génèrait des AGT qui
+effet, les tests calculaient mal leurs verdicts. Praspel générait des AGT qui
 échouaient alors que les MT équivalent étaient des succès. Après analyses des
 AGT et des MT, il s'est avéré qu'il y avait des erreurs dans les MT.
 
 \paragraph{Autres erreurs} D'autres erreurs ont été détectées notamment avec le
-domaine réaliste \code{Regex} ou \code{Array} qui génèraient des données
+domaine réaliste \code{Regex} ou \code{Array} qui généraient des données
 non-prévues par l'implémentation. Ces erreurs ont principalement été détectées
 en 2~minutes en moyenne.
 
@@ -479,7 +477,7 @@ cette phase du développement.
 
 \paragraph{Génération de données de tests} Utiliser des générateurs de données
 permet de générer beaucoup de données pertinentes en très peu de temps. Le panel
-a ressenti plus de confiances dans les tests avec les générateurs plutôt qu'avec
+a ressenti plus de confiance dans les tests avec les générateurs plutôt qu'avec
 des données de tests manuelles. Ce ressenti s'est confirmé par le nombre
 d'erreurs détectées en peu de temps (en quelques minutes) dans des programmes
 déjà testés.
@@ -499,14 +497,14 @@ effet, comparer aux dictionnaires de données ou aux données manuelles qu'ils
 utilisent quotidiennement, Praspel va plus loin et offre des services plus
 efficaces.
 
-\paragraph{À propos de Praspel} Praspel étant un projet de recherche, il n'y
-a donc pas de documentation utilisateur. Pour que le panel puisse utiliser
-Praspel durant cette expérimentation, nous leur avons fourni les articles
-existants. Ils ont reconnu qu'une documentation utilisateur aurait été plus
-appréciable mais que toutefois le langage était simple et intuitif. Il y a peu
-de constructions, la syntaxe est simple et le fait qu'il soit possible de
-composer des domaines réalistes est un réel avantage. Nous n'avons eu que de
-très peu de questions sur le langage.
+\paragraph{À propos de Praspel} Praspel étant un projet de recherche, nous
+n'avons pas eu le temps d'écrire une documentation utilisateur. Pour que le
+panel puisse utiliser Praspel durant cette expérimentation, nous leur avons
+fourni les articles existants. Ils ont reconnu qu'une documentation utilisateur
+aurait été plus appréciable mais que toutefois le langage était simple et
+intuitif. Il y a peu de constructions, la syntaxe est simple et le fait qu'il
+soit possible de composer des domaines réalistes est un réel avantage. Nous
+n'avons eu que de très peu de questions sur le langage.
 
 Une remarque pertinente a été faite par un ingénieur. Praspel convient très bien
 pour tester du code dit «~métier~», c'est~à~dire du code qui manipule des
