@@ -30,17 +30,19 @@ après son exécution.
 
 \end{itemize}
 
-Par extension, nous comprenons qu'il existe deux états pour le SUT~: avant
-l'exécution d'une méthode, il se trouve dans un {\strong pré-état}, et après
-l'exécution d'une méthode, il se trouve dans un {\strong post-état}. Pour les
-langages supportant les exceptions, il existe un post-état normal et un
-post-état exceptionnel dans le cas où une exception ait été levée. Par ailleurs,
-quand le contrat est évalué, nous disons que c'est un {\strong succès} si aucune
-clause n'est violée, sinon c'est un {\strong échec}.
+Par extension, nous comprenons qu'il existe deux états pour le SUT
+(\inenglish{System Under Test})~: avant l'exécution d'une méthode, il se trouve
+dans un {\strong pré-état}, et après l'exécution d'une méthode, il se trouve
+dans un {\strong post-état}. Pour les langages supportant les exceptions, il
+existe un post-état normal et un post-état exceptionnel, dans le cas où une
+exception est levée. Par ailleurs, quand le contrat est évalué, nous disons que
+c'est un {\strong succès} si aucune clause n'est violée, sinon c'est un {\strong
+échec}. Nous verrons par la suite comment est évalué un contrat.
 
 Les langages décrivant une spécification formelle à travers des contrats pour le
 comportement des programmes, et utilisés comme annotations, sont appelés des
 {\strong langages de contrats}. Il en existe plusieurs~\acite{HatcliffLLMP12}.
+La suite de cette partie en décrit quelques-uns.
 
 \paragraph{Eiffel} Le langage Eiffel~\acite{MeyerNM87} est un langage de
 programmation orienté objet. Sa plus grosse contribution au domaine a été
@@ -53,16 +55,16 @@ objet apporte quelques spécificités, comme les invariants de classes, la gesti
 de l'héritage multiple ou la résolution de conflits avec l'héritage multiple
 comme le renommage de certains attributs ou méthodes. Mais également la gestion
 du \inenglish{dynamic binding} (aussi appelé \inenglish{late binding},
-représenté en général par la variable \code{this}), c'est~à~dire que la
-résolution des appels se fait à l'exécution et non pas à la compilation. Les
-exceptions nécessitent également de définir dans quels contextes elles peuvent
-être levées et dans quel état se trouve l'objet après qu'un exception ait été
-levée. Cette information est d'autant plus importante que le langage Eiffel
-permet de ré-exécuter la routine (méthode) qui a déclenché l'exception. Les
-préconditions et postconditions sont exprimées avec les mots-clés \code{require}
-et \code{ensure}. Le contenu de ces constructions est exprimé avec le langage
-Eiffel lui-même. Le langage introduit également le mot-clé \code{assert} pour
-exprimer des assertions ou des invariants de boucles.
+représenté en général par la variable \code{this} qui représente l'instance de
+l'objet), c'est~à~dire que la résolution des appels se fait à l'exécution et non
+pas à la compilation. Les exceptions nécessitent également de définir dans quels
+contextes elles peuvent être levées et dans quel état se trouve l'objet après
+qu'une exception ait été levée. Cette information est d'autant plus importante
+que le langage Eiffel permet de ré-exécuter la routine (méthode) qui a déclenché
+l'exception. Les préconditions et postconditions sont exprimées avec les
+mots-clés \code{require} et \code{ensure}. Le contenu de ces clauses est exprimé
+dans le langage Eiffel lui-même. Le langage introduit également le mot-clé
+\code{assert} pour exprimer des assertions ou des invariants de boucles.
 
 Les contrats sont compilés avec le reste du programme mais sont placés dans des
 fichiers à part. Lors de la construction finale de l'exécutable du programme, il
@@ -74,33 +76,34 @@ rapide, mais il est nécessaire de s'assurer de la fiabilité du programme.
 
 \paragraph{JML} Le \inenglish{Java Modeling Language}~\acite{JML} est un langage
 de contrats pour Java~\acite{Java}. À l'inverse du langage Eiffel, JML est un
-langage d'annotation pour Java. Classiquement, il utilise les mots-clés
-\code{requires} et \code{ensures} pour introduire les préconditions et les
-postconditions. Une postcondition exceptionnelle est introduite par le mot-clé
-\code{signals}. Les invariants sont introduits par le mot-clé \code{invariant}.
-JML propose la clause \code{also} qui permet de raffiner, par un nouveau
-contrat, des contrats hérités d'une classe parente. Les expressions de JML sont
-exprimées à l'aide du langage Java mais il propose également des identifiants
-réservés, comme \aresult, présent uniquement dans une postcondition normale, et
-qui fait référence au résultat de la méthode. De même, nous trouvons la
-construction \aold{i}, présente uniquement dans une postcondition, qui fait
-référence à la valeur de la données $i$ dans le pré-état. JML propose également
-des constructions logiques, comme la relation d'implication ($\implies$),
-d'équivalence ($\Longleftrightarrow$) ou des quantificateurs comme
-\code{\bslash{}forall} ($\forall$) et \code{\bslash{}exists} ($\exists$).
+langage d'annotation pour Java. Il utilise les mots-clés \code{requires} et
+\code{ensures} pour introduire les préconditions et les postconditions. Une
+postcondition exceptionnelle est introduite par le mot-clé \code{signals}. Les
+invariants de classes sont introduits par le mot-clé \code{invariant}, et les
+invariants de boucles avec le mot-clé \code{loop\_invariant}. JML propose la
+clause \code{also} qui permet de raffiner, par un nouveau contrat, des contrats
+hérités d'une classe parente. Les expressions JML sont des expressions Java
+complétées par des identifiants réservés, comme \aresult, présent uniquement
+dans une postcondition normale, et qui fait référence au résultat de la méthode.
+De même, nous trouvons la construction \aold{i}, présente uniquement dans une
+postcondition, qui fait référence à la valeur de la donnée $i$ dans le pré-état.
+JML propose également des constructions logiques, comme la relation
+d'implication (\code{==>}), d'équivalence (\code{<==>}) ou des quantificateurs
+comme \code{\bslash{}forall} ($\forall$) et \code{\bslash{}exists} ($\exists$).
 
 La distribution officielle de JML fournit principalement deux outils.  Le
 premier, le \inenglish{Runtime Assertion Checker}, sert de
-\inenglish{monitoring} au programme Java, et le second, JMLUnit, s'appuyant sur
-le précédent, est dédié à Java. Le RAC de JML~\acite{Cheon02} est un outil
-permettant de vérifier les contrats JML lors de l'exécution du programme. Les
-contrats JML sont traduits en Java~\acite{Raghavan2005}. La proximité entre ces
-deux langages est la clé de la démarche. En effet, la syntaxe des contrats JML
-est similaire à celle de Java, et les mots-clés JML spécifiques (pour par
-exemple les clauses, les quantificateurs etc.) sont traduits par des structures
-Java adéquates. Néanmoins, cette similitude a des limites~: certaines
-constructions du langage, comme les quantifications sur les objets, ne sont pas
-traduisibles et donc ne peuvent pas être vérifiées.
+\inenglish{monitoring} au programme Java, et le second, JMLUnit, permet de
+transformer un contrat en test (nous le détaillons après). Le RAC de
+JML~\acite{Cheon02} est un outil permettant de vérifier les contrats JML lors de
+l'exécution du programme. Les contrats JML sont traduits en
+Java~\acite{Raghavan2005}. La proximité entre ces deux langages est la clé de la
+démarche. En effet, la syntaxe des contrats JML est similaire à celle de Java,
+et les mots-clés JML spécifiques (par exemple pour les clauses, les
+quantificateurs etc.) sont traduits par des structures Java adéquates.
+Néanmoins, cette similitude a des limites~: certaines constructions du langage,
+comme les quantifications sur les objets, ne sont pas traduisibles et donc ne
+peuvent pas être vérifiées.
 
 Le programme Java d'origine est ainsi enrichi par la vérification des contrats
 JML. Un inconvénient est que le binaire résultant est plus important, ce qui
@@ -114,17 +117,17 @@ durant une exécution avec les données de l'exécution.
 \paragraph{ACSL} Le \inenglish{ANSI/ISO C Specification Language}~\acite{ACSL}
 est un langage de contrats pour C~\acite{C}, inspiré principalement du langage
 de spécification de l'outil Caduceus~\acite{FilliatreM07}, dédié à la
-vérification déductive de propriétés de comportements de programmes C. Caduceus
+vérification déductive de propriétés comportementales de programmes C. Caduceus
 est lui-même inspiré de JML. Les langages se ressemblent: les mot-clés
 \code{requires} et \code{ensures} introduisent respectivement une précondition
 et une postcondition. Les invariants sont introduits avec le mot-clé
-\code{invariant}.  Plusieurs comportements peuvent être exprimés pour une même
+\code{invariant}. Plusieurs comportements peuvent être exprimés pour une même
 méthode avec le mot-clé \code{behavior}. ACSL propose d'autres clauses pour
 exprimer des lemmes, des axiomes ou des fonctions logiques.
 
 Contrairement à JML qui utilise Java pour exprimer ces contraintes, ACSL
-n'utilise pas de C mais un langage plus simple, qui s'inspire toutefois de C
-(pour les opérateurs arithmétiques, logiques, les tableaux etc.) afin de ne pas
+n'utilise pas C mais un langage plus simple, qui s'inspire toutefois de C (pour
+les opérateurs arithmétiques, logiques, les tableaux etc.) afin de ne pas
 perturber l'utilisateur. D'autres contraintes sont présentes car intrinsèques au
 langage, comme la logique des pointeurs, et d'autres ne sont pas présentes,
 comme les exceptions.
@@ -165,7 +168,7 @@ Presque chaque langage de programmation répandu a son propre langage de contrat
 sauf PHP, d'où l'importance de Praspel. \\
 
 L'approche par les contrats est en général bien acceptée par les développeurs
-car elle est proche du code source du programme.  Toutefois, selon la complexité
+car elle est proche du code source du programme. Toutefois, selon la complexité
 du langage de spécification, elle sera plus ou moins utilisée. Cette complexité
 ressentie peut être compensée par d'autres services que peuvent offrir les
-contrats.
+contrats, comme le \inenglish{Contract-based Testing}.

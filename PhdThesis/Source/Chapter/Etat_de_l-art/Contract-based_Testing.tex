@@ -1,31 +1,29 @@
 \section{\inenglish{Contract-based Testing}}
 \label{section:sota:cbt}
 
-Jusqu'à maintenant, nous avons vu comment les contrats sont utilisés pour
-{\strong filtrer} les données manipuler par un programme ou pour vérifier que le
-programme ne produira pas d'erreur. Cependant, l'un des intérêts et usages
-principaux des contrats est pour le {\strong test}. En effet, le {\strong test à
-partir de contrats} (\inenglish{Contract-based Testing}, abrégé CbT) a été
-introduit pour exploiter les langages de contrats afin de tester des
-programmes~\acite{Aichernig03}~:
+Nous avons vu comment les contrats sont utilisés pour {\strong filtrer} les
+données manipulées par un programme ou pour vérifier que le programme ne
+produira pas d'erreur. Cependant, l'un des intérêts et usages principaux des
+contrats est pour le {\strong test}. Le {\strong test à partir de contrats}
+(\inenglish{Contract-based Testing}, abrégé CbT) a été introduit pour exploiter
+les langages de contrats afin de tester des programmes~\acite{Aichernig03}~:
 
 \begin{itemize}
 
 \item les invariants et les préconditions sont utilisés pour {\strong générer
 des données} de test~;
 
-\item les postconditions {\strong fournissent un oracle} capable de calculer le
-verdict du test à l'exécution.
+\item les postconditions {\strong fournissent un oracle} permettant de calculer
+le verdict du test à l'exécution.
 
 \end{itemize}
 %
 Rappelons qu'un test est composé de trois parties~: un SUT, des données de test
-et un oracle. La première partie est présente du fait de la proximité entre les
-contrats et le programme, et les deux dernières nous sont données en exploitant
-le contrat.
+et un oracle. En général, le contrat annote le programme, donc nous connaissons
+le SUT. Les deux dernières parties nous sont données en exploitant le contrat.
 
 À partir d'une spécification formelle, sous la forme d'un contrat, nous sommes
-capable de générer des suites de tests automatiquement. Comme nous sommes au
+capables de générer des suites de tests automatiquement. Comme nous sommes au
 niveau du code source du programme, et plus précisément, sur les méthodes des
 classes (dans un contexte orienté objet), les tests seront {\strong unitaires}.
 
@@ -35,9 +33,9 @@ maintenant présentés.
 \paragraph{JMLUnit} L'outil JMLUnit~\acite{CheonL02, ZimmermanN10} permet de
 transformer un contrat JML en une suite de tests exécutable avec JUnit. L'outil
 assure un moyen simple et efficace d'automatiser la génération d'oracle de
-tests.  L'objectif est de décharger l'utilisateur de calculer le verdict du
+tests. L'objectif est de décharger l'utilisateur de calculer le verdict du
 test, à savoir si le test unitaire est un succès ou un échec. L'outil génère
-automatiquement deux classes pour chaque interfaces ou classes Java annotées par
+automatiquement deux classes pour chaque interface ou classe Java annotée par
 du JML~: un squelette où déclarer les données de tests et les oracles permettant
 de calculer le verdict des tests.
 
