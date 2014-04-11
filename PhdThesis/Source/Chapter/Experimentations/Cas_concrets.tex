@@ -278,6 +278,7 @@ simplification de la suite de tests~: la quantité, la lecture, l'écriture et l
 maintenance.
 
 \subsection{Tests paramétrés}
+\label{subsection:experimentation:parameterized}
 
 %Certains auront probablement fait des tests paramétrés (ça se fait déjà un peu
 %dans atoum, ça s'est fait dans UniTestor, je les encouragerai à le faire). Quels
@@ -378,30 +379,128 @@ domaine réaliste \code{Regex} ou \code{Array} qui génèraient des données
 non-prévues par l'implémentation. Ces erreurs ont principalement été détectées
 en 2~minutes en moyenne.
 
-\subsection{Retours des ingénieurs/expertise humaine}
+\subsection{Expertise humaine~: discussion}
 
-Plutôt sous la forme d'une interview~? Est-ce que l'approche des contrats est
-pertinente~? Est-ce que vous avez l'impression de gagner du temps~? De
-l'argent~? De la qualité logiciel~? Qu'est-ce qu'il faudrait pour gagner en
-maturité~? Les bugs qui ont été trouvés (s'il y en a), peut-on estimer leurs
-coût~: en temps, en personne, en argent (par rapport à la criticité du bug)~?
+%Plutôt sous la forme d'une interview~? Est-ce que l'approche des contrats est
+%pertinente~? Est-ce que vous avez l'impression de gagner du temps~? De
+%l'argent~? De la qualité logiciel~? Qu'est-ce qu'il faudrait pour gagner en
+%maturité~? Les bugs qui ont été trouvés (s'il y en a), peut-on estimer leurs
+%coût~: en temps, en personne, en argent (par rapport à la criticité du bug)~?
+%
+%Autre question, moins empirique~: est-ce que l'ingénieur aurait écrit ces tests
+%là, ou pas, des tests trop simples, des tests trop complexes, pertinents, ça
+%remplit nos objectifs qualités, de couverture etc.
+%
+%Expressivité de Praspel~: est-ce que ce le langage est assez complet, est-ce
+%qu'ils peuvent tout exprimer avec ou pas~?
+%
+%Est-ce qu'ils sont limités par les générateurs de données~? Est-ce qu'ils les
+%ont un peu hacker pour obtenir la donnée qu'ils voulaient~? Est-ce qu'ils
+%voulaient faire quelque chose qui n'était pas possible~? Est-ce qu'ils se
+%s'auraient poser la question sans Praspel~?
+%
+%\subsubsection{Bénéfices des contrats}
+%
+%Qu'est-ce que cela apporte à votre méthodologie~? Vous travaillez plus
+%lentement, plus rapidement~? Facile à prendre en main et à comprendre~?
 
-Autre question, moins empirique~: est-ce que l'ingénieur aurait écrit ces tests
-là, ou pas, des tests trop simples, des tests trop complexes, pertinents, ça
-remplit nos objectifs qualités, de couverture etc.
+Pour finir cette expérimentation, nous avons discuté en groupe avec les membres
+du panel. Nous avons synthétisé ces discussions en plusieurs sujets.
 
-Expressivité de Praspel~: est-ce que ce le langage est assez complet, est-ce
-qu'ils peuvent tout exprimer avec ou pas~?
+\paragraph{Bénéfices des contrats} La remarque la plus fréquente était que les
+con\-trats offrent une documentation plus complète. Ils sont écrits en même
+temps que l'implémentation et sont utiles à court terme, alors qu'écrire une
+documentation n'a pas de réel intérêt à court terme. Elle était rarement
+écrite ou complète en plus d'être informelle. Cet aspect formel a été relevé
+plusieurs fois~: le contrat se lit facilement et il n'est plus nécessaire de
+regarder l'implémentation pour comprendre ce que fait la méthode.
 
-Est-ce qu'ils sont limités par les générateurs de données~? Est-ce qu'ils les
-ont un peu hacker pour obtenir la donnée qu'ils voulaient~? Est-ce qu'ils
-voulaient faire quelque chose qui n'était pas possible~? Est-ce qu'ils se
-s'auraient poser la question sans Praspel~?
+Dans des équipes qui travaillent en \inenglish{Test-Driven Development},
+c'est~à~dire que les tests sont écrits avant l'implémentation, il y a souvent
+une notion de binômage. Les tests sont écrits par une personne et
+l'implémentation par une autre. Cette approche fonctionne bien car les tests et
+l'implémentation sont écrits dans des fichiers séparés. Avec les contrats, ils
+sont écrits dans le même fichier. Il a donc été nécessaire de réorganiser le
+mode de travail en échangeant le clavier. Nous avons fait remarquer au panel
+qu'il était possible que les contrats soient écrits à part mais la proximité
+entre le contrat et l'implémentation est désirée. Tout d'abord parce que le
+contrat joue le rôle de documentation et que, d'autre part, il est plus facile
+de maintenir un contrat lorsqu'il annote une méthode.
 
-\subsubsection{Bénéfices des contrats}
+De plus, le panel a remarqué que l'écriture d'un contrat obligeait à réfléchir
+d'avantage sur les données que manipule la méthode. Les tests obligent déjà à
+réfléchir à l'architecture et aux API des programmes, mais les contrats vont
+encore plus loin car ils nécessitent de formaliser ces réflexions. Le temps
+dédié à l'écriture des contrats permettrait d'éviter des erreurs de conception
+par la suite. Toutefois, nous n'avons pas réussi à observer ou quantifier ce
+phénomène.
 
-Qu'est-ce que cela apporte à votre méthodologie~? Vous travaillez plus
-lentement, plus rapidement~? Facile à prendre en main et à comprendre~?
+\paragraph{Bénéfices du \inenglish{Contract-based Testing}} Utiliser les
+contrats pour générer des tests apporte principalement un gain de temps. Même si
+les tests générés automatiquement sont considérés comme «~basiques~», ils
+couvrent tout de même toute la spécification et sont pertinents. Le panel nous a
+confirmé que la majorité des AGT auraient pu être écrits par eux-mêmes mais
+qu'il leur aurait fallu beaucoup de temps. Le critère de couverture de contrat
+\inenglish{All}-$G$ couvre toutes la structure du contrat (qui réflète plus ou
+moins la structure de l'implémentation) et les combinaisons des données. Écrire
+un contrat étant plus rapide que d'écrire les tests manuellement, le
+\inenglish{Contract-based Testing} apporte un gain de temps et de confiance dans
+les tests.
+
+Le panel souligne encore que cette utilisation des contrats permet de «~déblayer
+le terrain~» pour reprendre leurs termes. Ainsi, ils peuvent d'avantage se
+concentrer sur des tests plus avancés tout en respectant le budget alloué à
+cette phase du développement.
+
+\paragraph{Génération de données de tests} Utiliser des générateurs de données
+permet de générer beaucoup de données pertinentes en très peu de temps. Le panel
+a ressenti plus de confiances dans les tests avec les générateurs plutôt qu'avec
+des données de tests manuelles. Ce ressenti s'est confirmé par le nombre
+d'erreurs détectées en peu de temps (en quelques minutes) dans des programmes
+déjà testés.
+
+L'utilisation de générateurs simplifie également l'écriture des tests, ainsi que
+leur lecture et leur maintenance. Les générateurs permettent de réduire la
+taille des suites de tests.
+
+Ne pas connaître les algorithmes sous-jacents n'est pas réellement un problème.
+Toutefois, utiliser ce type d'algorithmes pousse la réflexion plus loin. En
+effet, certains des ingénieurs ont commencé à détourner certains algorithmes,
+notamment sur les grammaires, pour répondre à des besoins très spécifiques. Ces
+modifications ne sont pas à la portée de tout le monde et il a été demandé une
+documentation et des informations détaillée sur ces sujets. Le panel a souligné
+que sans Praspel, ils n'auraient même pas songé à ce genre de techniques. En
+effet, comparer aux dictionnaires de données ou aux données manuelles qu'ils
+utilisent quotidiennement, Praspel va plus loin et offre des services plus
+efficaces.
+
+\paragraph{À propos de Praspel} Praspel étant un projet de recherche, il n'y
+a donc pas de documentation utilisateur. Pour que le panel puisse utiliser
+Praspel durant cette expérimentation, nous leur avons fourni les articles
+existants. Ils ont reconnu qu'une documentation utilisateur aurait été plus
+appréciable mais que toutefois le langage était simple et intuitif. Il y a peu
+de constructions, la syntaxe est simple et le fait qu'il soit possible de
+composer des domaines réalistes est un réel avantage. Nous n'avons eu que de
+très peu de questions sur le langage.
+
+Une remarque pertinente a été faite par un ingénieur. Praspel convient très bien
+pour tester du code dit «~métier~», c'est~à~dire du code qui manipule des
+données et qui en calcule d'autres. C'est exactement ce que fait le robot
+UniTestor présenté dans la partie~\ref{section:experimentation:unitestor}. En
+revanche, pour du code dit «~technique~», Praspel est plus limité. Un exemple de
+code technique serait un générateur de bouchons (\inenglish{mock generator}). Un
+tel générateur utilise un nom de classe en entrée et va générer du code PHP qui,
+une fois exécuté, aura un comportement similaire à la classe bouchée {\em
+modulo} certaines méthodes ou attributs avec des comportements différents.
+Praspel pourrait valider que le code PHP produit est correct d'un point de vue
+syntaxique, mais spécifier qu'il est correct d'un point de vue sémantique est
+nettement plus difficile. Actuellement, le seul moyen de spécifier une telle
+postcondition se ferait par le biais d'un domaine réaliste sur-mesure ou alors
+en utilisant la construction \apred{\empty}. Si cet effort est ponctuel, il est
+plus rapide d'écrire un test manuel. Cependant, un test manuel pourrait être
+limité et l'utilisation d'un test paramétré (c'est~à~dire annoté par un contrat,
+voir la partie~\ref{subsection:experimentation:parameterized}) serait
+particulièrement adaptée à ce genre de cas de figure.
 
 \section{Autre cas d'études ponctuels}
 
