@@ -2,8 +2,8 @@
 \label{section:tools:atoum}
 
 atoum~\acite{atoum}, sans majuscule, est aujourd'hui l'un des
-\inenglish{frameworks} de tests unitaires les plus utilisés dans l'industrie. Gratuit et
-\inenglish{open-source}, il compte une communauté active et plusieurs
+\inenglish{frameworks} de tests unitaires les plus utilisés dans l'industrie.
+Gratuit et \inenglish{open-source}, il compte une communauté active et plusieurs
 utilisateurs et partenaires industriels importants. atoum est également inclue
 dans plusieurs IDE et outils majeurs, comme Netbeans\footnote{Voir
 \url{https://netbeans.org/}.}, Eclipse\footnote{Voir
@@ -53,14 +53,14 @@ class HelloWorld extends \bslash{}atoum\bslash{}test \{ \\
     public function testSay ( ) \{ \\
  \\
         \$helloWorld = new \bslash{}Project\bslash{}HelloWorld(); \\
-        \$this->string(\$helloWorld->say())      \circled{1} \\
-                  ->isEqualTo('Hello World!'); \circled{2} \\
+        \$this->string(\$helloWorld->say())      /* \(\circled{1}\) */ \\
+                  ->isEqualTo('Hello World!'); /* \(\circled{2}\) */ \\
     \} \\
 \}
 \end{pre}
 %
-Puis nous exécutons le test en ligne de commande (modulo une intégration dans un
-IDE)~:
+Puis nous exécutons le test en ligne de commande ({\em modulo} une intégration
+dans un IDE)~:
 %
 \begin{pre}
 \$ atoum --file Path/To/Our/Test.php \\

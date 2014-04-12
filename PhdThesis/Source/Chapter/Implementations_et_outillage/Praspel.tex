@@ -1,18 +1,73 @@
 \section{Praspel}
 \label{section:tools:praspel}
 
-Cette partie est consacrée à présenter l'implémentation et l'outillage de
-Praspel. Tout d'abord, la partie~\ref{subsection:tools:interpretation} présente
-comment le langage est analysé. Ensuite, la partie~\ref{subsection:tools:model}
-présente l'architecture de Praspel et son modèle objet, la pièce centrale,
-suivie des partie~\ref{subsection:tools:compilation}
-et~\ref{subsection:tools:disassembler} qui présentent respectivement comment
-exporter ou importer le modèle et comment le désassembler. Puis, la
-partie~\ref{subsection:tools:evaluation} présente comment l'évaluer. Enfin,
-comme Praspel est un langage de spécification destiné à PHP construit de façon
-modulaire et extensible, pour faciliter son développement et sa maintenance,
-nous avons choisi de nous appuyer sur le projet Hoa, présenté dans la
-partie~\ref{subsection:tools:hoa}.
+Cette partie présente l'implémentation et l'outillage de Praspel. Tout d'abord,
+la partie~\ref{subsection:tools:interpretation} présente comment le langage est
+analysé. Ensuite, la partie~\ref{subsection:tools:model} présente l'architecture
+de Praspel et son modèle objet, la pièce centrale. Les
+parties~\ref{subsection:tools:compilation}
+et~\ref{subsection:tools:disassembler} présentent respectivement comment
+exporter ou importer le modèle et comment le désassembler. Enfin, la
+partie~\ref{subsection:tools:evaluation} présente comment évaluer le modèle.
+
+\begin{figure}
+
+\centering
+
+\begin{tikzbox}{boxtoolsdispatching}{xshift=-2.2cm}
+\begin{pre}
+class C \{ \\
+ \\
+    /** \\
+     * \arequires  …; \tikzref{boxtoolsdispatchingA} \\
+     * \aensures   …; \\
+     * \athrowable …; \tikzref{boxtoolsdispatchingB} \\
+     */ \\
+    public function f ( ) \{ \tikzref{boxtoolsdispatchingC} \\
+ \\
+        // … \\
+    \} \tikzref{boxtoolsdispatchingD} \\
+\}
+\end{pre}
+\end{tikzbox}
+%
+\begin{tikzannotation}
+    \draw [mybrace]
+        (boxtoolsdispatchingA.north -| boxtoolsdispatching.east)
+        -- node (P) [mybracetext] {Praspel}
+        (boxtoolsdispatchingB.south -| boxtoolsdispatching.east);
+    \draw [mybrace]
+        (boxtoolsdispatchingC.north -| boxtoolsdispatching.east)
+        -- node (S) [mybracetext] {SUT}
+        (boxtoolsdispatchingD.south -| boxtoolsdispatching.east);
+
+    \node (Pc) [right of=P, node distance=1.8cm] {\circled{P}};
+    \draw [mywavyarrow] (P) -- (Pc);
+
+    \node (Sc) at (S -| Pc) {\circled{S}};
+    \draw [mywavyarrow] (S) -- (Sc);
+\end{tikzannotation}
+
+\caption{\label{figure:tools:dispatching} Répartitions des composants d'un
+programme.}
+
+\end{figure}
+
+La figure~\ref{figure:tools:dispatching} nous rappelle que, dans une classe, les
+commentaires qui annotent les méthodes contiennent des contrats écrits en
+Praspel. Les contrats seront donc extraits de ces commentaires pour être envoyés
+dans les outils de Praspel. Les méthodes vont constituer le SUT et seront
+utilisées lors de l'exécution des tests. Dans les prochaines figures, ces
+données sont identifiées par une lettre cerclée afin d'indiquer leur flux dans
+les différents outils. Ainsi, la notation %
+\tikz[baseline=(p.base)] {
+    \node (p) [anchor=east] at (0, 0) {Praspel};
+    \node (pc) at (1, 0) {\circled{P}};
+    \draw [mywavyarrow] (p) -- (pc);
+} %
+signifie que le composant Praspel sera représenté par \circled{P} dans les
+figures suivantes. Le même raisonnement s'applique pour le SUT représenté par
+\circled{S}.
 
 \begin{figure}
 
@@ -79,13 +134,13 @@ formes et le passage de l'une vers l'autre~:
 
 \item le langage est la forme textuelle de Praspel, provenant des commentaires
 des méthodes. Il est défini par la grammaire dans la
-partie~\ref{section:language:praspel}. En utilisant des analyseurs, le langage
-est transformé en modèle objet~;
+partie~\ref{section:language:praspel} page~\pageref{section:language:praspel}.
+En utilisant des analyseurs, le langage est transformé en modèle objet~;
 
-\item le modèle objet est la pièce centrale de Praspel~: c'est un ensemble
-d'objets en mémoire réprésentant chaque partie du langage (clause, variable,
-opérateur etc.). Tous ces objets sont imbriqués et forme une structure qui
-s'apparente à un arbre~;
+\item le modèle objet \circled{M} est la pièce centrale de Praspel~: c'est un
+ensemble d'objets en mémoire réprésentant chaque partie du langage (clause,
+variable, opérateur etc.). Tous ces objets sont imbriqués et forme une structure
+qui s'apparente à un arbre~;
 
 \item le modèle objet peut être exporté sous forme de code PHP qui, quand il est
 exécuté, reconstruit en mémoire le modèle objet depuis lequel il a été généré~;
@@ -95,7 +150,7 @@ textuelle.
 
 \end{itemize}
 %
-Les parties suivantes détaillent ses différentes étapes.
+Les parties suivantes détaillent ces différentes étapes.
 
 \subsection{Analyses}
 \label{subsection:tools:interpretation}
@@ -111,13 +166,21 @@ produire un AST, puis l'appel d'un visiteur pour construire le modèle objet~;
 ainsi~:
 %
 \begin{pre}
-\$compiler    = Hoa\bslash{}Compiler\bslash{}Llk::load( \\
+\$parser      = Hoa\bslash{}Compiler\bslash{}Llk::load( \\
     new Hoa\bslash{}File\bslash{}Read('hoa://Library/Praspel/Grammar.pp') \\
-);                                          \tikzref{codetoolspraspel} \\
-\$ast         = \$compiler->parse('@requires i: 7..42;'); \\
+);                                        \tikzref{codetoolspraspel} \\
+\$ast         = \$parser->parse('@requires i: 7..42;'); \\
 \$interpreter = new Hoa\bslash{}Praspel\bslash{}Visitor\bslash{}Interpreter(); \\
 \tikzref{codetoolsom}\$model       = \$interpreter->visit(\$ast);
 \end{pre}
+%
+La variable \code{\$parser} contient l'analyseur lexical et syntaxique chargé
+depuis une grammaire. La variable \code{\$ast} contient l'AST produit par
+l'analyse lexicale et l'analyse syntaxique d'une chaîne de caractères
+représentant du code Praspel. Ces analyses sont exécutées en appelant la méthode
+\code{parse} sur le compilateur. Ensuite, nous instancions un visiteur dans la
+variable \code{\$interpreter} qui va visiter, grâce à la méthode \code{visit},
+l'AST pour le transformer en modèle objet.
 %
 \begin{tikzannotation}
     \node (Pc) [right of=codetoolspraspel, node distance=3cm, yshift=-.5cm] {\circled{P}};
@@ -126,14 +189,6 @@ ainsi~:
     \node (Mc) [above of=codetoolsom, node distance=1.4cm, xshift=-.45cm] {\circled{M}};
     \draw [mywavyarrow] (codetoolsom.west) to[out=140, in=-90] (Mc);
 \end{tikzannotation}
-
-La variable \code{\$compiler} contient le compilateur chargé depuis une
-grammaire. La variable \code{\$ast} contient l'AST produit par l'analyse
-lexicale et l'analyse syntaxique d'une chaîne de caractères représentant du code
-Praspel. Ces analyses sont exécutées en appelant la méthode \code{parse} sur le
-compilateur. Ensuite, nous instancions un visiteur dans la variable
-\code{\$interpreter} qui va visiter, grâce à la méthode \code{viist}, l'AST pour
-le transformer en modèle objet.
 
 La seconde façon de faire consiste à utiliser un raccourci qui est la méthode
 (statique) \code{interprete}~; ainsi~:
@@ -178,11 +233,6 @@ nous allons produire du code PHP que nous allons afficher~:
 echo \$compiler->visit(\$mo\tikzref{codetoolsom}del);
 \end{pre}
 %
-\begin{tikzannotation}
-    \node (Mc) [right of=codetoolsom, node distance=1.6cm] {\circled{M}};
-    \draw [mywavyarrow] (Mc) to[out=-150, in=-70, distance=.2cm] (codetoolsom);
-\end{tikzannotation}
-
 Cet exemple produira le code PHP suivant~:
 %
 \begin{pre}
@@ -198,14 +248,19 @@ la valeur de la variable \code{\$praspel}. Cet exemple nous permet également
 d'avoir un aperçu de l'API du modèle objet~: elle se veut le plus simple et
 compréhensible possible. Une spécification est instanciée. Sur cette
 spécification, la clause \arequires est obtenue pour y déclarer une variable
-\code{i} dont les valeurs sont décrites par (ou présentent dans, \code{->in}) la
+\code{i} dont les valeurs sont décrites par (ou présentes dans, \code{->in}) la
 disjonction de domaines réalistes, créée à l'aide de la fonction \code{realdom}.
 Cette fonction se comporte comme une macro.
+%
+\begin{tikzannotation}
+    \node (Mc) [right of=codetoolsom, node distance=1.6cm] {\circled{M}};
+    \draw [mywavyarrow] (Mc) to[out=-150, in=-70, distance=.2cm] (codetoolsom);
+\end{tikzannotation}
 
 \subsection{Désassemblage}
 \label{subsection:tools:disassembler}
 
-Le désassemblage permet de passer le modèle objet en mémoire sous sa forme
+Le désassemblage permet de transformer le modèle objet en mémoire sous sa forme
 textuelle. C'est l'opération inverse des analyses de la
 partie~\ref{subsection:tools:interpretation}. Il permet par exemple d'indiquer
 des erreurs avec précisions sous la forme originale de Praspel. C'est tout à
@@ -216,12 +271,7 @@ fait comparable à un \inenglish{pretty-printer}. Ainsi~:
 echo \$disassembler->visit(\$mo\tikzref{codetoolsom}del);
 \end{pre}
 %
-\begin{tikzannotation}
-    \node (Mc) [right of=codetoolsom, node distance=1.6cm] {\circled{M}};
-    \draw [mywavyarrow] (Mc) to[out=-150, in=-70, distance=.2cm] (codetoolsom);
-\end{tikzannotation}
-
-Encore une fois, nous instancions une visiteur dans la variable
+Encore une fois, nous instancions un visiteur dans la variable
 \code{\$disas\-sem\-bler} pour ensuite visiter le modèle objet. Cette exemple
 produira le résultat suivant~:
 %
@@ -230,6 +280,11 @@ produira le résultat suivant~:
 \end{pre}
 %
 Notons que le sucre syntaxique \code{7..42} a disparu.
+%
+\begin{tikzannotation}
+    \node (Mc) [right of=codetoolsom, node distance=1.6cm] {\circled{M}};
+    \draw [mywavyarrow] (Mc) to[out=-150, in=-70, distance=.2cm] (codetoolsom);
+\end{tikzannotation}
 
 Ce dernier processus, complété des précédents, nous permet de passer d'une
 représentation vers n'importe quelle autre représentation de Praspel~: soit
@@ -375,251 +430,3 @@ alors une \inenglish{precondition failure} sera émise depuis la méthode
 failure} depuis la méthode \code{store}.
 
 \end{example}
-
-\subsection{Hoa, un ensemble de bibliothèques PHP}
-\label{subsection:tools:hoa}
-
-Hoa~\acite{Hoa} est un ensemble de bibliothèques PHP. De plus, Hoa est un pont
-entre le monde de la recherche et de l'industrie. Ce projet comporte des
-bibliothèques solides pour une multitude de domaines. Entre autre, il offre une
-consistence entre les versions de PHP et est très respectueux des standards. Hoa
-est également impliqué dans plusieurs consortiums ou groupes de décisions
-concernant plusieurs standards de l'Informatique ou du Web. Par conséquent, il
-est plus facile d'écrire, de maintenir et de s'assurer de la qualité des
-programmes constituants Praspel.
-
-De plus, le fait que Hoa souhaite être un pont entre le monde de la recherche et
-de l'industrie nous offre l'opportunité de faire valider nos expérimentations
-par sa communauté ou ses utilisateurs. Mais aussi, Hoa est développé sous la
-licence libre \inenglish{New BSD License}\footnote{Voir
-\url{http://hoa-project.net/En/About.html\#License}.}, soit une licence
-\inenglish{open-source}. Cela implique que les outils que nous avons développé
-durant cette thèse, comme Praspel, le compilateur etc., sont gratuits et libres.
-Cette approche offre deux avantages majeurs. Tout d'abord, des contributeurs de
-tout horizon peuvent nous aider à corriger ou améliorer nos outils. Ça a été le
-cas à plusieurs reprises où des contributeurs ont corrigé des erreurs dans
-Praspel ou ont amélioré considérablement le compilateur, notamment en y ajoutant
-le support Unicode, en améliorant les performances de l'analyseur lexical (pour
-l'analyse de très grandes données) etc. Ensuite, puisque les outils sont
-gratuits, l'industrie peut l'utiliser et nous offrir des retours pertinents,
-comme nous le verrons dans le chapitre~\ref{chapter:experimentations} avec les
-expérimentations.
-
-Nos contributions et outils prennent la forme de bibliothèques dans Hoa, à
-savoir \code{Hoa\bslash{}Realdom} pour les domaines réalistes,
-\code{Hoa\bslash{}Praspel} pour le langage Praspel, \code{Hoa\bslash{}Compiler}
-pour le compilateur et \code{Hoa\bslash{}Regex} pour les expressions régulières.
-D'autres contributions plus minimes ne sont pas détaillées ici, comme l'ajout de
-fonctionnalités dans la bibliothèque \code{Hoa\bslash{}Math}.
-
-\subsubsection{\code{Hoa\bslash{}Realdom}}
-
-La bibliothèque \code{Hoa\bslash{}Realdom}\footnote{Voir
-\url{http://central.hoa-project.net/Resource/Library/Realdom}.} représente la
-bibliothèque standard des domaines réalistes. Ils sont implémentés comme
-présenté dans la partie~\ref{section:language:realdoms}
-page~\pageref{section:language:realdoms}, à savoir que chaque domaine réaliste
-est représenté par une classe.  Actuellement, une liste de 28~domaines réalistes
-est proposée~:
-%
-\begin{itemize}
-
-\item \code{Array}, représentant des tableaux~;
-
-\item \code{Bag}, un sac pouvant contenir plusieurs domaines réalistes de
-natures différentes~;
-
-\item \code{Boolean}, représentant les booléens~;
-
-\item \code{Boundfloat}, représentant un intervalle de réels~;
-
-\item \code{Boundinteger}, représentant un intervalle d'entiers~;
-
-\item \code{Class}, représentant des instances de classes~;
-
-\item \code{Color}, représentant des couleurs au format \code{\#{\em rrggbb}}~;
-
-\item \code{Constarray}, représentant les tableaux de Praspel, c'est~à~dire une
-description de tableau~;
-
-\item \code{Constboolean}, représentant les booléens de Praspel~;
-
-\item \code{Constfloat}, représentant les réels de Praspel~;
-
-\item \code{Constinteger}, représentant les entiers de Praspel~;
-
-\item \code{Constnull}, représentant la valeur nulle de Praspel~;
-
-\item \code{Conststring}, représentant les chaînes de caractères de Praspel~;
-
-\item \code{Date}, représentant une date formatée~;
-
-\item \code{Empty}, représentant une donnée vide~;
-
-\item \code{Even}, représentant les nombres pairs~;
-
-\item \code{Float}, représentant les réels~;
-
-\item \code{Grammar}, représentant les chaînes de caractères spécifiées par une
-grammaire~;
-
-\item \code{Integer}, représentant les entiers~;
-
-\item \code{Natural}, représentant les naturels (entiers auto-incrémentés)~;
-
-\item \code{Number}, représentant les nombres (entiers ou réels)~;
-
-\item \code{Object}, représentant un objet donné~;
-
-\item \code{Odd}, représentant les nombres impairs~;
-
-\item \code{Regex}, représentant les chaînes de caractères spécifiées par une
-expression régulière~;
-
-\item \code{Smallfloat}, représentant des petits réels~;
-
-\item \code{Smallinteger}, représentant des petits entiers~;
-
-\item \code{String}, représentant des chaînes de caractères~;
-
-\item \code{Timestamp}, représentant des valeurs dans le temps~;
-
-\item \code{Undefined}, représentant des valeurs non-définies.
-
-\end{itemize}
-
-Pour obtenir toutes les informations sur un domaine réaliste, nous pouvons nous
-aider de l'outil en ligne de commande \code{hoa realdom:reflection}.
-
-\begin{example}[Informations sur le domaine réaliste \code{Boundinteger}]
-
-Par exemple, pour obtenir des informations sur le domaine réaliste
-\code{Boundinteger}, en ligne de commande, nous ferons~:
-%
-\begin{bigpre}
-\$ hoa realdom:reflection boundinteger \\
-Realdom boundinteger \{ \\
- \\
-    Implementation Hoa\bslash{}Realdom\bslash{}Boundinteger; \\
- \\
-    Parent Hoa\bslash{}Realdom\bslash{}Integer; \\
- \\
-    Interfaces \{ \\
- \\
-        ArrayAccess; \\
-        Countable; \\
-        IteratorAggregate; \\
-        Traversable; \\
-        Hoa\bslash{}Realdom\bslash{}IRealdom\bslash{}Enumerable; \\
-        Hoa\bslash{}Realdom\bslash{}IRealdom\bslash{}Finite; \\
-        Hoa\bslash{}Realdom\bslash{}IRealdom\bslash{}Interval; \\
-        Hoa\bslash{}Realdom\bslash{}IRealdom\bslash{}Nonconvex; \\
-        Hoa\bslash{}Realdom\bslash{}Number; \\
-        Hoa\bslash{}Visitor\bslash{}Element; \\
-    \} \\
- \\
-    Parameters \{ \\
- \\
-        [#0 optional] Constinteger lower = -9223372036854775808; \\
-        [#1 optional] Constinteger upper = 9223372036854775807; \\
-    \} \\
-\}
-\end{bigpre}
-%
-Nous trouvons comme informations le nom de la classe qui représente
-l'implémentation du domaine réaliste, toutes les interfaces utilisées par cette
-implémentation (ici plusieurs de PHP et des domaines réalistes, comme présenté
-dans la partie~\ref{subsection:language:realdom:classification}
-page~\pageref{subsection:language:realdom:classification}), ainsi que les
-paramètres avec leurs positions, filtres et valeurs par défaut.
-
-\end{example}
-
-Cette bibliothèque peut être utilisée seule, sans Praspel.
-
-\subsubsection{\code{Hoa\bslash{}Praspel}}
-
-La bibliothèque \code{Hoa\bslash{}Praspel}\footnote{Voir
-\url{http://central.hoa-project.net/Resource/Library/Praspel}.} est responsable
-de tout le support de Praspel, de l'interprétation à l'évaluation en passant par
-la compilation, la couverture des contrats etc. La bibliothèque est découpée de
-la façon suivante~:
-%
-\begin{itemize}
-
-\item \code{AssertionChecker}, permet l'évaluation du modèle objet~;
-
-\item \code{Bin}, contient des scripts, dont un \inenglish{shell} permettant
-d'analyser et évaluer du code Praspel à la volée~;
-
-\item \code{Exception}, contient toutes les catégories d'exceptions de Praspel,
-dont les \inenglish{Praspel failures}~;
-
-\item \code{Iterator}, contient entre autre les générateurs de tests unitaires à
-partir de plusieurs critères de couverture sur un contrat~;
-
-\item \code{Model}, contient le modèle objet, à savoir la pièce central du
-langage Praspel~;
-
-\item \code{Preambler}, permet de créer un préambule de test pour n'importe quel
-système sous test~;
-
-\item \code{Visitor}, contient l'interpréteur, le compilateur et le
-désassembleur.
-
-\end{itemize}
-
-À la racine de la bibliothèque, nous trouvons entre autre la grammaire au format
-PP, une classe nommée \code{Hoa\bslash{}Praspel} qui rassemble les opérations
-usuelles sur le langage et une classe représantant une trace d'évaluation d'un
-contrat. Le lien entre Praspel et les domaines réalistes se fait au niveau du
-modèle objet dans la classe
-\code{Hoa\bslash{}Praspel\bslash{}Model\bslash{}Variable}.
-
-\subsubsection{\code{Hoa\bslash{}Compiler} et \code{Hoa\bslash{}Regex}}
-
-Le compilateur LL($\star$) que nous avons développé dans la
-partie~\ref{section:data:strings} page~\pageref{section:data:strings} est
-représenté par la bibliothèque
-\code{Hoa\bslash{}Compiler\bslash{}Llk}\footnote{Voir
-\url{http://central.hoa-project.net/Resource/Library/Compiler}.} (un autre
-compilateur LL(1) existait préalablement). Cette bibliothèque comprend aussi le
-support du langage PP ainsi que des algorithmes de générations à partir de
-grammaires, soient~: aléatoire uniforme, exhaustif borné et par couverture. Ces
-algorithmes sont présents dans la sous-bibliothèque
-\code{Hoa\bslash{}Com\-pi\-ler\bslash{}Llk\bslash{}Sam\-pler}.  Seuls les deux
-derniers fonctionnent comme des itérateurs.
-
-\begin{example}[Génération exhaustive bornée avec Hoa]
-
-Pour générer toutes les données au format JSON dont la taille maximum des
-séquences de lexèmes ne dépasse pas 10, nous écrirons~:
-%
-\begin{pre}
-\$sampler = new Hoa\bslash{}Compiler\bslash{}Llk\bslash{}Sampler\bslash{}BoundedExhaustive( \\
-    Hoa\bslash{}Compiler\bslash{}Llk::load( \\
-        new Hoa\bslash{}File\bslash{}Read('hoa://Library/Json/Grammar.pp') \\
-    ), \\
-    new Hoa\bslash{}Regex\bslash{}Visitor\bslash{}Isotropic( \\
-        new Hoa\bslash{}Math\bslash{}Sampler\bslash{}Random() \\
-    ), \\
-    10 \\
-); \\
- \\
-foreach(\$sampler as \$data) \\
-    // compute \$data
-\end{pre}
-
-L'ordre des arguments des générateurs est toujours le même. En premier, nous
-devons fournir la grammaire, puis le générateur pour les lexèmes et enfin, si
-besoin, la taille (fixe, minimum ou maximum selon le générateur) de la donnée à
-générer. Le seul générateur de lexème proposé actuellement est isotropique,
-comme présenté dans la partie~\ref{subsection:data:isotropic_generation}
-page~\pageref{subsection:data:isotropic_generation}.
-
-\end{example}
-
-La grammaire des expressions régulières se trouve également dans la bibliothèque
-\code{Hoa\bslash{}Regex}\footnote{Voir
-\url{http://central.hoa-project.net/Resource/Library/Regex}.} dans
-\code{hoa://Library/Regex/Grammar.pp}.

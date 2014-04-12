@@ -3,67 +3,18 @@
 
 \minitoc
 
-Ce chapitre est consacré à la description des outils. Ils sont organisés en deux
-parties. Tout d'abord dans la partie~\ref{section:tools:praspel}, nous
-présentons notre implémentation de Praspel, son fonctionnement, son découpage et
-l'outil avec lequel nous l'avons implémenté. Ensuite, dans la
+Dans les chapitres précédents nous avons présenté le langage et plusieurs
+algorithmes. Ce chapitre est consacré à leurs descriptions, organisé en trois
+parties. Tout d'abord, dans la partie~\ref{section:tools:hoa}, nous présentons
+Hoa, un ensemble de bibliothèques PHP. L'implémentation de nos contributions
+prennent la forme de bibliothèques au sein de ce projet \inenglish{open-source}.
+Ensuite, dans la partie~\ref{section:tools:praspel}, nous présenterons notre
+implémentation de Praspel, son fonctionnement et son découpage. Enfin, dans la
 partie~\ref{section:tools:atoum}, nous présentons l'intégration de ces outils
 dans atoum, un \inenglish{framework} de tests unitaires, ainsi qu'une extension
 qui fait le pont entre Praspel et atoum.
 
-\begin{figure}
-
-\centering
-
-\begin{tikzbox}{boxtoolsdispatching}{xshift=-2.2cm}
-\begin{pre}
-class C \{ \\
- \\
-    /** \\
-     * \arequires  …; \tikzref{boxtoolsdispatchingA} \\
-     * \aensures   …; \\
-     * \athrowable …; \tikzref{boxtoolsdispatchingB} \\
-     */ \\
-    public function f ( ) \{ \tikzref{boxtoolsdispatchingC} \\
- \\
-        // … \\
-    \} \tikzref{boxtoolsdispatchingD} \\
-\}
-\end{pre}
-\end{tikzbox}
-%
-\begin{tikzannotation}
-    \draw [mybrace]
-        (boxtoolsdispatchingA.north -| boxtoolsdispatching.east)
-        -- node (P) [mybracetext] {Praspel}
-        (boxtoolsdispatchingB.south -| boxtoolsdispatching.east);
-    \draw [mybrace]
-        (boxtoolsdispatchingC.north -| boxtoolsdispatching.east)
-        -- node (S) [mybracetext] {SUT}
-        (boxtoolsdispatchingD.south -| boxtoolsdispatching.east);
-
-    \node (Pc) [right of=P, node distance=1.8cm] {\circled{P}};
-    \draw [mywavyarrow] (P) -- (Pc);
-
-    \node (Sc) at (S -| Pc) {\circled{S}};
-    \draw [mywavyarrow] (S) -- (Sc);
-\end{tikzannotation}
-
-\caption{\label{figure:tools:dispatching} Répartitions des composants d'un
-programme.}
-
-\end{figure}
-
-La figure~\ref{figure:tools:dispatching} nous rappelle que, dans une classe, les
-commentaires qui annotent les méthodes contiennent des contrats écrits en
-Praspel. Les contrats seront donc extraits de ces commentaires pour être envoyés
-dans les outils de Praspel. Les méthodes vont constituer le SUT et seront
-utilisées lors de l'exécution des tests. Dans les prochaines figures, ces
-données sont identifiées par une lettre cerclée afin d'indiquer leur flux dans
-les différents outils. Ainsi, la notation Praspel \tikz { \draw
-[mywavyarrow] (0, 0) -- (1, 0); }\circled{P} signifie que le composant Praspel
-sera représenté par \circled{P} dans les figures suivantes.
-
+\require{Chapter/Implementations_et_outillage/Hoa.tex}
 \require{Chapter/Implementations_et_outillage/Praspel.tex}
 \require{Chapter/Implementations_et_outillage/atoum.tex}
 \require{Chapter/Implementations_et_outillage/Synthese.tex}

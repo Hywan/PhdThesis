@@ -1,0 +1,260 @@
+\section{Implémentation dans Hoa}
+\label{section:tools:hoa}
+
+Hoa~\acite{Hoa} est un ensemble de bibliothèques PHP. De plus, Hoa est un pont
+entre le monde de la recherche et de l'industrie. À l'origine créé par Ivan
+Enderlin, l'auteur de ce mémoire, ce projet est maintenant soutenu par une
+communauté et une association. L'avantage d'utiliser ce projet est double.
+
+Le premier avantage est que Hoa comporte des bibliothèques pour une multitude de
+domaines en plus d'être impliqué dans plusieurs consortiums ou groupes de
+décisions concernant plusieurs standards de l'Informatique ou du Web. Par
+conséquent, il est plus facile d'écrire, de maintenir et de s'assurer de la
+qualité des programmes constituant Praspel.
+
+Le second avantage est que, grâce à ce projet, nous pouvons avoir une meilleure
+connaissance des besoins, et, grâce à cette thèse, nous essayons d'y répondre.
+L'objectif est de valoriser nos travaux de recherche à travers Hoa (valider
+notre démarche) mais aussi de valoriser Hoa à travers cette thèse. En effet, Hoa
+est un pont entre le monde de la recherche et de l'industrie. Ainsi le projet
+nous offre l'opportunité de faire valider nos expérimentations par sa communauté
+ou ses utilisateurs. Mais aussi, Hoa est développé sous la licence libre
+\inenglish{New BSD License}\footnote{Voir
+\url{http://hoa-project.net/About.html\#License}.}, soit une licence
+\inenglish{open-source}. Cela implique que les outils que nous avons développé
+durant cette thèse, comme Praspel, le compilateur etc., sont gratuits et libres.
+Cette approche offre deux avantages majeurs. Tout d'abord, des contributeurs de
+tout horizon peuvent nous aider à corriger ou améliorer nos outils. Ça a été le
+cas à plusieurs reprises où des contributeurs ont corrigé des erreurs dans
+Praspel ou ont amélioré considérablement le compilateur, notamment en y ajoutant
+le support Unicode, en améliorant les performances de l'analyseur lexical (pour
+l'analyse de très grandes données) etc. Ensuite, puisque le projet est gratuit,
+l'industrie peut l'utiliser et nous offrir des retours pertinents, comme nous le
+verrons dans le chapitre~\ref{chapter:experimentations} avec les
+expérimentations.
+
+Nos contributions prennent la forme de bibliothèques, à savoir, dans la
+partie~\ref{subsection:tools:hoa-realdom}, \code{Hoa\bslash{}Real\-dom} pour les
+domaines réalistes, dans la partie~\ref{subsection:tools:hoa-praspel},
+\code{Hoa\bslash{}Praspel} pour le langage Praspel, dans la
+partie~\ref{subsection:tools:hoa-compiler-regex}, \code{Hoa\bslash{}Compiler}
+pour le compilateur et \code{Hoa\bslash{}Re\-gex} pour les expressions
+régulières. D'autres contributions plus minimes ne sont pas détaillées ici,
+comme l'ajout de fonctionnalités dans la bibliothèque \code{Hoa\bslash{}Math}.
+
+\subsection{\code{Hoa\bslash{}Realdom}}
+\label{subsection:tools:hoa-realdom}
+
+La bibliothèque \code{Hoa\bslash{}Realdom}\footnote{Voir
+\url{http://central.hoa-project.net/Resource/Library/Realdom}.} représente la
+bibliothèque standard des domaines réalistes. Ils sont implémentés comme
+présenté dans la partie~\ref{section:language:realdoms}
+page~\pageref{section:language:realdoms}, à savoir que chaque domaine réaliste
+est représenté par une classe.  Actuellement, une liste de 28~domaines réalistes
+est proposée~:
+%
+\begin{itemize}
+
+\item \code{Array}, représentant des tableaux~;
+
+\item \code{Bag}, un sac pouvant contenir plusieurs domaines réalistes de
+natures différentes~;
+
+\item \code{Boolean}, représentant les booléens~;
+
+\item \code{Boundfloat}, représentant un intervalle de réels~;
+
+\item \code{Boundinteger}, représentant un intervalle d'entiers~;
+
+\item \code{Class}, représentant des instances de classes~;
+
+\item \code{Color}, représentant des couleurs au format \code{\#{\em rrggbb}}~;
+
+\item \code{Constarray}, représentant les tableaux de Praspel, c'est~à~dire une
+description de tableau~;
+
+\item \code{Constboolean}, représentant les booléens de Praspel~;
+
+\item \code{Constfloat}, représentant les réels de Praspel~;
+
+\item \code{Constinteger}, représentant les entiers de Praspel~;
+
+\item \code{Constnull}, représentant la valeur nulle de Praspel~;
+
+\item \code{Conststring}, représentant les chaînes de caractères de Praspel~;
+
+\item \code{Date}, représentant une date formatée~;
+
+\item \code{Empty}, représentant une donnée vide~;
+
+\item \code{Even}, représentant les nombres pairs~;
+
+\item \code{Float}, représentant les réels~;
+
+\item \code{Grammar}, représentant les chaînes de caractères spécifiées par une
+grammaire~;
+
+\item \code{Integer}, représentant les entiers~;
+
+\item \code{Natural}, représentant les naturels (entiers auto-incrémentés)~;
+
+\item \code{Number}, représentant les nombres (entiers ou réels)~;
+
+\item \code{Object}, représentant un objet donné~;
+
+\item \code{Odd}, représentant les nombres impairs~;
+
+\item \code{Regex}, représentant les chaînes de caractères spécifiées par une
+expression régulière~;
+
+\item \code{Smallfloat}, représentant des petits réels~;
+
+\item \code{Smallinteger}, représentant des petits entiers~;
+
+\item \code{String}, représentant des chaînes de caractères~;
+
+\item \code{Timestamp}, représentant des valeurs dans le temps~;
+
+\item \code{Undefined}, représentant des valeurs non-définies.
+
+\end{itemize}
+
+Pour obtenir toutes les informations sur un domaine réaliste, nous pouvons nous
+aider de l'outil en ligne de commande \code{hoa realdom:reflection}.
+
+\begin{example}[Informations sur le domaine réaliste \code{Boundinteger}]
+
+Par exemple, pour obtenir des informations sur le domaine réaliste
+\code{Boundinteger}, en ligne de commande, nous ferons~:
+%
+\begin{bigpre}
+\$ hoa realdom:reflection boundinteger \\
+Realdom boundinteger \{ \\
+ \\
+    Implementation Hoa\bslash{}Realdom\bslash{}Boundinteger; \\
+ \\
+    Parent Hoa\bslash{}Realdom\bslash{}Integer; \\
+ \\
+    Interfaces \{ \\
+ \\
+        ArrayAccess; \\
+        Countable; \\
+        IteratorAggregate; \\
+        Traversable; \\
+        Hoa\bslash{}Realdom\bslash{}IRealdom\bslash{}Enumerable; \\
+        Hoa\bslash{}Realdom\bslash{}IRealdom\bslash{}Finite; \\
+        Hoa\bslash{}Realdom\bslash{}IRealdom\bslash{}Interval; \\
+        Hoa\bslash{}Realdom\bslash{}IRealdom\bslash{}Nonconvex; \\
+        Hoa\bslash{}Realdom\bslash{}Number; \\
+        Hoa\bslash{}Visitor\bslash{}Element; \\
+    \} \\
+ \\
+    Parameters \{ \\
+ \\
+        [#0 optional] Constinteger lower = -9223372036854775808; \\
+        [#1 optional] Constinteger upper = 9223372036854775807; \\
+    \} \\
+\}
+\end{bigpre}
+%
+Nous trouvons comme informations le nom de la classe qui représente
+l'implémentation du domaine réaliste, toutes les interfaces utilisées par cette
+implémentation (ici plusieurs de PHP et des domaines réalistes, comme présenté
+dans la partie~\ref{subsection:language:realdom:classification}
+page~\pageref{subsection:language:realdom:classification}), ainsi que les
+paramètres avec leurs positions, filtres et valeurs par défaut.
+
+\end{example}
+
+Cette bibliothèque peut être utilisée seule, sans Praspel.
+
+\subsection{\code{Hoa\bslash{}Praspel}}
+\label{subsection:tools:hoa-praspel}
+
+La bibliothèque \code{Hoa\bslash{}Praspel}\footnote{Voir
+\url{http://central.hoa-project.net/Resource/Library/Praspel}.} est responsable
+de tout le support de Praspel. Le fonctionnement de Praspel est détaillé dans la
+partie~\ref{section:tools:praspel}. La bibliothèque est découpée de la façon
+suivante~:
+%
+\begin{itemize}
+
+\item \code{AssertionChecker}, permet l'évaluation du modèle objet~;
+
+\item \code{Bin}, contient des scripts, dont un \inenglish{shell} permettant
+d'analyser et évaluer du code Praspel à la volée~;
+
+\item \code{Exception}, contient toutes les catégories d'exceptions de Praspel~;
+
+\item \code{Iterator}, contient entre autre les générateurs de tests unitaires à
+partir de plusieurs critères de couverture sur un contrat~;
+
+\item \code{Model}, contient le modèle objet, à savoir la pièce central du
+langage Praspel~;
+
+\item \code{Preambler}, permet de créer un préambule de test pour n'importe quel
+système sous test~;
+
+\item \code{Visitor}, permet de passer d'une forme à une autre du langage.
+
+\end{itemize}
+
+À la racine de la bibliothèque, nous trouvons entre autre la grammaire au format
+PP (que nous retrouvons dans l'annexe~\ref{appendices:grammar_of_praspel}), une
+classe nommée \code{Hoa\bslash{}Praspel} qui rassemble les opérations usuelles
+sur le langage et une classe représantant une trace d'évaluation d'un contrat.
+
+\subsection{\code{Hoa\bslash{}Compiler} et \code{Hoa\bslash{}Regex}}
+\label{subsection:tools:hoa-compiler-regex}
+
+Le compilateur LL($\star$) que nous avons développé dans la
+partie~\ref{section:data:strings} page~\pageref{section:data:strings} est
+représenté par la bibliothèque
+\code{Hoa\bslash{}Compiler\bslash{}Llk}\footnote{Voir
+\url{http://central.hoa-project.net/Resource/Library/Compiler}.} (un autre
+compilateur LL(1) existait préalablement). Cette bibliothèque comprend aussi le
+support du langage PP ainsi que des algorithmes de générations à partir de
+grammaires, soient~: aléatoire uniforme, exhaustif borné et par couverture. Ces
+algorithmes sont présents dans la sous-bibliothèque
+\code{Hoa\bslash{}Com\-pi\-ler\bslash{}Llk\bslash{}Sam\-pler}.  Seuls les deux
+derniers fonctionnent comme des itérateurs.
+
+\begin{example}[Génération exhaustive bornée avec Hoa]
+
+Pour générer toutes les données au format JSON dont la taille maximum des
+séquences de lexèmes ne dépasse pas 10, nous écrirons~:
+%
+\begin{pre}
+\$grammar = new Hoa\bslash{}File\bslash{}Read('hoa://Library/Json/Grammar.pp'); \\
+\$parser  = Hoa\bslash{}Compiler\bslash{}Llk::load(\$grammar); \\
+\$token   = new Hoa\bslash{}Regex\bslash{}Visitor\bslash{}Isotropic( \\
+    new Hoa\bslash{}Math\bslash{}Sampler\bslash{}Random() \\
+); \\
+\$length  = 10; \\
+\$sampler = new Hoa\bslash{}Compiler\bslash{}Llk\bslash{}Sampler\bslash{}BoundedExhaustive( \\
+    \$parser, /* \(\circled{1}\) */ \\
+    \$token,  /* \(\circled{2}\) */ \\
+    \$length  /* \(\circled{3}\) */ \\
+); \\
+ \\
+foreach(\$sampler as \$data) \\
+    // compute \$data
+\end{pre}
+%
+La variable \code{\$grammar} contient un flux en lecture de la grammaire JSON.
+La variable \code{\$parser} contient l'analyseur lexical et syntaxique
+représentés par la grammaire. La variable \code{\$token} contient le générateur
+de valeurs pour les lexèmes. Le seul proposé actuellement est isotropique, comme
+présenté dans la partie~\ref{subsection:data:isotropic_generation}
+page~\pageref{subsection:data:isotropic_generation}. Enfin, la variable
+\code{\$length} représente la taille maximum de la séquence. Les trois dernières
+variables sont distribuées sur le générateur exhaustif borné~: les analyseurs en
+\circled{1}, le générateur de valurs pour les lexèmes en \circled{2} et la
+taille maximum de la séquence en \circled{3}.
+
+\end{example}
+
+La grammaire des expressions régulières se trouve également dans la bibliothèque
+\code{Hoa\bslash{}Regex}\footnote{Voir
+\url{http://central.hoa-project.net/Resource/Library/Regex}.} dans
+\code{hoa://Library/Regex/Grammar.pp}.
