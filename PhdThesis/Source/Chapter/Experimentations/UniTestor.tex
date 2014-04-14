@@ -1,19 +1,18 @@
-\section{Étude de cas~: UniTestor}
+\section{Étude de cas UniTestor}
 \label{section:experimentation:unitestor}
 
 Les Journées nationales du Développement Logiciel, abrégé JDév'\footnote{Voir
 \url{http://devlog.cnrs.fr/jdev2013}.}, est une Action Nationale de Formation
 inter-établissements, soutenue par la Mission pour l'interdisciplinité du
-CNRS\footnote{Voir \url{http://mrct.cnrs.fr/}.}, l'INRIA\footnote{Voir
-\url{http://www.inria.fr/}.} et l'INRA\footnote{Voir
+CNRS\footnote{Voir \url{http://mrct.cnrs.fr/}.}, de l'INRIA\footnote{Voir
+\url{http://www.inria.fr/}.} et de l'INRA\footnote{Voir
 \url{http://www.inra.fr/}.}, organisée en 2013 à l'École Polytechnique. Une
 équipe de notre laboratoire a été invitée afin d'y donner des cours et des
 ateliers. C'est dans ce cadre que nous avons développé UniTestor, un robot écrit
-en PHP nous permettant d'aborder la majorité des aspects du tests unitaires~:
+en PHP nous permettant d'aborder la majorité des aspects du test unitaire~:
 écrire un préambule de test, définir des assertions, boucher des objets etc. 16
-élèves ont alors écrits manuellement une suite de tests pour ce robot, que nous
-avons complété. Nous la comparons avec une suite de tests générée
-automatiquement avec Praspel.
+élèves ont alors écrit manuellement une suite de tests pour ce robot. Nous la
+comparons avec une suite de tests générée automatiquement avec Praspel.
 
 \subsection{Présentation générale}
 
@@ -21,8 +20,8 @@ UniTestor est une simulation de robot pour l'exploration spatiale. Son diagramme
 de classes UML simplifié est présenté dans la
 figure~\ref{figure:experimentation:unitestor}. Le robot est représenté par la
 classe \code{Robot}. Il est constitué de plusieurs périphériques, que nous
-allons détaillé, lui envoyant des informations. L'ensemble du robot comporte au
-total 5~classes dont 21~méthodes, ce qui représente 340~lignes de code (sans les
+allons détailler, lui envoyant des informations. L'ensemble du robot comporte au
+total 5~classes et 21~méthodes, ce qui représente 340~lignes de code (sans les
 contrats Praspel).
 %
 \begin{figure}
@@ -48,41 +47,43 @@ permettant de connaître des informations sur le temps. Enfin, la classe
 
 \subsubsection{Les opérations de UniTestor}
 
-La seule opération importante est le déplacement. Lorsqu'il se déplace, il
-consomme de l'énergie, représentée par un pourcentage. En fonction du terrain,
-plus ou moins d'énergie sera nécessaire. L'énergie nécessaire est calculée par
-la fonction \code{getNeededEnergy} du capteur de sol. Mais le robot a des
-batteries qui se recharge en fonction du temps. Le temps qui s'écoule est donné
-par l'horloge et la recharge est linéaire (paramétrable par une constante).
+La seule opération importante est le déplacement. Lorsque le robot se déplace,
+il consomme de l'énergie, représentée par un pourcentage. En fonction du
+terrain, plus ou moins d'énergie sera nécessaire. L'énergie nécessaire est
+calculée par la fonction \code{getNeededEnergy} du capteur de sol. Mais le robot
+a des batteries qui se rechargent en fonction du temps. Le temps qui s'écoule
+est donné par l'horloge et la recharge est linéaire (paramétrable par une
+constante).
 
 \subsection{Protocole expérimental et résultats}
 
 Nous avons commencé par annoter le code du robot par des contrats Praspel.
-Ensuite, nous avons générer automatiquement une suite de tests, appelée la suite
+Ensuite, nous avons généré automatiquement une suite de tests, appelée la suite
 AGT (\inenglish{Automatically Generated Tests}) satisfaisant le critère de
 couverture de contrat \inenglish{All}-$G$ (défini dans la
 partie~\ref{subsection:test:combination}). Nous avons comparé cette suite de
-test avec la suite de tests manuels des étudiants, appelé la suite MT
+tests avec la suite de tests manuels des étudiants, appelée la suite MT
 (\inenglish{Manual Tests}), complétée pour atteindre un taux de couverture de
 code de 100\% quand ce n'était pas le cas.
 
 Nous avons observé que le nombre moyen de tests générés par les étudiants est de
-53~MT, alors que pour 21 méthodes, soit 21 contrats, Praspel a généré 29~AGT,
-soit une réduction de 45\%. Pour caractériser la pertinence des tests, nous
-avons utiliser comme métrique la couverture de code. Le critère de couverture de
-code le plus fin que nous propose atoum est le critère tous-les-arcs. Ainsi,
-nous avons observé que les deux suites de tests avaient un score de 100\%. De
-plus, 1h30 a été nécessaire aux étudiants pour rédiger en moyenne 53~tests,
-alors qu'il nous a fallu 15~minutes pour écrire 21~contrats.  La phase de
-génération de tests a pris moins d'une seconde~: cela comprend la génération
-automatique des données de tests, à savoir des entiers, des réels, des chaînes
-de caractères spécifiées par des expressions régulières et des objets, en
-particulier plusieurs instances complètes du robot (avec ses périphériques).
+53, alors que pour 21 méthodes, soit 21 contrats, Praspel a généré
+automatiquement 29 tests, soit une réduction de 45\%. Pour caractériser la
+pertinence des tests, nous avons utilisé comme métrique la couverture de code.
+Le critère de couverture de code le plus fin que nous propose atoum est le
+critère tous-les-arcs. Ainsi, nous avons observé que les deux suites de tests
+avaient un score de 100\%. De plus, 1h30 a été nécessaire aux étudiants pour
+rédiger en moyenne 53~tests, alors qu'il nous a fallu 15~minutes pour écrire
+21~contrats.  La phase de génération de tests a pris moins d'une seconde~: cela
+comprend la génération automatique des données de tests, à savoir des entiers,
+des réels, des chaînes de caractères spécifiées par des expressions régulières
+et des objets, en particulier plusieurs instances complètes du robot (avec ses
+périphériques).
 
 Ainsi, nous obtenons le même score de couverture du code avec pratiquement
 moitié moins de tests et en 6~fois moins de temps. Ces premiers résultats
-montrent l'efficacité de l'approche du test automatisé et le gain qu'apporte les
-contrats~: écrire des contrats est moins difficile et nécessite moins de temps
+montrent l'efficacité de l'approche du test automatisé et le gain qu'apportent
+les contrats~: écrire des contrats est moins pénible et nécessite moins de temps
 que d'écrire une suite de tests complète.
 
 Cependant, cette expérimentation est biaisée~: les étudiants étaient en
