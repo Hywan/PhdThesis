@@ -156,14 +156,16 @@ Les parties suivantes détaillent ces différentes étapes.
 \label{subsection:tools:interpretation}
 
 À l'aide de la grammaire de Praspel, définie dans la
-partie~\ref{section:language:praspel}, exprimée avec le langage PP (voir
-l'annexe~\ref{appendices:grammar_of_praspel}) et un compilateur, défini dans les
-sections~\ref{subsection:data:pp} et \ref{subsection:data:compiler-compiler},
-l'AST du contrat analysé sera produit. Cet AST sera ensuite visité afin de
-construire le modèle objet. Pour y arriver, nous avons deux façons de faire. La
-première détaille toutes les étapes, à savoir l'utilisation du compilateur pour
-produire un AST, puis l'appel d'un visiteur pour construire le modèle objet~;
-ainsi~:
+partie~\ref{section:language:praspel} page~\pageref{section:language:praspel},
+exprimée avec le langage PP (voir l'annexe~\ref{appendices:grammar_of_praspel})
+et un compilateur, défini dans les sections~\ref{subsection:data:pp} et
+\ref{subsection:data:compiler-compiler} pages~\pageref{subsection:data:pp}
+et~\pageref{subsection:data:compiler-compiler}, l'AST du contrat analysé sera
+produit. Cet AST sera ensuite visité afin de construire le modèle objet. Pour y
+arriver, nous avons deux façons de faire. La première détaille toutes les
+étapes, à savoir l'utilisation du compilateur pour produire un AST, puis l'appel
+d'un visiteur pour construire le modèle objet~; ainsi~:
+
 %
 \begin{pre}
 \$parser      = Hoa\bslash{}Compiler\bslash{}Llk::load( \\
@@ -175,7 +177,7 @@ ainsi~:
 \end{pre}
 %
 La variable \code{\$parser} contient l'analyseur lexical et syntaxique chargé
-depuis une grammaire. La variable \code{\$ast} contient l'AST produit par
+depuis la grammaire. La variable \code{\$ast} contient l'AST produit par
 l'analyse lexicale et l'analyse syntaxique d'une chaîne de caractères
 représentant du code Praspel. Ces analyses sont exécutées en appelant la méthode
 \code{parse} sur le compilateur. Ensuite, nous instancions un visiteur dans la
@@ -211,7 +213,7 @@ objet.
 
 \begin{sidewaysfigure}
 
-\fig{\textwidth}{!}{Object_model.pdf}
+\fig{!}{8.5cm}{Object_model.pdf}
 
 \caption{\label{figure:tools:om} Modèle objet de Praspel.}
 
