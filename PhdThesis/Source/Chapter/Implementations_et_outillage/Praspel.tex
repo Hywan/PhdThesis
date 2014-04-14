@@ -23,7 +23,7 @@ class C \{ \\
      * \aensures   …; \\
      * \athrowable …; \tikzref{boxtoolsdispatchingB} \\
      */ \\
-    public function f ( ) \{ \tikzref{boxtoolsdispatchingC} \\
+    public function f ( … ) \{ \tikzref{boxtoolsdispatchingC} \\
  \\
         // … \\
     \} \tikzref{boxtoolsdispatchingD} \\
@@ -339,7 +339,7 @@ Ce dernier processus, complété des précédents, nous permet de passer d'une
 représentation vers n'importe quelle autre représentation de Praspel~: soit
 textuelle, soit objet, soit PHP.
 
-\subsection{Évaluation avec un \inenglish{Runtime Assertion Checker}}
+\subsection{\inenglish{Runtime Assertion Checker}}
 \label{subsection:tools:evaluation}
 
 \begin{figure}
@@ -370,8 +370,8 @@ Praspel. Le fonctionnement d'un \inenglish{assertion checker} est illustré dans
 la figure~\ref{figure:tools:rac}. Il travaille avec 3~composants~: un modèle
 objet qui représente un contrat (provenant par exemple des commentaires des
 méthodes), un SUT (par exemple la méthode commentée) et des données. Ces
-composants forment un test~! Un \inenglish{assertion checker} est donc capable
-de calculer le verdict d'un test.
+composants forment un test. Un \inenglish{assertion checker} est donc capable de
+calculer le verdict d'un test.
 
 Actuellement, nous nous appuyons sur un \inenglish{Runtime Assertion Checker},
 abrégé RAC, pour calculer le verdict du test. Ce verdict est basé sur la
@@ -400,17 +400,27 @@ d'une \inenglish{precondition failure} à un niveau supérieur.
 Le test réussit si aucune erreur Praspel n'est détectée. Autrement, il échoue,
 et l'erreur avec des informations supplémentaires est consignée.
 
-À présent, illustrons comment utiliser le RAC de Praspel où le système sous test
-est une fonction \code{f} avec un seul paramètre \code{\$i}~:
+À présent, illustrons comment utiliser le RAC de Praspel où le SUT est la
+méthode \code{f} de la classe \code{C} de la
+figure~\ref{figure:tools:dispatching} avec un seul paramètre \code{\$i}~:
 %
 \begin{pre}
 \$rac = new Hoa\bslash{}Praspel\bslash{}AssertionChecker\bslash{}Runtime( \\
    \tikzref{codetoolsom} \$model, \\
-    xcallable('f')\tikzref{codetoolssut} \\
+    xcallable(new C(), 'f')\tikzref{codetoolssut} \\
 ); \\
 \$rac->setData(['i' => 13]); \\
 \$verdict = \$rac->evaluate();
 \end{pre}
+%
+La variable \code{\$rac} contient une instance d'un \inenglish{Runtime Assertion
+Checker} qui travaille avec un modèle objet dans la variable \code{\$model}
+passée en premier argument et un SUT passé en second argument. Ensuite, grâce à
+la méthode \code{setData}, nous fixons les données des arguments du SUT, à
+savoir que son paramètre \code{\$i} aura comme valeur l'entier \code{13}. Enfin,
+le SUT sera exécuté et le contrat vérifié grâce à l'appel de la méthode
+\code{evaluate} sur le RAC. Dans ce cas, la variable \code{\$verdict} contiendra
+\code{true} car la précondition (\code{\arequires i: 7..42}) est bien respectée.
 %
 \begin{tikzannotation}
     \node (Mc) [left of=codetoolsom, node distance=1.7cm] {\circled{M}};
@@ -419,63 +429,61 @@ est une fonction \code{f} avec un seul paramètre \code{\$i}~:
     \node (Sc) [right of=codetoolssut, node distance=1.9cm] {\circled{S}};
     \draw [mywavyarrow] (Sc) -- (codetoolssut.east);
 \end{tikzannotation}
-%
-Dans ce cas, la variable \code{\$verdict} contiendra \code{true} car la
-précondition (\code{\arequires i: 7..42}) est bien respectée. Si nous voulons
-que les données soient générées automatiquement, nous devrons appeler la méthode
-\code{\$ac->au\-to\-ma\-ti\-cal\-ly\-Ge\-ne\-ra\-te\-Data(true)} en plus de
-définir le générateur numérique par défaut des domaines réalistes afin de
-pouvoir appeler les méthodes \code{sample} sur ces derniers~:
+
+Si nous voulons que les données soient générées automatiquement, nous devrons
+appeler la méthode
+\code{au\-to\-ma\-ti\-cal\-ly\-Ge\-ne\-ra\-te\-Data} en plus de
+définir le générateur numérique par défaut des domaines réalistes. Ainsi~:
 %
 \begin{pre}
 Hoa\bslash{}Realdom::setDefaultSampler(new Hoa\bslash{}Math\bslash{}Sampler\bslash{}Random()); \\
-\$rac->automaticallyGenerateData(true); \\
+\$rac->automaticallyGenerateData(true);
 \end{pre}
 
-\begin{example}[Vérifications des assertions]
-
-Dans la figure~\ref{figure:language:short_contract}
-page~\pageref{figure:language:short_contract}\footnote{On la replace ici~?}, le
-système sous test peut être la méthode \code{store}, le contrat est le contrat
-associé à cette méthode et les données sont soit fournies, soit générées
-automatiquement. Considérons par exemple la méthode \code{store} et son contrat
-dans la figure~\ref{figure:language:short_contract}.
+%\begin{example}[Vérifications des assertions]
 %
-Avec le jeu (\code{'foo'}, \code{null}), nous aurons une \inenglish{precondition
-failure}~: la contrainte \code{file: class('File')} n'est pas respectée car la
-méthode \code{predicate(\$q)} du domaine réaliste \code{Class} avec $\code{\$q}
-= \code{'foo'}$ retourne \code{false}, et aucun autre domaine réaliste n'est
-spécifié pour cette variable.
+%Dans la figure~\ref{figure:language:short_contract}
+%page~\pageref{figure:language:short_contract}\footnote{On la replace ici~?}, le
+%système sous test peut être la méthode \code{store}, le contrat est le contrat
+%associé à cette méthode et les données sont soit fournies, soit générées
+%automatiquement. Considérons par exemple la méthode \code{store} et son contrat
+%dans la figure~\ref{figure:language:short_contract}.
+%%
+%Avec le jeu (\code{'foo'}, \code{null}), nous aurons une \inenglish{precondition
+%failure}~: la contrainte \code{file: class('File')} n'est pas respectée car la
+%méthode \code{predicate(\$q)} du domaine réaliste \code{Class} avec $\code{\$q}
+%= \code{'foo'}$ retourne \code{false}, et aucun autre domaine réaliste n'est
+%spécifié pour cette variable.
+%%
+%Avec le jeu de paramètres (\code{new File(…)}, \code{null}), avec un fichier
+%vide, nous activerons le comportement par défaut et nous n'observerons aucune
+%erreur sur les préconditions. Nous sommes maintenant dans le post-état. Si la
+%méthode \code{store} retourne un booléen et que la méthode \code{isAttached} de
+%l'objet \code{File} retourne \code{true}, aucune erreur non plus sur la
+%postcondition.  Si cette méthode retourne autre chose que \code{true} ou que la
+%méthode \code{store} retourne autre chose qu'un booléen, nous aurons une
+%\inenglish{postcondition failure}. Si une exception est levée, nous aurons une
+%\inenglish{throwable failure}.
+%%
+%Avec le même jeu de paramètres mais un fichier de grande taille ne pouvant être
+%enregistré, nous activerons le comportement \code{full}. Nous devrons avoir une
+%exception levée de type \code{AllocationException}, avec une méthode
+%\code{getFilesystem} qui retournera l'instance de notre système de fichier. Le
+%fichier ne devra pas non plus être attaché, \ie sa méthode \code{isAttached}
+%devra retourner \code{false}. Si une autre exception est levée ou que la
+%postcondition exceptionnelle n'est pas respectée, nous aurons une
+%\inenglish{throwable failure}. Si aucune exception n'est levée, nous aurons une
+%\inenglish{postcondition failure}.
+%%
+%Si avant ou après l'exécution de la méthode \code{store}, un invariant est
+%cassé, nous aurons une \inenglish{invariant failure}. Par exemple, si l'attribut
+%\code{\_map} contient autre chose que des objets \code{File} ou que sa taille
+%dépasse 65535.
+%%
+%Enfin, si la méthode \code{store} fait appel à la méthode \code{getUsage} en ne
+%respectant pas sa précondition (ici en lui donnant un argument par exemple),
+%alors une \inenglish{precondition failure} sera émise depuis la méthode
+%\code{getUsage}, qui sera ensuite traduite en \inenglish{internal precondition
+%failure} depuis la méthode \code{store}.
 %
-Avec le jeu de paramètres (\code{new File(…)}, \code{null}), avec un fichier
-vide, nous activerons le comportement par défaut et nous n'observerons aucune
-erreur sur les préconditions. Nous sommes maintenant dans le post-état. Si la
-méthode \code{store} retourne un booléen et que la méthode \code{isAttached} de
-l'objet \code{File} retourne \code{true}, aucune erreur non plus sur la
-postcondition.  Si cette méthode retourne autre chose que \code{true} ou que la
-méthode \code{store} retourne autre chose qu'un booléen, nous aurons une
-\inenglish{postcondition failure}. Si une exception est levée, nous aurons une
-\inenglish{throwable failure}.
-%
-Avec le même jeu de paramètres mais un fichier de grande taille ne pouvant être
-enregistré, nous activerons le comportement \code{full}. Nous devrons avoir une
-exception levée de type \code{AllocationException}, avec une méthode
-\code{getFilesystem} qui retournera l'instance de notre système de fichier. Le
-fichier ne devra pas non plus être attaché, \ie sa méthode \code{isAttached}
-devra retourner \code{false}. Si une autre exception est levée ou que la
-postcondition exceptionnelle n'est pas respectée, nous aurons une
-\inenglish{throwable failure}. Si aucune exception n'est levée, nous aurons une
-\inenglish{postcondition failure}.
-%
-Si avant ou après l'exécution de la méthode \code{store}, un invariant est
-cassé, nous aurons une \inenglish{invariant failure}. Par exemple, si l'attribut
-\code{\_map} contient autre chose que des objets \code{File} ou que sa taille
-dépasse 65535.
-%
-Enfin, si la méthode \code{store} fait appel à la méthode \code{getUsage} en ne
-respectant pas sa précondition (ici en lui donnant un argument par exemple),
-alors une \inenglish{precondition failure} sera émise depuis la méthode
-\code{getUsage}, qui sera ensuite traduite en \inenglish{internal precondition
-failure} depuis la méthode \code{store}.
-
-\end{example}
+%\end{example}
