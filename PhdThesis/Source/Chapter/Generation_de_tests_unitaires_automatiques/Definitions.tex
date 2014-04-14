@@ -42,9 +42,9 @@ chemins du graphe de contrat $G$, appelés chemins {\strong activés par} le cas
 de test, démarrant depuis l'état initial de $G(\code{f})$ et terminant dans un
 de ses états finaux (soit normaux soit exceptionels).
 
-Nous représentons par $s'$ l'état après l'exécution du test, par $r$ la valeur
+Nous représentons par $s'$ l'état après l'exécution du test, par $o$ la valeur
 retournée par la méthode \code{f} et par $e$ l'exception levée le cas échéant.
-Remarquons que si la méthode lève une exception, alors $r$ est indéfinie. À
+Remarquons que si la méthode lève une exception, alors $o$ est indéfinie. À
 l'inverse, si la méthode termine normalement (c'est~à~dire sans lever
 d'exception), $e$ est considérée comme indéfinie.
 
@@ -63,7 +63,7 @@ est vraie dans le pré-état $s$~;
 \item si la transition est étiquetée par une expression $E$ provenant d'une
 postcondition (normale ou exceptionnelle), la transition est activée si et
 seulement si $E$ est vraie, quand \aresult est remplacée par la valeur retournée
-$r$, les sous-expressions \aold{\empty} sont remplacées par leur valeur dans le
+$o$, les sous-expressions \aold{\empty} sont remplacées par leur valeur dans le
 pré-état $s$, et les autres sous-expressions sont évaluées dans le post-état
 $s'$~;
 
