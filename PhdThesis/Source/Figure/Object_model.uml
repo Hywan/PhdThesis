@@ -25,7 +25,7 @@
     }
 
     package Realdom <<Frame>> {
-        class IRealdom_Holder
+        interface Holder
     }
 
     Clause          <|-- Behavior
@@ -53,6 +53,6 @@
     Variable <|-- Implicit
     Variable <|-- Borrowing
 
-    IRealdom_Holder <|-- Variable
+    Holder <|-- Variable
 
 @enduml
