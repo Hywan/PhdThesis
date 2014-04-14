@@ -208,8 +208,42 @@ erreurs {\strong sémantiques} seront détectées.
 \subsection{Modèle objet}
 \label{subsection:tools:model}
 
-La figure~\ref{figure:tools:om} montre les classes qui composent le modèle
-objet.
+Le modèle objet est la pièce centrale de Praspel. Chaque construction du langage
+est représentée par une classe. Le diagramme de classes du modèle objet est
+présenté dans la figure~\ref{figure:tools:om}. Toutes les clauses sont
+représentées par la classe abstraite \code{Clause}. La classe \code{Behavior}
+représente la clause \abehavior. Elle peut contenir une clause \arequires
+représentée par la classe \code{Requires}, une clause \aensures représentée par
+la classe \code{Ensures}, une clause \athrowable représentée par la classe
+\code{Throwable}, une clause \adescription représentée par la classe
+\code{Description et, une clause \adefault représentée par la classe
+\code{DefaultBehavior}. Une clause \abehavior peut contenir d'autres clauses
+\abehavior \via la classe \code{Collection} qui représente une collection de
+clauses. Une spécification, représentée par la classe \code{Specification}, est
+un comportement qui peut contenir des clauses supplémentaires~: \ainvariant
+représentée par la classe \code{Invariant} et \ais représentée par la classe
+\code{Is}.
+
+Certaines clauses contiennent des expressions (voir la règle syntaxique
+\grule{expression} dans la grammaire de Praspel présentée dans la
+figure~\ref{figure:language:grammar_part2}
+page~\pageref{figure:language:grammar_part2}). Ces expressions sont représentées
+par la classe \code{Declaration}. Une expression est composée de variables,
+représentée par la classe \code{Variable}. Une variable est, du point de vue des
+domaines réalistes, un \inenglish{holder}, c'est~à~dire une structure qui porte
+des domaines réalistes.
+
+Il existe trois sortes de variable~: normale, implicite et empruntée. Une
+variable normale est une variable classique du contrat, représentée par la
+classe \code{Variable}. Une variable implicite représentée par la classe
+\code{Implicit} est une variable non-déclarée, comme \code{this} dans le cas des
+méthodes. En effet, en PHP, la variable contenant l'objet est toujours
+implicite, c'est~à~dire non déclarée. Ce comportement se retrouve dans Praspel
+où il n'est pas nécessaire de spécifier \code{this}. Enfin, une variable
+empruntée est une variable extérieure à la méthode, comme \code{this->foo} qui
+représente un attribut de classe, ou une variable extérieure à l'état courant du
+système, comme \aold{\code{f}} qui fait référence la variable \code{foo} dans le
+pré-état lorsque que le système est dans son post-état.
 
 \begin{sidewaysfigure}
 
@@ -218,6 +252,19 @@ objet.
 \caption{\label{figure:tools:om} Modèle objet de Praspel.}
 
 \end{sidewaysfigure}
+
+Les détails du modèle objet ne sont pas présents dans la
+figure~\ref{figure:tools:om} pour des raisons de simplicité. Le lien entre la
+bibliothèque \code{Hoa\bslash{}Praspel} et \code{Hoa\bslash{}Realdom} se fait
+par les variables qui sont des \inenglish{holders}. Autant les domaines
+réalistes peuvent être utilisés sans Praspel, autant l'inverse n'est pas
+envisageable.
+
+Tous les objets de ce modèle sont imbriqués pour former une structure qui
+s'apparente à un arbre. La racine de cet arbre est représentée par une instance
+de la classe \code{Specification}. Cet arbre est visitable, c'est~à~dire que
+nous pouvons lui appliquer des visiteurs, comme nous allons le voir dans les
+parties suivantes.
 
 \subsection{Exportation et importation}
 \label{subsection:tools:compilation}
