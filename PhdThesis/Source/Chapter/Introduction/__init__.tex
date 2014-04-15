@@ -3,26 +3,26 @@
 
 \minitoc
 
-Les travaux présentés dans cette thèse sont liés à des activités relatives à la
+Les travaux présentés dans ce mémoire sont liés à des activités relatives à la
 validation et à la vérification de programmes PHP à travers un nouveau langage
 de spécification accompagné de ses outils. Ces activités s'articulent autour de
-trois axes majeurs~: langage de spécification, génération de données et
-génération automatique de tests unitaires.
-
-\section{Vérification et validation}
+trois axes majeurs~: langage de spécification, génération automatique de données
+de tests et génération automatique de tests unitaires. \\
 
 Aujourd'hui, nous sommes dans l'ère du tout numérique. Le nombre de nouveaux
 logiciels produits et utilisés chaque jour est énorme. Nous utilisons de plus en
 plus de machines dans notre quotidien~: téléphone, tablette, ordinateur,
 télévision, appareil électro-ménager… Une très grande majorité d'entre eux sont
 connectés à un réseau, le plus souvent Internet. Internet nous permet d'accéder
-à des centaines, voire des milliers, de millions de sites Web. Nous pouvons les
-classifier des dommages et des coûts qu'ils occasionnent en cas de
-dysfonctionnement. bla bla bla
+à des centaines, voire des milliers, de millions de sites Web.
 
-Tous ces logiciels ont besoins d'être vérifier et valider. Ce mémoire
-s'intéresse aux tests logiciels. Informellement, nous pouvons voir un test comme
-étant composé de trois parties~:
+Internet est un réseau, composé de plusieurs couches. On a la couche
+applicative. xx\% des applications constituant cette couche sont développées en
+PHP.
+
+Tous ces programmes ont besoin d'être vérifié et validé. Ce mémoire s'intéresse
+aux tests logiciels. Informellement, nous pouvons voir un test comme étant
+composé de trois parties~:
 
 \begin{enumerate}
 
@@ -54,7 +54,7 @@ pour décrire le fonctionnement du programme, puis dériver, à partir de cette
 spécification, des tests qui soient exécutables et qui vont vérifier ou valider
 plusieurs aspects de cette spécification.
 
-\subsection{\inenglish{Behavioral Interface Specification Language}}
+\section{\inenglish{Behavioral Interface Specification Language}}
 
 Le terme {\strong spécification} signifie généralement une description précise
 d'un comportement d'un artéfact. La {\strong vérification} signifie prouver
@@ -116,8 +116,10 @@ ce situe nos contributions.
 
 Ce mémoire s'intéresse à la conformité entre un programme et sa spécification, à
 travers la création d'un nouveau langage de spécification simple, pragmatique
-pour le Web et unifiant plusieurs théories. Chaque théorie introduite se verra
-enrichie pour la rendre compatible avec les besoins liés au Web.
+pour le Web et les développeurs et assemblant plusieurs méthodes du test. Chaque
+méthode introduite se verra enrichie pour la rendre compatible avec les besoins
+liés au Web. Les parties suivantes expliquent notre motivation, contexte et
+enjeux.
 
 \subsection{\inenglish{PHP: Hypertext Preprocessor}}
 
@@ -127,54 +129,117 @@ définit également avec les adjectifs suivants~: «~rapide, flexible et
 pragmatique~». C'est aussi un langage multiparadigmes. Il est par exemple
 procédural avec des fonctions nommées, orienté objet avec des classes, des
 interfaces et des traits, ou encore fonctionnel avec des fonctions anonymes et
-des closures. PHP est un langage de script interprété. Nous pouvons le voir
-comme un langage «~glu~» (comme la majorité des langages de script),
-c'est~à~dire qu'il communique avec à peu prêt tout et est au centre de beaucoup
-de logiciels. La syntaxe du langage est inspirée de C, C++, Java ou encore Perl.
-Depuis plusieurs années, le langage connaît des améliorations importantes afin
-de faire oublier les erreurs de modélisation passées qui lui sont trop souvent
-associées.
-
+des closures. PHP est un langage de script interprété. Il existe plusieurs
+interpréteurs, appelés des machines virtuelles. Nous pouvons voir PHP comme un
+langage «~glu~» (comme la majorité des langages de script), c'est~à~dire qu'il
+communique avec à peu prêt tout et est au centre de beaucoup de logiciels. La
+syntaxe du langage est inspirée de C, C++, Java ou encore Perl.  Depuis
+plusieurs années, le langage connaît des améliorations importantes afin de faire
+oublier les erreurs de modélisation passées qui lui sont trop souvent associées.
 Nous nous intéressons à des programmes écrits en PHP pour plusieurs raisons.
+Nous les présentons dans cette partie et les parties suivantes.
+
 Comparés à des langages plus traditionnels, comme C ou Java, les langages de
 scripts accélèrent le processus de développement grâce à la flexibilité qu'ils
-offrent avec un typage dynamique, faible et le mélange de paradigmes. Cependant,
+offrent avec un typage dynamique, faible et un mélange de paradigmes. Cependant,
 cette flexibilité rend plus difficile la compréhension du comportement de
 certains programmes, tout comme il est plus difficile de s'assurer que le
-programme n'est pas affecté par une modification (nous parlons de {\strong
-régressions}).
+programme n'est pas affecté par une modification (nous parlons de régressions).
 
-Ce type de langage nous apporte des problématiques encore peu ou pas abordées
-dans l'état de l'art actuel. De plus, aucun travaux ne considère PHP pour la
-génération de données de test ou la génération de tests. De même, aucun langage
-de spécification dédié à PHP n'existait avant les travaux de ce mémoire. Par
-ailleurs, plus de 85\% du Web fonctionne avec PHP.  Cela implique qu'il y a un
-marché important avec d'immenses besoins~; que ce soit des sites de
+Par ailleurs, plus de 85\% du Web fonctionne avec PHP.  Cela implique qu'il y a
+un marché important avec d'immenses besoins~; que ce soit des sites de
 commerces\footnote{Etsy, \url{https://etsy.com/}.}, de banques, d'assurances, de
 réseaux sociaux\footnote{Facebook, \url{https://facebook.com/}.}, de moteurs de
 recherche\footnote{Yahoo, \url{https://yahoo.com/}.},
-d'encyclopédie\footnote{Wikipedia, \url{https://wikipedia.org/}.},
+d'encyclopédies\footnote{Wikipedia, \url{https://wikipedia.org/}.},
 gouvernementaux\footnote{France, Belgique, Suisse, USA, Canada etc.} et
-d'autres. Nous tenons à préciser que nous nous intéressons à du test pour PHP et
-non pas du test pour le Web à travers un client HTML comme un navigateur. Nous
-considérons PHP uniquement, tout en orientant nos travaux vers les
-problématiques du Web.
+d'autres.
+
+\subsection{Test unitaire}
+
+Plusieurs travaux cherchent à améliorer la sécurité des programmes écrits en PHP
+à l'aide d'analyses statiques~\acite{YuAB10, BalzarottiCFJKKV08, WassermannS08,
+WassermannS07, Xie06} du code source, des flots des données pour trouver des
+chaînes de caractères malicieuses, des injections SQL etc. Toutefois, un grand
+nombre des solutions proposées souffrent de limitations
+majeures~\acite{HauzarK12} comme une détection faible des erreurs, un taux de
+faux-positifs important ou même un support faible des constructions du langage,
+L'aspect dynamique et multi-paradigme du langage n'aidant pas. D'autres travaux
+testent PHP à un niveau plus élevé, comme à travers ses API HTTP ou
+Webservices~\acite{}. D'autres encore testent le site Web écrit en HTML
+directement~\acite{ArtziKDTDPE10, KiezunGJE09, McAllisterKK08, Benedikt02}. Ces
+travaux se situent du côté client et observent les résultats produits par PHP
+côté serveur.
+
+Ces travaux sont intéressants pour, d'une part, tester la sécurité, et d'autre
+part, tester des programmes existants. Toutefois les méthodes de développement
+ont énormément évoluées ces dernières années avec la qualité logicielle. Les
+horribles programmes tels que nous avons lu ou écrit en PHP ont disparu. Des
+nouveaux \inenglish{frameworks} ou de nouvelles bibliothèques PHP ont fait leur
+apparition et mettent en avant l'usage intensif de bonnes pratiques pour le
+développement de programmes maintenables et testables. Des
+\inenglish{frameworks} de tests de plusieurs natures ont également fait leur
+apparition et un programme non-testé ne sera même plus installé. 
+
+De plus, aucun travaux de recherche n'a fait de propositions pour spécifier des
+programmes écrits en PHP et pourtant cela permettrait d'éviter en amont une
+multitude de problèmes. Enfin, aucun travaux ne considère PHP pour la génération
+automatique de données de test ou encore la génération automatique de tests
+unitaires.
+
+Nous profitons de cette tendance d'amélioration de la qualité logicielle et de
+l'absence de travaux dans le domaine des langages de spécification pour
+introduire les contrats dans PHP. Nos travaux s'inscrivent au niveau des tests
+unitaires et au niveau du programme PHP lui-même, c'est~à~dire que nous ne
+tenons pas compte du contexte d'utilisation du programme (client-serveur, client
+seul, démon etc.).
 
 \subsection{Langage de contrat}
+
+Comme PHP est un langage «~glu~», il manipule des données de toutes sortes.
+C'est une première contrainte. De plus, les utilisateurs de PHP sont aussi bien
+des débutants que des experts. La palette des utilisateurs est très large. C'est
+un avantage et un inconvénient du langage~: il est simple à utiliser et permet
+d'obtenir des résultats rapidement mais il permet aussi de faire des choses très
+poussées. Toutefois, tous ces utilisateurs suivent la tendance d'amélioration de
+la qualité logicielle. C'est une deuxième contrainte. Enfin, le langage PHP est
+très pragmatique, c'est ce qui le rend si facile d'accès. Les choses ne sont pas
+toujours faites comme elles le devraient, mais elles sont tout de même bien
+faites. La majorité des fonctionnalités du langage sont des compromis. Les
+utilisateurs du langage sont habitués à ce pragmatisme. C'est une troisième
+contrainte.
+
+Si nous proposons un langage de spécification pour PHP, il doit impérativement
+tenir compte de ces trois contraintes. Il doit être simple pour être utilisé et
+compris par la majorité des utilisateurs. Il doit être pragmatique pour que le
+travail puisse être fait rapidement et comme il faut. L'objectif n'est pas
+d'adresser tous les problèmes mais les problèmes les plus courants et les plus
+préoccupants. Nous ne ferons pas de compromis, nous sommes des scientifiques,
+mais nous pouvons trouver une manière élégante de présenter des solutions. Et
+enfin, puisque culturellement PHP est un langage «~glu~», le langage de
+spécification que nous proposons doit assembler plusieurs méthodes du test. Ces
+trois points, notamment le dernier, sont de réels \inenglish{challenges}
+scientifiques.
+
+Nous pensons que la programmation par contrat est pertinente pour répondre à
+toutes ces contraintes.
 
 \section{Contributions}
 \label{section:introduction:contributions}
 
-Dans ce mémoire, nous proposons un nouveau langage de contrat pour PHP. Pour
-élaborer un tel langage, nous avons trois axes de réflexion~: le langage
-lui-même (sa syntaxe et sa sémantique), les algorithmes de générations de
-données, et enfin les algorithmes de générations de tests.
+Dans ce mémoire, nous proposons un nouveau langage de contrat pour PHP. À partir
+de ce langage, nous voulons être capables de générer automatique des tests
+unitaires. Ainsi, nous avons trois axes de réflexion~: le langage lui-même (sa
+syntaxe et sa sémantique), les algorithmes de générations de données, et enfin
+les algorithmes de générations de tests unitaires. Nous voulons que les
+générations soient automatiques, c'est~à~dire que l'humain intervienne le moins
+possible.
 
-\subsection{Langage de contrats pour PHP, Praspel, et domaines réalistes}
+\subsection{Praspel, un langage de contrats pour PHP, et des domaines réalistes}
 
-Nous proposons un nouveau langage de contrat appelé {\strong Praspel}. Un
-contrat peut être utilisé de deux façons différentes~: soit il sera évalué lors
-de l'exécution du programme afin de vérifier qu'aucune spécification ne soit
+Le langage de contrat que nous proposons s'appelle {\strong Praspel}. Un contrat
+peut être utilisé de deux façons différentes~: soit il sera évalué lors de
+l'exécution du programme afin de vérifier qu'aucune spécification ne soit
 violée, soit nous pouvons à partir d'un contrat générer automatiquement
 plusieurs tests unitaires. Cette seconde façon est traitée dans les
 contributions suivantes.  Cette contribution s'intéresse au langage en lui-même,
@@ -221,30 +286,49 @@ la contribution précédente.
 
 \section{Plan du mémoire}
 
-Ce mémoire s'articule en 8~chapitres plus annexes et bibliographie~:
+Ce mémoire s'articule en 8~chapitres plus annexes et bibliographie, répartis
+dans 4~parties~:
 %
-\begin{enumerate}[$\mathrm{chapitre}$ 1,]
+\begin{enumerate}[$\mathrm{partie}$ 1,]
 
-\item ce chapitre, avec l'introduction, le contexte, la problématique et les
-contributions~;
+\item \begin{enumerate}[$\mathrm{chapitre}$ 1,]
 
-\item contient l'état de l'art nécessaire pour comprendre cette thèse et situer
-nos contributions~;
+      \item[chapitre 1,] ce chapitre, avec l'introduction, le contexte, la
+      problématique et les contributions~;
+  
+      \item[chapitre 2,] contient l'état de l'art nécessaire pour comprendre
+      cette thèse et situer nos contributions~;
+  
+      \end{enumerate}
 
-\item présente les domaines réalistes ainsi que Praspel, au niveau syntaxique et
-sémantique~;
+\item \begin{enumerate}[$\mathrm{chapitre}$ 1,]
 
-\item présente les différents algorithmes et stratégies de générations de
-données de test~;
+      \item[chapitre 3,] présente les domaines réalistes ainsi que Praspel, au
+      niveau syntaxique et sémantique~;
 
-\item présente les critères de couverture pour obtenir des objectifs de test à
-satisfaire afin de produire des tests unitaires pertinents~;
+      \item[chapitre 4,] présente les différents algorithmes et stratégies de
+      générations de données de test~;
 
-\item décrit les outils développés durant ce mémoire ou les outils incluant nos
-travaux~;
+      \item[chapitre 5,] présente les critères de couverture pour obtenir des
+      objectifs de test à satisfaire afin de produire des tests unitaires
+      pertinents~;
 
-\item valide nos contributions à travers des expérimentations~;
+      \end{enumerate}
 
-\item contient la conclusion et les perspectives de travaux.
+\item \begin{enumerate}[$\mathrm{chapitre}$ 1,]
+
+      \item[chapitre 6,] décrit les outils développés durant ce mémoire ou les
+      outils incluant nos travaux~;
+
+      \item[chapitre 7,] valide nos contributions à travers des
+      expérimentations~;
+
+      \end{enumerate}
+
+\item \begin{enumerate}[$\mathrm{chapitre}$ 1,]
+
+      \item[chapitre 8,] contient la conclusion et les perspectives de travaux.
+
+      \end{enumerate}
 
 \end{enumerate}
