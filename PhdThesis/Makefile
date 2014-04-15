@@ -81,7 +81,7 @@ open-new:
 	@open -g -F -n Dist/PhdThesis.pdf;
 
 clean:
-	@echo -e 'Dist\nDist/Page'
+	@echo -e 'Dist\nDist/Page' \
 		| xargs -I… find … -type f -maxdepth 1 \
 			-not -name '.*' \
 			-not -name '*.tex' \
