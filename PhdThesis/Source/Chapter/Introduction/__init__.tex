@@ -11,16 +11,16 @@ de tests et génération automatique de tests unitaires. \\
 
 Aujourd'hui, nous sommes dans l'ère du tout numérique. Le nombre de nouveaux
 logiciels produits et utilisés chaque jour est énorme. Nous utilisons de plus en
-plus de machines dans notre quotidien~: téléphone, tablette, ordinateur,
-télévision, appareil électro-ménager… Une très grande majorité d'entre eux sont
-connectés à un réseau, le plus souvent Internet. Ce dernier nous permet
+plus de machines dans notre quotidien~: téléphones, tablettes, ordinateurs,
+télévisions, appareils électroménagers… Une très grande majorité d'entre eux
+sont connectés à un réseau, le plus souvent Internet. Ce dernier nous permet
 d'accéder à des centaines, voire des milliers, de millions de sites Web. Plus de
 85\% de ces sites Web sont développés en PHP.
 
 Tous ces programmes ont besoin d'être vérifié et validé. Ce mémoire s'intéresse
-aux tests logiciels. Informellement, nous pouvons voir un test comme étant
-composé de trois parties~:
-
+au test logiciel. Informellement, nous pouvons voir un test comme étant composé
+de trois parties~:
+%
 \begin{enumerate}
 
 \item un Système Sous Test (\inenglish{System Under Test}, abrégé {\strong
@@ -44,12 +44,11 @@ PHPUnit~\acite{PHPUnit} pour PHP, CUnit~\acite{CUnit} pour C etc. Ce que font
 les ingénieurs de test peut se résumer à écrire une spécification informelle
 exécutable. En effet, ils transforment le cahier des charges en tests afin de
 vérifier et valider le programme. Toutefois, cela reste informel. Et surtout,
-c'est une tâche laborieuse qui peut revenir cher \footnote{TODO, environ la
-moitié du prix d'un projet}. Et pourquoi ne pas écrire une spécification
-formelle, et la rendre exécutable~?  C'est~à~dire d'utiliser un langage formel
-pour décrire le fonctionnement du programme, puis dériver, à partir de cette
-spécification, des tests qui soient exécutables et qui vont vérifier ou valider
-plusieurs aspects de cette spécification.
+c'est une tâche laborieuse qui peut revenir cher. Et pourquoi ne pas écrire une
+spécification formelle et la rendre exécutable~? C'est~à~dire utiliser un
+langage formel pour décrire le fonctionnement du programme, puis dériver, à
+partir de cette spécification, des tests qui soient exécutables et qui vont
+vérifier ou valider plusieurs aspects de cette spécification.
 
 \section{\inenglish{Behavioral Interface Specification Language}}
 
@@ -115,8 +114,8 @@ Ce mémoire s'intéresse à la conformité entre un programme et sa spécificati
 travers la création d'un nouveau langage de spécification simple, pragmatique
 pour le Web et les développeurs et assemblant plusieurs méthodes du test. Chaque
 méthode introduite se verra enrichie pour la rendre compatible avec les besoins
-liés au Web. Les parties suivantes expliquent notre motivation, contexte et
-enjeux.
+liés au Web. Les parties suivantes expliquent notre motivation, notre contexte
+et nos enjeux.
 
 \subsection{\inenglish{PHP: Hypertext Preprocessor}}
 
@@ -124,9 +123,12 @@ PHP~\acite{PHP} se définit comme étant un «~langage de script universel
 populaire qui est particulièrement adapté pour le développement Web~». PHP se
 définit également avec les adjectifs suivants~: «~rapide, flexible et
 pragmatique~». C'est aussi un langage multiparadigmes. Il est par exemple
-procédural avec des fonctions nommées, orienté objet avec des classes, des
-interfaces et des traits, ou encore fonctionnel avec des fonctions anonymes et
-des closures. PHP est un langage de script interprété. Il existe plusieurs
+procédural avec des fonctions nommées, orienté objet avec des classes (héritage
+vertical), des interfaces (typage) et des traits (héritage horizontal), ou
+encore fonctionnel avec des fonctions anonymes ($\lambda$) et des closures
+($\overline{\lambda}$). Son système de typage est dynamique et faible,
+c'est~à~dire que les types sont non-déclarés et qu'il est possible de transtyper
+les données. PHP est un langage de script interprété. Il existe plusieurs
 interpréteurs, appelés des machines virtuelles. Nous pouvons voir PHP comme un
 langage «~glu~» (comme la majorité des langages de script), c'est~à~dire qu'il
 communique avec à peu prêt tout et est au centre de beaucoup de logiciels. La
@@ -150,7 +152,7 @@ réseaux sociaux\footnote{Facebook, \url{https://facebook.com/}.}, de moteurs de
 recherche\footnote{Yahoo, \url{https://yahoo.com/}.},
 d'encyclopédies\footnote{Wikipedia, \url{https://wikipedia.org/}.},
 gouvernementaux\footnote{France, Belgique, Suisse, USA, Canada etc.} et
-d'autres.
+d'autres. Tous ces domaines ont besoin de qualité logicielle.
 
 \subsection{Test unitaire}
 
@@ -160,19 +162,19 @@ WassermannS07, Xie06} du code source, des flots des données pour trouver des
 chaînes de caractères malicieuses, des injections SQL etc. Toutefois, un grand
 nombre des solutions proposées souffrent de limitations
 majeures~\acite{HauzarK12} comme une détection faible des erreurs, un taux de
-faux-positifs important ou même un support faible des constructions du langage,
-L'aspect dynamique et multi-paradigme du langage n'aidant pas. D'autres travaux
-testent PHP à un niveau plus élevé, comme à travers ses API HTTP ou
+faux-positifs important ou même un support faible des constructions du langage~;
+l'aspect dynamique et multiparadigmes du langage n'aidant pas. D'autres travaux
+testent PHP à un niveau plus élevé, par exemple à travers des
 Webservices~\acite{}. D'autres encore testent le site Web écrit en HTML
 directement~\acite{ArtziKDTDPE10, KiezunGJE09, McAllisterKK08, Benedikt02}. Ces
 travaux se situent du côté client et observent les résultats produits par PHP
-côté serveur.
+côté serveur. Ces travaux sont intéressants pour, d'une part, tester la
+sécurité, et d'autre part, tester des programmes existants.
 
-Ces travaux sont intéressants pour, d'une part, tester la sécurité, et d'autre
-part, tester des programmes existants. Toutefois les méthodes de développement
-ont énormément évoluées ces dernières années avec la qualité logicielle. Les
-horribles programmes tels que nous avons lu ou écrit en PHP ont disparu. Des
-nouveaux \inenglish{frameworks} ou de nouvelles bibliothèques PHP ont fait leur
+Toutefois les méthodes de développement ont énormément évolué ces dernières
+années avec la qualité logicielle~\acite{LepineSF09}. Les horribles programmes
+tels que nous avons lu ou écrit en PHP ont disparu. Des nouveaux
+\inenglish{frameworks} ou de nouvelles bibliothèques PHP ont fait leur
 apparition et mettent en avant l'usage intensif de bonnes pratiques pour le
 développement de programmes maintenables et testables. Des
 \inenglish{frameworks} de tests de plusieurs natures ont également fait leur
@@ -213,10 +215,10 @@ travail puisse être fait rapidement et comme il faut. L'objectif n'est pas
 d'adresser tous les problèmes mais les problèmes les plus courants et les plus
 préoccupants. Nous ne ferons pas de compromis, nous sommes des scientifiques,
 mais nous pouvons trouver une manière élégante de présenter des solutions. Et
-enfin, puisque culturellement PHP est un langage «~glu~», le langage de
-spécification que nous proposons doit assembler plusieurs méthodes du test. Ces
-trois points, notamment le dernier, sont de réels \inenglish{challenges}
-scientifiques.
+enfin, puisque culturellement PHP est un langage «~glu~» et que nous voulons
+adresser plusieurs problèmes, le langage de spécification que nous proposons
+doit assembler plusieurs méthodes du test. Ces trois points, notamment le
+dernier, sont de réels \inenglish{challenges} scientifiques.
 
 Nous pensons que la programmation par contrat est pertinente pour répondre à
 toutes ces contraintes.
@@ -227,8 +229,8 @@ toutes ces contraintes.
 Dans ce mémoire, nous proposons un nouveau langage de contrat pour PHP. À partir
 de ce langage, nous voulons être capables de générer automatique des tests
 unitaires. Ainsi, nous avons trois axes de réflexion~: le langage lui-même (sa
-syntaxe et sa sémantique), les algorithmes de générations de données, et enfin
-les algorithmes de générations de tests unitaires. Nous voulons que les
+syntaxe et sa sémantique), les algorithmes de génération de données, et enfin
+les algorithmes de génération de tests unitaires. Nous voulons que les
 générations soient automatiques, c'est~à~dire que l'humain intervienne le moins
 possible.
 
@@ -258,8 +260,8 @@ test. Ces données sont spécifiées au mieux par le contrat. Nous devons alors
 des réels, des chaînes de caractères, des tableaux, des objets etc. Nous avons
 commencé par générer aléatoirement et uniformément des booléens, des entiers et
 des réels. Toutefois, cette approche montre rapidement ses limites avec des
-chaînes de caractères, des tableaux ou des objets. Nous avons proposés des
-algorithmes de générations de chaîne de caractères s'appuyant sur des
+chaînes de caractères, des tableaux ou des objets. Nous avons proposé des
+algorithmes de génération de chaîne de caractères s'appuyant sur des
 grammaires. Ensuite, nous nous sommes concentrés sur les tableaux avec un
 solveur et des contraintes dédiées. Ces contributions ont donné lieux à deux
 publications, respectivement \acitei{EnderlinDGB12} et \acitei{EnderlinGB13}.
@@ -275,7 +277,7 @@ données de test à partir d'un morceau d'un contrat. La dernière étape
 s'intéresse au fait qu'un contrat peut exprimer plusieurs comportements et nous
 devons nous assurer que tous ces comportements sont testés. Nous avons alors
 défini plusieurs critères de couverture sur les contrats afin d'avoir des
-objectifs de tests à atteindre. Par conséquent, nous avons développer des
+objectifs de tests à atteindre. Par conséquent, nous avons développé des
 algorithmes générant autant de tests unitaires que nécessaire pour satisfaire
 certains critères et ainsi couvrir tous les comportements des contrats. Les
 données nécessaires pour exécuter ces tests seront générées automatiquement avec
@@ -306,8 +308,8 @@ dans 4~parties~:
       \item présente les domaines réalistes ainsi que Praspel, au
       niveau syntaxique et sémantique~;
 
-      \item présente les différents algorithmes et stratégies de
-      générations de données de test~;
+      \item présente les différents algorithmes et stratégies de génération de
+      données de test~;
 
       \item présente les critères de couverture pour obtenir des
       objectifs de test à satisfaire afin de produire des tests unitaires
