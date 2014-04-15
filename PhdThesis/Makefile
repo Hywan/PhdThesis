@@ -19,8 +19,10 @@ Dist/Page/Covers.pdf:
 		-halt-on-error \
 		-shell-escape Source/Page/Covers.tex;
 
-bib: tex
+bib: | Dist/PhdThesis.aux
 	@bibtex Dist/PhdThesis.aux;
+
+Dist/PhdThesis.aux: tex
 
 figures: dots umls
 
