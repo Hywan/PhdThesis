@@ -3,13 +3,21 @@ SHELL = bash
 
 all: tex
 
-tex:
+tex: | Dist/Page/Covers.pdf
 	@pdflatex \
 		-output-directory Dist \
 		-output-format pdf \
 		-interaction errorstopmode \
 		-halt-on-error \
 		-shell-escape PhdThesis.tex;
+
+Dist/Page/Covers.pdf:
+	@pdflatex \
+		-output-directory Dist/Page \
+		-output-format pdf \
+		-interaction errorstopmode \
+		-halt-on-error \
+		-shell-escape Source/Page/Covers.tex;
 
 bib: tex
 	@bibtex Dist/PhdThesis.aux;
@@ -71,9 +79,11 @@ open-new:
 	@open -g -F -n Dist/PhdThesis.pdf;
 
 clean:
-	@find Dist -type f -maxdepth 1 \
-		-not -name '.*' \
-		-not -name '*.tex' | xargs rm -f;
+	@echo -e 'Dist\nDist/Page'
+		| xargs -I… find … -type f -maxdepth 1 \
+			-not -name '.*' \
+			-not -name '*.tex' \
+		| xargs rm -f;
 
 distclean:
 	@find Dist -type f -not -name '.*' | xargs rm -f
