@@ -13,10 +13,12 @@ Aujourd'hui, nous sommes dans l'ère du tout numérique. Le nombre de nouveaux
 logiciels produits et utilisés chaque jour est énorme. Nous utilisons de plus en
 plus de machines dans notre quotidien~: téléphone, tablette, ordinateur,
 télévision, appareil électro-ménager… Une très grande majorité d'entre eux sont
-connectés à un réseau, le plus souvent Internet. Internet nous permet d'accéder
-à des centaines, voire des milliers, de millions de sites Web.
+connectés à un réseau, le plus souvent Internet. Ce dernier nous permet
+d'accéder à des centaines, voire des milliers, de millions de sites Web.
 
-Internet est un réseau, composé de plusieurs couches. On a la couche
+Internet est un réseau, composé de plusieurs couches.
+
+On a la couche
 applicative. xx\% des applications constituant cette couche sont développées en
 PHP.
 
@@ -293,41 +295,48 @@ dans 4~parties~:
 
 \item \begin{enumerate}[$\mathrm{chapitre}$ 1,]
 
-      \item[chapitre 1,] ce chapitre, avec l'introduction, le contexte, la
+      \item ce chapitre, avec l'introduction, le contexte, la
       problématique et les contributions~;
-  
-      \item[chapitre 2,] contient l'état de l'art nécessaire pour comprendre
+
+      \item contient l'état de l'art nécessaire pour comprendre
       cette thèse et situer nos contributions~;
-  
+
+      \newcounter{myenum}
+      \setcounter{myenum}{\theenumii}
       \end{enumerate}
 
 \item \begin{enumerate}[$\mathrm{chapitre}$ 1,]
+      \setcounter{enumii}{\themyenum}
 
-      \item[chapitre 3,] présente les domaines réalistes ainsi que Praspel, au
+      \item présente les domaines réalistes ainsi que Praspel, au
       niveau syntaxique et sémantique~;
 
-      \item[chapitre 4,] présente les différents algorithmes et stratégies de
+      \item présente les différents algorithmes et stratégies de
       générations de données de test~;
 
-      \item[chapitre 5,] présente les critères de couverture pour obtenir des
+      \item présente les critères de couverture pour obtenir des
       objectifs de test à satisfaire afin de produire des tests unitaires
       pertinents~;
 
+      \setcounter{myenum}{\theenumii}
       \end{enumerate}
 
 \item \begin{enumerate}[$\mathrm{chapitre}$ 1,]
+      \setcounter{enumii}{\themyenum}
 
-      \item[chapitre 6,] décrit les outils développés durant ce mémoire ou les
+      \item décrit les outils développés durant ce mémoire ou les
       outils incluant nos travaux~;
 
-      \item[chapitre 7,] valide nos contributions à travers des
+      \item valide nos contributions à travers des
       expérimentations~;
 
+      \setcounter{myenum}{\theenumii}
       \end{enumerate}
 
 \item \begin{enumerate}[$\mathrm{chapitre}$ 1,]
+      \setcounter{enumii}{\themyenum}
 
-      \item[chapitre 8,] contient la conclusion et les perspectives de travaux.
+      \item contient la conclusion et les perspectives de travaux.
 
       \end{enumerate}
 
