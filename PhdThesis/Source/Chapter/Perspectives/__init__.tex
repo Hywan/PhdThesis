@@ -1,0 +1,117 @@
+\chapter{Perspectives}
+\label{chapter:perspectives}
+
+\minitoc
+
+Les perspectives qui se dégagent de ces travaux se classent en trois parties. La
+première concerne l'utilisation d'autres méthodes du test dans Praspel. La
+deuxième partie concerne des améliorations possibles sur le langage. Et enfin,
+la dernière partie offre une réflexion sur l'avenir des travaux présentés dans
+ce mémoire.
+
+\section{Inclure de nouvelles méthodes du test}
+
+Grâce aux domaines réalistes et à la conception modulaire et extensible des
+outils de Praspel, il est possible d'assembler plusieurs méthodes du test. Les
+expérimentations ont montré certaines limites du langage et des outils. Nous
+pensons qu'il est pertinent de s'intérer aux méthodes suivantes.
+
+\subsection{Test aux limites}
+
+Le test aux limites permet de détecter des erreurs usuelles rapidement et
+efficacement. Nous avons dit que les domaines réalistes utilisaient un
+générateur numérique aléatoire et uniforme pour générer des données. Nous
+pensons qu'il est pertinent de réfléchir à une manière de spécifier les limites
+des domaines réalistes. Par exemple, avec l'intervalle $[-7; 42]$, les limites
+extrêmes sont $-7$, $-6$, 41 et 42, et les limites intermédiaires sont $-1$, 0
+et 1. En revanche, définir les limites d'un tableau, d'une chaîne de caractères
+ou d'un objet n'est pas aussi trivial et mérite plus d'attention. Une fois ses
+limites connues, nous pourrions utiliser un générateur numérique aux limites
+dans les domaines réalistes pour produire de nouvelles données aux limites.
+
+\subsection{Scénario et propriétés temporelles}
+
+Dans le contexte du \inenglish{Scenario-based Testing}, nous nous intéressons
+aux travaux de \acitei{Castillos13}. Ces travaux s'inspirent des patrons de
+propriétés décrits par \acitei{DwyerAC99}. Ces patrons permettent de définir une
+propriété temporelle comme un motif qui doit être satisfait à l'intérieur d'une
+portée (une portion d'exécution du système).  Ils permettent donc d'exprimer
+simplement un large panel de propriétés temporelles avec un ensemble restreint
+de constructions. Un nouveau langage~\acite{CastillosDJKT13} basé sur ces
+patrons a été créé. Ce langage comprend des variantes aux motifs et aux portées
+ajoutées pour améliorer l'expressivité et corriger certaines incohérences. Des
+nouveaux critères de couverture ont alors été définis et permettent de vérifier
+plusieurs propriétés temporelles.
+
+La démarche de~\acitea{Castillos13} est similaire à la notre mais les objectifs
+de tests sont différents. Cependant, puisque ce langage est très simple et
+permet d'exprimer un grand nombre de propriétés temporelles, nous pensons que ce
+langage pourrait être une extension à Praspel. Ainsi, en plus des attributs et
+des méthodes, les classes pourraient être annotées par ces propriétés. Nous les
+exploiterions pour générer de nouveaux préambules de test, des suites de tests
+fonctionnels ou alors pour vérifier des propriétés temporelles.
+
+\subsection{\inenglish{Grey-box} avec le \inenglish{Search-based Testing}}
+
+Dans les expérimentations, nous avons vu certaines limites de Praspel. La
+méthode du \inenglish{Search-based Testing}~\acite{McMinn04} utilise des
+métaheuristiques pour générer automatiquement des données de tests. Le SUT est
+en premier lieu exécuté avec des données aléatoires. Des fonctions de
+\inenglish{fitness} (fonctions objectifs) placées sur les points de choix du SUT
+permettent d'évaluer la «~distance~» entre les données courantes et les données
+nécessaires pour activer ou désactiver ce point de choix. En utilisant la
+programmation génétique, ces données initiales sont mutées pour former une
+nouvelle population de données. Des algorithmes de sélections vont réduire cette
+population. Chaque donnée de cette population sera ensuite réutilisée comme
+données de tests pour exécuter à nouveau le SUT. Les fonctions de
+\inenglish{fitness} vont produire de nouveaux résultats qui serviront à guider
+l'évolution de la population de données. Par exemple, avec la condition \code{x
+== y}, la fonction de \inenglish{fitness} sera $\mathrm{abs}(\code{x} -
+\code{y})$. Quand cette fonction tend vers 0, alors la condition est activée.
+
+Les suites de tests générées par Praspel sont basées sur les critères de
+couverture des contrats. Les données de test, spécifiées majoritairement avec
+les domaines réalistes, sont générées aléatoirement. Si le résultat des
+fonctions de \inenglish{fitness} pouvait être remonté dans les domaines
+réalistes pour mieux guider les nouvelles générations de données, nous pensons
+que nous pourrions détecter plus d'erreurs, ou du moins, couvrir le code source
+plus efficacement et plus rapidement. En effet, les domaines réalistes ont
+plusieurs interfaces (comme \code{Interval}, \code{Finite}, \code{Nonconvex}
+etc.). Ces interfaces imposent l'implémentation de méthodes permettant de
+contraindre ou manipuler les données contenues dans le domaine réaliste. Il doit
+être possible de transposer les résultats des fonctions de \inenglish{fitness}
+dans les domaines réalistes.
+
+Cette approche, d'une part, permettrait d'exploiter le code source au lieu de
+rester en boîte noire (nous serions alors en boîte grise), et, d'autre part, ne
+compliquerait pas le langage en y ajoutant de nouvelles constructions, mais
+offrirait plus de services à l'utilisateur. Ce dernier n'aurait aucun effort à
+produire à part mettre à jour ses outils.
+
+\section{Améliorer le langage}
+
+Le langage Praspel n'est pas complet. Certaines choses peuvent être mieux
+spécifiées. Nous sommes toujours dans cette démarche d'analyser ce que les
+développeurs écrivent dans les contrats et d'améliorer le langage en
+conséquence. Nous avons relevé deux points importants.
+
+\subsection{Solveurs sur les entiers et réels}
+
+Quand des entiers sont manipulés, il est courant de vouloir spécifier des
+constraintes comme $\code{i} < \code{j} + 1$. Actuellement, Praspel n'a aucun
+solveur sur les entiers et les réels. Malgré la pertinence d'une telle
+fonctionnalité, nous n'avons pas eu le temps de la dévélopper. Il serait alors
+nécessaire d'étudier le domaine, de voir comment nous pouvons y contribuer, et
+proposer une solution dans Praspel.
+
+\subsection{De nouveaux domaines réalistes}
+
+Durant l'expérimentation, les ingénieurs de tests ont trouvé notre approche
+pertinente. Toutefois, la bibliothèque standard des domaines réalistes n'était
+pas suffisante. Les ingénieurs ont demandé la création de plus de domaines
+réalistes représentant des données métiers, comme des numéros de comptes
+bancaires, des numéros de téléphones etc. Ce ne sont pas des perspectives
+scientifiques mais industrielles. Toutefois, elles participent à l'adoption de
+nos outils dans l'industrie.
+
+\section{Vers des outils industriels~?}
