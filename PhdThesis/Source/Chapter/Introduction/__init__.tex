@@ -14,12 +14,12 @@ logiciels produits et utilisés chaque jour est énorme. Nous utilisons de plus 
 plus de machines dans notre quotidien~: téléphones, tablettes, ordinateurs,
 télévisions, appareils électroménagers… Une très grande majorité d'entre eux
 sont connectés à un réseau, le plus souvent Internet. Ce dernier nous permet
-d'accéder à des centaines, voire des milliers, de millions de sites Web. Plus de
-85\% de ces sites Web sont développés en PHP.
+d'accéder à des millers de millions de sites Web. Plus de 85\% de ces sites Web
+sont développés en PHP. Tous ces programmes ont besoin d'être vérifiés et
+validés.
 
-Tous ces programmes ont besoin d'être vérifié et validé. Ce mémoire s'intéresse
-au test logiciel. Informellement, nous pouvons voir un test comme étant composé
-de trois parties~:
+Ce mémoire s'intéresse au test logiciel. Informellement, nous pouvons voir un
+test comme étant composé de trois parties~:
 %
 \begin{enumerate}
 
@@ -38,13 +38,13 @@ Aujourd'hui, dans le monde industriel, la majorité des tests sont écrits
 {\strong manuellement}, par des ingénieurs de test. Un SUT leur est fourni, ils
 l'exécutent avec des données de test et calculent eux-même le verdict du test.
 Dans le cas des tests {\strong automatisés}, l'exécution et le calcul du verdict
-est fait par la machine. C'est le rôle qui incombe aux \inenglish{frameworks}
+sont faits par la machine. C'est le rôle qui incombe aux \inenglish{frameworks}
 «~xUnit~», comme JUnit~\acite{JUnit} pour Java, atoum~\acite{atoum} ou
-PHPUnit~\acite{PHPUnit} pour PHP, CUnit~\acite{CUnit} pour C etc. Ce que font
-les ingénieurs de test peut se résumer à écrire une spécification informelle
-exécutable. En effet, ils transforment le cahier des charges en tests afin de
-vérifier et valider le programme. Toutefois, cela reste informel. Et surtout,
-c'est une tâche laborieuse qui peut revenir cher. Et pourquoi ne pas écrire une
+PHPUnit~\acite{PHPUnit} pour PHP, CUnit~\acite{CUnit} pour C etc. Le travail des
+ingénieurs de test peut se résumer à écrire une spécification informelle
+exécutable, puisqu'ils transforment le cahier des charges en tests afin de
+vérifier et valider le programme. Cela reste toutefois informel, et surtout, une
+tâche laborieuse qui peut revenir cher. Pourquoi alors ne pas écrire une
 spécification formelle et la rendre exécutable~? C'est~à~dire utiliser un
 langage formel pour décrire le fonctionnement du programme, puis dériver, à
 partir de cette spécification, des tests qui soient exécutables et qui vont
@@ -53,14 +53,14 @@ vérifier ou valider plusieurs aspects de cette spécification.
 \section{\inenglish{Behavioral Interface Specification Language}}
 
 Le terme {\strong spécification} signifie généralement une description précise
-d'un comportement d'un artéfact. La {\strong vérification} signifie prouver
-qu'une implémentation (c'est~à~dire un programme) satisfait une spécification
+d'un comportement d'un artéfact. {\strong Vérification} signifie prouver qu'une
+implémentation (c'est~à~dire un programme) satisfait une spécification
 particulière dans toutes les exécutions et configurations possibles.
 Généralement, une telle preuve est accomplie à l'aide de raisonnements
-statiques, c'est~à~dire uniquement par analyse du programme. Quand un
-raisonnement statique n'est pas possible ou suffisant, nous pouvons utiliser une
-{\strong validation} dynamique, pour tester l'implémentation, c'est~à~dire que
-nous allons exécuter le programme. Une validation dynamique est aussi appelée
+statiques, c'est~à~dire uniquement par analyse du programme. Lorsqu'un
+raisonnement statique n'est pas possible ou suffisant, nous pourrons utiliser
+une {\strong validation} dynamique, pour tester l'implémentation, c'est~à~dire
+que nous exécuterons le programme. Une validation dynamique est aussi appelée
 \inenglish{Runtime Assertion Checking}, abrégé RAC~\acite{Geller76}.
 
 Un {\strong langage de spécification} formel est une notation précise pour
@@ -94,19 +94,19 @@ nous travaillons en boîte blanche (\inenglish{white-box}), c'est~à~dire où no
 avons accès au code source du programme, les annotations peuvent faire partie de
 la grammaire du langage, ou alors, elles sont écrites dans des {\strong
 commentaires}. Dans le cas où nous travaillons en boîte noire
-(\inenglish{black-box}), c'est~à~dire où nous n'avons pas ou partiellement
-d'accès au code source, les annotations peuvent parfois être externes au
-programme, par exemple sur un langage de définition d'interface
-(\inenglish{Interface Definition Language}, abrégé IDL) ou sur un modèle, ce qui
-nous rapprocherait du \inenglish{Model-based Testing}, abrégé
-MbT~\acite{Utting07}. La différence entre boîte noire et boîte blanche peut
-parfois être plus subtile~\acite{Gaudel11}~: nous considérons que nous sommes en
-boîte noire quand nous n'exploitons pas la structure du code, basiquement le
-contenu des fonctions et méthodes, sinon, nous sommes en boîte blanche.
+(\inenglish{black-box}), c'est~à~dire où nous n'avons pas ou partiellement accès
+au code source, les annotations peuvent parfois être externes au programme, par
+exemple sur un langage de définition d'interface (\inenglish{Interface
+Definition Language}, abrégé IDL) ou sur un modèle, ce qui nous rapprocherait du
+\inenglish{Model-based Testing}, abrégé MbT~\acite{Utting07}. La différence
+entre boîte noire et boîte blanche peut parfois être plus
+subtile~\acite{Gaudel11}~: nous considérons que nous sommes en boîte noire quand
+nous n'exploitons pas la structure du code, basiquement le contenu des fonctions
+et méthodes, sinon, nous sommes en boîte blanche.
 
 Les langages d'annotations sont des \inenglish{Behavioral Interface
 Specification Language}, abrégé BISL. C'est dans cette catégorie de langage que
-ce situe nos contributions.
+se situent nos contributions.
 
 \section{Contexte et problématique}
 
@@ -135,8 +135,8 @@ communique avec à peu prêt tout et est au centre de beaucoup de logiciels. La
 syntaxe du langage est inspirée de C, C++, Java ou encore Perl.  Depuis
 plusieurs années, le langage connaît des améliorations importantes afin de faire
 oublier les erreurs de modélisation passées qui lui sont trop souvent associées.
-Nous nous intéressons à des programmes écrits en PHP pour plusieurs raisons.
-Nous les présentons dans cette partie et les parties suivantes.
+Nous nous intéressons à des programmes écrits en PHP pour plusieurs raisons
+décrites dans cette partie et les suivantes.
 
 Comparés à des langages plus traditionnels, comme C ou Java, les langages de
 scripts accélèrent le processus de développement grâce à la flexibilité qu'ils
@@ -145,14 +145,14 @@ cette flexibilité rend plus difficile la compréhension du comportement de
 certains programmes, tout comme il est plus difficile de s'assurer que le
 programme n'est pas affecté par une modification (nous parlons de régressions).
 
-Par ailleurs, plus de 85\% du Web fonctionne avec PHP.  Cela implique qu'il y a
-un marché important avec d'immenses besoins~; que ce soit des sites de
+Par ailleurs, plus de 85\% du Web fonctionne avec PHP. Cela implique qu'il y a
+un marché important avec d'immenses besoins~; que ce soient des sites de
 commerces\footnote{Etsy, \url{https://etsy.com/}.}, de banques, d'assurances, de
 réseaux sociaux\footnote{Facebook, \url{https://facebook.com/}.}, de moteurs de
 recherche\footnote{Yahoo, \url{https://yahoo.com/}.},
 d'encyclopédies\footnote{Wikipedia, \url{https://wikipedia.org/}.},
-gouvernementaux\footnote{France, Belgique, Suisse, USA, Canada etc.} et
-d'autres. Tous ces domaines ont besoin de qualité logicielle.
+gouvernementaux\footnote{France, Belgique, Suisse, USA, Canada etc.} et autres.
+Tous ces domaines ont besoin de qualité logicielle.
 
 \subsection{Test unitaire}
 
@@ -173,16 +173,16 @@ sécurité, et d'autre part, tester des programmes existants.
 
 Toutefois les méthodes de développement ont énormément évolué ces dernières
 années avec la qualité logicielle~\acite{LepineSF09}. Les horribles programmes
-tels que nous avons lu ou écrit en PHP ont disparu. Des nouveaux
+tels ceux que nous avons lus ou écrits en PHP ont disparu. Des nouveaux
 \inenglish{frameworks} ou de nouvelles bibliothèques PHP ont fait leur
 apparition et mettent en avant l'usage intensif de bonnes pratiques pour le
 développement de programmes maintenables et testables. Des
 \inenglish{frameworks} de tests de plusieurs natures ont également fait leur
 apparition et un programme non-testé ne sera même plus installé. 
 
-De plus, aucun travaux de recherche n'a fait de propositions pour spécifier des
+De plus, aucun travail de recherche n'a fait de propositions pour spécifier des
 programmes écrits en PHP et pourtant cela permettrait d'éviter en amont une
-multitude de problèmes. Enfin, aucun travaux ne considère PHP pour la génération
+multitude de problèmes. Enfin, aucun travail ne considère PHP pour la génération
 automatique de données de test ou encore la génération automatique de tests
 unitaires.
 
@@ -240,8 +240,8 @@ Le langage de contrat que nous proposons s'appelle {\strong Praspel}. Un contrat
 peut être utilisé de deux façons différentes~: soit il sera évalué lors de
 l'exécution du programme afin de vérifier qu'aucune spécification ne soit
 violée, soit nous pouvons à partir d'un contrat générer automatiquement
-plusieurs tests unitaires. Cette seconde façon est traitée dans les
-contributions suivantes.  Cette contribution s'intéresse au langage en lui-même,
+plusieurs tests unitaires. Cette seconde option est traitée dans les
+contributions suivantes. Cette contribution s'intéresse au langage en lui-même,
 à savoir sa syntaxe et sa sémantique. Nous voyons aussi comment évaluer un
 contrat pour qu'il vérifie des données à l'exécution. Ce langage est inspiré de
 JML~\acite{JML} mais se différencie sur la façon de spécifier les données. En
@@ -272,7 +272,7 @@ approches.
 
 Cette dernière contribution «~boucle la boucle~». Nous avons un langage de
 contrat qui peut être évalué pour vérifier les données manipulées par le
-programme à l'exécution. Nous sommes capable de générer automatiquement des
+programme à l'exécution. Nous sommes capables de générer automatiquement des
 données de test à partir d'un morceau d'un contrat. La dernière étape
 s'intéresse au fait qu'un contrat peut exprimer plusieurs comportements et nous
 devons nous assurer que tous ces comportements sont testés. Nous avons alors
