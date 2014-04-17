@@ -124,10 +124,10 @@ réaliste \code{Boundinteger}.}
 
 La figure~\ref{figure:language:boundinteger} montre un début d'implémentation du
 domaine réaliste \code{Boundinteger}. Il hérite du domaine réaliste
-\code{Integer} en \circled{1}. Nous remarquons aussi de nombreux interfaces pour
-caractériser la «~forme~» ou les propriétés du domaine réaliste (détaillé dans
-la partie \ref{subsection:language:realdom:classification}). La propriété de
-prédicabilité raffine celle du parent en \circled{2}, et ajoute de nouvelles
+\code{Integer} en \circled{1}. Nous remarquons aussi de nombreuses interfaces
+pour caractériser la «~forme~» ou les propriétés du domaine réaliste (détaillé
+dans la partie \ref{subsection:language:realdom:classification}). La propriété
+de prédicabilité raffine celle du parent en \circled{2}, et ajoute de nouvelles
 contraintes en \circled{3} qui vérifient que \code{\$q} appartient à
 l'intervalle décrit par le domaine réaliste.
 
@@ -154,7 +154,7 @@ Quand nous décrivons les paramètres d'un domaine réaliste, nous pouvons les
 filtrer. Le filtre est exprimé avec un ou des noms de domaines réalistes,
 séparés par le symbole \code{$\vert$}. En effet, un domaine réaliste accepte
 plusieurs sortes d'arguments et est capable de faire la traduction d'un domaine
-réaliste vers un autre. Ainsi, nous restons proche de la philosophie de PHP et
+réaliste vers un autre. Ainsi, nous restons proches de la philosophie de PHP et
 de son typage dynamique. La figure~\ref{figure:language:boundinteger} montre la
 déclaration de deux paramètres~: \code{lower} et \code{upper} en \circled{4},
 qui ont pour domaine réaliste \code{Constinteger}, avec respectivement en valeur

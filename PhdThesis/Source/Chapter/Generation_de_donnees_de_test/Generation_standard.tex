@@ -15,9 +15,9 @@ figure~\ref{figure:data:process} et détaillée ci-après~:
 
 \end{enumerate}
 
-La liste des variables $V$ qui nous intéressent sont écrites dans les
-préconditions (clause \arequires) ainsi que dans les invariants (clause
-\ainvariant). Ces derniers seront traités dans la
+Les variables qui nous intéressent sont écrites dans les préconditions (clause
+\arequires) ainsi que dans les invariants (clause \ainvariant). Nous notons par
+$V$ la liste de ces variables. Les invariants seront traités dans la
 partie~\ref{section:data:objects}. Rappelons qu'une précondition est constituée
 de déclarations, de prédicats et de contraintes (voir la
 figure~\ref{figure:language:grammar_part2}
@@ -46,7 +46,7 @@ dans l'ordre décroissant du nombre de contraintes portées~: la variable avec l
 plus de contraintes sera la première de la liste.
 
 L'état suivant est \code{sample}. Une variable porte une disjonction de domaines
-réalistes, soit $n$ domaine réalistes~:
+réalistes, soit $n$ domaines réalistes~:
 %
 $$\code{$v$: $t_1$(\dots) or \dots or $t_n$(\dots)}$$
 %
@@ -64,12 +64,12 @@ Si la précondition a des prédicats (avec la construction \apred{p}), alors ces
 derniers seront évalués avec les données fraîchement générées. Si un prédicat a
 besoin de plusieurs variables, alors son évaluation sera reportée à plus tard.
 
-Si pendant ces étapes, la propriété de prédicabilité d'un domaine réaliste ou
-qu'un prédicat invalide une donnée, il y a un {\strong rejet}. Suite à un rejet,
-une donnée est re-générée. Un nombre maximum $\tau_\mathrm{max}$ de
-re-générations $\tau$ est fixé afin d'éviter des générations et des rejets en
-boucle trop importants et donc trop longs. À chaque génération, $\tau$ est
-incrémenté de 1. La valeur de $\tau_\mathrm{max}$ est paramétrable. \\
+Si pendant ces étapes, la propriété de prédicabilité d'un domaine réaliste ou un
+prédicat invalide une donnée, il y a un {\strong rejet}. Suite à un rejet, une
+donnée est re-générée. Un nombre maximum $\tau_\mathrm{max}$ de re-générations
+$\tau$ est fixé afin d'éviter des générations et des rejets en boucle trop
+importants et donc trop longs. À chaque génération, $\tau$ est incrémenté de 1.
+La valeur de $\tau_\mathrm{max}$ est paramétrable. \\
 
 Mais il n'y a pas que le choix d'un domaine réaliste parmi une disjonction qui
 est pseudo-aléatoire. Par défaut, un domaine réaliste génère une donnée de
@@ -89,7 +89,7 @@ rapidement des problèmes. Le nombre de valeurs possibles pour \code{string('a',
 'z', 10)}, c'est~à~dire pour une chaîne de 10 caractères entre \code{a} et
 \code{z} en minuscules, est de $26^{10}$, soit environ $1.412e^{14}$ valeurs
 différentes. La probabilité qu'une de ces valeurs détecte une erreur dans notre
-programme est extraimement faible. C'est un problème inhérent à l'approche
+programme est extrêmement faible. C'est un problème inhérent à l'approche
 pseudo-aléatoire. Cependant, l'ensemble des valeurs générables peut être
 considérablement réduit si la donnée est mieux spécifiée~: plus la donnée pourra
 être spécifiée avec précision, plus il sera possible de générer des données

@@ -39,8 +39,8 @@ l'exécution de la méthode.
 
 \end{itemize}
 
-Nous décrivons maintenant les parties de la grammaire de Praspel en forme
-normale. La grammaire complète se trouve dans
+Nous décrivons ci-après les parties de la grammaire de Praspel en forme normale.
+La grammaire complète se trouve dans
 l'annexe~\ref{appendices:grammar_of_praspel}
 page~\pageref{appendices:grammar_of_praspel}.
 
@@ -126,7 +126,7 @@ répété $r$ fois, et séparé par $s$. $r$ peut être $?$, $+$ ou $*$,
 respectivement pour 0 ou 1 fois, 1 ou plusieurs fois et 0 ou plusieurs fois. Si
 $s$ n'est pas vide, alors $s$ doit être un lexème. Ainsi, la construction
 $\code{a}^+_\code{.}$ reconnaîtra \code{a}, \code{a.a}, \code{a.a.a} etc., mais
-pas \code{a.a.} car ici le lexème \code{.} n'est pas utilisé comme sépérateur.
+pas \code{a.a.} car ici le lexème \code{.} n'est pas utilisé comme séparateur.
 
 La figure~\ref{figure:language:grammar_part0} montre les familles de clauses,
 dont le contenu est décrit par la figure~\ref{figure:language:grammar_part1}.
@@ -236,16 +236,17 @@ pourrait s'écrire $\neg P_\alpha \land \neg P_\gamma$.
 
 Afin d'«~activer~» un comportement donné, sa clause \arequires doit être
 satisfaite. Après l'exécution, le système est dans le post-état. Nous faisons
-face à deux situations. Si c'est un post-état normal, alors la clause \aensures
-du dernier comportement activé doit être satisfaite. Si c'est un post-état
-exceptionel, alors c'est la clause \athrowable qui doit être satisfaite, \ie les
-deux $T_C$ et $T_E$ doivent être satisfaits, comme décrit précédemment.
+alors face à deux situations. Si c'est un post-état normal, alors la clause
+\aensures du dernier comportement activé doit être satisfaite. Si c'est un
+post-état exceptionel, alors c'est la clause \athrowable qui doit être
+satisfaite, \ie les deux $T_C$ et $T_E$ doivent être satisfaits, comme décrit
+précédemment.
 
 Quand une clause \arequires est manquante et que le SUT a besoin de paramètres,
 une erreur sera levée car les paramètres seront non-spécifiés. Une clause
 \aensures (respectivement \ainvariant) manquante revient à accepter tous les
 post-états normaux (respectivement tous les invariants de classes). Une clause
-\athrowable manquante revient à refuser tous les post-états exceptionels. Une
+\athrowable manquante revient à refuser tous les post-états exceptionels.
 
 Enfin, la clause \ais permet de qualifier la catégorie de la méthode. Le seul
 qualificatif actuel est \code{pure}, pour contrôler la mutabilité de
@@ -440,7 +441,7 @@ domaines réalistes, représentée par le mot-clé \code{or}. Dans l'exemple de 
 figure~\ref{figure:language:short_contract}, la variable \code{index} du contrat
 de la méthode \code{store} peut avoir deux valeurs~: soit un entier entre 0 et
 65535, soit \code{null}. Une disjonction de domaines réalistes peut contenir
-n'importe quelle sorte de domaine réaliste, similairement à l'aspect dynamique
+n'importe quelle sorte de domaine réaliste, conformément à l'aspect dynamique
 de PHP.
 
 Toutes les variables utilisées dans le contrat appartiennent au système,

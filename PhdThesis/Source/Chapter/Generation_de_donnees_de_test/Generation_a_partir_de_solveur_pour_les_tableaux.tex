@@ -315,7 +315,7 @@ le tableau.
 
 \end{enumerate}
 
-Nous sommes essentiellement intéressés par trouver le contenu de $X$ et les
+Nous sommes essentiellement intéressés à trouver le contenu de $X$ et les
 valeurs de la fonction $H$. Les autres variables sont seulement introduites pour
 simplifier l'expression des contraintes.
 
@@ -523,7 +523,7 @@ commençons par traiter la première paire de $\avar{queue}$ après l'avoir
 supprimée. Nous traitons alors la contrainte impliquant $X$ et $Y$, soit $X = Y$
 mais nous n'allons travailler que sûr $X$.  Ainsi $\avar{Domains}(X) = \{4, 5,
 6\}$, $\avar{Domains}(Y)$ et $\avar{Domains}(Z)$ restant inchangés. La variable
-$X$ n'a pas d'arcs vers d'autres variables, donc nous ne modifions pas
+$X$ n'a pas d'arc vers d'autres variables, donc nous ne modifions pas
 $\avar{queue}$.  Ensuite, la paire suivante est $(Y, X)$, donc nous traitons la
 contrainte $X = Y$ mais cette fois-ci, nous modifions $Y$. Ainsi
 $\avar{Domains}(Y) = \{4, 5, 6\}$, $\avar{Domains}(X)$ et $\avar{Domains}(Z)$
@@ -532,7 +532,7 @@ nous devrions ajouter la paire $(Z, Y)$ mais elle existe déjà dans
 $\avar{Domains}$, nous ne faisons rien.  La paire suivante dans $\avar{queue}$
 est $(Y, Z)$, donc nous traitons la contrainte $Y = Z$ en modifiant uniquement
 $Y$. Ainsi~: $\avar{Domains}(Y) = \{5, 6\}$, $\avar{Domains}(X)$ et
-$\avar{Domains}(Z)$ restant inchangés. La variable $Z$ n'a pas d'arcs vers une
+$\avar{Domains}(Z)$ restant inchangés. La variable $Z$ n'a pas d'arc vers une
 autre variable, donc nous ne modifions pas $\avar{queue}$. La paire suivante est
 $(Z, Y)$, donc nous vérifions la contrainte $Y = Z$ en modifiant $Z$. Ainsi (en
 rappelant tous les domaines)~: $\avar{Domains}(X) = \{4, 5, 6\}$,
@@ -541,7 +541,7 @@ $Y$ a un arc vers la variable $X$, donc nous ajoutons la paire $(X, Y)$ dans
 $\avar{queue}$.  Comme $\avar{queue}$ était vide, cela devient notre paire
 suivante que nous traitons. Nous appliquons alors la contrainte $X = Y$ en
 modifiant $X$.  Ainsi, nous obtenons~: $\avar{Domains}(X) = \avar{Domains}(Y) =
-\avar{Domains}(Z) = \{5, 6\}$. La variable $X$ n'a pas d'arcs vers d'autres
+\avar{Domains}(Z) = \{5, 6\}$. La variable $X$ n'a pas d'arc vers d'autres
 variables que $Y$, donc nous ne modifions pas $\avar{queue}$. Cette dernière est
 vide, donc l'algorithme se termine.
 
@@ -641,7 +641,7 @@ arrière, nous parlons de \inenglish{backtracking}.
 À chaque fois que l'algorithme sélectionne une nouvelle variable, sa disjonction
 de domaines réalistes est clonée (dupliquée)~; ainsi lors du
 \inenglish{backtracking}, nous restaurons la disjonction précédente pour
-«~restaurer l'état~». En même temps, la valeur qui a conduite à l'inconsistance
+«~restaurer l'état~». En même temps, la valeur qui a conduit à l'inconsistance
 est discréditée afin de ne pas être re-sélectionnée.
 
 Dans notre implémentation, le choix d'une valeur utilise la caractéristique de
