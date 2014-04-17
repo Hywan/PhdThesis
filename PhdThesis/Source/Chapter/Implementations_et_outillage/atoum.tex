@@ -2,11 +2,11 @@
 \label{section:tools:atoum}
 
 atoum~\acite{atoum}, sans majuscule, est aujourd'hui l'un des
-\inenglish{frameworks} de tests unitaires les plus utilisés dans l'industrie.
-Gratuit et \inenglish{open-source}, il compte une communauté active et plusieurs
-utilisateurs et partenaires industriels importants. atoum est également inclue
-dans plusieurs IDE et outils majeurs, comme Netbeans\footnote{Voir
-\url{https://netbeans.org/}.}, Eclipse\footnote{Voir
+\inenglish{frameworks} de tests unitaires pour PHP les plus utilisés dans
+l'industrie. Gratuit et \inenglish{open-source}, il compte une communauté
+active et plusieurs utilisateurs et partenaires industriels importants. atoum
+est également inclus dans plusieurs IDE et outils majeurs, comme
+Netbeans\footnote{Voir \url{https://netbeans.org/}.}, Eclipse\footnote{Voir
 \url{http://eclipse.org/}.}, Vim\footnote{Voir \url{http://vim.org/}.},
 Travis-CI\footnote{Voir \url{http://travis-ci.com/}.}, Jenkins\footnote{Voir
 \url{http://jenkins-ci.org/}.}, Coveralls\footnote{Voir
@@ -20,7 +20,7 @@ de créer une extension pour introduire Praspel dans atoum. De plus, atoum ne
 possède aucun générateur de données, alors que Praspel en propose plusieurs.
 Cela a donc été encore plus naturel de rapprocher les deux projets. Cette
 extension, appelée \code{atoum/praspel-extension}, est incluse dans la
-distribution standard d'atoum «~sous-stéroïde~», c'est~à~dire avec des outils
+distribution standard d'atoum «~sous stéroïde~», c'est~à~dire avec des outils
 qui ajoutent des fonctionnalités à atoum.
 
 Dans un premier temps, nous allons présenter atoum, puis dans un second temps,
@@ -38,14 +38,17 @@ nous montrerons les fonctionnalités offertes par l'extension.
 
 La figure~\ref{figure:tools:atoum} illustre le fonctionnement schématique
 d'atoum et de tous les \inenglish{framework} de tests unitaires~: ils permettent
-d'exécuter un ensemble d'assertions sur un SUT et est capable de produire
+d'exécuter un ensemble d'assertions sur un SUT et sont capables de produire
 différents rapports. Pour utiliser atoum, il faudra alors basiquement procéder
 en deux étapes~: écrire des assertions et les exécuter. Dans le vocabulaire
 d'atoum, un test est une méthode qui contient plusieurs assertions sur le SUT et
-une suite de tests est une classe. Ainsi, nous allons tester que le résultat
-retourné par une certaine méthode \code{say}, en \circled{1}, d'une classe
-\code{Project\bslash{}HelloWorld} retourne bien la chaîne de caractères
-\code{Hello World!}, en \circled{2}~:
+une suite de tests est une classe.
+
+\begin{example}[Premier test avec atoum]
+
+Ainsi, nous allons tester que le résultat retourné par une certaine méthode
+\code{say}, en \circled{1}, d'une classe \code{Project\bslash{}\-Hel\-lo\-World}
+retourne bien la chaîne de caractères \code{Hello World!}, en \circled{2}~:
 %
 \begin{pre}
 class HelloWorld extends \bslash{}atoum\bslash{}test \{ \\
@@ -59,11 +62,10 @@ class HelloWorld extends \bslash{}atoum\bslash{}test \{ \\
 \}
 \end{pre}
 %
-Puis nous exécutons le test en ligne de commande ({\em modulo} une intégration
-dans un IDE)~:
+Puis nous pouvons exécuter le test en ligne de commande~:
 %
 \begin{pre}
-\$ atoum --file Path/To/Our/Test.php \\
+\$ atoum --file Path/To/Our/Test/HelloWorld.php \\
 … \\
 > Total test duration: 0.00 second. \\
 > Total test memory usage: 0.25 Mb. \\
@@ -77,7 +79,9 @@ Le rapport simple nous informe que le test s'est exécuté en moins de
 0.005~seconde, que la mémoire utilisée a été de 0.25~Mb, que la couverture de
 code (avec le critère tous-les-arcs) a été de 100\%, que l'ensemble s'est
 exécuté en 0.08~seconde et que l'exécution de la seule suite de tests, ne
-contenant qu'un seul test représentant deux assertions, a été un succès. \\
+contenant qu'un seul test représentant deux assertions, a été un succès.
+
+\end{example}
 
 Au delà de l'intégration avec plusieurs outils industiels ou la production de
 rapports détaillés, nous pouvons citer trois points forts de cet outil.
@@ -89,27 +93,27 @@ supplémentaire) l'exécution des tests en ligne, en isolation ou en parallèle.
 Une exécution en ligne va exécuter tous les tests les uns après les autres de
 manière séquentielle dans le même processus. Une exécution en isolation va
 exécuter tous les tests les uns après les autres mais dans un processus
-nouvellement crée à chaque fois afin d'isoler le test des exécutions
-précédentes. Et enfin, une exécution en parallèle va exécuter tous les tests en
-isolation mais de manière concurrente. Cela permet d'accélérer les exécutions ou
-d'assurer une fiabilité dans les résultats des tests.
+nouvellement créé à chaque fois afin d'isoler le test des exécutions
+précédentes. Une exécution en parallèle va exécuter tous les tests en isolation
+mais de manière concurrente. Cela permet d'accélérer les exécutions ou d'assurer
+une fiabilité dans les résultats des tests.
 
 \subsubsection{Collection d'asserteurs}
 
-Le second point fort est sa collection importante d'asserteurs. Bien plus que de
-simples \code{assertTrue} ou \code{assertFalse} que nous retrouvons dans la
-majorité des autres \inenglish{frameworks} de tests unitaires, atoum propose des
-asserteurs personnalisés pour chaque type de données.
+Le second point fort d'atoum est sa collection importante d'asserteurs. Bien
+plus que de simples \code{assertTrue} ou \code{assertFalse} que nous retrouvons
+dans la majorité des autres \inenglish{frameworks} de tests unitaires, atoum
+propose des asserteurs personnalisés pour chaque type de données.
 
 \begin{example}[Asserteurs spécifiques avec atoum]
 
-Par exemple, une simple assertion \code{1 - 0.97 === 0.33} sera fausse dans tous
+Par exemple, une simple assertion \code{1 - 0.97 === 0.03} sera fausse dans tous
 les langages malgré le fait que ce résultat nous paraisse naturel. C'est
 pourquoi atoum propose l'asserteur \code{isNearlyEqualTo} sur le groupe
 d'asserteurs \code{float}~:
 %
 \begin{pre}
-\$this->float(1 - 0.97)->isNearlyEqualTo(0.33);
+\$this->float(1 - 0.97)->isNearlyEqualTo(0.03);
 \end{pre}
 %
 De même, nous pouvons trouver l'asserteur \code{containsValues} sur le groupe
@@ -180,7 +184,7 @@ atoum~;
 
 \end{itemize}
 
-\subsubsection{Asserteurs de générations de données de tests}
+\subsubsection{Asserteurs de génération de données de tests}
 
 Dans un premier temps, nous donnons accès aux domaines réalistes dans atoum à
 travers l'asserteur \code{realdom} qui permet de créer des disjonctions de
@@ -206,8 +210,8 @@ Ensuite, nous pouvons utiliser au choix l'asserteur \code{sample} ou
 
 \begin{example}[Génération d'entiers avec atoum]
 
-Pour générer respectivement 1 entier ou 7 entiers représentés par l'intervalle
-de l'exemple précédent, nous devons écrire~:
+Pour générer respectivement 1 entier ou 7 entiers dans l'intervalle de l'exemple
+précédent, nous devons écrire~:
 %
 \begin{pre}
 \$integer  = \$this->sample(\$data); \\
@@ -261,7 +265,7 @@ foreach(\$this->sampleMany(\$data, 7) as \$string) \\
 
 \end{example}
 
-\subsubsection{Générations de suites de test unitaires}
+\subsubsection{Génération de suites de test unitaires}
 
 \begin{figure}
 
@@ -293,21 +297,23 @@ représenté par un test. Praspel est capable de générer des tests corresponda
 ces chemins à partir d'un modèle objet d'un contrat. C'est le point de départ du
 processus illustré dans la figure~\ref{figure:tools:extension}. Nous y
 retrouvons \circled{M} et \circled{S}. À partir du modèle objet, une suite de
-tests est générée. Ces tests que nous pourrions qualifiés d'abstraits (car non
+tests est générée. Ces tests que nous pourrions qualifier d'abstraits (car non
 exécutables) sont compilés vers des tests écrits avec l'API d'atoum (donc
-exécutables). Cette étape est regroupée en un seul nœud dans la figure. atoum va
-ensuite sélectionner chaque test dans cette suite et les exécuter en utilisant
-le SUT associé et des données. Le nœud atoum dans la figure applique le même
-processus que dans la figure~\ref{figure:tools:rac}.
+exécutables). Cette étape est regroupée dans le nœud suite de tests dans la
+figure. atoum va ensuite sélectionner chaque test dans cette suite et les
+exécuter en utilisant le SUT associé et des données. Le nœud atoum dans la
+figure applique le même processus que dans la figure~\ref{figure:tools:rac}.
 
-La compilation de la suite de tests abstraits vers concrets s'effectue en ligne
-de commande~: plusieurs classes seront analysées pour en extraire des contrats
-Praspel, qui seront à leurs tours analysés pour pouvoir appliquer les
-algorithmes de générations de tests unitaires sur leur modèle objet. Puis,
-l'extension va compiler ces tests vers des tests écrits au format atoum. Ces
-tests seront enregistrés dans les fichiers appropriés grâce à l'exportation,
-décrite dans la partie~\ref{subsection:tools:compilation}. Nous pourrons par la
-suite exécuter ces fichiers avec atoum.
+La compilation de la suite de tests abstraits en tests concrets s'effectue en
+ligne de commande~: plusieurs classes sont analysées pour en extraire des
+contrats Praspel, qui sont à leur tour analysés pour pouvoir appliquer les
+algorithmes de génération de tests unitaires sur leur modèle objet. Puis,
+l'extension compile ces tests vers des tests écrits au format atoum. Ces tests
+sont enregistrés dans les fichiers appropriés grâce à l'exportation, décrite
+dans la partie~\ref{subsection:tools:compilation}. Nous pouvons par la suite
+exécuter ces fichiers avec atoum.
+
+\begin{example}[Génération automatique de tests unitaires]
 
 Si nous reprenons notre classe \code{Project\bslash{}HelloWorld} avec sa méthode
 \code{say}, nous aurons le contrat suivant~:
@@ -335,7 +341,7 @@ ligne de commande suivante~:
 L'option \code{-\empty{}-class} précise la ou les classes à analyser. L'option
 \code{-\empty{}-test-root} précise où se trouve la racine des tests, en
 l'occurence à l'endroit où nous exécutons la ligne de commande. Un fichier par
-classe sera généré. Le résultat du fichier que nous venons de générer est le
+classe sera généré. Le contenu du fichier que nous venons de générer est le
 suivant~:
 
 \begin{bigpre}
@@ -371,3 +377,5 @@ commande suivante~:
 \end{pre}
 %
 Sans surprise, la suite de tests a été exécutée avec succès.
+
+\end{example}

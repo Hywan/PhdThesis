@@ -66,7 +66,7 @@ les différents outils. Ainsi, la notation %
     \draw [mywavyarrow] (p) -- (pc);
 } %
 signifie que le composant Praspel sera représenté par \circled{P} dans les
-figures suivantes. Le même raisonnement s'applique pour le SUT représenté par
+figures suivantes. De même, le \inenglish{System Under Test} sera représenté par
 \circled{S}.
 
 \begin{figure}
@@ -126,27 +126,27 @@ figures suivantes. Le même raisonnement s'applique pour le SUT représenté par
 
 \end{figure}
 
-Praspel existe sous différentes formes. Nous les expliquons en nous appyant sur
+Praspel existe sous différentes formes. Nous les expliquons en nous appuyant sur
 la figure~\ref{figure:tools:praspel} qui montre l'agencement de ces différentes
 formes et le passage de l'une vers l'autre~:
 %
 \begin{itemize}
 
 \item le langage est la forme textuelle de Praspel, provenant des commentaires
-des méthodes. Il est défini par la grammaire dans la
-partie~\ref{section:language:praspel} page~\pageref{section:language:praspel}.
+des méthodes. Il est défini par la grammaire (définie dans la
+partie~\ref{section:language:praspel} page~\pageref{section:language:praspel}).
 En utilisant des analyseurs, le langage est transformé en modèle objet~;
 
 \item le modèle objet \circled{M} est la pièce centrale de Praspel~: c'est un
 ensemble d'objets en mémoire réprésentant chaque partie du langage (clause,
-variable, opérateur etc.). Tous ces objets sont imbriqués et forme une structure
-qui s'apparente à un arbre~;
+variable, opérateur etc.). Tous ces objets sont imbriqués et forment une
+structure qui s'apparente à un arbre~;
 
 \item le modèle objet peut être exporté sous forme de code PHP qui, quand il est
 exécuté, reconstruit en mémoire le modèle objet depuis lequel il a été généré~;
+cette exécution est appelée une importation~;
 
-\item le désassemblage permet de transformer le modèle objet sous sa forme
-textuelle.
+\item le désassemblage permet de transformer le modèle objet en forme textuelle.
 
 \end{itemize}
 %
@@ -158,31 +158,27 @@ Les parties suivantes détaillent ces différentes étapes.
 À l'aide de la grammaire de Praspel, définie dans la
 partie~\ref{section:language:praspel} page~\pageref{section:language:praspel},
 exprimée avec le langage PP (voir l'annexe~\ref{appendices:grammar_of_praspel})
-et un compilateur, défini dans les sections~\ref{subsection:data:pp} et
+et un compilateur, défini dans les parties~\ref{subsection:data:pp} et
 \ref{subsection:data:compiler-compiler} pages~\pageref{subsection:data:pp}
-et~\pageref{subsection:data:compiler-compiler}, l'AST du contrat analysé est
-produit. Cet AST sera ensuite visité afin de construire le modèle objet. Pour y
-arriver, nous avons deux façons de faire. La première détaille toutes les
-étapes, à savoir l'utilisation du compilateur pour produire un AST, puis l'appel
-d'un visiteur pour construire le modèle objet~; ainsi~:
+et~\pageref{subsection:data:compiler-compiler}, l'\inenglish{Abstract Syntax
+Tree} du contrat analysé est produit. Cet AST sera ensuite visité afin de
+construire le modèle objet. Pour y arriver, nous avons deux façons de faire. La
+première détaille toutes les étapes, à savoir l'utilisation du compilateur pour
+produire un AST, puis l'appel d'un visiteur pour construire le modèle objet.
 
+\begin{example}[Obtenir le modèle objet depuis un contrat]
+
+Nous considérons le contrat \circled{P} suivant~: \code{\arequires i: 7..42}.
+Pour obtenir le modèle objet de ce contrat, nous écrirons~:
 %
 \begin{pre}
 \$parser      = Hoa\bslash{}Compiler\bslash{}Llk::load( \\
     new Hoa\bslash{}File\bslash{}Read('hoa://Library/Praspel/Grammar.pp') \\
 );                                        \tikzref{codetoolspraspel} \\
-\$ast         = \$parser->parse('@requires i: 7..42;'); \\
+\$ast         = \$parser->parse('\arequires i: 7..42;'); \\
 \$interpreter = new Hoa\bslash{}Praspel\bslash{}Visitor\bslash{}Interpreter(); \\
 \tikzref{codetoolsom}\$model       = \$interpreter->visit(\$ast);
 \end{pre}
-%
-La variable \code{\$parser} contient l'analyseur lexical et syntaxique chargé
-depuis la grammaire. La variable \code{\$ast} contient l'AST produit par
-l'analyse lexicale et l'analyse syntaxique d'une chaîne de caractères
-représentant du code Praspel. Ces analyses sont exécutées en appelant la méthode
-\code{parse} sur le compilateur. Ensuite, nous instancions un visiteur dans la
-variable \code{\$interpreter} qui va visiter, grâce à la méthode \code{visit},
-l'AST pour le transformer en modèle objet.
 %
 \begin{tikzannotation}
     \node (Pc) [right of=codetoolspraspel, node distance=3cm, yshift=-.5cm] {\circled{P}};
@@ -191,6 +187,16 @@ l'AST pour le transformer en modèle objet.
     \node (Mc) [above of=codetoolsom, node distance=1.4cm, xshift=-.45cm] {\circled{M}};
     \draw [mywavyarrow] (codetoolsom.west) to[out=140, in=-90] (Mc);
 \end{tikzannotation}
+
+\noindent La variable \code{\$parser} contient les analyseurs lexicaux et
+syntaxiques chargés depuis la grammaire. La variable \code{\$ast} contient l'AST
+produit par les analyses d'une chaîne de caractères représentant du code
+Praspel. Ces analyses sont exécutées en appelant la méthode \code{parse} sur le
+compilateur.  Ensuite, nous instancions un visiteur dans la variable
+\code{\$interpreter} qui va visiter, grâce à la méthode \code{visit}, l'AST pour
+le transformer en modèle objet.
+
+\end{example}
 
 La seconde façon de faire consiste à utiliser un raccourci qui est la méthode
 (statique) \code{interprete}~; ainsi~:
@@ -207,6 +213,14 @@ syntaxiques} sont détectées. Durant la production du modèle objet, les erreur
 
 \subsection{Modèle objet}
 \label{subsection:tools:model}
+
+\begin{sidewaysfigure}
+
+\fig{!}{8.5cm}{Object_model.pdf}
+
+\caption{\label{figure:tools:om} Modèle objet de Praspel.}
+
+\end{sidewaysfigure}
 
 Le modèle objet est la pièce centrale de Praspel. Chaque construction du langage
 est représentée par une classe. Le diagramme de classes du modèle objet est
@@ -229,33 +243,25 @@ Certaines clauses contiennent des expressions (voir la règle syntaxique
 figure~\ref{figure:language:grammar_part2}
 page~\pageref{figure:language:grammar_part2}). Ces expressions sont représentées
 par la classe \code{Declaration}. Une expression est composée de variables,
-représentée par la classe \code{Variable}. Une variable est, du point de vue des
-domaines réalistes, un \inenglish{holder}, c'est~à~dire une structure qui porte
-des domaines réalistes.
+représentées par la classe \code{Variable}. Une variable est, du point de vue
+des domaines réalistes, un \inenglish{holder}, c'est~à~dire une structure qui
+porte des domaines réalistes.
 
-Il existe trois sortes de variable~: normale, implicite et empruntée. Une
+Il existe trois sortes de variables~: normale, implicite et empruntée. Une
 variable normale est une variable classique du contrat, représentée par la
-classe \code{Variable}. Une variable implicite représentée par la classe
-\code{Implicit} est une variable non-déclarée, comme \code{this} dans le cas des
-méthodes. En effet, en PHP, la variable contenant l'objet est toujours
+classe \code{Variable}. Une variable implicite, représentée par la classe
+\code{Implicit}, est une variable non déclarée, comme \code{this} dans le cas
+des méthodes. En effet, en PHP, la variable contenant l'objet est toujours
 implicite, c'est~à~dire non déclarée. Ce comportement se retrouve dans Praspel
 où il n'est pas nécessaire de spécifier \code{this}. Enfin, une variable
 empruntée est une variable extérieure à la méthode, comme \code{this->foo} qui
 représente un attribut de classe, ou une variable extérieure à l'état courant du
-système, comme \aold{\code{f}} qui fait référence la variable \code{foo} dans le
-pré-état lorsque que le système est dans son post-état.
-
-\begin{sidewaysfigure}
-
-\fig{!}{8.5cm}{Object_model.pdf}
-
-\caption{\label{figure:tools:om} Modèle objet de Praspel.}
-
-\end{sidewaysfigure}
+système, comme \aold{\code{f}} qui fait référence à la variable \code{foo} dans
+le pré-état, lorsque que le système est dans son post-état.
 
 Les détails du modèle objet ne sont pas présents dans la
 figure~\ref{figure:tools:om} pour des raisons de simplicité. Le lien entre la
-bibliothèque \code{Hoa\bslash{}Praspel} et \code{Hoa\bslash{}Realdom} se fait
+bibliothèque \code{Hoa\bslash{}Praspel} et \code{Hoa\bslash{}Real\-dom} se fait
 par les variables qui sont des \inenglish{holders}. Autant les domaines
 réalistes peuvent être utilisés sans Praspel, autant l'inverse n'est pas
 envisageable.
@@ -269,20 +275,28 @@ parties suivantes.
 \subsection{Exportation et importation}
 \label{subsection:tools:compilation}
 
-Le modèle objet peut être exporté de la mémoire vers un fichier sous la forme
-de code PHP. Quand ce code PHP est exécuté, c'est une importation car il
-construit en mémoire le modèle objet depuis lequel il a été généré.
-Cela permet de «~sauvegarder~» le modèle en évitant la phase
-des analyses qui peuvent être coûteuses dans certaines situations. Ainsi, à
-partir d'un modèle contenu dans la variable \code{\$model} et d'un visiteur,
-nous allons produire du code PHP que nous allons afficher~:
+Le modèle objet peut être exporté de la mémoire vers un fichier sous la forme de
+code PHP. Quand ce code PHP est exécuté, nous parlons d'importation, qui
+construit en mémoire le modèle objet depuis lequel il a été généré. Cela permet
+de «~sauvegarder~» le modèle en évitant la phase des analyses qui peuvent être
+coûteuses dans certaines situations.
+
+\begin{example}[Exporter et importer un modèle objet]
+
+Ainsi, à partir d'un modèle \circled{M} contenu dans la variable \code{\$model}
+et d'un visiteur, nous allons produire du code PHP que nous allons afficher~:
 %
 \begin{pre}
 \$compiler = new Hoa\bslash{}Praspel\bslash{}Visitor\bslash{}Compiler(); \\
 echo \$compiler->visit(\$mo\tikzref{codetoolsom}del);
 \end{pre}
 %
-Cet exemple produira le code PHP suivant~:
+\begin{tikzannotation}
+    \node (Mc) [right of=codetoolsom, node distance=1.6cm] {\circled{M}};
+    \draw [mywavyarrow] (Mc) to[out=-150, in=-70, distance=.2cm] (codetoolsom);
+\end{tikzannotation}
+
+\noindent Cet exemple produira le code PHP suivant~:
 %
 \begin{pre}
 \$praspel = new \bslash{}Hoa\bslash{}Praspel\bslash{}Model\bslash{}Specification(); \\
@@ -294,17 +308,13 @@ Cet exemple produira le code PHP suivant~:
 qui permet de construire le modèle objet contenu dans \code{\$model},
 c'est~à~dire que la valeur de la variable \code{\$model} est strictement égale à
 la valeur de la variable \code{\$praspel}. Cet exemple nous permet également
-d'avoir un aperçu de l'API du modèle objet~: elle se veut le plus simple et
+d'avoir un aperçu de l'API du modèle objet~: elle se veut simple et la plus
 compréhensible possible. Une spécification est instanciée. Sur cette
 spécification, la clause \arequires est obtenue pour y déclarer une variable
 \code{i} dont les valeurs sont décrites par (ou présentes dans, \code{->in}) la
 disjonction de domaines réalistes, créée à l'aide de la fonction \code{realdom}.
-Cette fonction se comporte comme une macro.
-%
-\begin{tikzannotation}
-    \node (Mc) [right of=codetoolsom, node distance=1.6cm] {\circled{M}};
-    \draw [mywavyarrow] (Mc) to[out=-150, in=-70, distance=.2cm] (codetoolsom);
-\end{tikzannotation}
+
+\end{example}
 
 \subsection{Désassemblage}
 \label{subsection:tools:disassembler}
@@ -312,28 +322,34 @@ Cette fonction se comporte comme une macro.
 Le désassemblage permet de transformer le modèle objet en mémoire sous sa forme
 textuelle. C'est l'opération inverse des analyses de la
 partie~\ref{subsection:tools:interpretation}. Il permet par exemple d'indiquer
-des erreurs avec précisions sous la forme originale de Praspel. C'est tout à
-fait comparable à un \inenglish{pretty-printer}. Ainsi~:
+des erreurs avec précision sous la forme originale de Praspel. C'est tout à
+fait comparable à un \inenglish{pretty-printer}.
+
+\begin{example}[Désassembler un modèle objet]
+
+Ainsi, en réutilisant la variable \code{\$model} des exemples précédents~:
 %
 \begin{pre}
 \$disassembler = new Hoa\bslash{}Praspel\bslash{}Visitor\bslash{}Praspel(); \\
 echo \$disassembler->visit(\$mo\tikzref{codetoolsom}del);
 \end{pre}
 %
-Encore une fois, nous instancions un visiteur dans la variable
-\code{\$disas\-sem\-bler} pour ensuite visiter le modèle objet. Cette exemple
-produira le résultat suivant~:
+\begin{tikzannotation}
+    \node (Mc) [right of=codetoolsom, node distance=1.6cm] {\circled{M}};
+    \draw [mywavyarrow] (Mc) to[out=-150, in=-70, distance=.2cm] (codetoolsom);
+\end{tikzannotation}
+
+\noindent Nous instancions un visiteur dans la variable
+\code{\$disas\-sem\-bler} pour visiter le modèle objet. Cet exemple produira le
+résultat suivant~:
 %
 \begin{pre}
 @requires i: boundinteger(7, 42);
 \end{pre}
 %
 Notons que le sucre syntaxique \code{7..42} a disparu.
-%
-\begin{tikzannotation}
-    \node (Mc) [right of=codetoolsom, node distance=1.6cm] {\circled{M}};
-    \draw [mywavyarrow] (Mc) to[out=-150, in=-70, distance=.2cm] (codetoolsom);
-\end{tikzannotation}
+
+\end{example}
 
 Ce dernier processus, complété des précédents, nous permet de passer d'une
 représentation vers n'importe quelle autre représentation de Praspel~: soit
@@ -365,19 +381,19 @@ textuelle, soit objet, soit PHP.
 
 \end{figure}
 
-Ce sont les \inenglish{assertion checkers} qui sont responsables d'évaluer
-Praspel. Le fonctionnement d'un \inenglish{assertion checker} est illustré dans
-la figure~\ref{figure:tools:rac}. Il travaille avec 3~composants~: un modèle
-objet qui représente un contrat (provenant par exemple des commentaires des
-méthodes), un SUT (par exemple la méthode commentée) et des données. Ces
-composants forment un test. Un \inenglish{assertion checker} est donc capable de
-calculer le verdict d'un test.
+Les \inenglish{assertion checkers} sont responsables d'évaluer Praspel. Le
+fonctionnement d'un \inenglish{assertion checker} est illustré dans la
+figure~\ref{figure:tools:rac}. Il travaille avec 3~composants~: un modèle objet
+\circled{M} qui représente un contrat (provenant par exemple des commentaires
+des méthodes), un SUT \circled{S} (par exemple la méthode commentée) et des
+données. Ces composants forment un test. Un \inenglish{assertion checker} est
+capable de calculer le verdict d'un test.
 
 Actuellement, nous nous appuyons sur un \inenglish{Runtime Assertion Checker},
 abrégé RAC, pour calculer le verdict du test. Ce verdict est basé sur la
 vérification d'assertions à l'exécution. Quand la vérification d'une assertion
 échoue, une erreur spécifique est produite. Les erreurs du RAC (aussi appelées
-les \inenglish{Praspel failures} ou erreurs Praspel) peuvent être de 5~sortes~:
+\inenglish{Praspel failures} ou erreurs Praspel) peuvent être de 5~sortes~:
 %
 \begin{enumerate}
 
@@ -390,7 +406,7 @@ satisfaite après l'exécution de la méthode~;
 \item \inenglish{throwable failure}, quand l'exécution de la méthode lève une
 exception inattendue~;
 
-\item \inenglish{invariant failure}, quand un invariant de classe est cassé~; et
+\item \inenglish{invariant failure}, quand un invariant de classe est violé~; et
 
 \item \inenglish{internal precondition failure}, qui correspond à la propagation
 d'une \inenglish{precondition failure} à un niveau supérieur.
@@ -398,11 +414,14 @@ d'une \inenglish{precondition failure} à un niveau supérieur.
 \end{enumerate}
 %
 Le test réussit si aucune erreur Praspel n'est détectée. Autrement, il échoue,
-et l'erreur avec des informations supplémentaires est consignée.
+et l'erreur est consignée avec des informations supplémentaires.
 
-À présent, illustrons comment utiliser le RAC de Praspel où le SUT est la
-méthode \code{f} de la classe \code{C} de la
-figure~\ref{figure:tools:dispatching} avec un seul paramètre \code{\$i}~:
+\begin{example}[Évaluer un modèle objet]
+
+À présent, illustrons comment utiliser le RAC de Praspel avec un modèle objet
+\circled{M} et où le SUT \circled{S} est la méthode \code{f} de la classe
+\code{C} de la figure~\ref{figure:tools:dispatching} avec un seul paramètre
+\code{\$i}~:
 %
 \begin{pre}
 \$rac = new Hoa\bslash{}Praspel\bslash{}AssertionChecker\bslash{}Runtime( \\
@@ -413,15 +432,6 @@ figure~\ref{figure:tools:dispatching} avec un seul paramètre \code{\$i}~:
 \$verdict = \$rac->evaluate();
 \end{pre}
 %
-La variable \code{\$rac} contient une instance d'un \inenglish{Runtime Assertion
-Checker} qui travaille avec un modèle objet dans la variable \code{\$model}
-passée en premier argument et un SUT passé en second argument. Ensuite, grâce à
-la méthode \code{setData}, nous fixons les données des arguments du SUT, à
-savoir que son paramètre \code{\$i} aura comme valeur l'entier \code{13}. Enfin,
-le SUT sera exécuté et le contrat vérifié grâce à l'appel de la méthode
-\code{evaluate} sur le RAC. Dans ce cas, la variable \code{\$verdict} contiendra
-\code{true} car la précondition (\code{\arequires i: 7..42}) est bien respectée.
-%
 \begin{tikzannotation}
     \node (Mc) [left of=codetoolsom, node distance=1.7cm] {\circled{M}};
     \draw [mywavyarrow] (Mc) -- (codetoolsom.center);
@@ -430,15 +440,30 @@ le SUT sera exécuté et le contrat vérifié grâce à l'appel de la méthode
     \draw [mywavyarrow] (Sc) -- (codetoolssut.east);
 \end{tikzannotation}
 
+\noindent La variable \code{\$rac} contient une instance d'un \inenglish{Runtime
+Assertion Checker} qui travaille avec un modèle objet dans la variable
+\code{\$model} passée en premier argument et un SUT passé en second argument. Le
+SUT peut être n'importe quelle structure «~appelable~». Nous parlons d'un
+\inenglish{callable}. La fonction \code{xcallable} permet de créer un
+\inenglish{callable} facilement~: ici, la méthode \code{f} sur une instance de
+la classe \code{C}. Ensuite, grâce à la méthode \code{setData}, nous fixons les
+données des arguments du SUT, à savoir que son paramètre \code{\$i} aura comme
+valeur l'entier \code{13}. Enfin, le SUT est exécuté et le contrat vérifié grâce
+à l'appel de la méthode \code{evaluate} sur le RAC. Dans ce cas, la variable
+\code{\$verdict} contiendra \code{true} car la précondition (\code{\arequires i:
+7..42}) est bien respectée.
+
 Si nous voulons que les données soient générées automatiquement, nous devrons
 appeler la méthode
 \code{au\-to\-ma\-ti\-cal\-ly\-Ge\-ne\-ra\-te\-Data} en plus de
-définir le générateur numérique par défaut des domaines réalistes. Ainsi~:
+définir le générateur numérique des domaines réalistes. Ainsi~:
 %
 \begin{pre}
 Hoa\bslash{}Realdom::setDefaultSampler(new Hoa\bslash{}Math\bslash{}Sampler\bslash{}Random()); \\
 \$rac->automaticallyGenerateData(true);
 \end{pre}
+
+\end{example}
 
 %\begin{example}[Vérifications des assertions]
 %
