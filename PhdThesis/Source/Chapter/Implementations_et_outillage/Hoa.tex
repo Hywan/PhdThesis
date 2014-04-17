@@ -254,7 +254,9 @@ séquences de lexèmes ne dépasse pas 10, nous écrirons~:
 \$token   = new Hoa\bslash{}Regex\bslash{}Visitor\bslash{}Isotropic( \\
     new Hoa\bslash{}Math\bslash{}Sampler\bslash{}Random() \\
 ); \\
-\$length  = 10; \\
+\$length  = 10;
+\end{pre}
+\begin{pre}
 \$sampler = new Hoa\bslash{}Compiler\bslash{}Llk\bslash{}Sampler\bslash{}BoundedExhaustive( \\
     \$parser, /* \(\circled{1}\) */ \\
     \$token,  /* \(\circled{2}\) */ \\
