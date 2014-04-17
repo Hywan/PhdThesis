@@ -145,15 +145,16 @@ l'introspection du domaine réaliste \code{Bound\-in\-te\-ger}.
 %
 \begin{figure}
 
+\begin{tikzbox}{boxtoolsrealdom}{}
 \begin{bigpre}
 \$ hoa realdom:reflection boundinteger \\
 Realdom boundinteger \{ \\
  \\
-    Implementation Hoa\bslash{}Realdom\bslash{}Boundinteger; \(\circled{1}\) \\
+    Implementation Hoa\bslash{}Realdom\bslash{}Boundinteger; \tikzref{a} \\
  \\
-    Parent Hoa\bslash{}Realdom\bslash{}Integer; \(\circled{2}\) \\
+    Parent Hoa\bslash{}Realdom\bslash{}Integer; \tikzref{b} \\
  \\
-    Interfaces \{ \(\circled{3}\) \\
+    Interfaces \{ \tikzref{c} \\
  \\
         ArrayAccess; \\
         Countable; \\
@@ -165,15 +166,31 @@ Realdom boundinteger \{ \\
         Hoa\bslash{}Realdom\bslash{}IRealdom\bslash{}Nonconvex; \\
         Hoa\bslash{}Realdom\bslash{}Number; \\
         Hoa\bslash{}Visitor\bslash{}Element; \\
-    \} \\
+    \} \tikzref{d} \\
  \\
-    Parameters \{ \(\circled{4}\) \\
+    Parameters \{ \tikzref{e} \\
  \\
         [#0 optional] Constinteger lower = -9223372036854775808; \\
         [#1 optional] Constinteger upper = 9223372036854775807; \\
-    \} \\
+    \} \tikzref{f} \\
 \}
 \end{bigpre}
+\end{tikzbox}
+%
+\begin{tikzannotation}
+    \draw [mybrace]
+        (a.north -| boxtoolsrealdom.east)
+        -- node (P) [mybracetext] {\circled{1}}
+        (b.south -| boxtoolsrealdom.east);
+    \draw [mybrace]
+        (c.north -| boxtoolsrealdom.east)
+        -- node (P) [mybracetext] {\circled{2}}
+        (d.south -| boxtoolsrealdom.east);
+    \draw [mybrace]
+        (e.north -| boxtoolsrealdom.east)
+        -- node (P) [mybracetext] {\circled{3}}
+        (f.south -| boxtoolsrealdom.east);
+\end{tikzannotation}
 
 \caption{\label{figure:tools:reflection-realdom} Introspection des domaines
 réalistes.}
@@ -181,14 +198,13 @@ réalistes.}
 \end{figure}
 %
 Pour obtenir cette introspection, il faut utiliser la ligne de commande avec~:
-\code{hoa realdom:reflection boundinteger}. Nous trouvons comme informations le
-nom de la classe qui représente l'implémentation du domaine réaliste en
-\circled{1}, le domaine réaliste depuis lequel il hérite en \circled{2}, toutes
-les interfaces utilisées par cette implémentation en \circled{3} (ici plusieurs
-de PHP et des domaines réalistes, comme présenté dans la
-partie~\ref{subsection:language:realdom:classification}
-page~\pageref{subsection:language:realdom:classification}), ainsi que les
-paramètres avec leurs positions, filtres et valeurs par défaut, en \circled{4}.
+\code{hoa realdom:reflection boundinteger}. Nous trouvons comme informations~:
+en \circled{1} le nom de la classe qui représente l'implémentation du domaine
+réaliste et son parent, en \circled{2} toutes les interfaces utilisées par cette
+implémentation (ici plusieurs de PHP et des domaines réalistes, comme présenté
+dans la partie~\ref{subsection:language:realdom:classification}
+page~\pageref{subsection:language:realdom:classification}), et en \circled{3}
+les paramètres avec leurs positions, filtres et valeurs par défaut.
 
 \end{example}
 
