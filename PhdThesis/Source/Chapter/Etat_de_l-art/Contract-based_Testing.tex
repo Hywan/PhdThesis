@@ -28,16 +28,16 @@ niveau du code source du programme, et plus précisément, sur les méthodes des
 classes (dans un contexte orienté objet), les tests seront {\strong unitaires}.
 
 Différents outils exploitant des contrats pour générer des suites de tests sont
-maintenant présentés.
+présentés ci-dessous.
 
 \paragraph{JMLUnit} L'outil JMLUnit~\acite{CheonL02, ZimmermanN10} permet de
 transformer un contrat JML en une suite de tests exécutable avec JUnit. L'outil
 assure un moyen simple et efficace d'automatiser la génération d'oracle de
-tests. L'objectif est de décharger l'utilisateur de calculer le verdict du
-test, à savoir si le test unitaire est un succès ou un échec. L'outil génère
-automatiquement deux classes pour chaque interface ou classe Java annotée par
-du JML~: un squelette où déclarer les données de tests et les oracles permettant
-de calculer le verdict des tests.
+tests. L'objectif est de décharger l'utilisateur du calcul du verdict de test, à
+savoir si le test unitaire est un succès ou un échec. L'outil génère
+automatiquement deux classes pour chaque interface ou classe Java annotée par du
+JML~: un squelette où déclarer les données de tests et les oracles permettant de
+calculer le verdict des tests.
 
 Les données de tests ne sont pas générées automatiquement~: un dictionnaire de
 données de tests pré-définies selon certaines stratégies est utilisé à la place.
@@ -49,14 +49,15 @@ calculer lui-même les données de tests.
 Comme l'outil se concentre sur le test unitaire, chaque test ne concerne qu'une
 seule méthode. Les postconditions et invariants JML sont transformés en
 prédicats Java et constituent les oracles de tests. Si l'exécution d'une méthode
-avec un certain ensemble de données de tests ne lève aucune une erreur, alors le
-test considéré comme un succès, sinon il est considéré comme un échec.
-Toutefois, il est également possible d'avoir un troisième résultat qui est une
-violation d'une précondition d'une autre méthode appelée par la méthode testée.
-Ce cas est considéré comme inconclusif par l'outil car aucune précondition ou
+avec un certain ensemble de données de tests ne lève aucune erreur, alors le
+test est considéré comme un succès, sinon il est considéré comme un échec. Il
+est toutefois possible d'obtenir un troisième résultat qui est une violation
+d'une précondition d'une autre méthode appelée par la méthode testée.  Ce cas
+est considéré comme inconclusif par l'outil car aucune précondition ou
 postcondition n'a été violée.
 
-Enfin, le rapport de test est le même que produit habituellement JUnit.
+Enfin, le rapport de test est le même que celui produit habituellement par
+JUnit.
 
 \paragraph{Jartege} L'outil Jartege~\acite{Oriat05} est un générateur de tests
 aléatoires pour des programmes écrits en Java. Jartege produit des séquences de
@@ -64,15 +65,15 @@ test d'une certaine taille et un nombre de séquences, fixés par
 l'utilisateur.
 
 Jartege sélectionne aléatoirement des méthodes à exécuter. Chaque méthode est
-annoté par un contrat JML. Les données de tests, soit les valeurs des paramètres
-de ces méthodes, sont également générer aléatoirement à partir de la
+annotée par un contrat JML. Les données de tests, soient les valeurs des
+paramètres de ces méthodes, sont également générées aléatoirement à partir de la
 précondition. Cette dernière sert aussi de filtre pour sélectionner les méthodes
 à exécuter. L'exécution des méthodes et les postconditions et invariants sont
-utilisés pour confronter pour connaître la conformité du programme avec sa
-spécification. La vérifications des contraintes est ainsi conjointe à la
-création des séquences de test.
+utilisés pour connaître la conformité du programme avec sa spécification. La
+vérification des contraintes est ainsi conjointe à la création des séquences de
+test.
 
-Pour les types primitifs de Java, Jartege demande à l'utilisateur de leurs
+Pour les types primitifs de Java, Jartege demande à l'utilisateur de leur
 définir des bornes pour la génération aléatoire, ceci afin de générer des
 données de tests plus pertinentes. L'outil permet à l'utilisateur de fournir une
 fonction qui détermine la probabilité de créer un nouvel objet ou d'en
@@ -106,9 +107,9 @@ quatre critères de couverture qui représentent des règles de réécritures de
 prédicats. Les données de tests sont générées automatiquement en utilisant les
 valeurs aux limites des paramètres des méthodes. Cette approche fonctionne pour
 les types primitifs de Java avec un domaine ordonné. L'outil considère également
-qu'une valeur aux limites d'un objet est une valeur aux limites d'un de ses
+qu'une valeur aux limites d'un objet est une valeur aux limites de l'un de ses
 attributs. Quand toutes les valeurs sont spécifiées, elles sont instanciées
-grâce à l'animateur symbolique et les tests peuvent être exécutées.
+grâce à l'animateur symbolique et les tests peuvent être exécutés.
 
 \paragraph{TestEra} L'outil TestEra~\acite{MarinovK01} est un langage
 d'annotation de code Java. Ses préconditions, postconditions et invariants
@@ -117,7 +118,7 @@ langage de spécification déclaratif pour exprimer des contraintes structurelle
 complexes. Son objectif est d'instancier des micro-modèles, à l'aide de son
 propre analyseur Alcoa~\acite{JacksonSS00}. TestEra passe des invariants
 accompagnés de préconditions à l'analyseur d'Alloy, qui va lui générer plusieurs
-instances de modèles satisfaisants cette spécification. Chaque instance générée
+instances de modèles satisfaisant cette spécification. Chaque instance générée
 par Alcoa représente un test. TestEra va concrétiser ces instances une par une,
 afin de produire des données valides en Java. Ces dernières sont utilisées en
 tant que données de tests, c'est~à~dire qu'elles vont servir à exécuter le SUT.
@@ -150,7 +151,7 @@ technique assure qu'il y a un ensemble fini de structures candidates qui vont
 Comme TestEra avant lui, Korat est utilisé depuis des annotations d'un programme
 Java. Plus précisément, les prédicats de Korat sont appelés depuis JML et la
 postcondition fournit l'oracle du test. Les tests sont alors exécutés sur un
-programme Java enrichie.
+programme Java enrichi.
 
 Korat se démarque de TestEra en proposant ses propres algorithmes de génération
 de données candidates à partir de prédicats Java. Cette approche demande un
@@ -173,7 +174,7 @@ suite de Korat. Nous retrouvons ainsi la démarche de demander à l'utilisateur
 d'écrire lui-même des méthodes de génération de données (description des
 structures) mais les contrats ont totallement disparu. UDITA ajoute à Java deux
 extensions~: des primitives de choix non-déterministes et une primitive pour
-restreindre ces choix. Ces constructions sont familiaires aux utilisateurs de
+restreindre ces choix. Ces constructions sont familières aux utilisateurs de
 vérificateur de modèle comme Java PathFinder~\acite{VisserHBPL03}, sur lequel il
 s'appuye. UDITA est d'ailleurs intégré au \inenglish{framework} Java PathFinder
 en tant qu'extension. Grâce aux points de choix non-déterministes, l'utilisateur
@@ -184,13 +185,13 @@ Ces deux derniers permettent à l'utilisateur de décrire des structures de
 données récursives ou liées. En plus d'une description, UDITA demande à
 l'utilisateur d'écrire un filtre, notion identique aux prédicats de Korat, si ce
 n'est qu'UDITA ne va pas s'en servir pour la génération de données, mais
-uniquement pour filtrer les données générées~: chaque donnée qui passe le filtre
-sera mise de côté pour servir de données de test.
+uniquement pour filtrer les données générées~: chaque donnée qui franchit le
+filtre sera mise de côté pour servir de données de test.
 
 Contrairement à Korat, UDITA ne demande pas de méthode de
-\inenglish{finitization}, mais s'appuye sur ces points de choix
+\inenglish{finitization}, mais s'appuie sur ces points de choix
 non-déterministes pour explorer l'espace de la structure tout en restant
-borné~\acite{Marinov03, SullivanYCKJ04}. L'efficacité de la méthode s'appuye
+borné~\acite{Marinov03, SullivanYCKJ04}. L'efficacité de la méthode s'appuie
 sur les choix retardés~\acite{NollS07}, c'est~à~dire sur des évaluations
 non-déterministes tardives~\acite{FischerKS09}.
 
@@ -207,7 +208,7 @@ signature est enrichi de quelques constructions également pour guider la
 génération aléatoire. Un outil permet d'exécuter les tests et d'en calculer le
 verdict grâce à un RAC.
 
-JSConTest, contrairement à JML ou UDITA, demande très peu d'effort à
+JSConTest, contrairement à JML ou UDITA, demande très peu d'efforts à
 l'utilisateur. Les auteurs pensent qu'écrire la signature ne peut pas être
 négatif pour le développeur, surtout dans un langage où les types ne sont pas
 déclarés. Cependant, le niveau d'expressivité sur les préconditions et

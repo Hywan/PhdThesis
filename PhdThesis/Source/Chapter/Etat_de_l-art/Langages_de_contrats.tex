@@ -4,21 +4,20 @@
 Les spécifications sont souvent utilisées sous la forme de {\strong
 contrats}~\acite{Liskov86, Meyer92}. Nous parlons de programmation par contrats
 ou encore de \inenglish{Design by Contract} (abrégé DbC). Le terme {\em contrat}
-est une métaphore conceptuelle avec les conditions et les obligations d'un
-contrat d'entreprise. Ce paradigme demande au développeur d'écrire une
-spécification formelle qui étend la définition classique des types
-abstraits~\acite{LiskovZ74} avec les contraintes formelles suivantes~: des
-{\strong préconditions}, des {\strong postconditions} et des {\strong
-invariants}. Ces contraintes formelles sont aussi appelées des {\strong
-clauses}. Il est admis de dire qu'une clause contient des {\strong assertions}.
-Les contrats sont apparus dans le langage Eiffel~\acite{MeyerNM87}, qui alors se
-basait sur le paradigme de la programmation orienté objet. Dans un tel contexte,
-les préconditions et postconditions portaient sur les méthodes (aussi appelées
-procédures ou routines) et les invariants sur les classes (aussi appelés
-modules). D'autres usages des contrats ont été faits hors du paradigme de la
-programmation orienté objet, par exemple avec des fonctions d'ordre
-supérieur~\acite{FindlerF02}. Le \inenglish{Design by Contract} définit les
-critères de conformité suivants~:
+est une métaphore conceptuelle des conditions et des obligations d'un contrat
+d'entreprise. Ce paradigme demande au développeur d'écrire une spécification
+formelle qui étend la définition classique des types abstraits~\acite{LiskovZ74}
+avec les contraintes formelles suivantes~: des {\strong préconditions}, des
+{\strong postconditions} et des {\strong invariants}. Ces contraintes formelles
+sont aussi appelées des {\strong clauses}. Il est admis de dire qu'une clause
+contient des {\strong assertions}.  Les contrats sont apparus dans le langage
+Eiffel~\acite{MeyerNM87}, qui alors se basait sur le paradigme de la
+programmation orienté objet. Dans un tel contexte, les préconditions et
+postconditions portaient sur les méthodes (aussi appelées procédures ou
+routines) et les invariants sur les classes (aussi appelés modules). D'autres
+usages des contrats ont été faits hors du paradigme de la programmation orienté
+objet, par exemple avec des fonctions d'ordre supérieur~\acite{FindlerF02}. Le
+\inenglish{Design by Contract} définit les critères de conformité suivants~:
 
 \begin{itemize}
 
@@ -53,14 +52,14 @@ conformité du programme. Les contributions originales importantes comprenaient
 l'application au paradigme orienté objet et le support des exceptions. L'aspect
 objet apporte quelques spécificités, comme les invariants de classes, la gestion
 de l'héritage multiple ou la résolution de conflits avec l'héritage multiple
-comme le renommage de certains attributs ou méthodes. Mais également la gestion
-du \inenglish{dynamic binding} (aussi appelé \inenglish{late binding},
-représenté en général par la variable \code{this} qui représente l'instance de
-l'objet), c'est~à~dire que la résolution des appels se fait à l'exécution et non
-pas à la compilation. Les exceptions nécessitent également de définir dans quels
-contextes elles peuvent être levées et dans quel état se trouve l'objet après
-qu'une exception ait été levée. Cette information est d'autant plus importante
-que le langage Eiffel permet de ré-exécuter la routine (méthode) qui a déclenché
+comme le renommage de certains attributs ou méthodes. De même, la gestion du
+\inenglish{dynamic binding} (aussi appelé \inenglish{late binding}, représenté
+en général par la variable \code{this} qui représente l'instance de l'objet),
+demande à ce que la résolution des appels se fasse à l'exécution et non pas à la
+compilation. Les exceptions nécessitent également de définir dans quels
+contextes elles peuvent être levées et dans quel état se trouve l'objet après la
+levée d'une exception. Cette information est d'autant plus importante que le
+langage Eiffel permet de ré-exécuter la routine (méthode) qui a déclenché
 l'exception. Les préconditions et postconditions sont exprimées avec les
 mots-clés \code{require} et \code{ensure}. Le contenu de ces clauses est exprimé
 dans le langage Eiffel lui-même. Le langage introduit également le mot-clé
@@ -69,7 +68,7 @@ dans le langage Eiffel lui-même. Le langage introduit également le mot-clé
 Les contrats sont compilés avec le reste du programme mais sont placés dans des
 fichiers à part. Lors de la construction finale de l'exécutable du programme, il
 est possible d'y inclure ou exclure un ensemble de contrats. Le programme peut
-être intensivement testé avec tous les contrats puis être distribués avec
+être intensivement testé avec tous les contrats puis être distribué avec
 seulement un sous-ensemble de ses contrats pour des parties plus critiques.
 Moins il y a de contrats présents dans le programme, plus son exécution sera
 rapide, mais il est nécessaire de s'assurer de la fiabilité du programme.
@@ -110,7 +109,7 @@ JML. Un inconvénient est que le binaire résultant est plus important, ce qui
 engendre des ralentissements à l'exécution. En revanche, si une contrainte n'est
 pas vérifiée, une exception spécifique est déclenchée signalant le type de
 clause qui n'a pas été vérifiée (invariant, précondition etc.) ainsi que l'état
-visibile du système au moment de l'exécution. L'utilisation du RAC confère un
+visible du système au moment de l'exécution. L'utilisation du RAC confère un
 moyen direct et efficace de s'assurer que les contrats JML ne sont pas violés
 durant une exécution avec les données de l'exécution.
 
@@ -156,7 +155,7 @@ présence de valeurs nulles (avec \code{!} ou \code{?}).
 
 Tout comme ACSL, la vérification des contrats se fait statiquement, et non pas
 dynamiquement via un RAC. Et contrairement à JML où les contrats sont
-transformés en Java, ici ils sont transformés en Boogie~\acite{BarnettCDJL05},
+transformés en Java, ils sont ici transformés en Boogie~\acite{BarnettCDJL05},
 un langage intermédiaire pour encoder des conditions de vérification pour les
 langages impératifs et orientés objets. Boogie s'appuye sur des solveurs
 externes, notamment Z3~\acite{DeMoura2008}, pour vérifier les contrats. \\

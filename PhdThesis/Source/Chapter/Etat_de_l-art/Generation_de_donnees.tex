@@ -12,9 +12,9 @@ génèrent des types de données spécifiques.
 
 Beaucoup de travaux et d'outils considèrent la génération de données aléatoires
 comme efficace. Elle permet de très rapidement explorer un modèle, une
-spécification ou une structure de code à moindre coût.  Le
+spécification ou une structure de code à moindre coût. Le
 \inenglish{fuzzing}~\acite{GodefroidLM12}, par exemple, est une technique
-s'appuyant sur ces deux aspects~: beaucoup de données générées différentes très
+s'appuyant sur ces deux aspects~: beaucoup de données différentes générées
 rapidement, qui permettent d'éprouver le programme. Malgré ses limitations
 évidentes (un test d'égalité entre deux entiers générés aléatoirement a une
 probabilité très faible d'être validé), la génération aléatoire est souvent un
@@ -46,7 +46,7 @@ va dupliquer les exécutions et les contraindre à emprunter chaque chemin de
 l'embranchement (pour une condition, ce sera un chemin à vrai et un à faux).
 Quand EXE arrive à la fin d'un chemin ou qu'il trouve une erreur, alors il va
 automatiquement générer des données de tests à partir des contraintes récoltées.
-EXE est accompagné de STP~\acite{GaneshD07}, un solveur de constraintes maison
+EXE est accompagné de STP~\acite{GaneshD07}, un solveur de contraintes maison
 conçu à l'origine pour EXE. C'est grâce à ce solveur que les valeurs vont être
 concrétisées et utilisées comme données de tests sur le programme
 non-instrumenté. Les mêmes chemins seront empruntés et les mêmes erreurs seront
@@ -65,21 +65,21 @@ exécution.
 DART et EXE ont une approche similaire pour l'analyse des chemins. À chaque
 embranchement du programme, DART va extraire des contraintes symboliques. Pour
 générer les données de tests suivantes, il prendra la négation des contraintes
-une par une, générer de nouvelles valeurs et le processus continue. Toutefois,
-DART ne sait gérer que les contraintes sur les entiers alors qu'EXE sait gérer
-des contraintes sur les entiers, les tableaux, les vecteurs de bits, le
-transtypage, les opérations arithmétiques etc.
+une par une, générera de nouvelles valeurs et le processus continuera.
+Toutefois, DART ne sait gérer que les contraintes sur les entiers alors qu'EXE
+sait gérer des contraintes sur les entiers, les tableaux, les vecteurs de bits,
+le transtypage, les opérations arithmétiques etc.
 
 \paragraph{KLEE} L'outil KLEE~\acite{CadarDE08} est la suite d'EXE. Ses auteurs
 font le constat suivant~: malgré le fait que les travaux sur l'exécution
-symbolique sont encourageants, les outils ne sont toujours pas capables de
+symbolique soient encourageants, les outils ne sont toujours pas capables de
 passer à l'échelle. En effet, le nombre de chemins dans les programmes sont
 exponentiels, et les techniques d'exécutions symboliques n'arrivent plus à
 résoudre toutes les contraintes générées. De même, l'exécution symbolique ne
 prenait pas en compte l'environnement du programme, comme l'OS, le réseau ou
 l'utilisateur. Ce sont ces deux problèmes qu'adresse KLEE grâce à de la
-réduction et simplifications de contraintes, des améliorations sur l'exploration
-des chemins et des optimisations de la réprésentation de l'environnement.
+réduction et simplification de contraintes, des améliorations sur l'exploration
+des chemins et des optimisations de la représentation de l'environnement.
 
 KLEE utilise toujours STP comme solveur de contraintes. \\
 
@@ -104,8 +104,8 @@ découpée en fonction de ces deux types de données.
 
 \paragraph{Génération de chaînes de caractères} Les chaînes de caractères sont
 intensivement utilisées dans des programmes Web.  Leurs formes sont très
-différentes, cela va d'une adresse email à des langages comme XML ou JSON, en
-passant par des requêtes SQL etc. La façon la plus répandue dans l'industrie
+différentes, cela allant d'une adresse email à des langages comme XML ou JSON,
+en passant par des requêtes SQL etc. La façon la plus répandue dans l'industrie
 pour représenter une donnée textuelle est d'utiliser une expression régulière ou
 une grammaire algébrique, soit d'une manière générale, une
 grammaire~\acite{Chomsky56}. Une grammaire est exprimée à partir d'un {\strong
@@ -124,10 +124,10 @@ un outil de génération de données textuelles complexes à partir d'une gramma
 décrite avec une syntaxe très similaire à LEX~\acite{Lesk75} et
 YACC~\acite{Johnson75}, des outils d'analyses syntaxique et lexicale très
 largement utilisés. Ce choix de syntaxe est montré comme plus attractif et plus
-efficace pour les utilisateurs comparé à TestEra a besoin équivalent. Quand est
+efficace pour les utilisateurs comparé à TestEra à besoin équivalent. Quand est
 traité le problème de générations de données structurelles complexes, notamment
 avec des grammaires, la question de la combinatoire se pose forcément. Certains
-opérateurs de répétitions de séquences de lexèmes, comme \code{+} (une ou
+opérateurs de répétition de séquences de lexèmes, comme \code{+} (une ou
 plusieurs fois) ou \code{*} (zéro ou plusieurs fois) n'ont pas de bornes
 supérieures. Afin d'éviter la génération d'énormes données ou de données
 explosives, yagg propose de borner ces opérateurs. D'autant plus que yagg a une
@@ -152,7 +152,7 @@ réductions \inenglish{pair-wises}.
 La plupart des techniques ayant une approche aléatoire ou exhaustive bornée se
 basent respectivement sur les travaux de \acitei{FlajoletZC94} et
 \acitei{Howden86}. La démarche est très souvent similaire~: à partir d'une
-grammaire, nous sommes capable de générer une données. Mais des annotations sont
+grammaire, nous sommes capables de générer une donnée. Mais des annotations sont
 ajoutées pour guider cette génération afin d'obtenir des données plus réalistes
 selon le contexte d'utilisation. Ces outils demandent toujours une intervention
 du développeur mais ces interventions tendent à devenir de plus en plus simples.
@@ -169,7 +169,7 @@ permettant de satisfaire plus de critères de couverture de code.
 
 {\scshape fdcc}~\acite{BardinG12} est un solveur pour les tableaux avec
 contraintes sur des domaines finis. Les auteurs font le constat que les tableaux
-sont omniprésents dans les outils de vérifications, mais que des approches
+sont omniprésents dans les outils de vérification, mais que des approches
 efficaces pour les traiter sont assez rares dans la programmation par
 contraintes. Les auteurs proposent alors une approche combinant deux solveurs,
 l'un raisonnant de manière symbolique (pour connaître les accès, les écritures
@@ -181,6 +181,6 @@ Mentionnons aussi l'outil Minion~\acite{GentJM06} qui fait un constat et une
 approche similaire à {\scshape fdcc}~: les auteurs préfèrent coupler des
 solutions ensemble et les faire communiquer. Les résultats sont très
 encourageants~: comme pour {\scshape fdcc}, le solveur converge beaucoup plus
-rapidement et est capable de répondre à plus de problèmes. La partie délicate
-est toujours de filtrer et transformer les problèmes pour que les différents
-solveurs puissent commniquer entre eux.
+rapidement et est capable de répondre à davantage de problèmes. La partie
+délicate est toujours de filtrer et transformer les problèmes pour que les
+différents solveurs puissent commniquer entre eux.
