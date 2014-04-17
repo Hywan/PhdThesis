@@ -14,7 +14,7 @@ ce mémoire.
 Grâce aux domaines réalistes et à la conception modulaire et extensible des
 outils de Praspel, il est possible d'assembler plusieurs méthodes du test. Les
 expérimentations ont montré certaines limites du langage et des outils. Nous
-pensons qu'il est pertinent de s'intérer aux méthodes suivantes.
+pensons qu'il est pertinent de s'intéresser aux méthodes suivantes.
 
 \subsection{Test aux limites}
 
@@ -25,7 +25,7 @@ pensons qu'il est pertinent de réfléchir à une manière de spécifier les lim
 des domaines réalistes. Par exemple, avec l'intervalle $[-7; 42]$, les limites
 extrêmes sont $-7$, $-6$, 41 et 42, et les limites intermédiaires sont $-1$, 0
 et 1. En revanche, définir les limites d'un tableau, d'une chaîne de caractères
-ou d'un objet n'est pas aussi trivial et mérite plus d'attention. Une fois ses
+ou d'un objet n'est pas aussi trivial et mérite plus d'attention. Une fois ces
 limites connues, nous pourrions utiliser un générateur numérique aux limites
 dans les domaines réalistes pour produire de nouvelles données aux limites.
 
@@ -35,21 +35,22 @@ Dans le contexte du \inenglish{Scenario-based Testing}, nous nous intéressons
 aux travaux de \acitei{Castillos13}. Ces travaux s'inspirent des patrons de
 propriétés décrits par \acitei{DwyerAC99}. Ces patrons permettent de définir une
 propriété temporelle comme un motif qui doit être satisfait à l'intérieur d'une
-portée (une portion d'exécution du système).  Ils permettent donc d'exprimer
+portée (une portion d'exécution du système). Ils permettent donc d'exprimer
 simplement un large panel de propriétés temporelles avec un ensemble restreint
 de constructions. Un nouveau langage~\acite{CastillosDJKT13} basé sur ces
 patrons a été créé. Ce langage comprend des variantes aux motifs et aux portées
-ajoutées pour améliorer l'expressivité et corriger certaines incohérences. Des
-nouveaux critères de couverture ont alors été définis et permettent de vérifier
-plusieurs propriétés temporelles.
+afin d'améliorer l'expressivité et corriger certaines incohérences. Des nouveaux
+critères de couverture ont alors été définis et permettent de vérifier plusieurs
+propriétés temporelles.
 
 La démarche de~\acitea{Castillos13} est similaire à la notre mais les objectifs
 de tests sont différents. Cependant, puisque ce langage est très simple et
 permet d'exprimer un grand nombre de propriétés temporelles, nous pensons que ce
 langage pourrait être une extension à Praspel. Ainsi, en plus des attributs et
 des méthodes, les classes pourraient être annotées par ces propriétés. Nous les
-exploiterions pour générer de nouveaux préambules de test, des suites de tests
-fonctionnels ou alors pour vérifier des propriétés temporelles.
+exploiterions pour générer de nouveaux préambules de test, des objets plus
+réalistes, des suites de tests fonctionnels ou alors pour vérifier des
+propriétés temporelles.
 
 \subsection{\inenglish{Grey-box} avec le \inenglish{Search-based Testing}}
 
@@ -115,3 +116,68 @@ scientifiques mais industrielles. Toutefois, elles participent à l'adoption de
 nos outils dans l'industrie.
 
 \section{Vers des outils industriels~?}
+
+Il nous a semblé pertinent de développer nos travaux de thèse dans des projets
+\inenglish{open-source} et libres avec une communauté, des utilisateurs et des
+contributeurs. Cela nous a été bénéfique mais comme l'ont fait remarqué les
+ingénieurs de tests lors de notre expérimentation, il est nécessaire d'écrire
+beaucoup de documentation pour permettre une utilisation plus importante de nos
+travaux au sein de l'industrie.
+
+\subsection{Conférences industrielles}
+
+Toutefois, la communauté de Hoa et d'atoum ont déjà fait plusieurs conférences
+industrielles pour la promotion du test, de la qualité logicielle et de Praspel.
+Nous pouvons citer~:
+%
+\begin{itemize}
+
+\item 5 et 6~juin~2012, au ForumPHP à Paris, Ivan Enderlin (auteur de ce mémoire
+et créateur de Hoa) et Frédéric Hardy (créateur d'atoum) ont présenté une
+conférence en duo sur l'«~Anatomie du test~»~;
+
+\item 28~octobre~2013, soirée AFUP à Lyon, Ivan Enderlin et Julien Bianchi
+(contributeur de Hoa et d'atoum) ont présenté une conférence en duo sur Praspel
+et atoum~;
+
+\item 23 et 24~juin~2013, au PHPTour à Lyon, Ivan Enderlin et Julien Bianchi ont
+présenté une conférence sur Praspel.
+
+\end{itemize}
+%
+Praspel a également été cité dans d'autres conférences sur la qualité logicielle
+et le test.
+
+\subsection{Transfert technologique}
+
+Il est difficile de mesurer l'impact de nos contributions et l'usage de nos
+algorithmes dans l'industrie. Les quelques chiffres que nous pouvons obtenir
+sont le nombre d'installations quotidiennes des bibliothèques que nous avons
+créées au sein de Hoa ou auxquelles nous avons contribuées.
+
+La bibliothèque \code{Hoa\bslash{}Compiler} contient notre compilateur de
+compilateurs LL($\star$), le langage de description de grammaire PP et nos
+algorithmes de générations de données à partir de grammaires. Elle a été
+installée plus de 9000~fois depuis sa création, soit 15~installations en moyenne
+par jour. La bibliothèque \code{Hoa\bslash{}Regex} contient la grammaire des
+PCRE au format PP et l'algorithme de génération isotropique. Elle est installée
+en moyenne 0.5~fois par jour. Nous avons contribué à la bibliothèque
+\code{Hoa\bslash{}Math} pour des fonctions combinatoires. Des contributeurs ont
+utilisé notre compilateur de compilateurs pour évaluer des formules
+arithmétiques à la volée contenues dans des chaînes de caractères. Cette
+bibliothèque est installée en moyenne 14~fois par jour. La bibliothèque
+\code{Hoa\bslash{}Praspel} est installée en moyenne 1~fois par jour.  D'autres
+outils utilisant nos contributions sur les grammaires sont installés entre 3 et
+6~fois par jours en moyenne et compte des milliers d'utilisateurs. 
+
+Comme nous avons créé une extension qui fait le pont entre atoum et Praspel, et
+que atoum est installé environ plus de 100~fois par jour, nous espérons que
+Praspel va rapidement se propager et être utilisé. Durant ces travaux de thèse,
+nous n'avons pas alloué de temps spécifiquement pour la promotion de Praspel
+auprès de l'industrie. Malgré quelques conférences industrielles, nos
+implémentations sont terminées depuis peu et l'outil est «~industriellement~»
+utilisable depuis quelques mois. Aux vues des résultats de l'expérimentation,
+nous espérons que la communauté de Hoa et d'atoum sauront promouvoir Praspel.
+Nous allons les rejoindre et participer à cet effort au maximum car nous pensons
+que Praspel et le lien qui s'est créé entre nous et ces communautés sont
+bénéfiques pour la recherche.

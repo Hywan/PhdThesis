@@ -15,18 +15,18 @@ Dans ce mémoire, nous avons présenté trois contributions. \\
 La première contribution est Praspel, un nouveau de langage de spécification
 pour PHP basé sur la programmation par contrat. Praspel spécifie les données
 avec des domaines réalistes~: des structures permettant de valider et générer
-des données. Les domaines réalistes peuvent être emboîtés pour représenter des
-données plus complexes. La syntaxe et la sémantique de Praspel a été définie.  À
-partir d'un contrat écrit en Praspel, nous pouvons faire du
-\inenglish{Contract-based Testing}, c'est~à~dire que nous exploitons le contrat
-pour générer automatiquement des tests unitaires. La précondition est utilisée
-pour générer des données de tests et la postcondition est utilisée comme oracle.
-\\
+des données. Les domaines réalistes peuvent hériter entre eux et être emboîtés
+pour représenter des données plus complexes. La syntaxe et la sémantique de
+Praspel a été définie.  À partir d'un contrat écrit en Praspel, nous pouvons
+faire du \inenglish{Contract-based Testing}, c'est~à~dire que nous exploitons le
+contrat pour générer automatiquement des tests unitaires. La précondition est
+utilisée pour générer des données de tests et la postcondition est utilisée
+comme oracle.  \\
 
 La deuxième contribution concerne alors la génération de données de tests. Pour
 les booléens, les entiers et les réels, une génération aléatoire uniforme est
-employée. Cette approche a rapidement montré ses limites pour des tableaux ou
-des chaînes de caractères.
+employée. Cette approche a rapidement montré ses limites pour les tableaux et
+les chaînes de caractères.
 
 Pour les tableaux, nous avons commencé par mener une étude sur leurs propriétés
 les plus utilisées. Nous en avons sélectionné quelques unes. La syntaxe de
