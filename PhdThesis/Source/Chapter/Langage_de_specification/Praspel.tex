@@ -470,8 +470,8 @@ où $p$ est du code PHP. Cette construction permet à l'utilisateur d'exprimer d
 contraintes arbitraires en utilisant PHP lui-même au lieu de Praspel. Le code
 $p$ doit être un prédicat en forme normale {\strong conjonctive} (CNF). La
 construction \apred{p} ne supporte que la validation et non pas la génération.
-Le prédicat \apred{\code{'\$this->getUsage() + \$file->getSize()
-> static::SIZE'}} dans la figure~\ref{figure:language:short_contract} signifie
+Le prédicat \code{\bslash{}pred('\$this->getUsage() + \$file->getSize()
+> static::SIZE')} dans la figure~\ref{figure:language:short_contract} signifie
 que s'il n'y a plus de place pour ajouter un nouveau fichier, alors cette partie
 de la précondition est satisfaite.
 
