@@ -85,6 +85,7 @@ clean:
 		| xargs -I… find … -type f -maxdepth 1 \
 			-not -name '.*' \
 			-not -name '*.tex' \
+			-not -name '*.pdf' \
 		| xargs rm -f;
 
 distclean:
