@@ -1,7 +1,5 @@
-\chapter{Perspectives}
-\label{chapter:perspectives}
-
-\minitoc
+\section{Perspectives}
+\label{section:conclusions:perspectives}
 
 Les perspectives qui se dégagent de ces travaux se classent en trois parties. La
 première concerne l'utilisation d'autres méthodes du test dans Praspel. La
@@ -9,14 +7,14 @@ deuxième partie concerne des améliorations possibles sur le langage. Et enfin,
 la dernière partie offre une réflexion sur l'avenir des travaux présentés dans
 ce mémoire.
 
-\section{Inclure de nouvelles méthodes du test}
+\subsection{Inclure de nouvelles méthodes du test}
 
 Grâce aux domaines réalistes et à la conception modulaire et extensible des
 outils de Praspel, il est possible d'assembler plusieurs méthodes du test. Les
 expérimentations ont montré certaines limites du langage et des outils. Nous
 pensons qu'il est pertinent de s'intéresser aux méthodes suivantes.
 
-\subsection{Test aux limites}
+\subsubsection{Test aux limites}
 
 Le test aux limites permet de détecter des erreurs usuelles rapidement et
 efficacement. Nous avons dit que les domaines réalistes utilisaient un
@@ -29,7 +27,7 @@ ou d'un objet n'est pas aussi trivial et mérite plus d'attention. Une fois ces
 limites connues, nous pourrions utiliser un générateur numérique aux limites
 dans les domaines réalistes pour produire de nouvelles données aux limites.
 
-\subsection{Scénario et propriétés temporelles}
+\subsubsection{Scénario et propriétés temporelles}
 
 Dans le contexte du \inenglish{Scenario-based Testing}, nous nous intéressons
 aux travaux de \acitei{Castillos13}. Ces travaux s'inspirent des patrons de
@@ -52,7 +50,7 @@ exploiterions pour générer de nouveaux préambules de test, des objets plus
 réalistes, des suites de tests fonctionnels ou alors pour vérifier des
 propriétés temporelles.
 
-\subsection{\inenglish{Grey-box} avec le \inenglish{Search-based Testing}}
+\subsubsection{\inenglish{Grey-box} avec le \inenglish{Search-based Testing}}
 
 Dans les expérimentations, nous avons vu certaines limites de Praspel. La
 méthode du \inenglish{Search-based Testing}~\acite{McMinn04} utilise des
@@ -89,14 +87,14 @@ compliquerait pas le langage en y ajoutant de nouvelles constructions, mais
 offrirait plus de services à l'utilisateur. Ce dernier n'aurait aucun effort à
 produire à part mettre à jour ses outils.
 
-\section{Améliorer le langage}
+\subsection{Améliorer le langage}
 
 Le langage Praspel n'est pas complet. Certaines choses peuvent être mieux
 spécifiées. Nous sommes toujours dans cette démarche d'analyser ce que les
 développeurs écrivent dans les contrats et d'améliorer le langage en
 conséquence. Nous avons relevé deux points importants.
 
-\subsection{Solveurs sur les entiers et réels}
+\subsubsection{Solveurs sur les entiers et réels}
 
 Quand des entiers sont manipulés, il est courant de vouloir spécifier des
 constraintes comme $\code{i} < \code{j} + 1$. Actuellement, Praspel n'a aucun
@@ -105,7 +103,7 @@ fonctionnalité, nous n'avons pas eu le temps de la dévélopper. Il serait alor
 nécessaire d'étudier le domaine, de voir comment nous pouvons y contribuer, et
 proposer une solution dans Praspel.
 
-\subsection{De nouveaux domaines réalistes}
+\subsubsection{De nouveaux domaines réalistes}
 
 Durant l'expérimentation, les ingénieurs de tests ont trouvé notre approche
 pertinente. Toutefois, la bibliothèque standard des domaines réalistes n'était
@@ -115,7 +113,7 @@ bancaires, des numéros de téléphones etc. Ce ne sont pas des perspectives
 scientifiques mais industrielles. Toutefois, elles participent à l'adoption de
 nos outils dans l'industrie.
 
-\section{Vers des outils industriels~?}
+\subsection{Vers des outils industriels~?}
 
 Il nous a semblé pertinent de développer nos travaux de thèse dans des projets
 \inenglish{open-source} et libres avec une communauté, des utilisateurs et des
@@ -124,7 +122,7 @@ ingénieurs de tests lors de notre expérimentation, il est nécessaire d'écrir
 beaucoup de documentation pour permettre une utilisation plus importante de nos
 travaux au sein de l'industrie.
 
-\subsection{Conférences industrielles}
+\subsubsection{Conférences industrielles}
 
 Toutefois, la communauté de Hoa et d'atoum ont déjà fait plusieurs conférences
 industrielles pour la promotion du test, de la qualité logicielle et de Praspel.
@@ -148,7 +146,7 @@ présenté une conférence sur Praspel.
 Praspel a également été cité dans d'autres conférences sur la qualité logicielle
 et le test.
 
-\subsection{Transfert technologique}
+\subsubsection{Transfert technologique}
 
 Il est difficile de mesurer l'impact de nos contributions et l'usage de nos
 algorithmes dans l'industrie. Les quelques chiffres que nous pouvons obtenir
