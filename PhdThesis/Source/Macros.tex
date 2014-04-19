@@ -137,6 +137,17 @@
 \newcommand{\inlatin}[1]{\foreignlanguage{latin}{\em #1}}
 \newcommand{\initalian}[1]{\foreignlanguage{italian}{\em #1}}
 
+% Headers.
+\fancyhead{}
+\fancyfoot{}
+\addtolength{\headheight}{\baselineskip}
+\renewcommand{\headrulewidth}{.1pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancyhead[LE, RO]{\thepage}
+\fancyhead[RE]{\nouppercase{\leftmark}}
+\fancyhead[LO]{\nouppercase{\rightmark}}
+\pagestyle{fancy}
+
 % Bibliography
 \newcommand{\acite}[1]{\citep{#1}}        % normal citation
 \newcommand{\acitep}[1]{\citealp{#1}}     % plain citation
@@ -165,9 +176,9 @@
     remember picture
 ]
 \tikzstyle{mybrace}=[
-    decoration={brace, amplitude=.8em},
+    thick,
     decorate,
-    thick
+    decoration={brace, amplitude=.8em}
 ]
 \tikzstyle{mybracetext}=[
     right,
