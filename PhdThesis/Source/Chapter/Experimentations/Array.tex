@@ -1,0 +1,149 @@
+\section{Étude de cas~: solveur sur les tableaux}
+\label{section:experimentation:solver}
+
+Cette partie présente l'expérimentation que nous avons menée dans
+l'article~\acitei{EnderlinGB13}. Dans cette partie, nous utilions le mot {\em
+système} pour parler d'un ensemble de propriétés sur les tableaux.  Cette
+expérimentation évalue l'efficacité du solveur présenté dans la
+partie~\ref{section:data:arrays} page~\pageref{section:data:arrays},
+c'est~à~dire sa capacité à supprimer ou réduire le rejet lors de la génération
+de données à partir d'un système. Nous mesurons le nombre de
+\inenglish{backtracks} dans le solveur, le temps de génération de données à
+partir d'un système satisfaisable et le nombre de systèmes non satisfaisables
+détectés. L'expérimentation est composée de trois étapes~: génération de
+systèmes, génération de données et enfin une étape de mesures. Nous générons des
+systèmes sur des tableaux contenant des chaînes de caractères et des entiers, et
+dont la taille varie entre 5 et 20.
+
+Praspel est décrit par un grammaire. Afin de générer des systèmes, nous
+réutilisons les travaux présentés dans la partie~\ref{section:data:strings}
+page~\pageref{section:data:strings} concernant la génération de chaînes de
+caractères à partir de grammaire. Trois algorithmes ont été présentés~:
+aléatoire uniforme, exhaustif borné et basé sur la couverture. Puisque la
+grammaire des propriétés sur les tableaux est petite, nous ne pouvons pas
+utiliser le dernier algorithme car il ne sera pas capable de générer une
+collection de systèmes suffisamment importante. L'algorithme exhaustif borné est
+plus coûteux que l'algorithme aléatoire uniforme mais il est précis et plus
+adapté à des petites grammaires. Nous retenons cet algorithme. Ce dernier va
+générer des séquences de lexèmes dont la taille sera bornée à $n$. Ces séquences
+seront ensuite concrétisées pour, dans notre cas, former un système. Nous
+rappelons que les lexèmes sont concrétisés avec un algorithme aléatoire
+isotropique.
+
+Avec $n = 3$, nous pouvons générer des propriétés de la forme \code{a is unique}
+(avec \code{a} un tableau). Avec $n = 6$, nous pouvons générer des propriétés de
+la forme \code{a[0]: 0}. Avec $n = 8$, nous pouvons générer des propriétés des
+la forme \code{a[0]: 0 or 1}. Avec $n = 11$, nous pouvons générer des propriétés
+comme celle de l'exemple~\ref{example:data:array_proprietes}
+page~\pageref{example:data:array_proprietes} soit \code{a[0]: 'b' or 'c' and a
+is unique}.
+
+La deuxième étape invoque le solveur sur chaque système généré afin de générer
+un tableau satisfaisant ce système. Chaque tableau est validé par les prédicats
+des domaines réalistes et par les propriétés des tableaux pour vérifier la
+justesse (\inenglish{soundness}) du solveur, c'est~à~dire qu'il génère des
+données qui soient correctes.
+
+Durant cette étape, des marqueurs sont placés ci et là afin de compter
+uniquement le temps de génération des tableaux sans compter le temps de
+compilation (génération des systèmes, analyses des systèmes, création du modèle
+objet de Praspel etc.). Nous mesurons également le nombre de
+\inenglish{backtracks} dans le solveur et le nombre de systèmes rejetés. Quand
+un système est rejeté, ses \inenglish{backtracks} ne sont pas comptabilisés.
+
+Puisque la concrétisation des séquences de lexèmes utilise un algorithme
+aléatoire isotropique, les valeurs peuvent être très
+différentes d'un système généré à l'autre. Ces différences peuvent conduire à
+des amplitudes dans les temps de génération et les nombres de
+\inenglish{backtracks}. Pour éviter des piques dans les résultats, nous
+rapportons la moyenne de 100~exécutions.
+
+\begin{figure}
+
+\centering
+\begin{tabular}{|c|c|c|c|c|c|}
+
+\hline
+
+$n$                          &
+  systèmes                   &
+  \inenglish{backtracks}     &
+  \inenglish{backtracks} par &
+  systèmes                   &
+  temps de                   \\
+
+                             &
+  générés                    &
+                             &
+  système                    &
+  rejetés                    &
+  génération (ms)            \\
+
+\hline
+
+10                           &
+  \phantom{0}14              &
+  \phantom{00}0              &
+  0\phantom{.00}             &
+  0                          &
+  \phantom{00}6.484 \\
+
+15                           &
+  \phantom{0}86              &
+  \phantom{0}34              &
+  0.40                       &
+  0                          &
+  \phantom{0}42.167          \\
+
+18                           &
+ 210                         &
+ \phantom{0}91               &
+ 0.43                        &
+ 0                           &
+ 141.694                     \\
+
+19                           &
+ 275                         &
+ 103                         &
+ 0.37                        &
+ 0                           &
+ 229.001                     \\
+
+20                           &
+ 492                         &
+ 114                         &
+ 0.23                        &
+ 0                           &
+ 372.241                     \\
+\hline
+\end{tabular}
+
+\caption{\label{figure:experimentation:arrays} Résultat de l'expérimentation sur
+les tableaux}
+
+\end{figure}
+
+La figure~\ref{figure:experimentation:arrays} montre les résultats de notre
+expérimentation. Dans la première colonne, $n$ est la taille maximum de la
+séquence de lexèmes représentant un système. La deuxième colonne indique le
+nombre de systèmes distincts générés avec cette taille. La troisième, cinquième
+et sixième colonne indiquent respectivement les nombres moyens de
+\inenglish{backtracks}, de systèmes rejetés pour 100~exécutions et la moyenne
+des temps de génération des tableaux. La quatrième colonne indique le taux de
+\inenglish{backtracks} par système.
+
+Pour $n \leq 20$, nous observons qu'aucun système n'est rejeté, ce qui est une
+importante amélioration par comparaison avec la génération standard qui est
+aléatoire (voir la partie~\ref{section:data:random}
+page~\pageref{section:data:random}). Toutes les données générées satisfont leur
+spécification. Le solveur génère avec succès et rapidement des données avec un
+faible nombre de \inenglish{backtracks}. $n = 20$ représente approximativement
+3~propriétés avec des disjonctions~: l'algorithme exhaustif borné génère
+492~systèmes distincts et les exécutions produisent seulement
+114~\inenglish{backtracks}, soit approximativement 1~\inenglish{backtrack} pour
+4~systèmes. C'est un bon résultat. Néanmoins, nous n'avons pas été capables de
+caractériser le nombre de \inenglish{backtracks} par rapport au nombre de
+propriétés. Enfin, cette expérimentation nous a permis de détecter une erreur
+dans le solveur. Cette erreur conduisait systématiquement au rejet de systèmes
+ayant un certain motif. Par conséquent, nous remarquons que cette démarche de
+validation est efficace pour détecter des erreurs.
