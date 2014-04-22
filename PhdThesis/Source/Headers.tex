@@ -54,3 +54,58 @@
 \usepackage{pdfpages}
 
 \everymath{\displaystyle}
+
+
+\usepackage{etex}
+\usepackage{stmaryrd}
+
+\usepackage[]{pxfonts}
+\linespread{1.1}
+\usepackage[euler-digits,euler-hat-accent]{eulervm}
+\DeclareSymbolFont{symbolsPX}{OMS}{pxsy}{m}{n}
+\SetSymbolFont{symbolsPX}{bold}{OMS}{pxsy}{bx}{n}
+\DeclareSymbolFont{operatorsPX}{OT1}{pxr}{m}{n}
+\SetSymbolFont{operatorsPX}{bold}{OT1}{pxr}{bx}{n}
+\DeclareMathSymbol{\forall}{\mathord}{symbolsPX}{56}
+\DeclareMathSymbol{\exists}{\mathord}{symbolsPX}{57}
+\DeclareMathSymbol{\in}{\mathrel}{symbolsPX}{50}
+\DeclareMathSymbol{\circ}{\mathbin}{symbolsPX}{14}
+\DeclareMathSymbol{\wedge}{\mathbin}{symbolsPX}{94}
+\DeclareMathSymbol{\vee}{\mathbin}{symbolsPX}{95}
+\DeclareMathSymbol{\vdash}{\mathrel}{symbolsPX}{96}
+\let\land=\wedge
+\let\lor=\vee
+\DeclareMathSymbol{=}{\mathrel}{operators}{61}
+\DeclareMathSymbol{\equiv}{\mathrel}{symbolsPX}{17}
+\DeclareMathDelimiter\llbracket{\mathopen}{stmry}{"4A}{stmry}{"71}
+\DeclareMathDelimiter\rrbracket{\mathclose}{stmry}{"4B}{stmry}{"79}
+\DeclareMathSymbol{\subseteq}{\mathrel}{symbolsPX}{18}
+\DeclareMathSymbol{\supseteq}{\mathrel}{symbolsPX}{19}
+\DeclareMathSymbol{\neg}{\mathord}{symbolsPX}{58}
+  \let\lnot=\neg
+%  \let\lbag\@undefined
+%  \let\rbag\@undefined
+%  \DeclareMathSymbol\lbag\mathbin{stmry}{"2A}
+%  \DeclareMathSymbol\rbag\mathbin{stmry}{"2B}
+\DeclareMathSymbol{\subset}{\mathrel}{symbolsPX}{26}
+\DeclareMathSymbol{\supset}{\mathrel}{symbolsPX}{27}
+\DeclareMathSymbol{\top}{\mathord}{symbolsPX}{62}
+\DeclareMathSymbol{\bot}{\mathord}{symbolsPX}{63}
+%% FOURIER MATHBB
+\DeclareFontFamily{U}{futm}{}
+\DeclareFontShape{U}{futm}{m}{n}{
+  <-> s * [.92] fourier-bb
+  }{}
+\DeclareSymbolFont{Ufutm}{U}{futm}{m}{n}
+\DeclareSymbolFontAlphabet{\mathbb}{Ufutm}
+
+\usepackage[a4paper,
+            top=4.4cm,
+            bottom=4.4cm,
+            outer=4cm,
+            inner=3cm,
+            heightrounded
+          ]{geometry}
+
+\usepackage{xcolor}
+\definecolor{base3}{RGB}{253,246,227}

@@ -195,13 +195,13 @@ exprime des contraintes sur le {\strong post-état} du système. Afin de modifie
 l'état du système, il doit être exécuté en appelant une méthode. La clause
 \aensures représente une {\strong postcondition normale}, mais le système peut
 aussi lever une exception et être alors placé dans un {\strong post-état
-exceptionnel}. La clause \athrowable exprime des contraintes sur cet état
-particulier~: elle exprime les conditions sous lesquelles des exceptions peuvent
-être levées par la méthode et aussi le post-état du système associé (par exemple
-une exception a été levée mais le système est suffisamment propre pour tenter
-une nouvelle exécution). La syntaxe de $T$ ($T_{\alpha.\beta}$ et $T_\m{D}$ dans
-la figure~\ref{figure:language:typical_contract}) est définie par l'entité
-syntaxique \grule{exceptional-expression} dans la
+exceptionnel}. \pagebreak La clause \athrowable exprime des contraintes sur cet
+état particulier~: elle exprime les conditions sous lesquelles des exceptions
+peuvent être levées par la méthode et aussi le post-état du système associé (par
+exemple une exception a été levée mais le système est suffisamment propre pour
+tenter une nouvelle exécution). La syntaxe de $T$ ($T_{\alpha.\beta}$ et
+$T_\m{D}$ dans la figure~\ref{figure:language:typical_contract}) est définie par
+l'entité syntaxique \grule{exceptional-expression} dans la
 figure~\ref{figure:language:grammar_part2}. $T$ est de la forme \code{$T_C$ with
 $T_E$} où $T_C$ est une liste de noms de classes asssociée à un identifiant et
 $T_E$ est une expression, appelée {\strong postcondition exceptionnelle}, dont

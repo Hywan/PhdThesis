@@ -190,6 +190,10 @@
     decorate,
     decoration={snake, amplitude=.4mm, segment length=2mm, post length=2mm}
 ]
+\tikzstyle{myzigzag}=[
+    decorate,
+    decoration={zigzag, mirror, segment length=12pt, amplitude=1.1pt}
+]
 \newcommand{\tikzref}[1]{\tikz[myoverlay, anchor=base, baseline] {
     \node (#1) {\phantom{x}};
 }}

@@ -123,7 +123,7 @@ réaliste \code{Boundinteger}.}
 \end{figure}
 
 La figure~\ref{figure:language:boundinteger} montre un début d'implémentation du
-domaine réaliste \code{Boundinteger}. Il hérite du domaine réaliste
+domaine réaliste \code{Boundin\-te\-ger}. Il hérite du domaine réaliste
 \code{Integer} en \circled{1}. Nous remarquons aussi de nombreuses interfaces
 pour caractériser la «~forme~» ou les propriétés du domaine réaliste (détaillé
 dans la partie \ref{subsection:language:realdom:classification}). La propriété
@@ -178,7 +178,7 @@ protected \$_arguments = [ \\
 %
 où \code{Constinteger} et \code{Conststring} représentent respectivement un
 entier et une chaîne de caractères Praspel comme \code{7} ou \code{'foo'}.
-Alors, nous pouvons écrire \code{string('a', 'z', 4..12)} sans produire
+Alors, nous pouvons écrire \code{str\-ing('a', 'z', 4..12)} sans produire
 d'erreur, mais \code{string(true, 'z', 4..12)} produira une erreur car
 \code{true} est une valeur du domaine réaliste \code{Constboolean} et que le
 paramètre \code{codepointMin} n'accepte que les domaines \code{Constinteger} ou
@@ -187,7 +187,7 @@ paramètre \code{codepointMin} n'accepte que les domaines \code{Constinteger} ou
 Nous voyons que les deux premiers paramètres sont optionnels et que seul le
 dernier est obligatoire. Pour utiliser la valeur par défaut d'un paramètre, nous
 pouvons utiliser le mot-clé \code{default} (ou \code{…}). Ainsi, nous pouvons
-écrire~: \code{string(default, default, 7)} (ou \code{string(…, …, 7)}).
+écrire~: \code{string(de\-fault, default, 7)} (ou \code{string(…, …, 7)}).
 
 Notons également que les chaînes de caractères de Praspel (représentées par le
 domaine réaliste \code{Conststring}) sont au format Unicode (UTF-8), ce qui nous

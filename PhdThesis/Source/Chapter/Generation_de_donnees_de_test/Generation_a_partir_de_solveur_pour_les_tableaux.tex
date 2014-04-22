@@ -512,20 +512,29 @@ Maintenant, voyons comment opère l'algorithme AC3. Nous avons les mêmes
 variables, domaines et contraintes qu'au début de cet exemple. Le graphe du CSP
 est le suivant, il représente les liens par les contraintes entre les
 variables~:
-
+%
 \fig{6cm}{!}{AC3.tex}
+%
+D'après la figure~\ref{figure:data:ac3}, nous avons~:
+%
+\begin{itemize}
 
-D'après la figure~\ref{figure:data:ac3}, nous avons $\avar{Variables} = \{X, Y,
-Z\}$, $\avar{Domains} = \{X \rightarrow \{4, 5, 6, 7\}, Y \rightarrow \{4, 5, 6,
-8, 9\}, Z \rightarrow \{3, 5, 6, 7, 9\}\}$ et $\avar{Neighbours} = \{X
-\rightarrow \{Y\}, Y \rightarrow \{X, Z\}, Z \rightarrow \{Y\}\}$. Ensuite, dans
-l'algorithme $\akw{AC3}$, la variable $\avar{queue}$ contient au départ tous les
-arcs du graphe, soit $\avar{queue} = \{(X, Y), (Y, X), (Y, Z), (Z, Y)\}$. Nous
-commençons par traiter la première paire de $\avar{queue}$ après l'avoir
-supprimée. Nous traitons alors la contrainte impliquant $X$ et $Y$, soit $X = Y$
-mais nous n'allons travailler que sûr $X$.  Ainsi $\avar{Domains}(X) = \{4, 5,
-6\}$, $\avar{Domains}(Y)$ et $\avar{Domains}(Z)$ restant inchangés. La variable
-$X$ n'a pas d'arc vers d'autres variables, donc nous ne modifions pas
+\item $\avar{Variables} = \{X, Y, Z\}$~;
+
+\item $\avar{Domains} = \{X \rightarrow \{4, 5, 6, 7\}, Y \rightarrow \{4, 5, 6,
+8, 9\}, Z \rightarrow \{3, 5, 6, 7, 9\}\}$~;
+
+\item $\avar{Neighbours} = \{X \rightarrow \{Y\}, Y \rightarrow \{X, Z\}, Z \rightarrow \{Y\}\}$.
+
+\end{itemize}
+%
+Ensuite, dans l'algorithme $\akw{AC3}$, la variable $\avar{queue}$ contient au
+départ tous les arcs du graphe, soit $\avar{queue} = \{(X, Y), (Y, X), (Y, Z),
+(Z, Y)\}$. Nous commençons par traiter la première paire de $\avar{queue}$ après
+l'avoir supprimée. Nous traitons alors la contrainte impliquant $X$ et $Y$, soit
+$X = Y$ mais nous n'allons travailler que sûr $X$.  Ainsi $\avar{Domains}(X) =
+\{4, 5, 6\}$, $\avar{Domains}(Y)$ et $\avar{Domains}(Z)$ restant inchangés. La
+variable $X$ n'a pas d'arc vers d'autres variables, donc nous ne modifions pas
 $\avar{queue}$.  Ensuite, la paire suivante est $(Y, X)$, donc nous traitons la
 contrainte $X = Y$ mais cette fois-ci, nous modifions $Y$. Ainsi
 $\avar{Domains}(Y) = \{4, 5, 6\}$, $\avar{Domains}(X)$ et $\avar{Domains}(Z)$
