@@ -1,0 +1,258 @@
+\section{Étude cas~: approche basée sur une grammaire}
+\label{section:experimentation:grammar}
+
+Cette partie contient deux expérimentations menées dans
+l'article~\acitei{EnderlinDGB12}. La première a été conçue pour valider que le
+compilateur de compilateurs $LL(\star)$ et les algorithmes de générations de
+chaînes de caractères fonctionnent correctement. Cette expérimentation est une
+auto-validation. La seconde expérimentation montre l'utilisation de Praspel pour
+valider des applications Web.
+
+\subsection{Auto-validation du compilateur et des algorithmes}
+
+Notre première expérimentation vise à valider notre approche
+\inenglish{grammar-based testing}, soit à s'assurer que~: le compilateur de
+compilateurs $LL(\star)$ fonctionne correctement, c'est~à~idre qu'il accepte des
+données correctes et rejette des données incorrectes, et que les générateurs de
+chaînes de caractères fonctionnent correctement également, c'est~à~dire qu'ils
+ne génèrent pas de données incorrectes par rapport à une grammaire.
+
+Nous travaillons alors en deux étapes. Premièrement, nous générons des données
+automatiquement à partir de grammaires qui utilisent toutes les constructions du
+langage de description de grammaires PP. Deuxièmement, toutes ces données seront
+analysées par notre propre compilateur et d'autres compilateurs. L'objectif est
+de vérifier que~: les données correctes sont acceptées par tous les
+compilateurs, que les données incorrectes sont refusées par tous les
+compilateurs et que tous les compilateurs aient le même avis sur la validité des
+données.
+
+Nous considérons une grammaire de JSON et une grammaire simplifié des PCRE. Ce
+choix est motivé par le fait que nous travaillons dans le domaine du web et que
+ces grammaires sont implémentées au sein de langages Web, comme PHP ou
+Javascript, avec des API simples nous permettant de valider les données que nous
+allons générer.
+
+\begin{figure}
+
+\small
+
+\centering
+\begin{tikzbox}{boxxpstrings}{}
+\begin{tabular}{lc|c|c|c|c|c|c}
+
+\cline{1-8}
+
+\multicolumn{1}{|l|}{Grammaire / $n$} &
+  1                                   &
+  2                                   &
+  3                                   &
+  4                                   &
+  5                                   &
+  6                                   &
+  7 \tikzref{a}                       \\
+
+\cline{1-8}
+
+\multicolumn{1}{|l|}{JSON}            &
+  4                                   &
+  0                                   &
+  6                                   &
+  \phantom{0}4                        &
+  \phantom{0}30                       &
+  \phantom{0}20                       &
+  \phantom{0}180                      \\
+
+\cline{1-8}
+
+\multicolumn{1}{|l|}{PCRE}            &
+  1                                   &
+  4                                   &
+  9                                   &
+  36                                  &
+  117                                 &
+  420                                 &
+  1525 \tikzref{b}                    \\
+
+\cline{1-8}                           \\
+\cline{2-8}
+
+                                      &
+  \tikzref{c} 8                       &
+  9                                   &
+  10                                  &
+  11                                  &
+  12                                  &
+  13                                  &
+  \multicolumn{1}{c|}{14}             \\
+
+\cline{2-8}
+
+                                      &
+  \phantom{0}128                      &
+  \phantom{0}1156                     &
+  \phantom{00}848                     &
+  \phantom{00}8060                    &
+  \phantom{000}6256                   &
+  \phantom{00}59596                   &
+  \multicolumn{1}{c|}{\scshape to}    \\
+
+\cline{2-8}
+
+                                      &
+  \tikzref{d} 5608                    &
+  21021                               &
+  79528                               &
+  304201                              &
+  1173288                             &
+  4559049                             &
+  \multicolumn{1}{c|}{\scshape to}    \\
+
+\cline{2-8}
+
+\end{tabular}
+\end{tikzbox}
+%
+\begin{tikzannotation}
+  \node [xshift=-2mm, yshift=.5pt] (A) at (a.north -| boxxpstrings.east) {};
+  \node [yshift=-.5pt] (B) at (b.south -| A) {};
+  \draw[myzigzag] (A.center) -- (B.center);
+
+  \node [xshift=-2mm, yshift=.5pt] (C) at (c.north -| d) {};
+  \node [yshift=-.5pt] (D) at (d.south -| C) {};
+  \draw[myzigzag] (C.center) -- (D.center);
+\end{tikzannotation}
+
+\caption{\label{figure:experimentation:strings} Nombre de données de taille $n$
+pour chaque grammaire.}
+
+\end{figure}
+
+La figure~\ref{figure:experimentation:strings} montre un aperçu des tailles des
+grammaires en terme de nombres de données d'une certaine taille $n$ qui peuvent
+être produites. Dans la figure, {\scshape to} signie \inenglish{Time Out} et
+indique que le temps de génération des données a dépassé 10~minutes.
+
+Nous avons tout d'abord expérimenté avec la grammaire de JSON pour générer des
+descriptions d'objet JSON. Nous avons
+utilisé l'algorithme exhaustif borné et basé sur la couverture. À cause du
+nombre important de règles imbriqués, l'algorithme exhaustif borné n'est pas
+capable de produire des données de taille raisonnable couvrant toutes les règles
+(et ainsi générer des descriptions complexes d'objet) malgré que nous générons
+toutes les descriptions d'objets de taille $n \leq 0$ en un temps raisonnable
+(quelques minutes). L'algorithme basé sur la couverture produit moins de données
+mais il génère des descriptions complexes d'objet contenant jusqu'à 32~lexèmes.
+Il est intéressant de noter que toutes les règles sont couvertures avec très peu
+de données, ici 3~données en moyenne sont nécessaires pour couvrir toute la
+grammaire de JSON. Nous avons également remarqué que cet algorithme se comporte
+comme l'algorithme du postier Chinois dans le domaine du test de FSM
+(\inenglish{Finite State Machines}) et tend à produire une première longue donné
+qui couvre le maximum de règles, puis produit des données plus petites pour
+couvrir les quelques règles n'ayant pas été couvertes précédemment. Aussi,
+contrairement aux algorithmes précédents qui sont relativement lents
+(l'algorithme aléatoire uniforme nécessite une étape de dénombrement
+exponentielle et l'algorithme exhaustif borné est hautement combinatoire), cet
+algorithme est capable de produire des données complexes en quelques
+millisecondes. Ainsi, nous l'avons utilisé de manière répétée pour produire
+d'important ensemble de données dont la variété était assurée par les choix
+aléatoires dans la résolution des points des choix, comme expliquée dans la
+partie~\ref{subsection:data:coverage_based_generation}.
+
+Durant cette évaluation, nous avons trouvé une erreur dans deux de nos
+algorithmes qui étaient détectées par le compilateur. L'origine de l'erreur
+était une mauvaise gestion des caractères échappés, et par conséquent, des
+données incorrectes étaient produites à partir d'une grammaire valide.
+
+Pour évaluer notre compilateur de compilateurs, nous avons réinjecté ces données
+dans le compilateur. Nous n'avons relevé aucune erreur durant cette étape~:
+toutes les données générées par nos algorithmes ont été correctement analysées
+par notre propre compilateur. Additionnellement, nous avons validé ces données
+avec l'analyseur JSON de Gecko (créé par Mozilla et utilisé par exemple dans
+Firefox pour Javascript) et l'analyseur JSON de PHP. Toutes les données générées
+ont été correctement analysées par ces deux autres outils.
+
+Pour tester d'avantages, nous avons modifier la grammaire en y introduisant des
+erreurs, afin de générer des données incorrectes. Nous avons considéré des
+opérations simples de mutation de grammaires~\acite{Offutt06}, telles que~:
+remplacement des opérateurs de répétitions (\code{+} devient \code{*},
+modification des bornes minimales et maximales), suppression d'un lexème ou d'un
+appel à une sous-règle dans une règle, ajout de point de choix vers des règles
+existantes etc. Nous avons vérifié que les nouvelles données générées étaient
+soient acceptées soient refusées par notre compilateur et nous avons comparé les
+verdicts avec ceux des deux autres outils. Durant cette validation, nous avons
+trouvé une erreur dans notre compilateur qui considérait incorrectes des données
+correctes. La cause de cette erreur était une mauvaise gestion du
+\inenglish{backtracking}.
+
+Après correction de cette erreur, nous avons recommencé l'expérimentation en
+entier avec la grammaire des PCRE au lieu de JSON. Aucune erreur n'a été
+détectée, validant alors nos algorithmes et notre compilateur.
+
+\subsection{Validation d'applications Web}
+
+Nous avons aussi conçu une expérimentation qui utilise Praspel pour la
+validation d'applications Web. Nous avons sélectionné des projets d'étudiants du
+cours de «~Langage Web~», dans lequel les étudiants apprennent le langage PHP et
+l'utilisent pour générer des programmes écrits en HTML. En premier exercice, les
+étudiants devaient écrire des fonctions qui vérifient des données provenant de
+formulaires, incluant des adresses emails. Nous avons utilisé le domaine
+réaliste des adresses emails pour générer des données de tests pour ces
+fonctions. Aucune erreur n'a été détectée~: toutes les fonctions validaient
+correctement les adresses emails générées. Toutefois, nous avons suspecté que
+ces fonctions étaient en fait trop «~faibles~» et accepteraient des adresses
+emails incorrectes (par exemple, contenant deux symboles «~\code{@}~»). Pour
+détecter ces erreurs, nous avons décidé d'utiliser des mutations similaires à
+l'expérimentation précédente, mais en utilisant une grammaire pour les adresses
+emails, ce afin de générer des adresses invalides. Nous avons comparé les
+résultats de toutes ces fonctions avec notre propre fonction qui utilise le
+domaine réalistes initial validant des adresses emails correctes. Plusieurs
+erreurs ont été détectées, notre intuition était fondée.
+
+En second exercice, les étudiants devaient générer des blocs de code HTML qui
+seraient par la suite assemblés. Le SUT est une fonction, existant sous
+7~versions différentes et faite par plusieurs étudiants. Cette fonction est
+utilisée pour sélectionner une date, représentée par trois balises
+\code{select}, respectivement pour sélectionner le jour, le mois et l'année. Les
+paramètres de cette fonction sont trois entiers représentants les valeurs par
+défaut de ces trois balises. La spécification informelle de cette fonction est
+la suivante~:
+%
+\begin{itemize}
+
+\item le code produit doit contenir trois balises \code{select} en une ligne~;
+
+\item le code HTML produit doit être «~protégé~» (tous les accents doivent être
+remplacés par des entités XML)~;
+
+\item les jours vont de 1 à 31, les mois de 1 à 12 et les années de 2011 à
+1911~;
+
+\item uniquement une option (un élément d'une balise \code{select}) peut être
+sélectionnée par défaut.
+
+\end{itemize}
+%
+Nous avons conçu plusieurs prédicats pour vérifier la relation de conformité
+basés sur plusieurs degrés de granularité.
+
+Le premier niveau vérifie que le code HTML est bien structuré. Pour y arriver,
+nous avons utilisé une grammaire simplifiée du langage XML, vérifiant que toutes
+les balises ouvertes sont correctement fermées et que les attributs sont
+syntaxiquement correctes. Tous les étudiants ont passé ce niveau.
+
+Le deuxième niveau vérifie que le code HTML généré contient trois balises
+\code{select} syntaxiquement correctes. Pour y arriver, nous avons utilisé une
+grammaire d'un sous-ensemble du langage HTML. 4~étudiants n'ont pas passé ce
+niveau.
+
+Finalement, le troisième niveau ajoute un visiteur dédié qui vérifie le contenu
+du code généré~: les valeurs des options pour chaque balise \code{select},
+l'existence d'exactement une option sélectionnée par défaut par balise etc.
+Seulement 2~des étudiants restants ont passé ce niveau.
+
+En plus de nous montrer que seulement 2~étudiants sur 7~sont capables de suivre
+des spécifications simples, cette expérimentation nous a montré que Praspel est
+très commode pour tester des applications. L'approche par les grammaires est
+utile pour spécifier le format attendu de code HTML. En plus, la flexibilité
+offerte par les visiteurs permet de valider des cas de tests plus complexes, en
+vérifiant par exemple des contraintes structurelles qui ne pourraient pas être
+exprimées au sein d'une grammaire.
