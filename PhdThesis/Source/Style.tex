@@ -1,0 +1,124 @@
+\linespread{1.1}
+\everymath{\displaystyle}
+
+% Euler (ASM font)
+\DeclareSymbolFont{symbolsPX}{OMS}{pxsy}{m}{n}
+\SetSymbolFont{symbolsPX}{bold}{OMS}{pxsy}{bx}{n}
+\DeclareSymbolFont{operatorsPX}{OT1}{pxr}{m}{n}
+\SetSymbolFont{operatorsPX}{bold}{OT1}{pxr}{bx}{n}
+\DeclareMathSymbol{\forall}{\mathord}{symbolsPX}{56}
+\DeclareMathSymbol{\exists}{\mathord}{symbolsPX}{57}
+\DeclareMathSymbol{\in}{\mathrel}{symbolsPX}{50}
+\DeclareMathSymbol{\circ}{\mathbin}{symbolsPX}{14}
+\DeclareMathSymbol{\wedge}{\mathbin}{symbolsPX}{94}
+\DeclareMathSymbol{\vee}{\mathbin}{symbolsPX}{95}
+\DeclareMathSymbol{\vdash}{\mathrel}{symbolsPX}{96}
+\let\land=\wedge
+\let\lor=\vee
+\DeclareMathSymbol{=}{\mathrel}{operators}{61}
+\DeclareMathSymbol{\equiv}{\mathrel}{symbolsPX}{17}
+\DeclareMathDelimiter\llbracket{\mathopen}{stmry}{"4A}{stmry}{"71}
+\DeclareMathDelimiter\rrbracket{\mathclose}{stmry}{"4B}{stmry}{"79}
+\DeclareMathSymbol{\subseteq}{\mathrel}{symbolsPX}{18}
+\DeclareMathSymbol{\supseteq}{\mathrel}{symbolsPX}{19}
+\DeclareMathSymbol{\neg}{\mathord}{symbolsPX}{58}
+  \let\lnot=\neg
+\DeclareMathSymbol{\subset}{\mathrel}{symbolsPX}{26}
+\DeclareMathSymbol{\supset}{\mathrel}{symbolsPX}{27}
+\DeclareMathSymbol{\top}{\mathord}{symbolsPX}{62}
+\DeclareMathSymbol{\bot}{\mathord}{symbolsPX}{63}
+%% FOURIER MATHBB
+\DeclareFontFamily{U}{futm}{}
+\DeclareFontShape{U}{futm}{m}{n}{
+  <-> s * [.92] fourier-bb
+  }{}
+\DeclareSymbolFont{Ufutm}{U}{futm}{m}{n}
+\DeclareSymbolFontAlphabet{\mathbb}{Ufutm}
+
+% Solarized.
+\definecolor{base03}{RGB}{0,43,54}
+\definecolor{base02}{RGB}{7,54,66}
+\definecolor{base01}{RGB}{88,110,117}
+\definecolor{base00}{RGB}{101,123,131}
+\definecolor{base0}{RGB}{131,148,150}
+\definecolor{base1}{RGB}{147,161,161}
+\definecolor{base2}{RGB}{238,232,213}
+\definecolor{base3}{RGB}{253,246,227}
+\definecolor{syellow}{RGB}{181,137, 0}
+\definecolor{sorange}{RGB}{203,75,22}
+\definecolor{sred}{RGB}{220,50,47}
+\definecolor{smagenta}{RGB}{211,54,130}
+\definecolor{sviolet}{RGB}{108,113,196}
+\definecolor{sblue}{RGB}{38,139,210}
+\definecolor{scyan}{RGB}{42,161,152}
+\definecolor{sgreen}{RGB}{133,153,0}
+\color{base03}
+
+% Hyperref.
+\hypersetup{
+    colorlinks    = true,
+    anchorcolor   = sgreen,
+    urlcolor      = sblue,
+    linkcolor     = syellow,
+    citecolor     = sgreen,
+    backref       = true,
+    pagebackref   = true,
+    hyperindex    = true,
+    breaklinks    = true,
+    bookmarks     = true,
+    bookmarksopen = true,
+    pdftex
+}
+
+% Headers and footers.
+\fancyhead{}
+\fancyfoot{}
+\addtolength{\headheight}{\baselineskip}
+\renewcommand{\headrulewidth}{.1pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancyhead[LE, RO]{\textcolor{base0}{\thepage}}
+\fancyhead[RE]{\textcolor{base0}{\nouppercase{\leftmark}}}
+\fancyhead[LO]{\textcolor{base0}{\nouppercase{\rightmark}}}
+\pagestyle{fancy}
+
+% Tikz.
+\tikzstyle{rectangle}=[
+    draw=black,
+    thick,
+    text centered,
+    text width=2cm
+]
+\tikzstyle{arrow}=[
+    ->,
+    >=latex,
+    shorten >=1pt,
+    thick,
+    draw=sred
+]
+\tikzstyle{myoverlay}=[
+    overlay,
+    remember picture
+]
+\tikzstyle{mybrace}=[
+    thick,
+    decorate,
+    decoration={brace, amplitude=.8em}
+]
+\tikzstyle{mybracetext}=[
+    right,
+    xshift=1.2em
+]
+\tikzstyle{mywavyarrow}=[
+    arrow,
+    shorten >=0pt,
+    decorate,
+    decoration={snake, amplitude=.4mm, segment length=2mm, post length=2mm}
+]
+\tikzstyle{myzigzag}=[
+    decorate,
+    decoration={zigzag, mirror, segment length=5.5pt, amplitude=.8pt}
+]
+
+% Misc.
+\definecolor{light-gray}{gray}{0.65}
+\newcommand{\ingray}[1]{\textcolor{light-gray}{#1}}

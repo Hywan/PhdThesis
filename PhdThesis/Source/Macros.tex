@@ -43,7 +43,7 @@
 }
 \newcommand{\circled}[1]{
     \protect\tikz [baseline=(char.base)] {
-        \protect\node [shape=circle, draw, thick, inner sep=2pt, minimum height=17pt] (char) {\scriptsize $#1$};
+        \protect\node [shape=circle, draw, thick, inner sep=2pt, minimum height=1.5em] (char) {\scriptsize $#1$};
     }
 }
 
@@ -137,63 +137,13 @@
 \newcommand{\inlatin}[1]{\foreignlanguage{latin}{\em #1}}
 \newcommand{\initalian}[1]{\foreignlanguage{italian}{\em #1}}
 
-% Headers.
-\fancyhead{}
-\fancyfoot{}
-\addtolength{\headheight}{\baselineskip}
-\renewcommand{\headrulewidth}{.1pt}
-\renewcommand{\footrulewidth}{0pt}
-\fancyhead[LE, RO]{\thepage}
-\fancyhead[RE]{\nouppercase{\leftmark}}
-\fancyhead[LO]{\nouppercase{\rightmark}}
-\pagestyle{fancy}
-
 % Bibliography
 \newcommand{\acite}[1]{\citep{#1}}        % normal citation
 \newcommand{\acitep}[1]{\citealp{#1}}     % plain citation
 \newcommand{\acitei}[1]{\citet{#1}}       % inline citation
 \newcommand{\acitea}[1]{\citeauthor*{#1}} % only authors.
 
-% Color
-\definecolor{light-gray}{gray}{0.65}
-\newcommand{\ingray}[1]{\textcolor{light-gray}{#1}}
-
 % Tikz
-\tikzstyle{rectangle}=[
-    draw=black,
-    thick,
-    text centered,
-    text width=2cm
-]
-\tikzstyle{arrow}=[
-    ->,
-    >=latex,
-    shorten >=1pt,
-    thick
-]
-\tikzstyle{myoverlay}=[
-    overlay,
-    remember picture
-]
-\tikzstyle{mybrace}=[
-    thick,
-    decorate,
-    decoration={brace, amplitude=.8em}
-]
-\tikzstyle{mybracetext}=[
-    right,
-    xshift=1.2em
-]
-\tikzstyle{mywavyarrow}=[
-    arrow,
-    shorten >=0pt,
-    decorate,
-    decoration={snake, amplitude=.4mm, segment length=2mm, post length=2mm}
-]
-\tikzstyle{myzigzag}=[
-    decorate,
-    decoration={zigzag, mirror, segment length=5.5pt, amplitude=.8pt}
-]
 \newcommand{\tikzref}[1]{\tikz[myoverlay, anchor=base, baseline] {
     \node (#1) {\phantom{x}};
 }}
