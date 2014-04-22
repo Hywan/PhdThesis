@@ -43,7 +43,7 @@
 }
 \newcommand{\circled}[1]{
     \protect\tikz [baseline=(char.base)] {
-        \protect\node [shape=circle, draw, thick, inner sep=2pt, minimum height=1.2em] (char) {\scriptsize $#1$};
+        \protect\node [shape=circle, draw, thick, inner sep=2pt, minimum height=17pt] (char) {\scriptsize $#1$};
     }
 }
 
@@ -192,7 +192,7 @@
 ]
 \tikzstyle{myzigzag}=[
     decorate,
-    decoration={zigzag, mirror, segment length=12pt, amplitude=1.1pt}
+    decoration={zigzag, mirror, segment length=5.5pt, amplitude=.8pt}
 ]
 \newcommand{\tikzref}[1]{\tikz[myoverlay, anchor=base, baseline] {
     \node (#1) {\phantom{x}};
