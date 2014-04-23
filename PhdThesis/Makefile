@@ -31,8 +31,8 @@ dots:
 		echo -n `basename $$i`'…'; \
 		dot2tex -fpgf -tmath --codeonly --autosize $$i \
 			| sed -e 's/pgfsetcolor{black}/pgfsetcolor{dot}/' \
-			      -e 's/pgfsetstrokecolor{strokecol}/pgfsetstrokecolor{dotstroke}/' \
-			      -e '/definecolor/ d' \
+				  -e 's/pgfsetstrokecolor{strokecol}/pgfsetstrokecolor{dotstroke}/' \
+				  -e '/definecolor/ d' \
 			> Dist/Figure/`basename $${i%.dot}.tex`; \
 		echo -e '\b, ok'; \
 	done
@@ -40,8 +40,8 @@ dots:
 dot:
 	@dot2tex -fpgf -tmath --codeonly --autosize $(FILE) \
 		| sed -e 's/pgfsetcolor{black}/pgfsetcolor{dot}/' \
-		      -e 's/pgfsetstrokecolor{strokecol}/pgfsetstrokecolor{dotstroke}/' \
-		      -e '/definecolor/ d' \
+			  -e 's/pgfsetstrokecolor{strokecol}/pgfsetstrokecolor{dotstroke}/' \
+			  -e '/definecolor/ d' \
 		> Dist/Figure/`basename $(FILE:%.dot=%.tex)`;
 
 umls: | External/plantuml.jar
@@ -49,13 +49,20 @@ umls: | External/plantuml.jar
 		echo -n `basename $$i`'…'; \
 		cat $$i \
 			| java -jar External/plantuml.jar \
-				   -S"monochrome=true" \
 				   -S"defaultFontName=CMU Serif" \
-				   -S"classFontName=CMU Typewriter Text" \
+				   -S"classArrowColor=#b58900" \
 				   -S"classAttributeFontName=CMU Typewriter Text" \
+				   -S"classBackgroundColor=#fdf6e3" \
+				   -S"classBorderColor=#b58900" \
+				   -S"classFontColor=#002b36" \
+				   -S"classFontName=CMU Typewriter Text" \
+				   -S"packageBackgroundColor=#fdf6e3" \
+				   -S"packageBorderColor=#657b83" \
 				   -S"packageFontName=CMU Typewriter Text" \
-				   -S"packageBackgroundColor=#FFFFFF" \
-				   -S"packageBorderColor=#CCCCCC" \
+				   -S"stereotypeABackgroundColor=#eee8d5" \
+				   -S"stereotypeCBackgroundColor=#eee8d5" \
+				   -S"stereotypeEBackgroundColor=#eee8d5" \
+				   -S"stereotypeIBackgroundColor=#eee8d5" \
 				   -pipe \
 				   -teps \
 			| epstopdf --filter --outfile=Dist/Figure/`basename $${i%.uml}.pdf`; \
@@ -65,13 +72,20 @@ umls: | External/plantuml.jar
 uml: | External/plantuml.jar
 	@cat $(FILE) \
 		| java -jar External/plantuml.jar \
-			   -S"monochrome=true" \
 			   -S"defaultFontName=CMU Serif" \
-			   -S"classFontName=CMU Typewriter Text" \
+			   -S"classArrowColor=#b58900" \
 			   -S"classAttributeFontName=CMU Typewriter Text" \
+			   -S"classBackgroundColor=#fdf6e3" \
+			   -S"classBorderColor=#b58900" \
+			   -S"classFontColor=#002b36" \
+			   -S"classFontName=CMU Typewriter Text" \
+			   -S"packageBackgroundColor=#fdf6e3" \
+			   -S"packageBorderColor=#657b83" \
 			   -S"packageFontName=CMU Typewriter Text" \
-			   -S"packageBackgroundColor=#FFFFFF" \
-			   -S"packageBorderColor=#CCCCCC" \
+			   -S"stereotypeABackgroundColor=#eee8d5" \
+			   -S"stereotypeCBackgroundColor=#eee8d5" \
+			   -S"stereotypeEBackgroundColor=#eee8d5" \
+			   -S"stereotypeIBackgroundColor=#eee8d5" \
 			   -pipe \
 			   -teps \
 		| epstopdf --filter --outfile=Dist/Figure/`basename $(FILE:%.uml=%.pdf)`;
