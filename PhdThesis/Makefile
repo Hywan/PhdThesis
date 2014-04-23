@@ -29,13 +29,19 @@ figures: dots umls
 dots:
 	@for i in `find Source/Figure -type f -name '*.dot'`; do \
 		echo -n `basename $$i`'…'; \
-		dot2tex -tmath --codeonly --autosize $$i \
+		dot2tex -fpgf -tmath --codeonly --autosize $$i \
+			| sed -e 's/pgfsetcolor{black}/pgfsetcolor{dot}/' \
+			      -e 's/pgfsetstrokecolor{strokecol}/pgfsetstrokecolor{dotstroke}/' \
+			      -e '/definecolor/ d' \
 			> Dist/Figure/`basename $${i%.dot}.tex`; \
 		echo -e '\b, ok'; \
 	done
 
 dot:
-	@dot2tex -tmath --codeonly --autosize $(FILE) \
+	@dot2tex -fpgf -tmath --codeonly --autosize $(FILE) \
+		| sed -e 's/pgfsetcolor{black}/pgfsetcolor{dot}/' \
+		      -e 's/pgfsetstrokecolor{strokecol}/pgfsetstrokecolor{dotstroke}/' \
+		      -e '/definecolor/ d' \
 		> Dist/Figure/`basename $(FILE:%.dot=%.tex)`;
 
 umls: | External/plantuml.jar
