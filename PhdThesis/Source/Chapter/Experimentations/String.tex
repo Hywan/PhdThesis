@@ -115,11 +115,11 @@ allons générer.
 \begin{tikzannotation}
   \node [xshift=-2mm, yshift=.5pt] (A) at (a.north -| boxxpstrings.east) {};
   \node [yshift=-.5pt] (B) at (b.south -| A) {};
-  \draw[myzigzag] (A.center) -- (B.center);
+  \draw[myzigzag, draw=foreground] (A.center) -- (B.center);
 
   \node [xshift=-2mm, yshift=.5pt] (C) at (c.north -| d) {};
   \node [yshift=-.5pt] (D) at (d.south -| C) {};
-  \draw[myzigzag] (C.center) -- (D.center);
+  \draw[myzigzag, draw=foreground] (C.center) -- (D.center);
 \end{tikzannotation}
 
 \caption{\label{figure:experimentation:strings} Nombre de données de taille $n$
