@@ -2,15 +2,13 @@
 \begin{scope}
   \pgfsetstrokecolor{black}
   \pgfsetdash{{3pt}{3pt}}{0pt}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw [dashed] (82bp,8bp) -- (82bp,116bp) -- (342bp,116bp) -- (342bp,8bp) -- cycle;
 \end{scope}
-  \pgfsetcolor{black}
+  \pgfsetcolor{dot}
   % Edge: n_M -> v_2
   \draw [->] (333.58bp,89bp) .. controls (346.1bp,89bp) and (363.16bp,89bp)  .. (387.76bp,89bp);
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw (361bp,98.5bp) node {$I$};
   % Edge: e_M -> v_3
   \draw [->] (333.16bp,34bp) .. controls (345.72bp,34bp) and (363.02bp,34bp)  .. (387.89bp,34bp);
@@ -26,49 +24,42 @@
   \draw [->,dashed] (126.13bp,62bp) .. controls (133.9bp,62bp) and (143.57bp,62bp)  .. (163.59bp,62bp);
   % Node: i_M
 \begin{scope}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw (108bp,62bp) ellipse (18bp and 18bp);
   \draw (108bp,62bp) node {$i_M$};
 \end{scope}
   % Node: v_1
 \begin{scope}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw [state,initial] (18bp,62bp) ellipse (18bp and 18bp);
   \draw (18bp,62bp) node {$v_1$};
 \end{scope}
   % Node: v_2
 \begin{scope}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw [state,accepting] (406bp,89bp) ellipse (18bp and 18bp);
   \draw (406bp,89bp) node {$v_2$};
 \end{scope}
   % Node: v_3
 \begin{scope}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw [state,accepting] (424bp,52bp) -- (388bp,52bp) -- (388bp,16bp) -- (424bp,16bp) -- cycle;
   \draw (406bp,34bp) node {$v_3$};
 \end{scope}
   % Node: n_M
 \begin{scope}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw (315bp,89bp) ellipse (19bp and 19bp);
   \draw (315bp,89bp) node {$n_M$};
 \end{scope}
   % Node: hidden
 \begin{scope}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw (211bp,62bp) node {$\dotso$};
 \end{scope}
   % Node: e_M
 \begin{scope}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw (315bp,34bp) ellipse (18bp and 18bp);
   \draw (315bp,34bp) node {$e_M$};
 \end{scope}

@@ -1,9 +1,8 @@
 %%
-\pgfsetcolor{black}
+\pgfsetcolor{dot}
   % Edge: v_5 -> v_6
   \draw [->] (334.42bp,72bp) .. controls (349.62bp,72bp) and (371.93bp,72bp)  .. (399.78bp,72bp);
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw (367bp,83bp) node {$T_{E_\alpha}$};
   % Edge: v_3 -> v_7
   \draw [->] (222.4bp,60.745bp) .. controls (228.69bp,55.806bp) and (236.46bp,50.192bp)  .. (244bp,46bp) .. controls (258.21bp,38.101bp) and (275.11bp,31.34bp)  .. (298.66bp,23.072bp);
@@ -22,51 +21,44 @@
   \draw (159bp,82.5bp) node {$P_\alpha$};
   % Node: v_4
 \begin{scope}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw [state,accepting] (316bp,126bp) ellipse (18bp and 18bp);
   \draw (316bp,126bp) node {$v_4$};
 \end{scope}
   % Node: v_5
 \begin{scope}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw (316bp,72bp) ellipse (18bp and 18bp);
   \draw (316bp,72bp) node {$v_5$};
 \end{scope}
   % Node: v_6
 \begin{scope}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw [state,accepting] (436bp,90bp) -- (400bp,90bp) -- (400bp,54bp) -- (436bp,54bp) -- cycle;
   \draw (418bp,72bp) node {$v_6$};
 \end{scope}
   % Node: v_7
 \begin{scope}
   \pgfsetdash{{3pt}{3pt}}{0pt}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw [state,dashed] (316bp,18bp) ellipse (18bp and 18bp);
   \draw (316bp,18bp) node {$v_7$};
 \end{scope}
   % Node: v_1
 \begin{scope}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw [state,initial] (18bp,72bp) ellipse (18bp and 18bp);
   \draw (18bp,72bp) node {$v_1$};
 \end{scope}
   % Node: v_2
 \begin{scope}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw [state,accepting] (110bp,72bp) ellipse (18bp and 18bp);
   \draw (110bp,72bp) node {$v_2$};
 \end{scope}
   % Node: v_3
 \begin{scope}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw (208bp,72bp) ellipse (18bp and 18bp);
   \draw (208bp,72bp) node {$v_3$};
 \end{scope}

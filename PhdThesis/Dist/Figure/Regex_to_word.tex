@@ -1,9 +1,8 @@
 %%
-\pgfsetcolor{black}
+\pgfsetcolor{dot}
   % Edge: ast -> word
   \draw [->] (208.12bp,77bp) .. controls (233.23bp,77bp) and (271.41bp,77bp)  .. (309.75bp,77bp);
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw (261bp,87.5bp) node {isotropique};
   % Edge: regexX -> astX
   \draw [->] (56.345bp,20bp) .. controls (79.754bp,20bp) and (113.76bp,20bp)  .. (150.27bp,20bp);
@@ -14,41 +13,35 @@
   \draw (103bp,87.5bp) node {analyseurs};
   % Node: regex
 \begin{scope}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw [state] (28bp,77bp) ellipse (27bp and 18bp);
   \draw (28bp,77bp) node {PCRE};
 \end{scope}
   % Node: word
 \begin{scope}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw [state,accepting] (337bp,77bp) ellipse (27bp and 18bp);
   \draw (337bp,77bp) node {mot};
 \end{scope}
   % Node: ast
 \begin{scope}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw [state] (181bp,77bp) ellipse (27bp and 18bp);
   \draw (181bp,77bp) node {AST};
 \end{scope}
   % Node: astX
 \begin{scope}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw (181bp,20bp) node {\begin{tikzpicture}[node distance=2cm] \node [state, scale=.3] (foo1) {}; \node [state, scale=.3, below left of=foo1] (foo2) {}; \node [state, scale=.3, below right of=foo1] (foo3) {}; \node [state, scale=.3, below left of=foo3] (foo4) {}; \node [state, scale=.3, below right of=foo3] (foo5) {}; \draw [thick] (foo1) -- (foo2) (foo1) -- (foo3) (foo3) -- (foo4) (foo3) -- (foo5); \end{tikzpicture}};
 \end{scope}
   % Node: regexX
 \begin{scope}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw (28bp,20bp) node {\code{\bslash{}w[3-7]+}};
 \end{scope}
   % Node: wordX
 \begin{scope}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw (337bp,20bp) node {\code{f377}};
 \end{scope}
 %

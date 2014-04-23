@@ -1,9 +1,8 @@
 %%
-\pgfsetcolor{black}
+\pgfsetcolor{dot}
   % Edge: grammar -> sequence
   \draw [->] (69.579bp,61bp) .. controls (94.99bp,61bp) and (130.99bp,61bp)  .. (173.83bp,61bp);
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw (117bp,71.5bp) node {génération};
   % Edge: sequence -> result
   \draw [->] (318.05bp,61bp) .. controls (354.6bp,61bp) and (397.61bp,61bp)  .. (437.78bp,61bp);
@@ -14,41 +13,35 @@
   \draw [->] (62.047bp,18bp) .. controls (85.253bp,18bp) and (120.62bp,18bp)  .. (164.41bp,18bp);
   % Node: grammar
 \begin{scope}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw [state] (35bp,61bp) ellipse (35bp and 18bp);
   \draw (35bp,61bp) node {grammaire};
 \end{scope}
   % Node: resultX
 \begin{scope}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw (465bp,18bp) node {\code{7 + 42}};
 \end{scope}
   % Node: sequence
 \begin{scope}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw [state] (246bp,61bp) ellipse (72bp and 18bp);
   \draw (246bp,61bp) node {séquence de lexèmes};
 \end{scope}
   % Node: result
 \begin{scope}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw [state,accepting] (465bp,61bp) ellipse (27bp and 18bp);
   \draw (465bp,61bp) node {mot};
 \end{scope}
   % Node: grammarX
 \begin{scope}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw (35bp,18bp) node {PP};
 \end{scope}
   % Node: sequenceX
 \begin{scope}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw (246bp,18bp) node {$[[\code{7} \mapsto \dots], [\code{+} \mapsto \dots], [\code{42} \mapsto \dots]]$};
 \end{scope}
 %

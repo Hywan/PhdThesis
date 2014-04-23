@@ -1,5 +1,5 @@
 %%
-\pgfsetcolor{black}
+\pgfsetcolor{dot}
   % Edge: spc -> sc
   \draw [->] (229.98bp,57.831bp) .. controls (220.64bp,48.914bp) and (209.45bp,38.221bp)  .. (192.72bp,22.238bp);
   % Edge: ac -> spc
@@ -14,38 +14,32 @@
   \draw [->] (133.3bp,57.831bp) .. controls (142.88bp,48.823bp) and (154.37bp,38.005bp)  .. (171.12bp,22.238bp);
   % Node: ac
 \begin{scope}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw (181bp,143bp) node {Couverture \inenglish{All}-$G$};
 \end{scope}
   % Node: dc
 \begin{scope}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw (56bp,11bp) node {Couverture Domaine};
 \end{scope}
   % Node: pc
 \begin{scope}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw (307bp,11bp) node {Couverture Prédicat};
 \end{scope}
   % Node: sdc
 \begin{scope}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw (114bp,77bp) node {\begin{tabular}{c}Couverture \\ Clause~+~ Domaine\end{tabular}};
 \end{scope}
   % Node: sc
 \begin{scope}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw (182bp,11bp) node {Couverture Clause};
 \end{scope}
   % Node: spc
 \begin{scope}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw (249bp,77bp) node {\begin{tabular}{c}Couverture \\ Clause~+~Prédicat\end{tabular}};
 \end{scope}
 %

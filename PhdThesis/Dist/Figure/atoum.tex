@@ -1,39 +1,34 @@
 %%
-\pgfsetcolor{black}
+\pgfsetcolor{dot}
   % Edge: assertions -> atoum
   \draw [->] (81.02bp,26.692bp) .. controls (92.497bp,29.386bp) and (105.23bp,32.375bp)  .. (127.08bp,37.505bp);
   % Edge: SUT -> atoum
   \draw [->] (81.02bp,63.308bp) .. controls (92.497bp,60.614bp) and (105.23bp,57.625bp)  .. (127.08bp,52.495bp);
   % Edge: atoum -> reports
   \draw [->] (196.11bp,45bp) .. controls (219.56bp,45bp) and (250.61bp,45bp)  .. (285.97bp,45bp);
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw (241bp,54.5bp) node {exécution};
   % Node: atoum
 \begin{scope}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw [state] (160bp,45bp) ellipse (36bp and 18bp);
   \draw (160bp,45bp) node {atoum};
 \end{scope}
   % Node: SUT
 \begin{scope}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw [state] (43bp,72bp) ellipse (43bp and 18bp);
   \draw (43bp,72bp) node {SUT};
 \end{scope}
   % Node: assertions
 \begin{scope}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw [state] (43bp,18bp) ellipse (43bp and 18bp);
   \draw (43bp,18bp) node {assertions};
 \end{scope}
   % Node: reports
 \begin{scope}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw [accepting] (322bp,45bp) ellipse (36bp and 18bp);
   \draw (322bp,45bp) node {rapports};
 \end{scope}

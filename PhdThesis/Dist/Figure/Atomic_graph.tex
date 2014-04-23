@@ -1,9 +1,8 @@
 %%
-\pgfsetcolor{black}
+\pgfsetcolor{dot}
   % Edge: v_1 -> v_2
   \draw [->] (36.353bp,72bp) .. controls (49.177bp,72bp) and (66.892bp,72bp)  .. (91.7bp,72bp);
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw (64bp,81.5bp) node {$P$};
   % Edge: v_4 -> v_5
   \draw [->] (232.16bp,72bp) .. controls (246.5bp,72bp) and (267.19bp,72bp)  .. (293.99bp,72bp);
@@ -19,44 +18,38 @@
   \draw (162bp,82.5bp) node {$T_C$};
   % Node: v_4
 \begin{scope}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw (214bp,72bp) ellipse (18bp and 18bp);
   \draw (214bp,72bp) node {$v_4$};
 \end{scope}
   % Node: v_5
 \begin{scope}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw [state,accepting] (330bp,90bp) -- (294bp,90bp) -- (294bp,54bp) -- (330bp,54bp) -- cycle;
   \draw (312bp,72bp) node {$v_5$};
 \end{scope}
   % Node: v_6
 \begin{scope}
   \pgfsetdash{{3pt}{3pt}}{0pt}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw [state,dashed] (214bp,18bp) ellipse (18bp and 18bp);
   \draw (214bp,18bp) node {$v_6$};
 \end{scope}
   % Node: v_1
 \begin{scope}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw [state,initial] (18bp,72bp) ellipse (18bp and 18bp);
   \draw (18bp,72bp) node {$v_1$};
 \end{scope}
   % Node: v_2
 \begin{scope}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw (110bp,72bp) ellipse (18bp and 18bp);
   \draw (110bp,72bp) node {$v_2$};
 \end{scope}
   % Node: v_3
 \begin{scope}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw [state,accepting] (214bp,126bp) ellipse (18bp and 18bp);
   \draw (214bp,126bp) node {$v_3$};
 \end{scope}

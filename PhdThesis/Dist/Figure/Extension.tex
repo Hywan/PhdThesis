@@ -1,11 +1,10 @@
 %%
-\pgfsetcolor{black}
+\pgfsetcolor{dot}
   % Edge: SUT -> extension
   \draw [->] (375bp,143.86bp) .. controls (375bp,135.27bp) and (375bp,126.68bp)  .. (375bp,108bp);
   % Edge: suite -> extension
   \draw [->] (246.02bp,90bp) .. controls (268.91bp,90bp) and (297.43bp,90bp)  .. (331.87bp,90bp);
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw (289bp,99.5bp) node {sélection};
   % Edge: data -> extension
   \draw [->] (375bp,36bp) .. controls (375bp,44.591bp) and (375bp,53.183bp)  .. (375bp,71.859bp);
@@ -16,43 +15,37 @@
   \draw (463bp,99.5bp) node {exécution};
   % Node: extension
 \begin{scope}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw [state] (375bp,90bp) ellipse (43bp and 18bp);
   \draw (375bp,90bp) node {atoum};
 \end{scope}
   % Node: reports
 \begin{scope}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw [accepting] (551bp,90bp) ellipse (43bp and 18bp);
   \draw (551bp,90bp) node {rapports};
 \end{scope}
   % Node: SUT
 \begin{scope}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw [state] (375bp,162bp) ellipse (43bp and 18bp);
   \draw (375bp,162bp) node {\tikzref{boxextsut}SUT};
 \end{scope}
   % Node: suite
 \begin{scope}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw [state] (203bp,90bp) ellipse (43bp and 18bp);
   \draw (203bp,90bp) node {suite de tests};
 \end{scope}
   % Node: model
 \begin{scope}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw [state] (61bp,90bp) ellipse (61bp and 18bp);
   \draw (61bp,90bp) node {\tikzref{boxextom}modèle objet};
 \end{scope}
   % Node: data
 \begin{scope}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw [state] (375bp,18bp) ellipse (43bp and 18bp);
   \draw (375bp,18bp) node {données};
 \end{scope}

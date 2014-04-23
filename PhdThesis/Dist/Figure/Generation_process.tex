@@ -1,9 +1,8 @@
 %%
-\pgfsetcolor{black}
+\pgfsetcolor{dot}
   % Edge: predicate -> sample
   \draw [->] (120.21bp,128.3bp) .. controls (120.93bp,141.11bp) and (121.91bp,158.82bp)  .. (123.29bp,183.65bp);
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw (145.25bp,156bp) node {invalide};
   % Edge: predicate -> pred
   \draw [->] (126.28bp,92.049bp) .. controls (131.66bp,80.444bp) and (139.91bp,65.191bp)  .. (150.25bp,54bp) .. controls (155.38bp,48.45bp) and (161.55bp,43.335bp)  .. (176.35bp,33.076bp);
@@ -28,36 +27,31 @@
   \draw (247.75bp,250bp) node {$V = \emptyset$};
   % Node: predicate
 \begin{scope}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw [state] (119bp,110bp) ellipse (47bp and 18bp);
   \draw (119.25bp,110bp) node {\code{predicate}};
 \end{scope}
   % Node: pred
 \begin{scope}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw [state] (202bp,18bp) ellipse (47bp and 18bp);
   \draw (202.25bp,18bp) node {\apred{p}};
 \end{scope}
   % Node: sample
 \begin{scope}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw [state] (124bp,202bp) ellipse (47bp and 18bp);
   \draw (124.25bp,202bp) node {\code{sample}};
 \end{scope}
   % Node: variable
 \begin{scope}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw [state] (228bp,298bp) ellipse (47bp and 18bp);
   \draw (228.25bp,298bp) node {\code{pick}};
 \end{scope}
   % Node: out
 \begin{scope}
-  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
-  \pgfsetstrokecolor{strokecol}
+  \pgfsetstrokecolor{dotstroke}
   \draw [state,accepting] (228bp,202bp) ellipse (18bp and 18bp);
   \draw (228.25bp,202bp) node {$ $};
 \end{scope}
