@@ -36,14 +36,14 @@
 \DeclareSymbolFontAlphabet{\mathbb}{Ufutm}
 
 % Solarized.
-\definecolor{base03}{RGB}{0,43,54}
-\definecolor{base02}{RGB}{7,54,66}
-\definecolor{base01}{RGB}{88,110,117}
-\definecolor{base00}{RGB}{101,123,131}
-\definecolor{base0}{RGB}{131,148,150}
-\definecolor{base1}{RGB}{147,161,161}
-\definecolor{base2}{RGB}{238,232,213}
-\definecolor{base3}{RGB}{253,246,227}
+\definecolor{sbase03}{RGB}{0,43,54}
+\definecolor{sbase02}{RGB}{7,54,66}
+\definecolor{sbase01}{RGB}{88,110,117}
+\definecolor{sbase00}{RGB}{101,123,131}
+\definecolor{sbase0}{RGB}{131,148,150}
+\definecolor{sbase1}{RGB}{147,161,161}
+\definecolor{sbase2}{RGB}{238,232,213}
+\definecolor{sbase3}{RGB}{253,246,227}
 \definecolor{syellow}{RGB}{181,137, 0}
 \definecolor{sorange}{RGB}{203,75,22}
 \definecolor{sred}{RGB}{220,50,47}
@@ -52,14 +52,20 @@
 \definecolor{sblue}{RGB}{38,139,210}
 \definecolor{scyan}{RGB}{42,161,152}
 \definecolor{sgreen}{RGB}{133,153,0}
-\color{base03}
+
+\colorlet{foreground}{sbase03}
+\colorlet{background}{sbase3}
+
+% Document.
+\color{foreground}
+\pagecolor{background}
 
 % Hyperref.
 \hypersetup{
     colorlinks    = true,
     anchorcolor   = sgreen,
     urlcolor      = sblue,
-    linkcolor     = syellow,
+    linkcolor     = sgreen,
     citecolor     = sgreen,
     backref       = true,
     pagebackref   = true,
@@ -76,24 +82,28 @@
 \addtolength{\headheight}{\baselineskip}
 \renewcommand{\headrulewidth}{.1pt}
 \renewcommand{\footrulewidth}{0pt}
-\fancyhead[LE, RO]{\textcolor{base0}{\thepage}}
-\fancyhead[RE]{\textcolor{base0}{\nouppercase{\leftmark}}}
-\fancyhead[LO]{\textcolor{base0}{\nouppercase{\rightmark}}}
+\fancyhead[LE, RO]{\textcolor{sbase0}{\thepage}}
+\fancyhead[RE]{\textcolor{sbase0}{\nouppercase{\leftmark}}}
+\fancyhead[LO]{\textcolor{sbase0}{\nouppercase{\rightmark}}}
 \pagestyle{fancy}
+
+% Dots.
+\colorlet{dot}{sbase02}
+\colorlet{dotstroke}{sbase00}
 
 % Tikz.
 \tikzstyle{rectangle}=[
-    draw=black,
+    draw=dot,
     thick,
     text centered,
     text width=2cm
 ]
 \tikzstyle{arrow}=[
+    draw=dot,
     ->,
     >=latex,
     shorten >=1pt,
-    thick,
-    draw=sred
+    thick
 ]
 \tikzstyle{myoverlay}=[
     overlay,
@@ -115,10 +125,51 @@
     decoration={snake, amplitude=.4mm, segment length=2mm, post length=2mm}
 ]
 \tikzstyle{myzigzag}=[
+    draw=dot,
     decorate,
     decoration={zigzag, mirror, segment length=5.5pt, amplitude=.8pt}
 ]
 
 % Misc.
-\definecolor{light-gray}{gray}{0.65}
+\colorlet{light-gray}{sbase0!80}
 \newcommand{\ingray}[1]{\textcolor{light-gray}{#1}}
+
+% Titles.
+\newcommand*\chapterlabel{}
+\newcommand{\newstylenums}[1]{{\fontfamily{ppl}\selectfont #1}}
+\titleformat
+  {\chapter}
+  {\gdef\chapterlabel{}\normalfont\Huge\bfseries}
+  {\gdef\chapterlabel{\thechapter.}}
+  {0pt}
+  {\begin{tikzpicture}[remember picture,overlay]
+   \node[yshift=-7cm] at (current page.north west) {
+     \begin{tikzpicture}[remember picture, overlay]
+     \node [anchor=center, text width=\paperwidth, align=center, xshift=.5\paperwidth] {
+        \color{sbase00}
+        {\em Chapitre \chapterlabel} \\
+        \color{sbase03}
+        #1 \\
+        \color{sbase00}
+        \adforn{26}\quad\adforn{11}\quad\adforn{54}
+        \color{foreground}
+      };
+     \end{tikzpicture}
+   };
+   \end{tikzpicture}
+  }
+\titlespacing*{\chapter}{0pt}{4cm}{1cm}
+
+\titleformat
+  {\section}
+  {\normalfont\Large\bfseries}
+  {}
+  {0pt}
+  {\textcolor{sbase00}{\newstylenums{\thetitle}}\quad\ \ \color{sbase03}#1}
+
+\titleformat
+  {\subsection}
+  {\normalfont\large\bfseries}
+  {}
+  {0pt}
+  {\textcolor{sbase00}{\newstylenums{\thetitle}}\quad\ \ \color{foreground}#1}
