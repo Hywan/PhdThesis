@@ -77,7 +77,6 @@
 }
 
 % Headers and footers.
-
 \fancypagestyle{frontmatter}{
   \addtolength{\headheight}{\baselineskip}
   \renewcommand{\headrulewidth}{.1pt}
@@ -90,7 +89,17 @@
   \fancyhead[LO]{\textcolor{sbase0}{\nouppercase{\rightmark}}}
 }
 
-\newcommand{\mychaptername}{\empty}
+\fancypagestyle{mainmatter}{
+  \addtolength{\headheight}{\baselineskip}
+  \renewcommand{\headrulewidth}{.1pt}
+  \renewcommand{\footrulewidth}{0pt}
+
+  \fancyhf{}
+
+  \fancyhead[LE, RO]{\textcolor{sbase0}{\thepage}}
+  \fancyhead[RE]{\textcolor{sbase0}{\nouppercase{\leftmark}}}
+  \fancyhead[LO]{\textcolor{sbase0}{\nouppercase{\rightmark}}}
+}
 
 \fancypagestyle{backmatter}{
   \addtolength{\headheight}{\baselineskip}
@@ -100,11 +109,7 @@
   \fancyhf{}
 
   \fancyhead[LE, RO]{\textcolor{sbase0}{\thepage}}
-  \fancyhead[RE]{\textcolor{sbase0}{\chaptername. \mychaptername}}
-  \fancyhead[LO]{\textcolor{sbase0}{\nouppercase{\rightmark}}}
 }
-
-\pagestyle{frontmatter}
 
 % Dots.
 \colorlet{dot}{sbase02}
