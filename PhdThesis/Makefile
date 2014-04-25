@@ -24,6 +24,19 @@ bib: | Dist/PhdThesis.aux
 
 Dist/PhdThesis.aux: tex
 
+summary:
+	@pdflatex \
+		-output-directory Dist/Page \
+		-output-format pdf \
+		-interaction errorstopmode \
+		-halt-on-error \
+		-shell-escape Source/Page/Summary.tex;
+
+bib-summary: | Dist/Page/Summary.aux
+	@bibtex Dist/Page/Summary.aux;
+
+Dist/Page/Summary.aux: summary
+
 figures: dots umls
 
 dots:
