@@ -197,10 +197,8 @@ méthode. \pagebreak La clause \aensures représente une {\strong postcondition
 normale}, mais le système peut aussi lever une exception et être alors placé
 dans un {\strong post-état exceptionnel}.La clause \athrowable exprime des
 contraintes sur cet état particulier~: elle exprime les conditions sous
-lesquelles des exceptions peuvent être levées par la méthode et aussi le
-post-état du système associé (par exemple une exception a été levée mais le
-système est suffisamment propre pour tenter une nouvelle exécution). La syntaxe
-de $T$ ($T_{\alpha.\beta}$ et $T_\m{D}$ dans la
+lesquelles des exceptions peuvent être levées par la méthode et aussi l'état du
+système associé. La syntaxe de $T$ ($T_{\alpha.\beta}$ et $T_\m{D}$ dans la
 figure~\ref{figure:language:typical_contract}) est définie par l'entité
 syntaxique \grule{exceptional-expression} dans la
 figure~\ref{figure:language:grammar_part2}. $T$ est de la forme \code{$T_C$ with
@@ -448,13 +446,13 @@ de la méthode \code{store} peut avoir deux valeurs~: soit un entier entre 0 et
 n'importe quelle sorte de domaine réaliste, conformément à l'aspect dynamique
 de PHP.
 
-Toutes les variables utilisées dans le contrat appartiennent au système,
+Par défaut, les variables utilisées dans le contrat appartiennent au système,
 c'est~à~dire qu'elles existent en tant qu'argument d'une méthode ou attribut de
 classe. Toutefois, il est possible de déclarer une variable qui appartient au
 modèle si elle est précédée par le mot-clé \code{let}. Nous pouvons voir cette
 variable comme étant {\strong locale} au modèle. Cette catégorie de variables
-est très utile pour manipuler des représentations intermédiaires de données,
-comme une longueur qui serait utilisée par plusieurs tableaux par exemple.
+est très utile pour manipuler des expressions apparaissant par exemple plusieurs
+fois.
 
 La variable spéciale \aresult représente la valeur {\strong retournée} par la
 méthode. Elle ne peut apparaître que dans la clause \aensures. Les clauses
@@ -479,10 +477,10 @@ prédicat \code{\bslash{}pred('\$this->getUsage() + \$file->getSize()
 que s'il n'y a plus de place pour ajouter un nouveau fichier, alors cette partie
 de la précondition est satisfaite.
 
-Le mot-clé \anone est strictement équivalent à \apred{\code{'fal\-se'}}.
-Ainsi, écrire \code{\aensures \anone;} signifie que tous les post-états
-normaux seront refusés car la postcondition normale sera toujours fausse. Ce
-mot-clé est plus qu'un sucre syntaxique car, selon la grammaire dans la
+Le mot-clé \anone est strictement équivalent à \apred{\code{'fal\-se'}}.  Ainsi,
+écrire \code{\aensures \anone;} signifie que tous les post-états normaux seront
+refusés car la postcondition normale sera toujours fausse. Ce mot-clé est plus
+qu'une équivalence car, selon la grammaire dans la
 figure~\ref{figure:language:grammar_part2}, il empêche l'utilisation de
 déclarations, d'autres prédicats ou de qualifications.
 
