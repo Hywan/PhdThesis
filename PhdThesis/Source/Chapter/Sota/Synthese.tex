@@ -2,28 +2,27 @@
 \label{section:sota:summary}
 
 Dans ce chapitre, nous avons décrit plusieurs langages de contrat dans plusieurs
-langages de programmation. Nous avons remarqué que chaque langage majeur a son
-propre langage de contrat. Ce n'est pas le cas de PHP. Nous avons vu par la
-suite comment ces langages de contrat étaient utilisés pour générer des suites
-de tests. Cette technique s'appelle le \inenglish{Contract-based Testing}~: les
-invariants et les préconditions sont utilisés pour générer des données de test
-et les postconditions fournissent un oracle capable de calculer le verdict du
-test. Enfin, nous avons vu d'autres techniques de générations de données pour
-notamment des chaînes de caractères et des tableaux.
+langages de programmation. Nous avons remarqué que plusieurs langages majeurs
+ont leur propre langage de contrat. Ce n'est pas le cas de PHP. Nous avons vu
+par la suite comment ces langages de contrat étaient utilisés pour générer des
+suites de tests. Cette technique s'appelle le \inenglish{Contract-based
+Testing}~: les invariants et les préconditions sont utilisés pour générer des
+données de test et les postconditions fournissent un oracle permettant de
+calculer le verdict du test. Enfin, nous avons vu d'autres techniques de
+génération de données notamment pour des chaînes de caractères et des tableaux.
 
 Certains des outils ne respectent pas vraiment le \inenglish{Contract-based
 Testing} car ils demandent à l'utilisateur de définir des données manuellement.
-Toutefois, ils offrent un gain de temps non-négligeable par la production d'une
+Toutefois, ils offrent un gain de temps non négligeable par la production d'une
 suite de tests exécutable. D'autres outils génèrent eux-mêmes les données mais à
 l'aide de solveurs de contraintes car les assertions à l'intérieur des contrats
 ou dans le code du programme sont exprimées avec des prédicats ou des
 expressions similaires. Malgré le niveau d'expressivité important que cela
 offre, il est difficile pour les solveurs de générer des données satisfaisant
 toutes ces contraintes ou de passer à l'échelle, c'est~à~dire d'appliquer ses
-techniques sur de très grands programmes. Et quand il est possible à un solveur
-de passer à l'échelle, il est utilisé en dehors des contrats. Ainsi, les données
-de tests générées vont permettre de détecter les erreurs à l'exécution mais rien
-n'assure que le programme fait bien ce que l'utilisateur en attend.
+techniques sur de très grands programmes. Ainsi, les données de test générées
+vont permettre de détecter les erreurs à l'exécution mais rien n'assure que le
+programme fait bien ce que l'utilisateur en attend.
 
 Nous remarquons qu'il existe plusieurs techniques et plusieurs approches.
 Malheureusement, malgré leur intérêt, leur «~éparpillement~» les rend
@@ -34,7 +33,7 @@ cohérente.
 Nous proposons Praspel, un langage de spécification pour PHP à partir de
 contrats. Ce langage trouve son inspiration dans JML ou ACSL. Les outils de
 Praspel sont capables de générer automatiquement des suites de tests exécutables
-à partir de contrats. Les données de tests seront générées automatiquement. Un
+à partir de contrats. Les données de test seront générées automatiquement. Un
 juste milieu a été trouvé pour exprimer les assertions à l'intérieur des
 contrats. C'est un langage simple (pour l'utilisateur), pragmatique et
 suffisament souple pour assembler plusieurs méthodes du domaine du test, comme
