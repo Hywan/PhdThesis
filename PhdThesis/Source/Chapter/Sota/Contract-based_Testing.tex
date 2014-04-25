@@ -1,13 +1,13 @@
 \section{\inenglish{Contract-based Testing}}
 \label{section:sota:cbt}
 
-Nous avons vu comment les contrats sont utilisés pour {\strong filtrer} les
-données manipulées par un programme ou pour vérifier que le programme ne
-produira pas d'erreur. Cependant, l'un des intérêts et usages principaux des
-contrats est pour le {\strong test}. Le {\strong test à partir de contrats}
-(\inenglish{Contract-based Testing}, abrégé CbT) a été introduit pour exploiter
-les langages de contrats afin de tester des programmes~\acite{Aichernig03}~:
-
+Les contrats sont utilisés pour {\strong filtrer} les données manipulées par un
+programme ou pour vérifier que le programme ne produira pas d'erreur. Cependant,
+l'un des intérêts et usages principaux des contrats est pour le {\strong test}.
+Le {\strong test à partir de contrats} (\inenglish{Contract-based Testing},
+abrégé CbT) a été introduit pour exploiter les langages de contrat afin de
+tester des programmes~\acite{Aichernig03}~:
+%
 \begin{itemize}
 
 \item les invariants et les préconditions sont utilisés pour {\strong générer
@@ -22,8 +22,8 @@ Rappelons qu'un test est composé d'un SUT, de données de test et d'un oracle. 
 général, le contrat annote le programme, donc nous connaissons le SUT. Les deux
 dernières parties nous sont données en exploitant le contrat.
 
-À partir d'une spécification formelle, sous la forme d'un contrat, nous sommes
-capables de générer des suites de tests automatiquement. Comme nous sommes au
+À partir d'une spécification formelle, sous la forme d'un contrat, il est
+possible de générer des suites de tests automatiquement. Comme nous sommes au
 niveau du code source du programme, et plus précisément, sur les méthodes des
 classes (dans un contexte orienté objet), les tests seront {\strong unitaires}.
 
@@ -32,24 +32,24 @@ présentés ci-dessous.
 
 \paragraph{JMLUnit} L'outil JMLUnit~\acite{CheonL02, ZimmermanN10} permet de
 transformer un contrat JML en une suite de tests exécutable avec JUnit. L'outil
-assure un moyen simple et efficace d'automatiser la génération d'oracle de
-tests. L'objectif est de décharger l'utilisateur du calcul du verdict de test, à
+assure un moyen simple et efficace d'automatiser la génération d'oracles de
+tests L'objectif est de décharger l'utilisateur du calcul du verdict de test, à
 savoir si le test unitaire est un succès ou un échec. L'outil génère
-automatiquement deux classes pour chaque interface ou classe Java annotée par du
-JML~: un squelette où déclarer les données de tests, et les oracles, permettant
+automatiquement deux classes pour chaque interface ou classe Java annotée en
+JML~: un squelette où déclarer les données de test, et les oracles, permettant
 de calculer le verdict des tests.
 
-Les données de tests ne sont pas générées automatiquement~: un dictionnaire de
-données de tests pré-définies selon certaines stratégies est utilisé à la place.
-Pour des types de données non-primitifs au langage (donc des données de tests
+Les données de test ne sont pas générées automatiquement~: un dictionnaire de
+données de test pré-définies selon certaines stratégies est utilisé à la place.
+Pour des types de données non-primitifs au langage (donc des données de test
 qui ne sont pas des booléens, des nombres, des chaînes de caractères etc.), le
 dictionnaire ne contient qu'une valeur nulle. C'est alors à l'utilisateur de
-fournir lui-même les données de tests.
+fournir lui-même les données de test.
 
 Comme l'outil se concentre sur le test unitaire, chaque test ne concerne qu'une
 seule méthode. Les postconditions et invariants JML sont transformés en
-prédicats Java et constituent les oracles de tests. Si l'exécution d'une méthode
-avec un certain ensemble de données de tests ne lève aucune erreur, alors le
+prédicats Java et constituent les oracles de test. Si l'exécution d'une méthode
+avec un certain ensemble de données de test ne lève aucune erreur, alors le
 test est considéré comme un succès, sinon il est considéré comme un échec. Il
 est toutefois possible d'obtenir un troisième résultat qui est une violation
 d'une précondition d'une autre méthode appelée par la méthode testée.  Ce cas
@@ -61,11 +61,10 @@ JUnit.
 
 \paragraph{Jartege} L'outil Jartege~\acite{Oriat05} est un générateur de tests
 aléatoires pour des programmes écrits en Java. Jartege produit des séquences de
-test d'une certaine taille et un nombre de séquences, fixés par
-l'utilisateur.
+test, dont le nombre et la taille sont fixés par l'utilisateur.
 
 Jartege sélectionne aléatoirement des méthodes à exécuter. Chaque méthode est
-annotée par un contrat JML. Les données de tests, soient les valeurs des
+annotée par un contrat JML. Les données de test, soient les valeurs des
 paramètres de ces méthodes, sont également générées aléatoirement à partir de la
 précondition. Cette dernière sert aussi de filtre pour sélectionner les méthodes
 à exécuter. L'exécution des méthodes et les postconditions et invariants sont
@@ -73,12 +72,12 @@ utilisés pour connaître la conformité du programme avec sa spécification. La
 vérification des contraintes est ainsi conjointe à la création des séquences de
 test.
 
-Pour les types primitifs de Java, Jartege demande à l'utilisateur de leur
-définir des bornes pour la génération aléatoire, ceci afin de générer des
-données de tests plus pertinentes. L'outil permet à l'utilisateur de fournir une
-fonction qui détermine la probabilité de créer un nouvel objet ou d'en
-réutiliser un déjà existant. Selon les structures de données manipulées, cette
-fonction permettra de détecter plus ou moins d'erreurs.
+Pour les types primitifs de Java, Jartege demande à l'utilisateur de définir des
+bornes pour la génération aléatoire, ceci afin de générer des données de test
+plus pertinentes. L'outil permet à l'utilisateur de fournir une fonction qui
+détermine la probabilité de créer un nouvel objet ou d'en réutiliser un déjà
+existant. Selon les structures de données manipulées, cette fonction permettra
+de détecter plus ou moins d'erreurs.
 
 \paragraph{JML-Testing-Tools} L'outil JML-Testing-Tools~\acite{BouquetDLU05,
 BouquetDL06} est développé comme une extension aux outils
@@ -103,13 +102,13 @@ tout d'abord extraire un ensemble de comportements (normaux et exceptionnels) à
 partir de la spécification JML. Un comportement est représenté par un prédicat
 en forme disjonctive. Cet ensemble de comportements va être réduit en fonction
 du critère de couverture du modèle choisi par l'utilisateur. L'outil propose
-quatre critères de couverture qui représentent des règles de réécritures de ces
-prédicats. Les données de tests sont générées automatiquement en utilisant les
-valeurs aux limites des paramètres des méthodes. Cette approche fonctionne pour
-les types primitifs de Java avec un domaine ordonné. L'outil considère également
-qu'une valeur aux limites d'un objet est une valeur aux limites de l'un de ses
-attributs. Quand toutes les valeurs sont spécifiées, elles sont instanciées
-grâce à l'animateur symbolique et les tests peuvent être exécutés.
+quatre critères de couverture qui correspondent à des règles de réécriture de
+ces prédicats. Les données de test sont générées automatiquement en utilisant
+les valeurs aux limites des paramètres des méthodes. Cette approche fonctionne
+pour les types primitifs de Java avec un domaine ordonné. L'outil considère
+également qu'une valeur aux limites d'un objet est une valeur aux limites de
+l'un de ses attributs. Quand toutes les valeurs sont spécifiées, elles sont
+instanciées grâce à l'animateur symbolique et les tests peuvent être exécutés.
 
 \paragraph{TestEra} L'outil TestEra~\acite{MarinovK01} est un langage
 d'annotation de code Java. Ses préconditions, postconditions et invariants
@@ -121,7 +120,7 @@ accompagnés de préconditions à l'analyseur d'Alloy, qui va lui générer plus
 instances de modèles satisfaisant cette spécification. Chaque instance générée
 par Alcoa représente un test. TestEra va concrétiser ces instances une par une,
 afin de produire des données valides en Java. Ces dernières sont utilisées en
-tant que données de tests, c'est~à~dire qu'elles vont servir à exécuter le SUT.
+tant que données de test, c'est~à~dire qu'elles vont servir à exécuter le SUT.
 Ensuite, TestEra regarde les sorties produites par le SUT ainsi que son
 post-état, qui sont abstraits pour se ramener au formalisme d'Alloy afin d'y
 être confrontés à la postcondition et aux invariants. Si cette dernière
@@ -160,7 +159,7 @@ il doit écrire une méthode pour un prédicat et une autre pour une
 \inenglish{finitization}. Notons que cet effort est partiellement compensé par
 le fait que, d'une part, écrire des spécifications est une bonne pratique, et
 que d'autre part, l'utilisateur connaît déjà le langage dans lequel écrire ces
-méthodes et que les prédicats lui seront très propablement utiles dans son
+méthodes et que les prédicats lui seront très probablement utiles dans son
 programme.
 
 \paragraph{UDITA} Le langage UDITA~\acite{GligoricGJKKM10} répond à l'objectif
@@ -173,21 +172,21 @@ complexes. Ces descriptions vont être utilisées pour générer des ensembles f
 de ces structures. UDITA est la suite de Korat. Nous retrouvons ainsi la
 démarche de demander à l'utilisateur d'écrire lui-même des méthodes de
 génération de données (description des structures) mais les contrats ont
-totallement disparu. UDITA ajoute à Java deux extensions~: des primitives de
-choix non-déterministes et une primitive pour restreindre ces choix. Ces
-constructions sont familières aux utilisateurs de vérificateur de modèle comme
-Java PathFinder~\acite{VisserHBPL03}, sur lequel il s'appuye. UDITA est
-d'ailleurs intégré au \inenglish{framework} Java PathFinder en tant
-qu'extension. Grâce aux points de choix non-déterministes, l'utilisateur ne
-décrit qu'une seule fois sa structure, et UDITA est capable d'en générer
-plusieurs. L'outil propose aussi à l'utilisateur des générateurs basiques, comme
-un générateur de booléens, d'entiers, de nouveaux objets ou d'objets déjà créés.
-Ces deux derniers permettent à l'utilisateur de décrire des structures de
-données récursives ou liées. En plus d'une description, UDITA demande à
-l'utilisateur d'écrire un filtre, notion identique aux prédicats de Korat, si ce
-n'est qu'UDITA ne va pas s'en servir pour la génération de données, mais
-uniquement pour filtrer les données générées~: chaque donnée qui franchit le
-filtre sera mise de côté pour servir de données de test.
+totalement disparu. UDITA ajoute à Java deux extensions~: des primitives de
+choix non-déterministe et une primitive pour restreindre ces choix. Ces
+constructions sont familières aux utilisateurs du vérificateur de modèle Java
+PathFinder~\acite{VisserHBPL03}, sur lequel UDITA s'appuie. UDITA est d'ailleurs
+intégré au \inenglish{framework} Java PathFinder en tant qu'extension. Grâce aux
+points de choix non-déterministes, l'utilisateur ne décrit qu'une seule fois sa
+structure, et UDITA est capable d'en générer plusieurs. L'outil propose aussi à
+l'utilisateur des générateurs basiques, comme un générateur de booléens,
+d'entiers, de nouveaux objets ou d'objets déjà créés.  Ces deux derniers
+permettent à l'utilisateur de décrire des structures de données récursives ou
+liées. En plus d'une description, UDITA demande à l'utilisateur d'écrire un
+filtre, notion identique aux prédicats de Korat, si ce n'est qu'UDITA ne va pas
+s'en servir pour la génération de données, mais uniquement pour filtrer les
+données générées~: chaque donnée qui franchit le filtre sera mise de côté pour
+servir de donnée de test.
 
 Contrairement à Korat, UDITA ne demande pas de méthode de
 \inenglish{finitization}, mais s'appuie sur ces points de choix
@@ -196,8 +195,8 @@ borné~\acite{Marinov03, SullivanYCKJ04}. L'efficacité de la méthode s'appuie
 sur les choix retardés~\acite{NollS07}, c'est~à~dire sur des évaluations
 non-déterministes tardives~\acite{FischerKS09}.
 
-\paragraph{JSConTest} Le langage JSConTest~\acite{HeideggerT12} permet d'annoter
-des programmes Javascript avec des contrats. Javascript est un langage à typage
+\paragraph{JSConTest} Le langage JSConTest~\acite{HeideggerT12} est un langage
+de contrat annotant des programmes Javascript. Ce dernier est un langage à typage
 non déclaré. C'est pourquoi JSConTest propose que le contrat ne contienne que
 la signature de la fonction annotée, soit ses entrées et sa sortie,
 respectivement une précondition et une postcondition. JSConTest ne permet pas

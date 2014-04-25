@@ -4,31 +4,31 @@
 La manière dont Praspel spécifie les données se situe entre JSConTest et JML.
 Nous exprimons beaucoup plus que les types usuels mais nous n'exprimons pas des
 contraintes sous forme logique. Nous sommes alors intéressés par la génération
-(et validation) de données au sens large. Cette partie présente tout d'abord des
-techniques de générations de données puis, orthogonalement, des outils qui
+(et la validation) de données au sens large. Cette partie présente tout d'abord
+des techniques de génération de données puis, orthogonalement, des outils qui
 génèrent des types de données spécifiques.
 
-\subsection{Technique de générations}
+\subsection{Technique de génération}
 
 Beaucoup de travaux et d'outils considèrent la génération de données aléatoires
-comme efficace. Elle permet de très rapidement explorer un modèle, une
-spécification ou une structure de code à moindre coût. Le
+comme efficace pour trouver des erreurs. Elle permet de très rapidement explorer
+un modèle, une spécification ou une structure de code à moindre coût. Le
 \inenglish{fuzzing}~\acite{GodefroidLM12}, par exemple, est une technique
 s'appuyant sur ces deux aspects~: beaucoup de données différentes générées
 rapidement, qui permettent d'éprouver le programme. Malgré ses limitations
 évidentes (un test d'égalité entre deux entiers générés aléatoirement a une
 probabilité très faible d'être validé), la génération aléatoire est souvent un
-moyen de «~déblayer le terrain~» et de répérer les points non triviaux à tester
+moyen de «~déblayer le terrain~» et de repérer les points non triviaux à tester
 du programme. C'est pourquoi plusieurs outils considèrent une approche hybride~:
 utiliser de l'aléatoire pour éliminer les cas triviaux et éviter l'utilisation
-systématique de techniques de générations plus gourmandes. D'autres techniques
+systématique de techniques de génération plus gourmandes. D'autres techniques
 vont guider l'aléatoire afin de conserver un certain degré de non-déterminisme
 tout en respectant par exemple des critères de couverture.
 
 D'autres techniques travaillent à partir de solveurs de contraintes. Ils vont
 explorer et analyser le code (de manière symbolique ou concrète) afin de
 récolter un ensemble de contraintes. Ce dernier sera résolu afin de générer des
-données de tests qui seront alors utilisées pour exécuter le programme.
+données de test qui seront alors utilisées pour exécuter le programme.
 
 Nous présentons quelques outils qui adoptent ces techniques.
 
@@ -45,10 +45,10 @@ Quand des embranchements sont rencontrés (comme une condition par exemple), EXE
 va dupliquer les exécutions et les contraindre à emprunter chaque chemin de
 l'embranchement (pour une condition, ce sera un chemin à vrai et un à faux).
 Quand EXE arrive à la fin d'un chemin ou qu'il trouve une erreur, alors il va
-automatiquement générer des données de tests à partir des contraintes récoltées.
+automatiquement générer des données de test à partir des contraintes récoltées.
 EXE est accompagné de STP~\acite{GaneshD07}, un solveur de contraintes maison
 conçu à l'origine pour EXE. C'est grâce à ce solveur que les valeurs vont être
-concrétisées et utilisées comme données de tests sur le programme
+concrétisées et utilisées comme données de test sur le programme
 non-instrumenté. Les mêmes chemins seront empruntés et les mêmes erreurs seront
 trouvées, mais avec des valeurs concrètes, donc exploitables par le développeur.
 
@@ -56,15 +56,15 @@ trouvées, mais avec des valeurs concrètes, donc exploitables par le développe
 DART~\acite{GodefroidKS05}, est également un outil de génération de données de
 test à partir de l'analyse du programme. DART opère en trois étapes. Il commence
 par extraire les interfaces du programme pour connaître ses entrées. Ensuite il
-va générer aléatoirement des données pour ses entrées, et l'exécuter. Et enfin,
-il analyse le comportement du programme pendant son exécution pour détecter
-quels sont les chemins ou zones qui n'ont pas été atteints. Cette analyse va
-permettre de guider la génération des nouvelles entrées pour la prochaine
-exécution.
+génère aléatoirement des données pour ses entrées, et exécute le programme.
+Enfin, il analyse le comportement du programme pendant son exécution pour
+détecter quels sont les chemins ou zones qui n'ont pas été atteints. Cette
+analyse va permettre de guider la génération des nouvelles entrées pour la
+prochaine exécution.
 
 DART et EXE ont une approche similaire pour l'analyse des chemins. À chaque
 embranchement du programme, DART va extraire des contraintes symboliques. Pour
-générer les données de tests suivantes, il prendra la négation des contraintes
+générer les données de test suivantes, il prendra la négation des contraintes
 une par une, générera de nouvelles valeurs et le processus continuera.
 Toutefois, DART ne sait gérer que les contraintes sur les entiers alors qu'EXE
 sait gérer des contraintes sur les entiers, les tableaux, les vecteurs de bits,
@@ -73,8 +73,8 @@ le transtypage, les opérations arithmétiques etc.
 \paragraph{KLEE} L'outil KLEE~\acite{CadarDE08} est la suite d'EXE. Ses auteurs
 font le constat suivant~: malgré le fait que les travaux sur l'exécution
 symbolique soient encourageants, les outils ne sont toujours pas capables de
-passer à l'échelle. En effet, le nombre de chemins dans les programmes sont
-exponentiels, et les techniques d'exécutions symboliques n'arrivent plus à
+passer à l'échelle. En effet, le nombre de chemins dans les programmes est
+exponentiel, et les techniques d'exécution symbolique n'arrivent plus à
 résoudre toutes les contraintes générées. De même, l'exécution symbolique ne
 prenait pas en compte l'environnement du programme, comme l'OS, le réseau ou
 l'utilisateur. Ce sont ces deux problèmes qu'adresse KLEE grâce à de la
@@ -103,39 +103,38 @@ caractères et des collections (aussi appelées tableaux). Cette partie est
 découpée en fonction de ces deux types de données.
 
 \paragraph{Génération de chaînes de caractères} Les chaînes de caractères sont
-intensivement utilisées dans des programmes Web.  Leurs formes sont très
-différentes, cela allant d'une adresse email à des langages comme XML ou JSON,
-en passant par des requêtes SQL etc. La façon la plus répandue dans l'industrie
+intensivement utilisées dans les programmes Web. Leurs formes sont très
+différentes, allant d'une adresse email à des langages comme XML ou JSON, en
+passant par des requêtes SQL etc. La façon la plus répandue dans l'industrie
 pour représenter une donnée textuelle est d'utiliser une expression régulière ou
-une grammaire algébrique, soit d'une manière générale, une
-grammaire~\acite{Chomsky56}. Une grammaire est exprimée à partir d'un {\strong
-langage de description} qui déclare des {\strong lexèmes}, unités lexicales
-atomiques d'un langage, et des {\strong entités syntaxiques} (aussi appelées
-{\strong règles}) exprimant l'enchaînement possible des lexèmes les uns par
-rapport aux autres.
+une grammaire algébrique~\acite{Chomsky56}. Une grammaire est exprimée à partir
+d'un {\strong langage de description} qui déclare des {\strong lexèmes}, unités
+lexicales atomiques d'un langage, et des {\strong entités syntaxiques} (aussi
+appelées {\strong règles}) exprimant l'enchaînement possible des lexèmes les uns
+par rapport aux autres.
 
 L'idée commune que nous retrouvons dans la majorité des travaux est d'explorer
 ces règles afin de générer une {\strong séquence de lexèmes} qui représente une
 donnée valide. Quand les grammaires sont utilisées pour représenter des données
-de tests, alors nous parlons de \inenglish{Grammar-based Testing}, abrégé GbT.
+de test, nous parlons de \inenglish{Grammar-based Testing}, abrégé GbT.
 
 \inenglish{yet another generator-generator}, abrégé yagg~\acite{CoppitL05} est
 un outil de génération de données textuelles complexes à partir d'une grammaire
 décrite avec une syntaxe très similaire à LEX~\acite{Lesk75} et
-YACC~\acite{Johnson75}, des outils d'analyses syntaxique et lexicale très
+YACC~\acite{Johnson75}, des outils d'analyse syntaxique et lexicale très
 largement utilisés. Ce choix de syntaxe est montré comme plus attractif et plus
 efficace pour les utilisateurs comparé à TestEra à besoin équivalent. Quand est
-traité le problème de générations de données structurelles complexes, notamment
+traité le problème de génération de données structurelles complexes, notamment
 avec des grammaires, la question de la combinatoire se pose forcément. Certains
 opérateurs de répétition de séquences de lexèmes, comme \code{+} (une ou
 plusieurs fois) ou \code{*} (zéro ou plusieurs fois) n'ont pas de bornes
 supérieures. Afin d'éviter la génération d'énormes données ou de données
-explosives, yagg propose de borner ces opérateurs. D'autant plus que yagg a une
-approche exhaustive, c'est~à~dire qu'il va énumérer toutes les séquences
-possibles de lexèmes.  Les lexèmes sont exprimés avec un sous-langage des
-expressions régulières qui ajoute des constructions comme l'alternance
-équivalente ou des générateurs d'équivalence.  Ce choix sert également à borner
-les valeurs possibles des lexèmes.
+explosives, yagg propose de borner ces opérateurs. agg a une approche
+exhaustive, c'est~à~dire qu'il va énumérer toutes les séquences possibles de
+lexèmes.  Les lexèmes sont exprimés avec un sous-langage des expressions
+régulières qui ajoute des constructions comme l'alternance équivalente ou des
+générateurs d'équivalence.  Ce choix sert également à borner les valeurs
+possibles des lexèmes.
 
 L'outil Geno~\acite{LammelS06} propose une solution au problème de l'explosion
 combinatoire. Certains travaux proposent des critères de couverture sur les
