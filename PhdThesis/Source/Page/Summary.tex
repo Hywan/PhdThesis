@@ -1,112 +1,49 @@
-\chapter*{Résumé}
-\addcontentsline{toc}{chapter}{Résumé}
+\documentclass[a4paper,11pt]{article}
 
-Les travaux présentés dans ce mémoire sont liés à des activités relatives à la
-validation et à la vérification de programmes PHP à travers un nouveau langage
-de spécification accompagné de ses outils. L'objectif principal est la
-génération automatique de tests unitaires à partir de contrats. Nous trouvons
-trois axes de réflexions majeurs~: langage de spécification, génération
-automatique de données de test et génération automatique de tests unitaires.
+\usepackage[english,french]{babel}
+\usepackage[utf8]{inputenc}
+    \newcommand{\inenglish}[1]{\foreignlanguage{english}{\em #1}}
+\usepackage[round,colon]{natbib}
+    \newcommand{\acite}[1]{\citep{#1}}
+    \renewcommand{\bibsection}{}
+\usepackage{nopageno}
 
-\renewcommand*\thesection{\arabic{section}}
-\setcounter{section}{0}
-\section{Contributions}
+\begin{document}
 
-La première contribution est Praspel, un nouveau de langage de spécification
-pour PHP basé sur la programmation par contrat. Praspel spécifie les données
-avec des domaines réalistes~: des structures permettant de valider et générer
-des données. Les domaines réalistes peuvent hériter entre eux et être emboîtés
-pour représenter des données plus complexes. La syntaxe et la sémantique de
-Praspel a été définie. À partir d'un contrat écrit en Praspel, nous pouvons
-faire du \inenglish{Contract-based Testing}, c'est~à~dire que nous exploitons le
-contrat pour générer automatiquement des tests unitaires. La précondition est
-utilisée pour générer des données de test et la postcondition est utilisée comme
-oracle. \\
+\section*{Résumé}
 
-La deuxième contribution concerne alors la génération de données de test. Pour
-les booléens, les entiers et les réels, une génération aléatoire uniforme est
+Les travaux présentés dans ce mémoire portent sur la validation de programmes
+PHP à travers un nouveau langage de spécification, accompagné de ses outils. Ces
+travaux s'articulent selon trois axes majeurs~: langage de spécification,
+génération automatique de données de test (pour tous les types) et génération
+automatique de tests unitaires.
+
+La première contribution est Praspel, un nouveau langage de spécification pour
+PHP basé sur la programmation par contrat. Praspel spécifie les données avec des
+domaines réalistes~: des nouvelles structures permettant de valider et générer
+des données. À partir d'un contrat écrit en Praspel, nous pouvons faire du
+\inenglish{Contract-based Testing}, c'est~à~dire que nous exploitons le contrat
+pour générer automatiquement des tests unitaires. La précondition est utilisée
+pour générer des données de test et la postcondition est utilisée comme oracle.
+La deuxième contribution concerne la génération de données de test. Pour les
+booléens, les entiers et les réels, une génération aléatoire uniforme est
 employée. Cette approche a rapidement montré ses limites pour les tableaux et
-les chaînes de caractères.
-
-Pour les tableaux, nous avons commencé par mener une étude sur leurs propriétés
-les plus utilisées. Nous en avons sélectionné quelques unes. La syntaxe de
-Praspel a été étendue pour introduire ces propriétés au sein même du langage.
-Enfin, nous avons défini une sémantique ensembliste de ces propriétés et nous
-avons construit notre propre solveur de contraintes.
-
-Pour les chaînes de caractères, nous avons opté pour deux approches~: à partir
-d'une grammaire ou d'une expression régulière. Nous avons défini un nouveau
-langage de description de grammaire appelé PP, avec un compilateur de
-compilateurs $LL(\star)$. Ces derniers permettent de valider une donnée. Pour
-générer une donnée, nous avons proposé trois algorithmes de génération
-permettant de répondre à plusieurs besoins différents~: aléatoire uniforme,
-exhaustif borné et basé sur la couverture de la grammaire. Ces algorithmes
-génèrent des séquences de lexèmes, qui sont concrétisées en chaînes de
-caractères à partir d'un algorithme de génération aléatoire isotropique. Ce même
-algorithme est utilisé pour la génération de chaînes de caractères à partir
-d'une expression régulière.
-
-Enfin, la génération d'objet utilise une stratégie basée sur toutes les
-générations que nous venons d'énumérer. Cette stratégie considère des références
-circulaires et permet de réutiliser des objets déjà générés. \\
-
+les chaînes de caractères. Un solveur de contraintes dédié aux tableaux PHP
+ainsi qu'un langage de description de grammaires avec un compilateur de
+compilateurs $LL(\star)$ et plusieurs algorithmes de générations de données ont
+été créés pour répondre à ses limites. Enfin, la génération d'objet est traitée.
 La troisième contribution définit des critères de couverture sur les contrats.
-Ils nous fournissent des objectifs de tests. Ces critères sont satisfaits par un
-ensemble de tests auxquels nous associons des chemins dans les contrats. Nous
-avons proposé de transformer les contrats en graphes, ce afin de plus facilement
-définir les critères. Au total, trois critères, plus des combinaisons, ont été
-définis~: Critère de Clause, Critère de Domaine et Critère de Prédicat. \\
-
-Ces contributions ont été implémentées en tant que bibliothèques dans le projet
-Hoa. Nous avons vu comment manipuler Praspel à travers son modèle objet~: les
-différentes analyses, l'exportation et l'importation et le désassemblage. Nous
-avons vu également comment évaluer Praspel avec un \inenglish{Runtime Assertion
-Checker}. Puisque Praspel génère automatiquement des suites de tests
-abstraites, une extension à atoum, un \inenglish{framework} de tests unitaires,
-a été proposée pour compiler ces suites de tests abstraites en suites de tests
-concrètes et exécutables. Ces dernières sont écrites avec l'API d'atoum.
-
-Les deux projets ont des licences \inenglish{open-source} et sont libres. Ils
-nous offrent ainsi une communauté, des utilisateurs et des contributeurs. Par
-leur biais, nous avons accès à des entreprises et des utilisateurs qui peuvent
-nous faire des retours précieux sur nos travaux. \\
-
-Cette démarche s'est confirmée par la participation d'un panel d'ingénieurs de
-tests bénévoles pour l'une de nos expérimentations. Ces expérimentations ont
-montré plusieurs choses. Tout d'abord, elles ont confirmé l'intérêt de la
-programmation par contrat dans les méthodologies de développement actuelles. La
-proximité entre les contrats et le code est un élément crucial~: les contrats
-jouent le rôle de documentation, ils sont plus facilement maintenus et sont
-toujours écrits en même temps que le code. La génération automatique de tests
-unitaires permet de générer des tests dits basiques, ce qui laisse le temps aux
-ingénieurs de tests de se concentrer sur des tests plus avancés. Quand nous
-savons que leur budget pour la qualité logicielle est limité, c'est un avantage.
-Pour ces tests plus avancés, les ingénieurs utilisent nos algorithmes de
-génération de données seuls. L'usage de ces algorithmes permet, en plus d'écrire
-des tests rapidement, de réduire les suites de tests tout en augmentant la
-confiance dans les tests restants. Enfin, les suites de tests finales sont plus
-facilement maintenables et compréhensibles. Ces expérimentations ont permis de
-détecter des erreurs dans des programmes déjà testés et parfois en production.
-\\
+Ils servent à fournir des objectifs de tests.
 
 Certaines de ces contributions ont d'ores et déjà été publiées dans des
-articles~\acite{EnderlinDGO11, EnderlinDGB12, EnderlinGB13}.
+articles~\acite{EnderlinDGO11, EnderlinDGB12, EnderlinGB13}. Toutes ces
+contributions ont été implémentées et expérimentées dans des outils
+industrielles.
 
-\section{Résultats}
+\paragraph{Mots-clés} Praspel, \inenglish{Contract-based Testing}, géné\-ration
+de données, géné\-ration automatique de tests unitaires, PHP.
 
-Le langage de spécification que nous avons proposé répond à nos attentes aux
-vues des résultats des expérimentations. Nous voulions que le langage soit
-simple. Le principe de la programmation par contrat, la syntaxe de Praspel et
-l'usage des domaines réalistes a permis de répondre à cette contrainte. Nous
-voulions également que le langage soit pragmatique. Nous adressons tous les
-types de données que les développeurs manipulent au quotidien. Pour les chaînes
-de caractères et les tableaux, nous avons des stratégies spécifiques qui ne
-demandent pas d'efforts supplémentaires aux développeurs pour être utilisées
-correctement. Enfin, nous voulions un langage permettant d'assembler plusieurs
-méthodes du test. Dans Praspel, nous trouvons de la génération aléatoire, de la
-génération basée sur les solveurs et de la génération basée sur les grammaires.
-Toutes ces méthodes fonctionnent ensemble au sein d'un même langage par le
-truchement des domaines réalistes et leurs deux propriétés de prédicabilité et
-de générabilité. Ces derniers exposent des méthodes avancées du test aux
-développeurs de manière simple. L'approche que nous avons présentée dans ce
-mémoire est satisfaisante.
+\bibliographystyle{abbrvnat}
+\bibliography{Source/Bibliography}
+
+\end{document}
