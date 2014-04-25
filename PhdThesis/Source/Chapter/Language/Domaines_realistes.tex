@@ -4,7 +4,7 @@
 Un des moyens les plus répandus pour caractériser les données manipulées par un
 programme est d'utiliser un système de {\strong typage}. Il en existe
 grossièrement deux grandes familles~: {\strong statique} et {\strong dynamique},
-que nous pouvons comprendre comme types déclarés syntaxiquement ou déduits lors
+que nous pouvons comprendre comme types déclarés syntaxiquement ou calculés lors
 de la compilation ou de l'exécution. Dans tous les cas, le type d'une donnée est
 connu au moment de l'{\strong exécution} du programme. Le typage permet de
 {\strong vérifier} la cohérence entre les données manipulées. Ainsi, la plupart
@@ -18,7 +18,7 @@ autre type.
 
 Notons que dans un langage comme PHP où les types ne sont pas déclarés
 syntaxiquement, il est culturellement admis d'écrire une documentation API qui
-décrit la nature des données manipulées par le programme, comme ses types.
+décrit la nature des données manipulées par le programme, comme leurs types.
 
 Nous profitons du fait que les développeurs connaissent bien les systèmes de
 typage grâce à leur présence dans de nombreux langages de programmation pour
@@ -26,7 +26,7 @@ introduire la notion de {\strong domaine réaliste}. Naïvement, nous pouvons di
 qu'ils raffinent les types usuels comme les entiers, les chaînes de caractères,
 les tableaux etc., et qu'ils permettent d'exprimer des données plus complexes,
 comme des grammaires, des graphes etc. Le mot {\strong réaliste} signifie qu'ils
-sont conçus pour spécifier des domaines de données {\strong pertinentes} pour un
+sont conçus pour spécifier des domaines de données {\strong pertinents} pour un
 contexte {\strong spécifique}. Par exemple, une adresse email peut être un
 domaine réaliste. En effet, plusieurs logiciels identifient leurs utilisateurs
 avec leur adresse email. C'est plus qu'une chaîne de caractères~: il y a
@@ -83,8 +83,10 @@ son parent. Par exemple, le domaine réaliste \code{Color} (qui représente une
 couleur) hérite de \code{String} (qui représente une chaîne de caractères), et
 \code{Boundinteger} (qui représente un intervalle d'entiers) hérite de
 \code{Integer} (qui représente un entier). Tous les domaines réalistes doivent
-être enfant de la classe \code{Realdom}, qui assure le fonctionnement des
-domaines réalistes.
+être enfants de la classe \code{Realdom}, qui assure le fonctionnement des
+domaines réalistes (en proposant plusieurs fonctionnalités usuelles et
+partagées, comme la gestion des paramètres, des arguments, du générateur
+numérique etc.).
 
 \begin{figure}[t]
 \begin{bigpre}
@@ -138,7 +140,7 @@ l'intervalle décrit par le domaine réaliste.
 paramétrables}. Les données reçues par le domaine réaliste sont appelées ses
 {\strong arguments}. Les paramètres sont très utiles pour représenter des
 structures de données complexes, telles que des tableaux imbriqués, des graphes,
-des automates, des arbres etc., tous sont des imbrications de types scalaires et
+des automates, des arbres etc. Tous sont des imbrications de types scalaires et
 structurels.
 
 \begin{example}[Paramétrage d'un domaine réaliste]
@@ -150,17 +152,20 @@ dont les code-points (Unicode) des caractères sont entre \code{0x61} et
 
 \end{example}
 
+\noindent
+La figure~\ref{figure:language:boundinteger} montre la déclaration de deux
+paramètres~: \code{lower} et \code{upper} en \circled{4}, qui ont pour domaine
+réaliste \code{Constinteger}, avec respectivement en valeur par défaut
+\code{PHP\_INT\_MIN} et \code{PHP\_INT\_MAX} qui sont des constantes de PHP. Si
+aucune valeur par défaut n'est précisée, alors le paramètre est {\strong
+obligatoire}, sinon il est {\strong optionnel}.
+
 Quand nous décrivons les paramètres d'un domaine réaliste, nous pouvons les
 filtrer. Le filtre est exprimé avec un ou des noms de domaines réalistes,
 séparés par le symbole \code{$\vert$}. En effet, un domaine réaliste accepte
 plusieurs sortes d'arguments et est capable de faire la traduction d'un domaine
 réaliste vers un autre. Ainsi, nous restons proches de la philosophie de PHP et
-de son typage dynamique. La figure~\ref{figure:language:boundinteger} montre la
-déclaration de deux paramètres~: \code{lower} et \code{upper} en \circled{4},
-qui ont pour domaine réaliste \code{Constinteger}, avec respectivement en valeur
-par défaut \code{PHP\_INT\_MIN} et \code{PHP\_INT\_MAX} qui sont des constantes
-de PHP. Si aucune valeur par défaut n'est précisée, alors le paramètre est
-{\strong obligatoire}, sinon il est {\strong optionnel}.
+de son typage dynamique. 
 
 \begin{example}[Multi-typage des paramètres]
 
@@ -180,7 +185,7 @@ où \code{Constinteger} et \code{Conststring} représentent respectivement un
 entier et une chaîne de caractères Praspel comme \code{7} ou \code{'foo'}.
 Alors, nous pouvons écrire \code{str\-ing('a', 'z', 4..12)} sans produire
 d'erreur, mais \code{string(true, 'z', 4..12)} produira une erreur car
-\code{true} est une valeur du domaine réaliste \code{Constboolean} et que le
+\code{true} est une valeur du domaine réaliste \code{Constboolean} et le
 paramètre \code{codepointMin} n'accepte que les domaines \code{Constinteger} ou
 \code{Conststring}.
 
@@ -202,8 +207,8 @@ un mot en minuscule écrit en grec.
 L'héritage que nous venons de voir en
 \ref{subsection:language:realdom:hierarchy} est une classification. Une autre
 classification {\strong transversale} est possible grâce aux {\strong
-interfaces}. Elles aident à caractériser le «~paysage~» des domaines réalistes.
-Les interfaces les plus intéressantes sont~:
+interfaces}. Elles aident à caractériser les domaines réalistes. Les interfaces
+les plus intéressantes sont~:
 
 \begin{itemize}
 

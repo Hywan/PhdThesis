@@ -8,8 +8,9 @@
 \label{section:language:praspel}
 
 Praspel est un acronyme anglais signifiant \inenglish{PHP Realistic Annotation
-and SPEcification Language}. C'est un langage et un \inenglish{framework} de
-test à partir de contrats en PHP. Ce langage repose sur les domaines réalistes.
+and SPE\-ci\-fi\-cation Language}. C'est un langage et un \inenglish{framework}
+de test à partir de contrats en PHP. Ce langage repose sur les domaines
+réalistes.
 
 Praspel est un {\strong langage d'annotation} car il s'écrit dans les
 commentaires du code source du programme. PHP comprend trois catégories de
@@ -135,9 +136,8 @@ Les entités syntaxiques \grule{attribute-clauses} et \grule{method-clauses}
 définissent respectivement les clauses annotant les attributs d'une classe et
 ses méthodes. L'entité syntaxique \grule{method-clauses} montre l'ordre des
 clauses en forme normale. La grammaire réelle de Praspel est bien plus souple~:
-elle accepte des clauses dans n'importe quel ordre. Mais, pour faciliter le
-raisonnement, nous ne présenterons et ne travaillerons que sur une forme
-normale.
+elle accepte des clauses dans n'importe quel ordre. Mais, pour rester simple,
+nous ne présenterons et ne travaillerons que sur une forme normale.
 
 \begin{figure}
 \begin{bigpre}
@@ -191,35 +191,36 @@ partie~\ref{subsection:language:expressions}.
 La précondition d'une méthode est exprimée à l'aide de la clause \arequires, la
 postcondition à l'aide de la clause \aensures. La précondition exprime des
 contraintes sur le {\strong pré-état} du système, alors que la postcondition
-exprime des contraintes sur le {\strong post-état} du système. Afin de modifier
-l'état du système, il doit être exécuté en appelant une méthode. La clause
-\aensures représente une {\strong postcondition normale}, mais le système peut
-aussi lever une exception et être alors placé dans un {\strong post-état
-exceptionnel}. \pagebreak La clause \athrowable exprime des contraintes sur cet
-état particulier~: elle exprime les conditions sous lesquelles des exceptions
-peuvent être levées par la méthode et aussi le post-état du système associé (par
-exemple une exception a été levée mais le système est suffisamment propre pour
-tenter une nouvelle exécution). La syntaxe de $T$ ($T_{\alpha.\beta}$ et
-$T_\m{D}$ dans la figure~\ref{figure:language:typical_contract}) est définie par
-l'entité syntaxique \grule{exceptional-expression} dans la
+exprime des contraintes sur le pré-état et le {\strong post-état} du système.
+Afin de modifier l'état du système, il doit être exécuté en appelant une
+méthode. \pagebreak La clause \aensures représente une {\strong postcondition
+normale}, mais le système peut aussi lever une exception et être alors placé
+dans un {\strong post-état exceptionnel}.La clause \athrowable exprime des
+contraintes sur cet état particulier~: elle exprime les conditions sous
+lesquelles des exceptions peuvent être levées par la méthode et aussi le
+post-état du système associé (par exemple une exception a été levée mais le
+système est suffisamment propre pour tenter une nouvelle exécution). La syntaxe
+de $T$ ($T_{\alpha.\beta}$ et $T_\m{D}$ dans la
+figure~\ref{figure:language:typical_contract}) est définie par l'entité
+syntaxique \grule{exceptional-expression} dans la
 figure~\ref{figure:language:grammar_part2}. $T$ est de la forme \code{$T_C$ with
 $T_E$} où $T_C$ est une liste de noms de classes asssociée à un identifiant et
 $T_E$ est une expression, appelée {\strong postcondition exceptionnelle}, dont
 la syntaxe est détaillée dans la partie~\ref{subsection:language:expressions}.
 Tous les identifiants définis dans $T_C$ peuvent apparaître dans $T_E$. La
 sémantique est la suivante~: si l'exception levée est une instance d'une classe
-représentant une exception listée dans $T_C$, alors elle est assignée à
+représentant une exception listée dans $T_C$, alors elle est affectée à
 l'identifiant associé et la postcondition exceptionnelle $T_E$ doit être
 satisfaite.
 
 Une méthode peut avoir différents {\strong comportements} relatifs à ses
 arguments et à l'état du système. Praspel propose la clause \abehavior pour
-représenter un comportement, identifié par un nom, et peut contenir une
-description informelle, grâce à la clause \adescription~; ces deux informations
-peuvent s'avérer très utiles pour offrir un retour à l'utilisateur.  Les clauses
-\arequires, \aensures, \athrowable et \abehavior elle-même peuvent apparaître à
-l'intérieur d'une clause \abehavior. Cette structure décrit des comportements
-{\strong imbriqués}, comme illustré dans la
+représenter un comportement. Un comportement est identifié par un nom, et peut
+contenir une description informelle, grâce à la clause \adescription~; ces deux
+informations peuvent s'avérer très utiles pour offrir un retour à l'utilisateur.
+Les clauses \arequires, \aensures, \athrowable et \abehavior elle-même peuvent
+apparaître à l'intérieur d'une clause \abehavior. Cette structure décrit des
+comportements {\strong imbriqués}, comme illustré dans la
 figure~\ref{figure:language:typical_contract}, dans laquelle le comportement
 $\beta$ est imbriqué dans le comportement $\alpha$. Nous pouvons également
 décrire des comportements {\strong alternatifs} en juxtaposant des clauses
@@ -285,7 +286,7 @@ class Filesystem \{ \\
      *     @description 'The filesystem is full.'; \\
      *     @requires  \bslash{}pred('\$this->getUsage() + \$file->getSize() \\
      *                          > static::SIZE'); \\
-     *     @ensures   \anothing; \\
+     *     @ensures   \anone; \\
      *     @throwable AllocationException e with \\
      *                    file->isAttached(): false and \\
      *                    e->getFilesystem(): this; \\
@@ -317,7 +318,7 @@ décrirons dans les parties suivantes. La méthode \code{store} a deux
 comportements~: un comportement \code{full} quand le système de fichier est
 plein, et un comportement par défaut. Le premier comportement décrit une
 précondition et une postcondition uniquement exceptionnelle (car \aensures
-refuse tous les post-états normaux à cause de \anothing, nous y reviendrons).
+refuse tous les post-états normaux à cause de \anone, nous y reviendrons).
 Ici, seule l'exception \code{AllocationException} peut être levée. Elle sera
 associée à l'identifiant \code{e}, puis le reste de la clause devra être valide.
 Dans le second comportement (par défaut), aucune exception ne peut être levée
@@ -339,7 +340,7 @@ contraintes, respectivement présentées dans les parties suivantes.
 \begin{center}
 \begin{tabular}{rcl}
 \grule{expression} & \gsep &
-  \anothing \\ & &
+  \anone \\ & &
   \mvert (\grule{declaration}$^+_\code{and}$ $\code{and})^?$ \\ & &
   \mvertp (\grule{predicate}$^+_\code{and}$ $\code{and})^?$  \\ & &
   \mvertp \grule{qualification}$^?_\code{and}$ \\
@@ -472,14 +473,14 @@ actuelles. C'est pourquoi nous avons la construction «~boîte noire~» \apred{p
 où $p$ est du code PHP. Cette construction permet à l'utilisateur d'exprimer des
 contraintes arbitraires en utilisant PHP lui-même au lieu de Praspel. Le code
 $p$ doit être un prédicat en forme normale {\strong conjonctive} (CNF). La
-construction \apred{p} ne supporte que la validation et non pas la génération.
-Le prédicat \code{\bslash{}pred('\$this->getUsage() + \$file->getSize()
+construction \apred{p} supporte la validation mais pas la génération.  Le
+prédicat \code{\bslash{}pred('\$this->getUsage() + \$file->getSize()
 > static::SIZE')} dans la figure~\ref{figure:language:short_contract} signifie
 que s'il n'y a plus de place pour ajouter un nouveau fichier, alors cette partie
 de la précondition est satisfaite.
 
-Le mot-clé \anothing est strictement équivalent à \apred{\code{'fal\-se'}}.
-Ainsi, écrire \code{\aensures \anothing;} signifie que tous les post-états
+Le mot-clé \anone est strictement équivalent à \apred{\code{'fal\-se'}}.
+Ainsi, écrire \code{\aensures \anone;} signifie que tous les post-états
 normaux seront refusés car la postcondition normale sera toujours fausse. Ce
 mot-clé est plus qu'un sucre syntaxique car, selon la grammaire dans la
 figure~\ref{figure:language:grammar_part2}, il empêche l'utilisation de
@@ -496,12 +497,12 @@ ce nombre est atteint, le générateur abandonne et émet une erreur qui sera
 journalisée.
 
 Une tâche récurrente durant nos travaux de recherche est d'observer et analyser
-ce que les utilisateurs écrivent le plus dans cette construction, et l'extraire
-dans Praspel afin de supporter les deux aspects~: validation et génération.
+ce que les utilisateurs écrivent le plus dans cette construction, et enrichir
+Praspel avec des outils de générations pour les prédicats les plus fréquents.
 L'objectif est de faire évoluer le langage en supportant plus de constructions
 usuelles nativement au lieu de les avoir dans une boîte noire, et ainsi, entre
 autres, réduire le rejet lors de la génération de données. Ce processus est
-illustré dans la partie~\ref{section:data:arrays}
+illustré pour le cas des tableaux dans la partie~\ref{section:data:arrays}
 page~\pageref{section:data:arrays}.
 
 \subsubsection{Qualifications}
@@ -516,7 +517,7 @@ page~\pageref{section:data:arrays}.
 Dans la figure~\ref{figure:language:short_contract} ainsi que dans la règle
 \grule{identifier} de la grammaire de la
 figure~\ref{figure:language:grammar_part3}, pour manipuler un identifiant, nous
-voyons les mots-clés spéciaux \code{this}, \code{self}, \code{static} et
+avons les mots-clés spéciaux \code{this}, \code{self}, \code{static} et
 \code{parent}, avec deux opérateurs différents \code{->} et \code{::}. Tout
 d'abord, pour un accès sur un objet (accès dynamique), nous utilisons
 l'opérateur \code{->}, sinon, pour un accès sur une classe (accès statique),
@@ -544,7 +545,7 @@ class BigFilesystem extends Filesystem \{ \
 \}
 \end{pre}
 %
-Supposons que la méthode \code{getUsage} de \code{Filesystem} qui utilise la
+Supposons que la méthode \code{getUsage} de \code{Filesystem} utilise la
 constante avec \code{self::SIZE}. Alors, lorsque nous appelons la méthode
 \code{getUsage} depuis \code{File\-system}, ce sera la constante \code{SIZE} de
 \code{Filesystem} qui sera utilisée. La même chose se produit lorsque nous
