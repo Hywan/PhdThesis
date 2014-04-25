@@ -54,15 +54,15 @@ propriétés temporelles.
 
 Dans les expérimentations, nous avons vu certaines limites de Praspel. La
 méthode du \inenglish{Search-based Testing}~\acite{McMinn04} utilise des
-métaheuristiques pour générer automatiquement des données de tests. Le SUT est
-en premier lieu exécuté avec des données aléatoires. Des fonctions de
+métaheuristiques pour générer automatiquement des données de test. Le SUT est en
+premier lieu exécuté avec des données aléatoires. Des fonctions de
 \inenglish{fitness} (fonctions objectifs) placées sur les points de choix du SUT
 permettent d'évaluer la «~distance~» entre les données courantes et les données
 nécessaires pour activer ou désactiver ce point de choix. En utilisant la
 programmation génétique, ces données initiales sont mutées pour former une
 nouvelle population de données. Des algorithmes de sélections vont réduire cette
 population. Chaque donnée de cette population sera ensuite réutilisée comme
-données de tests pour exécuter à nouveau le SUT. Les fonctions de
+données de test pour exécuter à nouveau le SUT. Les fonctions de
 \inenglish{fitness} vont produire de nouveaux résultats qui serviront à guider
 l'évolution de la population de données. Par exemple, avec la condition \code{x
 == y}, la fonction de \inenglish{fitness} sera $\mathrm{abs}(\code{x} -

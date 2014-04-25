@@ -13,7 +13,7 @@ parties~\ref{subsection:experimentation:coverage}
 et~\ref{subsection:experimentation:time} présentent les résultats obtenus avec
 la génération automatique de tests. La
 partie~\ref{subsection:experimentation:data}, quant à elle, présente les
-résultats obtenus avec uniquement la génération de données de tests. Beaucoup
+résultats obtenus avec uniquement la génération de données de test. Beaucoup
 d'erreurs ont été détectées durant cette expérimentation. La
 partie~\ref{subsection:experimentation:parameterized} en présente quelques-unes.
 Enfin, cette expérimentation s'est achevée sur une discussion, synthétisée dans
@@ -50,8 +50,8 @@ contiennent des données de toutes sortes, notamment des dates. C'est cette
 partie qui a été majoritairement abordée durant cette expérimentation car
 centrale dans cet outil.
 
-\item générateur de données de tests~: pour tester certaines parties techniques
-d'un outil, un générateur de données de tests spécifique a été créé. Afin de
+\item générateur de données de test~: pour tester certaines parties techniques
+d'un outil, un générateur de données de test spécifique a été créé. Afin de
 s'assurer que ce générateur ne comporte pas d'erreurs et étant lui-même assez
 volumineux, il a sa propre suite de tests. Les parties qui ont été abordées
 durant cette expérimentation étaient le calcul de ces données, les tests
@@ -215,7 +215,7 @@ Nous aurions aimé faire l'expérimentation 2~fois de suite pour comparer la
 courbe d'apprentissage, mais nous n'en avons pas eu le temps. Nous rappelons que
 le panel était constitué de bénévoles.
 
-\subsection{Génération de données de tests}
+\subsection{Génération de données de test}
 \label{subsection:experimentation:data}
 
 %Les suites AGT ne sont pas toutes complètes. Il faut compléter avec des MT.
@@ -239,17 +239,17 @@ génération facilement. Par exemple, écrire des boucles où chaque pas produit
 donnée légèrement différente de la précédente, ou encore utiliser des données
 générées pour modifier d'autres données provenant de bases ou d'autres sources.
 
-Par ailleurs, comme les données de tests ne sont plus déclarées manuellement,
+Par ailleurs, comme les données de test ne sont plus déclarées manuellement,
 cela simplifie grandement l'écriture des tests. Le panel a précisé que ce
 n'était «~même pas comparable~»~: il n'y avait rien avant et c'était un travail
 pénible. De même, cela simplifie aussi la lecture des tests. En effet, le
 contenu du test se restreint à sa logique plutôt qu'à la manipulation des
-données de tests. Le panel insiste sur le fait que les tests sont par conséquent
+données de test. Le panel insiste sur le fait que les tests sont par conséquent
 plus facilement maintenables. Cela implique que les ingénieurs n'hésiteront pas
 à modifier les suites de tests car ce processus est simplifié.
 
 \paragraph{Deuxième constat} Sans générateur automatique de données, le panel
-nous avoue que les données de tests utilisées étaient très peu nombreuses~:
+nous avoue que les données de test utilisées étaient très peu nombreuses~:
 entre 1 à 5 données par tests, 1.3 en moyenne. L'objectif était d'assurer une
 certaine couverture du code avec le critère tous-les-arcs. Avec nos générateurs
 de données, beaucoup de données sont générables «~instantanément~» pour
@@ -262,7 +262,7 @@ exécutés en permanence, plusieurs dizaines de fois par heure. La rapidité
 d'exécution des tests est alors importante pour ne pas impacter la vitesse de
 développement des équipes.
 
-\paragraph{Troisième constat} Générer beaucoup de données de tests n'a aucun
+\paragraph{Troisième constat} Générer beaucoup de données de test n'a aucun
 sens si elles sont toutes inutiles. Le panel a majoritairement apprécié les
 algorithmes de génération de chaînes de caractères. Pouvoir spécifier des
 chaînes de caractères avec des expressions régulières ou des grammaires, et
@@ -288,7 +288,7 @@ relevé cet inconvénient arguant que, vus des services rendus, l'effort demand�
 
 Enfin, dans le cas des tableaux, le panel a apprécié le fait de pouvoir générer
 à moindre coût des centaines de tableaux respectant certaines contraintes. Là
-encore, très peu de tableaux étaient utilisés avant en tant que données de tests
+encore, très peu de tableaux étaient utilisés avant en tant que données de test
 manuels. \\
 
 Dans tous les cas, les membres du panel ont remarqué une diminution du nombre de
@@ -365,7 +365,7 @@ L'ingénieur a estimé que si l'erreur était apparue en production, son impact
 aurait été «~important~».
 
 \paragraph{Erreurs avec JSON} Un programme devait valider des données formatées
-en JSON. Les données de tests manuelles ne couvraient pas tous les cas et
+en JSON. Les données de test manuelles ne couvraient pas tous les cas et
 l'utilisation d'un générateur de chaînes de caractères exhaustif a permis de
 détecter plusieurs erreurs. Elles ont été détectées en autant de temps qu'il
 était nécessaire pour écrire le test, c'est~à~dire moins de 3~minutes. 
@@ -474,10 +474,10 @@ le terrain~» pour reprendre leurs termes. Ainsi, ils peuvent davantage se
 concentrer sur des tests plus avancés tout en respectant le budget alloué à
 cette phase du développement.
 
-\paragraph{Génération de données de tests} Utiliser des générateurs de données
+\paragraph{Génération de données de test} Utiliser des générateurs de données
 permet de générer beaucoup de données pertinentes en très peu de temps. Le panel
 a ressenti plus de confiance dans les tests avec les générateurs plutôt qu'avec
-des données de tests manuelles. Ce ressenti s'est confirmé par le nombre
+des données de test manuelles. Ce ressenti s'est confirmé par le nombre
 d'erreurs détectées en peu de temps (en quelques minutes) dans des programmes
 déjà testés.
 
