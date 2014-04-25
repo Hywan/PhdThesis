@@ -18,9 +18,9 @@ le verdict du test à l'exécution.
 
 \end{itemize}
 %
-Rappelons qu'un test est composé de trois parties~: un SUT, des données de test
-et un oracle. En général, le contrat annote le programme, donc nous connaissons
-le SUT. Les deux dernières parties nous sont données en exploitant le contrat.
+Rappelons qu'un test est composé d'un SUT, de données de test et d'un oracle. En
+général, le contrat annote le programme, donc nous connaissons le SUT. Les deux
+dernières parties nous sont données en exploitant le contrat.
 
 À partir d'une spécification formelle, sous la forme d'un contrat, nous sommes
 capables de générer des suites de tests automatiquement. Comme nous sommes au
@@ -36,15 +36,15 @@ assure un moyen simple et efficace d'automatiser la génération d'oracle de
 tests. L'objectif est de décharger l'utilisateur du calcul du verdict de test, à
 savoir si le test unitaire est un succès ou un échec. L'outil génère
 automatiquement deux classes pour chaque interface ou classe Java annotée par du
-JML~: un squelette où déclarer les données de tests et les oracles permettant de
-calculer le verdict des tests.
+JML~: un squelette où déclarer les données de tests, et les oracles, permettant
+de calculer le verdict des tests.
 
 Les données de tests ne sont pas générées automatiquement~: un dictionnaire de
 données de tests pré-définies selon certaines stratégies est utilisé à la place.
 Pour des types de données non-primitifs au langage (donc des données de tests
 qui ne sont pas des booléens, des nombres, des chaînes de caractères etc.), le
 dictionnaire ne contient qu'une valeur nulle. C'est alors à l'utilisateur de
-calculer lui-même les données de tests.
+fournir lui-même les données de tests.
 
 Comme l'outil se concentre sur le test unitaire, chaque test ne concerne qu'une
 seule méthode. Les postconditions et invariants JML sont transformés en
@@ -80,19 +80,19 @@ fonction qui détermine la probabilité de créer un nouvel objet ou d'en
 réutiliser un déjà existant. Selon les structures de données manipulées, cette
 fonction permettra de détecter plus ou moins d'erreurs.
 
-\paragraph{JML-Testing-Tools} L'outil JML-Testing-Tool~\acite{BouquetDLU05,
-BouquetDL06} est développé comme une extension aux outils BZ Testing
-Tools~\acite{LegeardPU02}, un ensemble d'outils d'animation et de génération
-automatique de programmes B~\acite{Abrial05}, Z~\acite{Spivey89} ou de
-spécifications Statechart~\acite{Harel87}. L'outil JML-Testing-Tool comprend un
-animateur symbolique et un générateur de tests.
+\paragraph{JML-Testing-Tools} L'outil JML-Testing-Tools~\acite{BouquetDLU05,
+BouquetDL06} est développé comme une extension aux outils
+BZ-Testing-Tools~\acite{LegeardPU02}, un ensemble d'outils d'animation et de
+génération automatique de programmes B~\acite{Abrial05}, Z~\acite{Spivey89} ou
+de spécifications Statechart~\acite{Harel87}. L'outil JML-Testing-Tools comprend
+un animateur symbolique et un générateur de tests.
 
 Le premier permet d'animer symboliquement des méthodes Java en utilisant des
 spécifications écrites en JML. Le code des méthodes n'est jamais utilisé car
-l'outil manipule des modèles. JML-Testing-Tool permet d'appeler des méthodes
+l'outil manipule des modèles. JML-Testing-Tools permet d'appeler des méthodes
 avec des paramètres symboliques. Les valeurs de ces paramètres sont des
 contraintes définies sur le domaine lié au type des paramètres. Ces contraintes
-sont supportées par un solveur spécifique. Par conséquent, JML-Testing-Tool est
+sont supportées par un solveur spécifique. Par conséquent, JML-Testing-Tools est
 capable de représenter un grand nombre d'états d'un programme. Une valuation
 pour obtenir l'ensemble de tous les états concrets est possible. L'outil est
 également capable de vérifier les propriétés JML à la volée et d'afficher un
@@ -166,19 +166,20 @@ programme.
 \paragraph{UDITA} Le langage UDITA~\acite{GligoricGJKKM10} répond à l'objectif
 suivant~: s'assurer que des structures de données complexes sont bien supportées
 par un programme Java, c'est~à~dire qu'un programme sait manipuler sans erreur
-toutes les formes d'une certaine structure de données complexes.  Pour atteindre
-cet objectif, UDITA se présente comme un langage étendu du langage Java
-permettant de décrire des structures de données complexes. Ces descriptions vont
-être utilisées pour générer des ensembles finis de ces structures. UDITA est la
-suite de Korat. Nous retrouvons ainsi la démarche de demander à l'utilisateur
-d'écrire lui-même des méthodes de génération de données (description des
-structures) mais les contrats ont totallement disparu. UDITA ajoute à Java deux
-extensions~: des primitives de choix non-déterministes et une primitive pour
-restreindre ces choix. Ces constructions sont familières aux utilisateurs de
-vérificateur de modèle comme Java PathFinder~\acite{VisserHBPL03}, sur lequel il
-s'appuye. UDITA est d'ailleurs intégré au \inenglish{framework} Java PathFinder
-en tant qu'extension. Grâce aux points de choix non-déterministes, l'utilisateur
-ne décrit qu'une seule fois sa structure, et UDITA est capable d'en générer
+toutes les formes d'une certaine structure de données non-scalaire, récursive,
+imbriquée etc. Pour atteindre cet objectif, UDITA se présente comme un langage
+étendu du langage Java permettant de décrire des structures de données
+complexes. Ces descriptions vont être utilisées pour générer des ensembles finis
+de ces structures. UDITA est la suite de Korat. Nous retrouvons ainsi la
+démarche de demander à l'utilisateur d'écrire lui-même des méthodes de
+génération de données (description des structures) mais les contrats ont
+totallement disparu. UDITA ajoute à Java deux extensions~: des primitives de
+choix non-déterministes et une primitive pour restreindre ces choix. Ces
+constructions sont familières aux utilisateurs de vérificateur de modèle comme
+Java PathFinder~\acite{VisserHBPL03}, sur lequel il s'appuye. UDITA est
+d'ailleurs intégré au \inenglish{framework} Java PathFinder en tant
+qu'extension. Grâce aux points de choix non-déterministes, l'utilisateur ne
+décrit qu'une seule fois sa structure, et UDITA est capable d'en générer
 plusieurs. L'outil propose aussi à l'utilisateur des générateurs basiques, comme
 un générateur de booléens, d'entiers, de nouveaux objets ou d'objets déjà créés.
 Ces deux derniers permettent à l'utilisateur de décrire des structures de
