@@ -12,7 +12,7 @@ valider des applications Web.
 
 Notre première expérimentation vise à valider notre approche
 \inenglish{grammar-based testing}, soit à s'assurer que~: le compilateur de
-compilateurs $LL(\star)$ fonctionne correctement, c'est~à~idre qu'il accepte des
+compilateurs $LL(\star)$ fonctionne correctement, c'est~à~dire qu'il accepte des
 données correctes et rejette des données incorrectes, et que les générateurs de
 chaînes de caractères fonctionnent correctement également, c'est~à~dire qu'ils
 ne génèrent pas de données incorrectes par rapport à une grammaire.
@@ -23,10 +23,10 @@ langage de description de grammaires PP. Deuxièmement, toutes ces données sero
 analysées par notre propre compilateur et d'autres compilateurs. L'objectif est
 de vérifier que~: les données correctes sont acceptées par tous les
 compilateurs, que les données incorrectes sont refusées par tous les
-compilateurs et que tous les compilateurs aient le même avis sur la validité des
+compilateurs et que tous les compilateurs ont le même avis sur la validité des
 données.
 
-Nous considérons une grammaire de JSON et une grammaire simplifié des PCRE. Ce
+Nous considérons une grammaire de JSON et une grammaire simplifiée des PCRE. Ce
 choix est motivé par le fait que nous travaillons dans le domaine du web et que
 ces grammaires sont implémentées au sein de langages Web, comme PHP ou
 Javascript, avec des API simples nous permettant de valider les données que nous
@@ -129,31 +129,31 @@ pour chaque grammaire.}
 
 La figure~\ref{figure:experimentation:strings} montre un aperçu des tailles des
 grammaires en terme de nombres de données d'une certaine taille $n$ qui peuvent
-être produites. Dans la figure, {\scshape to} signie \inenglish{Time Out} et
+être produites. Dans la figure, {\scshape to} signifie \inenglish{Time Out} et
 indique que le temps de génération des données a dépassé 10~minutes.
 
 Nous avons tout d'abord expérimenté avec la grammaire de JSON pour générer des
-descriptions d'objet JSON. Nous avons
-utilisé l'algorithme exhaustif borné et basé sur la couverture. À cause du
-nombre important de règles imbriqués, l'algorithme exhaustif borné n'est pas
-capable de produire des données de taille raisonnable couvrant toutes les règles
-(et ainsi générer des descriptions complexes d'objet) malgré que nous générons
-toutes les descriptions d'objets de taille $n \leq 0$ en un temps raisonnable
-(quelques minutes). L'algorithme basé sur la couverture produit moins de données
-mais il génère des descriptions complexes d'objet contenant jusqu'à 32~lexèmes.
-Il est intéressant de noter que toutes les règles sont couvertures avec très peu
-de données, ici 3~données en moyenne sont nécessaires pour couvrir toute la
+descriptions d'objet JSON. Nous avons utilisé l'algorithme exhaustif borné et
+basé sur la couverture. À cause du nombre important de règles imbriquées,
+l'algorithme exhaustif borné n'est pas capable de produire des données de taille
+raisonnable couvrant toutes les règles (et ainsi générer des descriptions
+complexes d'objet) malgré le fait que nous générions toutes les descriptions
+d'objets de taille $n \leq 0$ en un temps raisonnable (quelques minutes).
+L'algorithme basé sur la couverture produit moins de données mais il génère des
+descriptions complexes d'objets contenant jusqu'à 32~lexèmes.  Il est
+intéressant de noter que toutes les règles sont couvertes avec très peu de
+données, ici 3~données en moyenne sont nécessaires pour couvrir toute la
 grammaire de JSON. Nous avons également remarqué que cet algorithme se comporte
 comme l'algorithme du postier Chinois dans le domaine du test de FSM
-(\inenglish{Finite State Machines}) et tend à produire une première longue donné
-qui couvre le maximum de règles, puis produit des données plus petites pour
-couvrir les quelques règles n'ayant pas été couvertes précédemment. Aussi,
+(\inenglish{Finite State Machines}) et tend à produire une première longue
+donnée qui couvre le maximum de règles, puis produit des données plus petites
+pour couvrir les quelques règles n'ayant pas été couvertes précédemment. Aussi,
 contrairement aux algorithmes précédents qui sont relativement lents
 (l'algorithme aléatoire uniforme nécessite une étape de dénombrement
 exponentielle et l'algorithme exhaustif borné est hautement combinatoire), cet
 algorithme est capable de produire des données complexes en quelques
 millisecondes. Ainsi, nous l'avons utilisé de manière répétée pour produire
-d'important ensemble de données dont la variété était assurée par les choix
+d'importants ensembles de données dont la variété était assurée par les choix
 aléatoires dans la résolution des points des choix, comme expliquée dans la
 partie~\ref{subsection:data:coverage_based_generation}.
 

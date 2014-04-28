@@ -12,7 +12,7 @@ Nous allons, dans les parties~\ref{subsection:data:pp} et
 \ref{subsection:data:compiler-compiler}, nous concentrer sur la première
 caractéristique des domaines réalistes, à savoir la prédicabilité, et présenter
 un langage simple de description de grammaire que nous avons créé, ainsi que son
-interprétation avec un compilateur de compilateur dédié. Ensuite, dans la
+interprétation avec un compilateur de compilateurs dédié. Ensuite, dans la
 partie~\ref{subsection:data:algorithms}, nous allons voir comment exploiter une
 grammaire pour générer des données valides, et ainsi assurer la seconde
 caractéristique des domaines réalistes, à savoir la générabilité.
@@ -181,7 +181,7 @@ Nous trouverons la grammaire du langage PP en langage PP dans
 l'annexe~\ref{appendices:grammar_of_pp} à la
 page~\pageref{appendices:grammar_of_pp}.
 
-\subsection{Compilateur de compilateur $LL(\star)$}
+\subsection{Compilateur de compilateurs $LL(\star)$}
 \label{subsection:data:compiler-compiler}
 
 Le fonctionnement schématique d'un compilateur est présenté dans la
@@ -200,7 +200,7 @@ ci-après).
 
 \end{figure}
 %
-Nous parlons de {\strong compilateur de compilateur} car la grammaire est tout
+Nous parlons de {\strong compilateur de compilateurs} car la grammaire est tout
 d'abord transformée en compilateur, c'est à dire en un analyseur lexical et un
 syntaxique. La grammaire nous évite d'avoir à écrire un compilateur à la main.
 
@@ -403,7 +403,7 @@ l'utilisateur d'appliquer des traitements supplémentaires~: des contraintes qui
 ne peuvent pas être représentées par la grammaire, comme par exemple une
 vérification de typage. \\
 
-Ce compilateur de compilateur $LL(\star)$ nous permet de valider une donnée
+Ce compilateur de compilateurs $LL(\star)$ nous permet de valider une donnée
 textuelle complexe. Ainsi, nous respectons la première caractéristique d'un
 domaine réaliste~: la prédicabilité. Les parties suivantes illustrent plusieurs
 algorithmes de générations de chaînes de caractères à partir d'une grammaire.
@@ -490,7 +490,7 @@ possible de générer pour la construction grammaticale $e$. Ainsi~:
 
 Dans la première formule, $\delta_i^j$ est le symbole de Kronecker égal à 1 si
 $i = j$, à 0 sinon. $\Gamma_k^n$ désigne l'ensemble des $k$-uplets d'entiers
-naturel dont la somme des éléments est égale à $n$. Pour chaque $k$-uplet
+naturels dont la somme des éléments est égale à $n$. Pour chaque $k$-uplet
 $\gamma$ et chaque $\alpha \in [1; k]$, $\gamma_\alpha$ désigne le
 $\alpha$\textsuperscript{ième} élément de $\gamma$.
 %
@@ -502,7 +502,7 @@ $$\Gamma_3^2 = \{(2, 0, 0), (1, 1, 0), (1, 0, 1), (0, 2, 0), (0, 1, 1), (0, 0,
 et pour le premier $k$-uplet, $\gamma_1 = 2$ et $\gamma_2 = \gamma_3 = 0$.
 
 Pour la concaténation, représentée par l'opérateur $\cdot$, la fonction $\psi$
-somme de la distribution de $n$ parmi toutes les sous-structures. Pour la
+somme la distribution de $n$ parmi toutes les sous-structures. Pour la
 disjonction, représentée par l'opérateur $\vert$, la fonction $\psi$ somme la
 taille des sous-structures de taille $n$. Et enfin, une répétition, représentée
 par $\{x, y\}$, est une disjonction de concaténations (par exemple,
@@ -610,12 +610,12 @@ aléatoirement et uniformément. Avec $i = 5$, nous obtenons $r = 2$.
 Donc nous répétons la disjonction 2~fois. Rappelons que nous traitons la règle
 \code{g} avec une taille de 3, donc 3~lexèmes à répartir sur 2~répétitions. Nous
 utilisons la fonction $\Gamma$ pour calculer cette répartition~: $\Gamma_2^3 =
-\{(2, 1), (1, 2)\}$ (tous les $k$-uplets contenant un 0 ont été supprimés car
-c'est impossible de distribuer 0 lexème dans une répétition). Nous allons
-utiliser soit 2~lexèmes lors de la première répétition et 1~lexème pour la
-seconde, soit l'inverse. Pour choisir, nous tirons un entier $j \in [1;
-2]$ aléatoirement et uniformément pour sélectionner le $k$-uplet. Disons que $j
-= 1$, donc nous allons utiliser le $k$-uplet $(2, 1)$.
+\{(2, 1), (1, 2)\}$ (tous les $k$-uplets contenant un 0 ont été supprimés car il
+est impossible de distribuer 0 lexème dans une répétition). Nous allons utiliser
+soit 2~lexèmes lors de la première répétition et 1~lexème pour la seconde, soit
+l'inverse. Pour choisir, nous choisissons un entier $j \in [1; 2]$ aléatoirement
+et uniformément pour sélectionner le $k$-uplet. Soit $j = 1$, nous allons donc
+utiliser le $k$-uplet $(2, 1)$.
 
 Pour la première répétition, il y a $n = 2$ lexèmes à distribuer. La disjonction
 peut produire 2~sous-structures. Nous allons utiliser une nouvelle fonction de
@@ -915,25 +915,27 @@ continuer notre parcours~:
 \begin{longtable}{lp{7cm}}
 
 \code{\ingray{([ae]+|[w-z]!)}\{1,3\}} &
-    nous tirons le nombre de répétitions $r_1 \in [1; 3]$, disons $r_1 = 2$~; \\
+    nous choisissons le nombre de répétitions $r_1 \in [1; 3]$, posons $r_1 =
+    2$~; \\
 
 \code{([ae]+|[w-z]!)\ingray{([ae]+|[w-z]!)}} &
     nous traitons la première répétition qui est une disjonction, nous traitons
-    la branche $d_1 \in [1; 2]$, disons $d_1 = 1$~; \\
+    la branche $d_1 \in [1; 2]$, posons $d_1 = 1$~; \\
 
 \code{([ae]+)\ingray{([ae]+|[w-z]!)}} &
-    nous avons une répétition $r_2 \in [1; +\infty[$, disons $r_2 = 2$~; \\
+    nous avons une répétition $r_2 \in [1; +\infty[$, posons $r_2 = 2$~; \\
 
 \code{[ae]\ingray{[ae]([ae]+|[w-z]!)}} &
     nous avons une classe de caractères, c'est équivalent ici à une disjonction
     entre \code{a} et \code{e}, nous choisissons \code{e}~;\\
 
 \code{\ingray{e}[ae]\ingray{([ae]+|[w-z]!)}} &
-    nous traitons la seconde répétition de $r_2$ et nous choisissons \code{a}~; \\
+    nous traitons la seconde répétition de $r_2$ et nous choisissons \code{a}~;
+    \\
 
 \code{\ingray{ea}([ae]+|[w-z]!)} & 
     nous traitons la seconde répétition de $r_1$ qui est une disjonction, nous
-    traitons la branche $d_2 \in [1; 2]$, disons $d_2 = 2$~; \\
+    traitons la branche $d_2 \in [1; 2]$, posons $d_2 = 2$~; \\
 
 \code{\ingray{ea}([w-z]\ingray{!})} &
     nous avons une classe de caractères qui est une plage entre \code{w} et
@@ -954,11 +956,11 @@ Chaque opérateur non borné, comme \code{*} ou \code{+}, est borné à un entie
 arbitraire, par défaut 2. \\
 
 Nous nous permettons une petite parenthèse afin d'être complet dans notre
-discours. Si nous souhaitons utiliser les algorithmes vus précédemment pour
+discours. Si nous souhaitions utiliser les algorithmes vus précédemment pour
 concrétiser les lexèmes (exprimés avec le langage PCRE), ceci demanderait un
 travail supplémentaire. En effet, il faudrait transformer le langage des PCRE
-vers le langage PP, et ainsi, nous nous retrouvons dans la même position qu'au
-début de cette partie où nous avons une grammaire et nos algorithmes de
+vers le langage PP, et ainsi, nous nous retrouverions dans la même position
+qu'au début de cette partie où nous avions une grammaire et nos algorithmes de
 génération. Dans une telle grammaire, les nouveaux lexèmes seraient alors des
 littéraux (comme \code{a}, \code{b}, \code{0} et autre symbole «~unitaire~»)
 facilement générables avec un algorithme aléatoire isotropique. Pour résumer,

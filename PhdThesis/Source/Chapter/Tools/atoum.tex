@@ -13,15 +13,15 @@ Travis-CI\footnote{Voir \url{http://travis-ci.com/}.}, Jenkins\footnote{Voir
 \url{https://coveralls.io/}.} etc.
 
 Les suites de tests générées par Praspel doivent être exécutables de plusieurs
-façons (en ligne, isolée ou autre), des rapports doivent être produits, les
+façons (en ligne, isolées ou autre), des rapports doivent être produits, les
 outils doivent être intégrés à des IDE etc. Tout ceci représente un important
 travail. atoum comporte déjà toutes ces fonctionnalités. Nous avons donc choisi
 de créer une extension pour introduire Praspel dans atoum. De plus, atoum ne
-possède aucun générateur de données, alors que Praspel en propose plusieurs.
-Cela a donc été encore plus naturel de rapprocher les deux projets. Cette
-extension, appelée \code{atoum/praspel-extension}, est incluse dans la
-distribution standard d'atoum «~sous stéroïde~», c'est~à~dire avec des outils
-qui ajoutent des fonctionnalités à atoum.
+possède aucun générateur de données, alors que Praspel en propose plusieurs. Il
+a donc été encore plus naturel de rapprocher les deux projets. Cette extension,
+appelée \code{atoum/praspel-extension}, est incluse dans la distribution
+standard d'atoum «~sous stéroïde~», c'est~à~dire avec des outils qui ajoutent
+des fonctionnalités à atoum.
 
 Dans un premier temps, nous allons présenter atoum, puis dans un second temps,
 nous montrerons les fonctionnalités offertes par l'extension.
@@ -76,10 +76,10 @@ Puis nous pouvons exécuter le test en ligne de commande~:
 \end{pre}
 %
 Le rapport simple nous informe que le test s'est exécuté en moins de
-0.005~seconde, que la mémoire utilisée a été de 0.25~Mb, que la couverture de
-code (avec le critère tous-les-arcs) a été de 100\%, que l'ensemble s'est
-exécuté en 0.08~seconde et que l'exécution de la seule suite de tests, ne
-contenant qu'un seul test représentant deux assertions, a été un succès.
+0.005~seconde, en utilisant 0.25~Mb de mémoire, avec une couverture de code
+(avec le critère tous-les-arcs) de 100\%, que l'ensemble s'est exécuté en
+0.08~seconde et que l'exécution de la seule suite de tests, ne contenant qu'un
+seul test représentant deux assertions, a été un succès.
 
 \end{example}
 
@@ -163,9 +163,9 @@ Nous avons créé un \inenglish{mock} puis nous avons spécifié que la méthode
 \end{example}
 
 Nous pouvons également forcer une méthode à retourner une exception à partir de
-son troisième appel par exemple. Nous pouvons également bouchonner des fonctions
-et objets standards de PHP. En somme, les fonctionnalités sont avancées et sont
-accessibles facilement.
+son troisième appel par exemple. Il est aussi possible de bouchonner des
+fonctions et objets standards de PHP. En somme, les fonctionnalités sont
+avancées et sont accessibles facilement.
 
 \subsection{Extension~: Praspel dans atoum}
 \label{subsection:tools:extension}
@@ -179,7 +179,7 @@ introduit Praspel dans atoum. Elle propose deux fonctionnalités~:
 \item la génération automatique de données de test, qui n'est pas présente dans
 atoum~;
 
-\item la compilation de suites de tests générées avec Praspel en suite de tests
+\item la compilation de suites de tests générées avec Praspel en suites de tests
 écrites avec l'API d'atoum~; les tests seront donc exécutables avec atoum.
 
 \end{itemize}
@@ -254,7 +254,7 @@ date( \\
 \end{pre}
 %
 Ensuite, nous allons générer des chaînes de caractères qui contiennent
-le mots-clé \code{foo} suivi des mots-clés \code{bar} ou \code{baz}~:
+le mot-clé \code{foo} suivi des mots-clés \code{bar} ou \code{baz}~:
 %
 \begin{pre}
 \$data = \$this->realdom->regex('/.+foo.+ba(r|z).+/'); \\
