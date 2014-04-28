@@ -6,15 +6,14 @@ programme est d'utiliser un système de {\strong typage}. Il en existe
 grossièrement deux grandes familles~: {\strong statique} et {\strong dynamique},
 que nous pouvons comprendre comme types déclarés syntaxiquement ou calculés lors
 de la compilation ou de l'exécution. Dans tous les cas, le type d'une donnée est
-connu au moment de l'{\strong exécution} du programme. Le typage permet de
-{\strong vérifier} la cohérence entre les données manipulées. Ainsi, la plupart
-des systèmes de typage ne permettent pas l'addition d'une chaîne de caractères
-avec un entier, sauf si ce système est dit {\strong faible}. Prenons l'exemple
-de PHP qui a un système de typage dynamique (déduit à l'exécution) et faible~:
-l'addition de la chaîne de caractères \code{'1.2'} avec l'entier \code{4}
-produit le réel \code{5.2}. Dans ce cas, le langage opère un transtypage,
-c'est~à~dire qu'à partir de règles internes il transforme les données vers un
-autre type.
+connu au moment de l'exécution du programme. Le typage permet de {\strong
+vérifier} la cohérence entre les données manipulées. Ainsi, la plupart des
+systèmes de typage ne permettent pas l'addition d'une chaîne de caractères avec
+un entier, sauf si ce système est dit faible. Prenons l'exemple de PHP qui a un
+système de typage dynamique (déduit à l'exécution) et faible~: l'addition de la
+chaîne de caractères \code{'1.2'} avec l'entier \code{4} produit le réel
+\code{5.2}. Dans ce cas, le langage opère un transtypage, c'est~à~dire qu'à
+partir de règles internes il transforme les données vers un autre type.
 
 Notons que dans un langage comme PHP où les types ne sont pas déclarés
 syntaxiquement, il est culturellement admis d'écrire une documentation API qui
@@ -26,11 +25,11 @@ introduire la notion de {\strong domaine réaliste}. Naïvement, nous pouvons di
 qu'ils raffinent les types usuels comme les entiers, les chaînes de caractères,
 les tableaux etc., et qu'ils permettent d'exprimer des données plus complexes,
 comme des grammaires, des graphes etc. Le mot {\strong réaliste} signifie qu'ils
-sont conçus pour spécifier des domaines de données {\strong pertinents} pour un
-contexte {\strong spécifique}. Par exemple, une adresse email peut être un
-domaine réaliste. En effet, plusieurs logiciels identifient leurs utilisateurs
-avec leur adresse email. C'est plus qu'une chaîne de caractères~: il y a
-certaines règles, notamment syntaxiques, à respecter.
+sont conçus pour spécifier des domaines de données pertinents pour un contexte
+spécifique. Par exemple, une adresse email peut être un domaine réaliste. En
+effet, plusieurs logiciels identifient leurs utilisateurs avec leur adresse
+email. C'est plus qu'une chaîne de caractères~: il y a certaines règles,
+notamment syntaxiques, à respecter.
 
 \begin{definition}[Caractéristiques d'un domaine réaliste]
 \label{definition:language:realdom}
@@ -54,10 +53,10 @@ domaine réaliste.
 \label{subsection:language:realdom:implementation}
 
 Nous proposons une implémentation des domaines réalistes en PHP. Dans cette
-implémentation, un domaine réaliste est représenté par une {\strong classe}.
-Ses propriétés de prédicabilité et de générabilité sont respectivement
-représentées par les {\strong méthodes} suivantes~:
-
+implémentation, un domaine réaliste est représenté par une classe.  Ses
+propriétés de prédicabilité et de générabilité sont respectivement représentées
+par les méthodes suivantes~:
+%
 \begin{itemize}
 
 \item \code{predicate(\$q)}, où \code{\$q} est la valeur à valider~;
@@ -75,8 +74,8 @@ l'instant, le seul générateur numérique disponible est pseudo-aléatoire.
 
 Les domaines réalistes étant implémentés à travers des classes et PHP étant
 orienté objet, nous pouvons appliquer de l'{\strong héritage}. Par conséquent,
-un domaine réaliste enfant peut hériter et {\strong raffiner} les propriétés de
-son parent. Par exemple, le domaine réaliste \code{Color} (qui représente des
+un domaine réaliste enfant peut hériter et raffiner les propriétés de son
+parent. Par exemple, le domaine réaliste \code{Color} (qui représente des
 couleurs) hérite de \code{String} (qui représente des chaînes de caractères), et
 \code{Boundinteger} (qui représente des intervalles d'entiers) hérite de
 \code{Integer} (qui représente l'ensemble des entiers de la machine). Tous les
@@ -176,12 +175,11 @@ contient les domaines réalistes définis par les utilisateurs.
 \subsection{Paramètres}
 \label{subsection:language:realdom:parameters}
 
-{\em A l'instar} des fonctions, les domaines réalistes sont {\strong
-paramétrables}. Les données reçues par le domaine réaliste sont appelées ses
-{\strong arguments}. Les paramètres sont très utiles pour représenter des
-structures de données complexes, telles que des tableaux imbriqués, des graphes,
-des automates, des arbres etc. Tous sont des imbrications de types scalaires et
-structurels.
+{\em A l'instar} des fonctions, les domaines réalistes sont paramétrables. Les
+données reçues par le domaine réaliste sont appelées ses {\strong arguments}.
+Les paramètres sont très utiles pour représenter des structures de données
+complexes, telles que des tableaux imbriqués, des graphes, des automates, des
+arbres etc. Tous sont des imbrications de types scalaires et structurels.
 
 \begin{example}[Paramétrage d'un domaine réaliste]
 
@@ -192,13 +190,12 @@ dont les code-points (Unicode) des caractères sont entre \code{0x61} et
 
 \end{example}
 
-\noindent
-La figure~\ref{figure:language:boundinteger} montre la déclaration de deux
-paramètres~: \code{lower} et \code{upper} en \circled{4}, qui ont pour domaine
-réaliste \code{Constinteger}, avec respectivement en valeur par défaut
+\noindent La figure~\ref{figure:language:boundinteger} montre la déclaration de
+deux paramètres~: \code{lower} et \code{upper} en \circled{4}, qui ont pour
+domaine réaliste \code{Constinteger}, avec respectivement en valeur par défaut
 \code{PHP\_INT\_MIN} et \code{PHP\_INT\_MAX} qui sont des constantes de PHP. Si
-aucune valeur par défaut n'est précisée, alors le paramètre est {\strong
-obligatoire}, sinon il est {\strong optionnel}.
+aucune valeur par défaut n'est précisée, alors le paramètre est obligatoire,
+sinon il est optionnel.
 
 Quand nous décrivons les paramètres d'un domaine réaliste, nous pouvons les
 filtrer. Le filtre est exprimé avec un ou des noms de domaines réalistes,
@@ -246,9 +243,9 @@ un mot en minuscule écrit en grec.
 
 L'héritage que nous venons de voir en
 \ref{subsection:language:realdom:hierarchy} est une classification. Une autre
-classification {\strong transversale} est possible grâce aux {\strong
-interfaces}. Elles aident à caractériser les domaines réalistes. Les interfaces
-les plus intéressantes sont~:
+classification {\strong transversale} est possible grâce aux interfaces. Elles
+aident à caractériser les domaines réalistes. Les interfaces les plus
+intéressantes sont~:
 
 \begin{itemize}
 

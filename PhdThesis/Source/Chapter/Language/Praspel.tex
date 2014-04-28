@@ -19,14 +19,14 @@ commentaires~: en ligne (avec \code{//} ou \code{\#}), multi-lignes (entre
 dernière catégorie est culturellement dédiée à l'écriture des annotations,
 documentations API etc., et est par conséquent celle où nous écrirons Praspel.
 
-Praspel est un \inenglish{Behavioral Interface Specification Language} ({\strong
-BISL}) basé sur les contrats. Un {\strong contrat} est un modèle du comportement
-du code, décrit à travers des contraintes formelles, appelées {\strong clauses},
-comme les préconditions, les postconditions et les invariants. Ces contraintes
-sont généralement localisées dans le code source autour des données.  Dans le
-cas de Praspel, les invariants sont localisés sur les attributs des classes et
-les préconditions et postconditions sont localisées sur les paramètres des
-méthodes. La sémantique d'un contrat est la suivante~:
+Le langage Praspel est un \inenglish{Behavioral Interface Specification
+Language} ({\strong BISL}) basé sur les contrats. Un contrat est un modèle du
+comportement du code, décrit à travers des contraintes formelles, appelées
+clauses, comme les préconditions, les postconditions et les invariants. Ces
+contraintes sont généralement localisées dans le code source autour des données.
+Dans le cas de Praspel, les invariants sont localisés sur les attributs des
+classes et les préconditions et postconditions sont localisées sur les
+paramètres des méthodes. La sémantique d'un contrat est la suivante~:
 
 \begin{itemize}
 
@@ -218,15 +218,14 @@ contenir une description informelle, grâce à la clause \adescription~; ces deu
 informations peuvent s'avérer très utiles pour offrir un retour à l'utilisateur.
 Les clauses \arequires, \aensures, \athrowable et \abehavior elle-même peuvent
 apparaître à l'intérieur d'une clause \abehavior. Cette structure décrit des
-comportements {\strong imbriqués}, comme illustré dans la
+comportements imbriqués, comme illustré dans la
 figure~\ref{figure:language:typical_contract}, dans laquelle le comportement
 $\beta$ est imbriqué dans le comportement $\alpha$. Nous pouvons également
-décrire des comportements {\strong alternatifs} en juxtaposant des clauses
-\abehavior. Ceci est illustré dans la
-figure~\ref{figure:language:typical_contract} avec le comportement $\gamma$,
-frère du comportement $\alpha$. Les comportements sont, dans la pratique,
-{\strong mutuellement exclusifs}. Cependant, la syntaxe autorise l'écriture de
-comportements non-exclusifs.
+décrire des comportements alternatifs en juxtaposant des clauses \abehavior.
+Ceci est illustré dans la figure~\ref{figure:language:typical_contract} avec le
+comportement $\gamma$, frère du comportement $\alpha$. Les comportements sont,
+dans la pratique, mutuellement exclusifs. Cependant, la syntaxe autorise
+l'écriture de comportements non-exclusifs.
 
 La clause \adefault est strictement équivalente à une clause \abehavior avec une
 clause \arequires implicite décrivant la conjonction de toutes les négations des
@@ -456,9 +455,9 @@ fois.
 
 La variable spéciale \aresult représente la valeur {\strong retournée} par la
 méthode. Elle ne peut apparaître que dans la clause \aensures. Les clauses
-\aensures et \athrowable peuvent également faire {\strong référence} à la valeur
-d'une variable dans le pré-état grâce à la construction \aold{i}, où $i$ est le
-nom d'une variable.
+\aensures et \athrowable peuvent également faire référence à la valeur d'une
+variable dans le pré-état grâce à la construction \aold{i}, où $i$ est le nom
+d'une variable.
 
 \subsubsection{Prédicats}
 
@@ -573,13 +572,12 @@ leur partie entière. Les valeurs quant à elles peuvent être de n'importe quel
 type. Un tableau peut être {\strong homogène} ou {\strong hétérogène}. Dans un
 tableau homogène, toutes les clés ont le même type, ainsi que toutes les
 valeurs. Dans un tableau hétérogène, les clés peuvent avoir des types distincts,
-tout comme les valeurs.  Les clés peuvent être {\strong auto-incrémentées}, en
-ajoutant 1 à la dernière clé entière, à partir de 0. La {\strong longueur} (ou
-la {\strong taille}) d'un tableau est son nombre de paires. Un tableau n'a pas
-de longueur prédéfinie, mais sa longueur (stockée en interne par le moteur PHP)
-peut être connue grâce à la fonction PHP \code{count()}. Un tableau n'a
-également pas de profondeur prédéfinie, \ie il peut contenir un nombre
-arbitraire de sous-tableaux.
+tout comme les valeurs. Les clés peuvent être auto-incrémentées, en ajoutant 1
+à la dernière clé entière, à partir de 0. La longueur (ou la taille) d'un
+tableau est son nombre de paires. Un tableau n'a pas de longueur prédéfinie,
+mais sa longueur (stockée en interne par le moteur PHP) peut être connue grâce à
+la fonction PHP \code{count()}. Un tableau n'a également pas de profondeur
+prédéfinie, \ie il peut contenir un nombre arbitraire de sous-tableaux.
 
 Dans Praspel, \code{array($D$, $L$)} dénote le domaine réaliste des tableaux
 dont les domaines et codomaines sont décrits par $D$ et dont la longueur
