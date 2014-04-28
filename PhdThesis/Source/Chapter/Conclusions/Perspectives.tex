@@ -92,7 +92,8 @@ produire à part mettre à jour ses outils.
 Le langage Praspel n'est pas complet. Certaines choses peuvent être mieux
 spécifiées. Nous sommes toujours dans cette démarche d'analyser ce que les
 développeurs écrivent dans les contrats et d'améliorer le langage en
-conséquence. Nous avons relevé deux points importants.
+conséquence. Nous avons relevé deux points importants, puis un dernier point que
+nous aurions aimé traiter mais le temps nous a manqué.
 
 \subsubsection{Solveurs sur les entiers et réels}
 
@@ -112,6 +113,20 @@ réalistes représentant des données métiers, comme des numéros de comptes
 bancaires, des numéros de téléphones etc. Ce ne sont pas des perspectives
 scientifiques mais industrielles. Toutefois, elles participent à l'adoption de
 nos outils dans l'industrie.
+
+\subsubsection{Pureté des méthodes}
+
+À l'origine de Praspel, il existait la clause \ais. Elle permet de qualifier la
+catégorie de la méthode. Le seul qualificatif était \code{pure}, pour
+contrôler la mutabilité de l'environnement. En effet, une méthode peut modifier
+ou pas son environnement lors de son exécution. Si elle ne le modifie pas, alors
+nous parlons d'une méthode {\strong pure}, sinon nous parlons d'une méthode
+{\strong impure} (par défaut).
+
+Il serait intéressant de détecter la pureté d'une méthode. De même, une méthode
+pure peut être utilisée dans un contrat car elle ne modifie par l'état du SUT.
+Ainsi, détecter la pureté d'une méthode peut permettre d'écrire des contrats
+plus élaborés.
 
 \subsection{Vers des outils industriels~?}
 

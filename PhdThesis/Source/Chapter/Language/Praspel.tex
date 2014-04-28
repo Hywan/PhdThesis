@@ -58,7 +58,6 @@ page~\pageref{appendices:grammar_of_praspel}.
     \grule{invariant-clause}$^?$ \\
 
 \grule{method-clauses} & \gsep &
-    $($ \grule{is-clause} \code{;} $)^?$ \\ & &
     $($ \grule{description-clause} \code{;} $)^?$ \\ & &
     \grule{rbdet-clauses} \\
 
@@ -105,9 +104,6 @@ plus haut niveau.}
 \grule{throwable-clause} & \gsep &
     \athrowable \grule{exceptional-expression} \\
 
-\grule{is-clause} & \gsep &
-    \ais \code{pure} \\
-
 \grule{description-clause} & \gsep &
     \adescription \gtoken{string} \\
 \end{tabular}
@@ -149,7 +145,6 @@ class C \{ \\
     protected \$a; \\
 \\
     /** \\
-     * @is \(S\); \\
      * @requires \(P\); \\
      * @behavior \(\alpha\) \{ \\
      *     @description 'Apply the \(\alpha\) process.'; \\
@@ -247,13 +242,6 @@ une erreur sera levée car les paramètres seront non-spécifiés. Une clause
 post-états normaux (respectivement tous les invariants de classes). Une clause
 \athrowable manquante revient à refuser tous les post-états exceptionels.
 
-Enfin, la clause \ais permet de qualifier la catégorie de la méthode. Le seul
-qualificatif actuel est \code{pure}, pour contrôler la mutabilité de
-l'environnement. En effet, une méthode peut modifier ou pas son environnement
-lors de son exécution. Si elle ne le modifie pas, alors nous parlons d'une
-méthode {\strong pure}, sinon nous parlons d'une méthode {\strong impure} (par
-défaut). \\
-
 \begin{figure}
 \begin{bigpre}
 class Filesystem \{ \\
@@ -271,7 +259,6 @@ class Filesystem \{ \\
     protected \$_map = array(); \\
 \\
     /** \\
-     * @is pure; \\
      * @ensures \bslash{}result: this->_usage; \\
      */ \\
     public function getUsage ( ) \{ /* … */ \} \\
@@ -505,9 +492,8 @@ page~\pageref{section:data:arrays}.
 \subsubsection{Qualifications}
 
 Praspel permet de qualifier une donnée en utilisant le mot-clé \code{is} suivi
-d'une liste d'adjectifs (différent de la clause \ais). Un exemple de
-qualification est présenté dans la partie~\ref{section:data:arrays}
-page~\pageref{section:data:arrays}.
+d'une liste d'adjectifs. Un exemple de qualification est présenté dans la
+partie~\ref{section:data:arrays} page~\pageref{section:data:arrays}.
 
 \subsubsection{Identifiants}
 

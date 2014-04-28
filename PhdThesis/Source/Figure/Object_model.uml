@@ -12,7 +12,6 @@
         class Declaration
         class Ensures
         class Invariant
-        class Is
         class Requires
         class Specification
         class Throwable
@@ -31,7 +30,6 @@
     Clause          <|-- Behavior
     Clause          <|-- Declaration
     Clause          <|-- Description
-    Clause          <|-- Is
     Clause          <|-- Throwable
     Behavior        <|-- DefaultBehavior
     Behavior        <|-- Specification
@@ -45,7 +43,6 @@
     Behavior      *-- "1" Ensures
     Behavior      *-- "1" Throwable
     Behavior      *-- "1" Description
-    Specification *-- "1" Is
     Specification *-- "1" Invariant
     Declaration   *-- "n" Variable
     Specification *-- "n" Implicit
