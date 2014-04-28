@@ -185,7 +185,7 @@ des clauses sur une classe \code{C} avec un attribut \code{a} et une méthode
 autres clauses sont des clauses de méthode. Elles sont localisées avant
 l'en-tête des méthodes. La plupart de ces clauses introduisent des expressions
 Praspel, définies par les entités syntaxiques \grule{expression} et
-\grule{exceptional-expression}, détaillées dans la
+\grule{exceptional-expression}, \pagebreak détaillées dans la
 partie~\ref{subsection:language:expressions}.
 
 La précondition d'une méthode est exprimée à l'aide de la clause \arequires, la
@@ -193,12 +193,12 @@ postcondition à l'aide de la clause \aensures. La précondition exprime des
 contraintes sur le {\strong pré-état} du système, alors que la postcondition
 exprime des contraintes sur le pré-état et le {\strong post-état} du système.
 Afin de modifier l'état du système, il doit être exécuté en appelant une
-méthode. \pagebreak La clause \aensures représente une {\strong postcondition
-normale}, mais le système peut aussi lever une exception et être alors placé
-dans un {\strong post-état exceptionnel}.La clause \athrowable exprime des
-contraintes sur cet état particulier~: elle exprime les conditions sous
-lesquelles des exceptions peuvent être levées par la méthode et aussi l'état du
-système associé. La syntaxe de $T$ ($T_{\alpha.\beta}$ et $T_\m{D}$ dans la
+méthode. La clause \aensures représente une {\strong postcondition normale},
+mais le système peut aussi lever une exception et être alors placé dans un
+{\strong post-état exceptionnel}.La clause \athrowable exprime des contraintes
+sur cet état particulier~: elle exprime les conditions sous lesquelles des
+exceptions peuvent être levées par la méthode et aussi l'état du système
+associé. La syntaxe de $T$ ($T_{\alpha.\beta}$ et $T_\m{D}$ dans la
 figure~\ref{figure:language:typical_contract}) est définie par l'entité
 syntaxique \grule{exceptional-expression} dans la
 figure~\ref{figure:language:grammar_part2}. $T$ est de la forme \code{$T_C$ with
