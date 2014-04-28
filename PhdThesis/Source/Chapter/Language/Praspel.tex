@@ -339,9 +339,9 @@ contraintes, respectivement présentées dans les parties suivantes.
 \begin{tabular}{rcl}
 \grule{expression} & \gsep &
   \anone \\ & &
-  \mvert (\grule{declaration}$^+_\code{and}$ $\code{and})^?$ \\ & &
-  \mvertp (\grule{predicate}$^+_\code{and}$ $\code{and})^?$  \\ & &
-  \mvertp \grule{qualification}$^?_\code{and}$ \\
+  \mvert (\grule{declaration} $\code{and})^*$ \\ & &
+  \mvertp (\grule{predicate} $\code{and})^*$  \\ & &
+  \mvertp \grule{qualification}$^*_\code{and}$ \\
 
 \grule{exceptional-expression} & \gsep &
     $($ $($ \grule{exception-identifier} $)^+_\code{or}$ \\ & &
