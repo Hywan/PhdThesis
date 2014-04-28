@@ -58,74 +58,95 @@ La bibliothèque \code{Hoa\bslash{}Realdom}\footnote{Voir
 bibliothèque standard des domaines réalistes. Ils sont implémentés comme
 présenté dans la partie~\ref{section:language:realdoms}
 page~\pageref{section:language:realdoms}, à savoir que chaque domaine réaliste
-est représenté par une classe.  Actuellement, une liste de 28~domaines réalistes
-est proposée~:
+est représenté par une classe. Actuellement, une liste de 28~domaines réalistes
+est proposée, répartis dans les différentes couches de l'univers
+$\m{U}_\mathrm{realdom}$ des domaines réalistes (voir la
+partie~\ref{subsection:language:realdom:hierarchy}
+page~\pageref{subsection:language:realdom:hierarchy}).
 %
-\begin{itemize}
+\begin{enumerate}[couche 1]
+\setcounter{enumi}{-1}
 
-\item \code{Array}, représentant des tableaux~;
+\item
+    \begin{itemize}
 
-\item \code{Bag}, un sac pouvant contenir plusieurs domaines réalistes de
-natures différentes~; plus formellement c'est un multiensemble~;
+    \item \code{Undefined}, représentant des valeurs non-définies~;
 
-\item \code{Boolean}, représentant les booléens~;
+    \end{itemize}
 
-\item \code{Boundfloat}, représentant un intervalle de réels~;
+\item
+    \begin{itemize}
 
-\item \code{Boundinteger}, représentant un intervalle d'entiers~;
+    \item \code{Array}, représentant des tableaux~;
 
-\item \code{Class}, représentant des instances de classes~;
+    \item \code{Boolean}, représentant les booléens~;
 
-\item \code{Color}, représentant des couleurs au format \code{\#{\em rrggbb}}~;
+    \item \code{Class}, représentant des instances de classes~;
 
-\item \code{Constarray}, représentant les tableaux de Praspel, c'est~à~dire une
-description de tableau~;
+    \item \code{Float}, représentant les réels~;
 
-\item \code{Constboolean}, représentant les booléens de Praspel~;
+    \item \code{Integer}, représentant les entiers~;
 
-\item \code{Constfloat}, représentant les réels de Praspel~;
+    \item \code{String}, représentant des chaînes de caractères~;
 
-\item \code{Constinteger}, représentant les entiers de Praspel~;
+    \end{itemize}
 
-\item \code{Constnull}, représentant la valeur nulle de Praspel~;
+\item
+    \begin{itemize}
 
-\item \code{Conststring}, représentant les chaînes de caractères de Praspel~;
+    \item \code{Bag}, un sac pouvant contenir plusieurs domaines réalistes de
+    natures différentes~; plus formellement c'est un multiensemble~;
 
-\item \code{Date}, représentant une date formatée~;
+    \item \code{Boundfloat}, représentant un intervalle de réels~;
 
-\item \code{Empty}, représentant une donnée vide~;
+    \item \code{Boundinteger}, représentant un intervalle d'entiers~;
 
-\item \code{Even}, représentant les nombres pairs~;
+    \item \code{Color}, représentant des couleurs au format \code{\#{\em rrggbb}}~;
 
-\item \code{Float}, représentant les réels~;
+    \item \code{Constarray}, représentant les tableaux de Praspel, c'est~à~dire une
+    description de tableau~;
 
-\item \code{Grammar}, représentant les chaînes de caractères spécifiées par une
-grammaire~;
+    \item \code{Constboolean}, représentant les booléens de Praspel~;
 
-\item \code{Integer}, représentant les entiers~;
+    \item \code{Constfloat}, représentant les réels de Praspel~;
 
-\item \code{Natural}, représentant les naturels (entiers auto-incrémentés)~;
+    \item \code{Constinteger}, représentant les entiers de Praspel~;
 
-\item \code{Number}, représentant les nombres (entiers ou réels)~;
+    \item \code{Constnull}, représentant la valeur nulle de Praspel~;
 
-\item \code{Object}, représentant un objet donné~;
+    \item \code{Conststring}, représentant les chaînes de caractères de Praspel~;
 
-\item \code{Odd}, représentant les nombres impairs~;
+    \item \code{Date}, représentant une date formatée~;
 
-\item \code{Regex}, représentant les chaînes de caractères spécifiées par une
-expression régulière~;
+    \item \code{Empty}, représentant une donnée vide~;
 
-\item \code{Smallfloat}, représentant des petits réels~;
+    \item \code{Even}, représentant les nombres pairs~;
 
-\item \code{Smallinteger}, représentant des petits entiers~;
+    \item \code{Grammar}, représentant les chaînes de caractères spécifiées par une
+    grammaire~;
 
-\item \code{String}, représentant des chaînes de caractères~;
+    \item \code{Natural}, représentant les naturels (entiers auto-incrémentés)~;
 
-\item \code{Timestamp}, représentant des valeurs dans le temps~;
+    \item \code{Number}, représentant les nombres (entiers ou réels)~;
 
-\item \code{Undefined}, représentant des valeurs non-définies.
+    \item \code{Object}, représentant un objet donné~;
 
-\end{itemize}
+    \item \code{Odd}, représentant les nombres impairs~;
+
+    \item \code{Regex}, représentant les chaînes de caractères spécifiées par une
+    expression régulière~;
+
+    \item \code{Smallfloat}, représentant des petits réels~;
+
+    \item \code{Smallinteger}, représentant des petits entiers~;
+
+    \item \code{Timestamp}, représentant des valeurs dans le temps~;
+
+    \end{itemize}
+
+\item dépendant du projet.
+
+\end{enumerate}
 %
 Les domaines réalistes \code{Constarray}, \code{Constboolean},
 \code{Constfloat}, \code{Const\-in\-te\-ger}, \code{Constnull} et

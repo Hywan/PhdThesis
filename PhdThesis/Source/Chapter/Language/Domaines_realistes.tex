@@ -40,7 +40,7 @@ test. C'est pourquoi ils ont les deux caractéristiques suivantes~:
 
 \begin{itemize}
 
-\item la {\strong prédicabilité} qui permet de vérifier qu'une donnée appartient
+\item la {\strong prédicabilité} qui permet de valider qu'une donnée appartient
 à l'ensemble des valeurs décrites par le domaine réaliste~;
 
 \item la {\strong générabilité} qui permet de générer une valeur décrite par le
@@ -49,9 +49,6 @@ domaine réaliste.
 \end{itemize}
 
 \end{definition}
-
-%Ces deux caractéristiques permettent respectivement de {\strong valider} et de
-%{\strong vérifier} un programme.
 
 \subsection{Implémentation}
 \label{subsection:language:realdom:implementation}
@@ -73,20 +70,20 @@ l'instant, le seul générateur numérique disponible est pseudo-aléatoire.
 
 \end{itemize}
 
-\subsection{Hiérarchie}
+\subsection{Hiérarchie et univers}
 \label{subsection:language:realdom:hierarchy}
 
 Les domaines réalistes étant implémentés à travers des classes et PHP étant
 orienté objet, nous pouvons appliquer de l'{\strong héritage}. Par conséquent,
 un domaine réaliste enfant peut hériter et {\strong raffiner} les propriétés de
-son parent. Par exemple, le domaine réaliste \code{Color} (qui représente une
-couleur) hérite de \code{String} (qui représente une chaîne de caractères), et
-\code{Boundinteger} (qui représente un intervalle d'entiers) hérite de
-\code{Integer} (qui représente un entier). Tous les domaines réalistes doivent
-être enfants de la classe \code{Realdom}, qui assure le fonctionnement des
-domaines réalistes (en proposant plusieurs fonctionnalités usuelles et
-partagées, comme la gestion des paramètres, des arguments, du générateur
-numérique etc.).
+son parent. Par exemple, le domaine réaliste \code{Color} (qui représente des
+couleurs) hérite de \code{String} (qui représente des chaînes de caractères), et
+\code{Boundinteger} (qui représente des intervalles d'entiers) hérite de
+\code{Integer} (qui représente l'ensemble des entiers de la machine). Tous les
+domaines réalistes doivent être enfants de la classe \code{Realdom}, qui assure
+le fonctionnement des domaines réalistes (en proposant plusieurs fonctionnalités
+usuelles et partagées, comme la gestion des paramètres, des arguments, du
+générateur numérique etc.).
 
 \begin{figure}[t]
 \begin{bigpre}
@@ -132,6 +129,49 @@ dans la partie \ref{subsection:language:realdom:classification}). La propriété
 de prédicabilité raffine celle du parent en \circled{2}, et ajoute de nouvelles
 contraintes en \circled{3} qui vérifient que \code{\$q} appartient à
 l'intervalle décrit par le domaine réaliste.
+
+Les domaines réalistes forment ensemble un univers, appelé
+$\m{U}_\mathrm{realdom}$. Les cou\-ches de cet univers sont présentées dans la
+figure~\ref{figure:language:universe}. La couche~0, la plus basse, ne contient
+que le domaine réaliste \code{undefined}, qui reconnaît toutes les données et
+produit seulement des entiers. La couche supérieure~1 contient les domaines
+réalistes scalaires (les booléens, les entiers, les réels et les chaînes de
+caractères) et non-scalaires (les tableaux et les classes). La couche
+supérieure~2 est la bibliothèque standard, présentée dans la
+partie~\ref{subsection:tools:hoa-realdom}
+page~\pageref{subsection:tools:hoa-realdom}. Enfin, la couche~3, la dernière,
+contient les domaines réalistes définis par les utilisateurs.
+
+\begin{figure}
+
+\drawfig{\textwidth}{!}{node distance=.5cm,
+                        text depth=0.25ex,
+                        minimum height=2.6em}{
+
+    \node (ud) [box, dashed, text width=15.923cm] {définis par les utilisateurs};
+    \node (sl) [box, dashed, below=.2cm of ud, text width=15.923cm] {bibliothèque standard};
+    \node (b)  [box, below=.2cm of sl.south west, anchor=north west] {\code{boolean}};
+    \node (i)  [box, right=of b] {\code{integer}};
+    \node (f)  [box, right=of i] {\code{float}};
+    \node (s)  [box, right=of f] {\code{string}};
+    \node (a)  [box, right=of s] {\code{array}};
+    \node (c)  [box, right=of a] {\code{class}};
+    \node (u)  [box, below=.2cm of b.south west, anchor=north west, text width=15.923cm] {\code{undefined}};
+
+    \node (c3) [right=.2cm of ud] {$3$};
+    \node (c2) [right=.2cm of sl] {$2$};
+    \node (c1) [right=.2cm of c]  {$1$};
+    \node (c0) [right=.2cm of u]  {$0$};
+
+    \node (top) [right=0cm of c3] {};
+    \node (down)  [right=0cm of c0] {};
+
+    \draw [->] (down.south east) -- (top.north east) node[xshift=.5cm, midway, rotate=-90] {couches};
+}
+
+\caption{\label{figure:language:universe} Univers des domaines réalistes.}
+
+\end{figure}
 
 \subsection{Paramètres}
 \label{subsection:language:realdom:parameters}
@@ -234,5 +274,4 @@ peuvent être énumérées.
 Ainsi, par exemple, dans la figure~\ref{figure:language:boundinteger} en
 \circled{5}, nous voyons que le domaine réaliste \code{Boundinteger} implémente
 les interfaces \code{Interval}, \code{Finite}, \code{Nonconvex} et
-\code{Enumerable}. C'est donc un intervalle avec un nombre fini d'éléments que
-nous pouvons énumérer mais qui peut contenir des trous.
+\code{Enumerable}.
