@@ -396,14 +396,16 @@ vérification d'assertions à l'exécution. Quand la vérification d'une asserti
 %
 \begin{enumerate}
 
-\item \inenglish{precondition failure}, quand une précondition n'est pas
-satisfaite lors de l'invocation de la méthode~;
+\item \inenglish{precondition failure}, quand une clause \arequires n'est pas
+satisfaite lors de l'invocation de la méthode ou qu'elle est manquante et que la
+méthode a besoin de paramètres~;
 
 \item \inenglish{postcondition failure}, quand une postcondition n'est pas
 satisfaite après l'exécution de la méthode~;
 
 \item \inenglish{throwable failure}, quand l'exécution de la méthode lève une
-exception inattendue~;
+exception inattendue ou qu'une exception est levée et que la clause \athrowable
+est manquante~;
 
 \item \inenglish{invariant failure}, quand un invariant de classe est violé~; et
 
