@@ -15,30 +15,30 @@
 Les travaux présentés dans ce mémoire portent sur la validation de programmes
 PHP à travers un nouveau langage de spécification, accompagné de ses outils. Ces
 travaux s'articulent selon trois axes majeurs~: langage de spécification,
-génération automatique de données de test (pour tous les types) et génération
-automatique de tests unitaires.
+génération automatique de données de test et génération automatique de tests
+unitaires.
 
-La première contribution est Praspel, un nouveau langage de spécification pour
-PHP basé sur la programmation par contrat. Praspel spécifie les données avec des
-domaines réalistes~: des nouvelles structures permettant de valider et générer
-des données. À partir d'un contrat écrit en Praspel, nous pouvons faire du
-\inenglish{Contract-based Testing}, c'est~à~dire que nous exploitons le contrat
-pour générer automatiquement des tests unitaires. La précondition est utilisée
-pour générer des données de test et la postcondition est utilisée comme oracle.
-La deuxième contribution concerne la génération de données de test. Pour les
-booléens, les entiers et les réels, une génération aléatoire uniforme est
-employée. Cette approche a rapidement montré ses limites pour les tableaux et
-les chaînes de caractères. Un solveur de contraintes dédié aux tableaux PHP
-ainsi qu'un langage de description de grammaires avec un compilateur de
-compilateurs $LL(\star)$ et plusieurs algorithmes de générations de données ont
-été créés pour répondre à ses limites. Enfin, la génération d'objet est traitée.
-La troisième contribution définit des critères de couverture sur les contrats.
-Ils servent à fournir des objectifs de tests.
+La première contribution est Praspel~\acite{EnderlinDGO11}, un nouveau langage
+de spécification pour PHP basé sur la programmation par contrat. Praspel
+spécifie les données avec des domaines réalistes~: des nouvelles structures
+permettant de valider et générer des données. À partir d'un contrat écrit en
+Praspel, nous pouvons faire du \inenglish{Contract-based Testing}, c'est~à~dire
+que nous exploitons le contrat pour générer automatiquement des tests unitaires.
+La précondition est utilisée pour générer des données de test et la
+postcondition est utilisée comme oracle. La deuxième contribution concerne la
+génération de données de test. Pour les booléens, les entiers et les réels, une
+génération aléatoire uniforme est employée~\acite{EnderlinDGO11}. Cette approche
+a rapidement montré ses limites pour les tableaux et les chaînes de caractères.
+Un solveur de contraintes dédié aux tableaux PHP~\acite{EnderlinGB13} ainsi
+qu'un langage de description de grammaires avec un compilateur de compilateurs
+$LL(\star)$ et plusieurs algorithmes de génération de
+données~\acite{EnderlinDGB12} ont été créés pour répondre à ses limites. Enfin,
+la génération d'objet est traitée. La troisième contribution définit des
+critères de couverture sur les contrats. Ils servent à fournir des objectifs de
+tests.
 
-Certaines de ces contributions ont d'ores et déjà été publiées dans des
-articles~\acite{EnderlinDGO11, EnderlinDGB12, EnderlinGB13}. Toutes ces
-contributions ont été implémentées et expérimentées dans des outils
-industrielles.
+Toutes ces contributions ont été implémentées et expérimentées dans des outils
+industriels.
 
 \paragraph{Mots-clés} Praspel, \inenglish{Contract-based Testing}, géné\-ration
 de données, géné\-ration automatique de tests unitaires, PHP.
