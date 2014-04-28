@@ -2,15 +2,20 @@
 \label{section:data:arrays}
 
 En PHP, les tableaux sont utilisés pour représenter toutes sortes de
-collections. Nous parlons de tableaux associatifs, ou encore
-\inenglish{hashmaps}, car ils sont constitués de paires clé-valeur.
+collections. Ce sont des structures incontournables en PHP. Nous parlons de
+tableaux associatifs, ou encore \inenglish{hashmaps}, car ils sont constitués de
+paires clé-valeur.
 
-Nous allons tout d'abord étudier plusieurs projets PHP pour connaître les
-fonctions les plus utilisées sur les tableaux. Ensuite, nous allons étendre
-Praspel pour introduire des propriétés sur les tableaux. Enfin, nous verrons
-comment ces propriétés sont traduites en contraintes pour notre propre solveur.
+Nous avons d'abord étudié, dans la partie~\ref{subsection:data:study}, plusieurs
+projets PHP pour connaître les fonctions les plus utilisées sur les tableaux.
+Ensuite, nous avons étendu Praspel pour introduire des propriétés sur les
+tableaux, présentées dans la partie~\ref{subsection:data:array_properties}.
+Enfin, dans la partie~\ref{subsection:data:solver_semantics}, nous traduisons
+ces propriétés en contraintes pour notre propre solveur, présenté dans la
+partie~\ref{subsection:data:solver}.
 
 \subsection{Étude des propriétés les plus utilisées}
+\label{subsection:data:study}
 
 Nous avons sélectionnés 61~projets PHP sur plusieurs plateformes, comme
 Github\footnote{Voir \url{http://github.com/}.} ou Sourceforge\footnote{Voir
@@ -20,8 +25,9 @@ soit 5~220~547~lignes de code. Dans ces lignes de code, nous avons compté le
 nombre d'occurences de chaque fonction de tableaux disponible dans la
 bibliothèque standard de PHP\footnote{Voir \url{http://php.net/ref.array}.}. La
 figure~\ref{figure:data:collecting_informations} présente partiellement ces
-résultats~: les fonctions sont triées par leur nombre d'occurences $n$~; celles
-avec $n < 100$ n'apparaissent pas.
+résultats avec les fonctions en abscisse et leur nombre d'occurence en ordonnée.
+Les fonctions sont triées par leur nombre d'occurences $n$~; celles avec $n <
+100$ n'apparaissent pas.
 %
 \begin{figure}
 
@@ -141,10 +147,8 @@ avec $n < 100$ n'apparaissent pas.
 }
 }
 
-\caption[Études fonctions sur les
-tableaux.]{\label{figure:data:collecting_informations} Étude des fonctions sur
-les tableaux~: les fonctions en abscisse et leur nombre d'occurences en
-ordonnée.}
+\caption{\label{figure:data:collecting_informations} Étude des fonctions sur les
+tableaux.}
 
 \end{figure}
 %
@@ -156,10 +160,11 @@ compte le nombre d'éléments contenus dans un tableau, la fonction
 \code{true} même si la valeur est \code{null}), et enfin, la fontion
 \code{in\_array()} vérifie si une valeur est présente dans le tableau. Toutes
 ces fonctions travaillent sur un seul tableau à la fois. Cette étude suggère que
-nous pouvons considérer ces fonctions booléennes sans effet de bord en tant que
-propriétés les plus fréquentes sur les tableaux.
+nous pouvons considérer ces fonctions sans effet de bord en tant que propriétés
+les plus fréquentes sur les tableaux.
 
 \subsection{Syntaxe des propriétés}
+\label{subsection:data:array_properties}
 
 Nous étendons la syntaxe d'une déclaration de tableau~:
 %
@@ -171,11 +176,12 @@ une paire est de la forme~:
 $$\code{a[$K$]: $V$}$$
 %
 où $K$ et $V$ sont des disjonctions de domaines réalistes. La propriété signifie
-que les paires constituées de toutes les valeurs de $K$ avec au moins une valeur
-dans $V$ sont présentes dans le tableau \code{a}. $K$ accepte seulement les
-domaines réalistes qui implémentent les interfaces \code{Constant},
-\code{Interval} et \code{Enumerable}. Cette propriété est équivalente à utiliser
-les fonctions \code{array\_key\_exists()} et \code{in\_array()} combinées.
+que toute valeur de $K$ est la clé d'une paire dans le tableau \code{a}, et que
+toute paire dont la clé est dans $K$ a sa valeur dans $V$. $K$ accepte
+seulement les domaines réalistes qui implémentent les interfaces
+\code{Constant}, \code{Interval} et \code{Enumerable}. Cette propriété est
+équivalente à utiliser les fonctions \code{array\_key\_exists()} et
+\code{in\_array()} combinées.
 
 \begin{example}[\code{a[$K$]: $V$} en PHP]
 
@@ -202,16 +208,15 @@ le symbole \code{\_}. La propriété~:
 %
 $$\code{a[$K$]: \_}$$
 %
-signifie que toutes les valeurs de $K$ doivent être des clés du tableau
-\code{a}. Cette propriété est équivalente à utiliser la fonction
-\code{array\_key\_exists} avec toutes les clés de $K$ en conjonction.  De même,
-la propriété~:
+signifie que toute valeur de $K$ doit être une clé du tableau \code{a}. Cette
+propriété est équivalente à utiliser la fonction \code{array\_key\_exists} avec
+toutes les clés de $K$ en conjonction.  De même, la propriété~:
 %
 $$\code{a[\_]: $V$}$$
 %
-signifie que toutes les valeurs de $V$ doivent être des valeurs du tableau
-\code{a}. Cette propriété est équivalente à utiliser la fonction
-\code{in\_array} avec toutes les valeurs de $V$ en conjonction.
+signifie que toute valeur de $V$ doit être une valeur du tableau \code{a}. Cette
+propriété est équivalente à utiliser la fonction \code{in\_array} avec toutes
+les valeurs de $V$ en conjonction.
 
 \begin{example}[\code{a[$K$]: \_} et \code{a[\_]: $V$} en PHP]
 
@@ -229,12 +234,13 @@ valeur \code{'foo'}~; ce qui correspond en PHP au prédicat suivant~:
 
 Au lieu d'utiliser le symbole \code{:} nous pouvons utiliser le symbole
 \code{!:} pour exprimer la négation. La propriété \code{a[$K$]!: $V$} signifie
-que toutes les valeurs de $K$ sont des clés de \code{a} et que les valeurs
-associées ne sont pas dans $V$. Le fonctionnement est similaire avec le symbole
-\code{\_}.  Par exemple, la propriété \code{a[$K$]!: \_} signifie que toutes les
-valeurs de $K$ qui sont des clés de \code{a} ont une valeur qui n'est pas dans
-\code{\_} (tout), donc qu'aucune valeur de $K$ n'apparaît dans \code{a} en tant
-que clé.
+que toute valeur de $K$ est la clé d'une paire dans le tableau \code{a}, et que
+toute paire dont la clé est dans $K$ n'a pas sa valeur dans $V$. Le
+fonctionnement est similaire avec le symbole \code{\_}. La propriété
+\code{a[$K$]!: \_} signifie que toute valeur de $K$ est la clé d'une paire dans
+le tableau \code{a}, et que toute paire dont la clé est dans $K$ n'a pas sa
+valeur dans \code{\_} (tout). Autrement dit~: aucune paire du tableau \code{a}
+ne doit avoir de clé dans $K$.
 
 Les clés des tableaux sont toujours uniques, mais pas les valeurs. Nous pouvons
 exprimer la propriété d'unicité sur les valeurs en écrivant~:
@@ -266,7 +272,8 @@ valeurs du tableau doivent être uniques.
 
 \end{example}
 
-\subsection{Sémantiques ensemblistes des propriétés}
+\subsection{Sémantique ensembliste des propriétés}
+\label{subsection:data:solver_semantics}
 
 Sur un ensemble de propriétés d'un tableau \code{a}, nous proposons d'invoquer
 un solveur de contraintes pour construire un tableau satisfaisant toutes ces
@@ -397,6 +404,7 @@ propriété \code{a[\_]: $V$} est traduite en contrainte $V \subseteq Y$ et sa
 négation \code{a[\_]!: $V$} en contrainte $V \intersection Y = \emptyset$.
 
 \subsection{Solveur de contraintes}
+\label{subsection:data:solver}
 
 Nous expliquons maintenant le fonctionnement du solveur de contraintes.
 

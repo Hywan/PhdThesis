@@ -1,15 +1,16 @@
 \section{Génération standard}
 \label{section:data:random}
 
-Commençons par le processus de génération des données dans Praspel, qui se
-déroule basiquement en 3~étapes, présents dans la
-figure~\ref{figure:data:process} et détaillée ci-après~:
-
+Le processus de génération des données dans Praspel est illustré par la
+figure~\ref{figure:data:process}. Il se déroule basiquement en 3~étapes,
+détaillées ci-après~:
+%
 \begin{enumerate}
 
 \item sélection d'une variable~;
 
-\item génération, validation et affectation d'une donnée à cette variable~;
+\item génération d'une donnée pour cette variable, validation et affectation de
+cettedonnée à cette variable~;
 
 \item sélection de la variable suivante.
 
@@ -19,14 +20,12 @@ Les variables qui nous intéressent sont écrites dans les préconditions (claus
 \arequires) ainsi que dans les invariants (clause \ainvariant). Nous notons par
 $V$ la liste de ces variables. Les invariants seront traités dans la
 partie~\ref{section:data:objects}. Rappelons qu'une précondition est constituée
-de déclarations, de prédicats et de contraintes (voir la
+de déclarations, de prédicats et de qualifications (voir la
 figure~\ref{figure:language:grammar_part2}
-page~\pageref{figure:language:grammar_part2}). Le processus de génération d'une
-donnée est illustré dans la figure~\ref{figure:data:process}. Nous y retrouvons
-l'ensemble des variables $V$ avec $v \in V$ une variable. Nous trouvons
-également une variable $\tau$ et une constante $\tau_\mathrm{max}$, détaillées
-ci-après. Les annotations sur les transitions représentent des gardes pour
-activer la transition.
+page~\pageref{figure:language:grammar_part2}). Le processus est contrôlée par
+une variable $\tau$ et une constante $\tau_\mathrm{max}$, détaillées ci-après.
+Dans la figure~\ref{figure:data:processus}, $v$ est une variable de $V$. Les
+annotations sur les transitions représentent des actions.
 %
 \begin{figure}
 
@@ -37,16 +36,16 @@ pseudo-aléatoire.}
 
 \end{figure}
 
-Le premier état de la figure est l'état \code{pick}. Lors d'une génération de
+Le premier état du processus est l'état \code{pick}. Lors d'une génération de
 données, nous commençons par traiter les déclarations. Nous choisissons alors
-une variable $v$ dans la liste des variables $V$, les unes après les autres
-(représenté par l'opération $\mathrm{pop}$ dans la figure) et ce que jusqu'à ce
-que $V$ soit non vide, sinon le processus termine. Les variables sont choisies
-dans l'ordre décroissant du nombre de contraintes portées~: la variable avec le
-plus de contraintes sera la première de la liste.
+une variable $v$ dans la liste des variables $V$ (représenté par l'opération
+$\mathrm{pop}$ dans la figure) et ce que jusqu'à ce que $V$ soit non vide, sinon
+le processus termine. Les variables sont choisies dans l'ordre décroissant du
+nombre de contraintes portées~: la variable avec le plus de contraintes sera la
+première.
 
-L'état suivant est \code{sample}. Une variable porte une disjonction de domaines
-réalistes, soit $n$ domaines réalistes~:
+L'état suivant est \code{sample}. Une variable représente une disjonction de
+domaines réalistes, soit $n$ domaines réalistes~:
 %
 $$\code{$v$: $t_1$(\dots) or \dots or $t_n$(\dots)}$$
 %
@@ -60,9 +59,12 @@ confrontée à sa caractéristique de prédicabilité, c'est~à~dire sa méthode
 \code{predicate}, afin de savoir si la donnée est valide ou non. C'est l'état
 \code{predicate} de la figure.
 
-Si la précondition a des prédicats (avec la construction \apred{p}), alors ces
-derniers seront évalués avec les données fraîchement générées. Si un prédicat a
-besoin de plusieurs variables, alors son évaluation sera reportée à plus tard.
+Si la précondition a des prédicats (avec la construction \apred{p}), nous avons
+deux cas. Si toutes les variables du prédicats ont une valeur, alors le prédicat
+sera évalué. Si des variables n'ont pas de valeur, l'évaluation du prédicat sera
+repoussée. Si malgré cela, certaines valeurs de variables sont toujours
+manquantes (par exemple si elles n'ont pas de domaines réalistes associés), le
+prédicat sera évaluée à faux avec une erreur spécifique.
 
 Si pendant ces étapes, la propriété de prédicabilité d'un domaine réaliste ou un
 prédicat invalide une donnée, il y a un {\strong rejet}. Suite à un rejet, une
@@ -93,7 +95,7 @@ programme est extrêmement faible. C'est un problème inhérent à l'approche
 pseudo-aléatoire. Cependant, l'ensemble des valeurs générables peut être
 considérablement réduit si la donnée est mieux spécifiée~: plus la donnée pourra
 être spécifiée avec précision, plus il sera possible de générer des données
-pertinentes, c'est~à~dire capables de détecter des erreurs. \\
+pertinentes, c'est~à~dire capables de détecter des erreurs.
 
 Dans les parties suivantes, nous allons nous intéresser à mieux spécifier et
 mieux générer des tableaux, des chaînes caractères et des objets.
