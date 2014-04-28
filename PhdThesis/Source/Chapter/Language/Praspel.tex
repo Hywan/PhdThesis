@@ -612,17 +612,18 @@ dans les descriptions des paires, en appliquant itérativement la règle de
 réécriture suivante~:
 %
 \begin{center}
-\code{from $F_1$ or $F_2$ to $T_1$ or $T_2$} $\;\,\longrightarrow$
-\begin{tabular}{l}
-\code{from $F_1$ to $T_1$,} \\
-\code{from $F_1$ to $T_2$,} \\
-\code{from $F_2$ to $T_1$,} \\
-\code{from $F_2$ to $T_2$}
+\begin{tabular}{cl}
+& \code{from $F_1$ or $F_2$ to $T_1$ or $T_2$} \\
+$\longrightarrow$ & \code{from $F_1$ to $T_1$,} \\
+& \code{from $F_1$ to $T_2$,} \\
+& \code{from $F_2$ to $T_1$,} \\
+& \code{from $F_2$ to $T_2$}
 \end{tabular}
 \end{center}
 %
 Une description de tableau est en forme normale quand elle ne peut plus être
-réduite par cette règle.
+réduite par cette règle. Cette forme normale n'est volontairement pas présente
+dans la grammaire de Praspel.
 
 \begin{example}[Description de tableau en forme normale]
 
