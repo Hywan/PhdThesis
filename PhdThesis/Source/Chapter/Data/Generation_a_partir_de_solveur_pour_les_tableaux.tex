@@ -4,15 +4,20 @@
 En PHP, les tableaux sont utilisés pour représenter toutes sortes de
 collections. Ce sont des structures incontournables en PHP. Nous parlons de
 tableaux associatifs, ou encore \inenglish{hashmaps}, car ils sont constitués de
-paires clé-valeur.
-
-Nous avons d'abord étudié, dans la partie~\ref{subsection:data:study}, plusieurs
-projets PHP pour connaître les fonctions les plus utilisées sur les tableaux.
-Ensuite, nous avons étendu Praspel pour introduire des propriétés sur les
-tableaux, présentées dans la partie~\ref{subsection:data:array_properties}.
-Enfin, dans la partie~\ref{subsection:data:solver_semantics}, nous traduisons
-ces propriétés en contraintes pour notre propre solveur, présenté dans la
-partie~\ref{subsection:data:solver}.
+paires clé-valeur. Utiliser une génération aléatoire pour le domaine réaliste
+\code{array} est efficace si aucune contrainte n'est exprimée. Toutefois, si
+l'utilisateur veut spécifier qu'une clé, qu'une valeur ou qu'une paire est
+présente dans ce tableau, il doit recourir à la construction \apred{\empty}.
+Cette construction introduit un nombre trop important de rejets dans le cas des
+tableaux. C'est pourquoi nous avons d'abord étudié, dans la
+partie~\ref{subsection:data:study}, plusieurs projets PHP pour connaître les
+fonctions les plus utilisées sur les tableaux. Ensuite, nous avons étendu
+Praspel pour introduire des propriétés sur les tableaux, présentées dans la
+partie~\ref{subsection:data:array_properties}.  Enfin, dans la
+partie~\ref{subsection:data:solver_semantics}, nous traduisons ces propriétés en
+contraintes pour notre propre solveur, présenté dans la
+partie~\ref{subsection:data:solver}. Dans cette dernière partie, nous
+expliquerons pourquoi nous avons choisi de développer notre propre solveur.
 
 \subsection{Étude des propriétés les plus utilisées}
 \label{subsection:data:study}
@@ -406,6 +411,38 @@ négation \code{a[\_]!: $V$} en contrainte $V \intersection Y = \emptyset$.
 \subsection{Solveur de contraintes}
 \label{subsection:data:solver}
 
+Notre solveur de contraintes fonctionne en deux étapes~: propapagation et
+consistance dans un premier temps et \inenglish{labelling} dans un second temps.
+La première étape consiste à réduire (simplifier, normaliser) au maximum les
+contraintes, à vérifier si elles sont consistantes et à assurer que le CSP
+a une solution. Si une solution existe, une valeur doit être générée pour chaque
+variable du CSP~: c'est l'étape de \inenglish{labelling} (de l'étiquetage).
+
+Nous avons choisi de développer notre propre solveur pour plusieurs raisons.
+Traditionnellement, les solveurs font du \inenglish{labelling} sur des ensembles
+connus et prédéfinis dans le solveur. Si nous voulons ajouter un ensemble de
+données, il est nécessaire de réimplémenter un type dans le solveur avec les
+méthodes de génération. Ce travail est déjà effectué dans les domaines
+réalistes, qui sont écrits par l'utilisateur (l'ingénieur de test) ou par
+d'autres développeurs d'une collection de domaines réalistes. Dans ce dernier
+cas, l'utilisateur n'a pas forcément connaissance du fonctionnement du domaine
+réaliste. Nous ne voulons pas demander à l'utilisateur de réécrire un domaine
+réaliste dans un solveur pour en profiter, surtout qu'il est souvent nécessaire
+d'apprendre un nouveau formalisme. De plus, puisque les solveurs ont leur propre
+langage, il est nécessaire d'effectuer une étape de traduction~: transformer les
+contraintes exprimées dans notre formalisme dans le formalisme du solveur, et
+inversement avec le résultat du solveur. Cette étape peut être compliquée et
+peut faire perdre des informations, qui ne seraient pas toujours complétables.
+Enfin, il aurait été nécessaire d'embarquer le solveur avec Praspel. Un de nos
+objectifs est de proposer un langage et des outils simples, ce qui implique une
+installation sur toutes les plateformes et rapide. Par conséquent, pour toutes
+ces raisons, nous avons préféré développer notre propre solveur ensembliste, ce
+qui était moins coûteux et plus pertinent pour l'utilisateur final. Nous
+insistons sur le fait que certains domaines réalistes peuvent être éloignés des
+types usuels que nous trouvons dans les solveurs, comme des adresses emails.
+Ainsi, nous pouvons exprimer un tableau d'adresses emails avec des contraintes
+sur l'unicité des adresses emails par exemple.
+
 Nous expliquons maintenant le fonctionnement du solveur de contraintes.
 
 \subsubsection{Propagation et consistance}
@@ -688,7 +725,7 @@ Une solution pour l'exemple~\ref{example:data:array_proprietes} est~:
 ]
 \end{pre}
 %
-La taille du tableau est de 4, l'index \code{0} a comme valeur \code{'c'} et
+La taille du tableau est de 4, la clé \code{0} a comme valeur \code{'c'} et
 toutes les valeurs sont uniques.
 
 \end{example}
