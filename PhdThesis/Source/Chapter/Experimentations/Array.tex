@@ -1,8 +1,8 @@
-\section{Étude de cas~: solveur sur les tableaux}
+\section{Solveur sur les tableaux}
 \label{section:experimentation:solver}
 
 Cette partie présente l'expérimentation que nous avons menée dans
-l'article~\acitei{EnderlinGB13}. Dans cette partie, nous utilions le mot {\em
+l'article~\acitei{EnderlinGB13}. Dans cette partie, nous utilisons le mot {\em
 système} pour parler d'un ensemble de propriétés sur les tableaux.  Cette
 expérimentation évalue l'efficacité du solveur présenté dans la
 partie~\ref{section:data:arrays} page~\pageref{section:data:arrays},
@@ -13,9 +13,9 @@ partir d'un système satisfaisable et le nombre de systèmes non satisfaisables
 détectés. L'expérimentation est composée de trois étapes~: génération de
 systèmes, génération de données et enfin une étape de mesures. Nous générons des
 systèmes sur des tableaux contenant des chaînes de caractères et des entiers, et
-dont la taille varie entre 5 et 20.
+dont la taille des tableaux varie entre 5 et 20.
 
-Praspel est décrit par un grammaire. Afin de générer des systèmes, nous
+Praspel est décrit par une grammaire. Afin de générer des systèmes, nous
 réutilisons les travaux présentés dans la partie~\ref{section:data:strings}
 page~\pageref{section:data:strings} concernant la génération de chaînes de
 caractères à partir de grammaire. Trois algorithmes ont été présentés~:
@@ -44,19 +44,18 @@ des domaines réalistes et par les propriétés des tableaux pour vérifier la
 justesse (\inenglish{soundness}) du solveur, c'est~à~dire qu'il génère des
 données qui sont correctes.
 
-Durant cette étape, des marqueurs sont placés ci et là afin de compter
-uniquement le temps de génération des tableaux sans compter le temps de
-compilation (génération des systèmes, analyses des systèmes, création du modèle
-objet de Praspel etc.). Nous mesurons également le nombre de
-\inenglish{backtracks} dans le solveur et le nombre de systèmes rejetés. Quand
-un système est rejeté, ses \inenglish{backtracks} ne sont pas comptabilisés.
+Durant cette étape, des marqueurs permettent de compter uniquement le temps de
+génération des tableaux sans compter le temps de compilation (génération des
+systèmes, analyses des systèmes, création du modèle objet de Praspel etc.). Nous
+mesurons également le nombre de \inenglish{backtracks} dans le solveur et le
+nombre de systèmes rejetés. Quand un système est rejeté, ses
+\inenglish{backtracks} ne sont pas comptabilisés.
 
 Puisque la concrétisation des séquences de lexèmes utilise un algorithme
-aléatoire isotropique, les valeurs peuvent être très
-différentes d'un système généré à l'autre. Ces différences peuvent conduire à
-des amplitudes dans les temps de génération et les nombres de
-\inenglish{backtracks}. Pour éviter des pics dans les résultats, nous
-rapportons la moyenne de 100~exécutions.
+aléatoire isotropique, les valeurs peuvent être très différentes d'un système
+généré à l'autre. Ces différences peuvent conduire à des amplitudes dans les
+temps de génération et les nombres de \inenglish{backtracks}. Pour éviter des
+pics dans les résultats, nous calculons la moyenne de 100~exécutions.
 
 \begin{figure}
 

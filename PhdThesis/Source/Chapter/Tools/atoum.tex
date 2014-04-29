@@ -14,14 +14,14 @@ Travis-CI\footnote{Voir \url{http://travis-ci.com/}.}, Jenkins\footnote{Voir
 
 Les suites de tests générées par Praspel doivent être exécutables de plusieurs
 façons (en ligne, isolées ou autre), des rapports doivent être produits, les
-outils doivent être intégrés à des IDE etc. Tout ceci représente un important
-travail. atoum comporte déjà toutes ces fonctionnalités. Nous avons donc choisi
-de créer une extension pour introduire Praspel dans atoum. De plus, atoum ne
-possède aucun générateur de données, alors que Praspel en propose plusieurs. Il
-a donc été encore plus naturel de rapprocher les deux projets. Cette extension,
-appelée \code{atoum/praspel-extension}, est incluse dans la distribution
-standard d'atoum «~sous stéroïde~», c'est~à~dire avec des outils qui ajoutent
-des fonctionnalités à atoum.
+outils doivent être intégrés à des IDE etc. Tout ceci représente un travail
+important. atoum comporte déjà toutes ces fonctionnalités. Nous avons donc
+choisi de créer une extension pour introduire Praspel dans atoum. De plus, atoum
+ne possède aucun générateur de données, alors que Praspel en propose plusieurs.
+Il a donc été encore plus naturel de rapprocher les deux projets. Cette
+extension, appelée \code{atoum/praspel-extension}, est incluse dans la
+distribution standard d'atoum «~sous stéroïde~», c'est~à~dire avec des outils
+qui ajoutent des fonctionnalités à atoum.
 
 Dans un premier temps, nous allons présenter atoum, puis dans un second temps,
 nous montrerons les fonctionnalités offertes par l'extension.
@@ -38,11 +38,11 @@ nous montrerons les fonctionnalités offertes par l'extension.
 
 La figure~\ref{figure:tools:atoum} illustre le fonctionnement schématique
 d'atoum et de tous les \inenglish{framework} de tests unitaires~: ils permettent
-d'exécuter un ensemble d'assertions sur un SUT et sont capables de produire
-différents rapports. Pour utiliser atoum, il faudra alors basiquement procéder
-en deux étapes~: écrire des assertions et les exécuter. Dans le vocabulaire
-d'atoum, un test est une méthode qui contient plusieurs assertions sur le SUT et
-une suite de tests est une classe.
+d'exécuter un ensemble d'assertions (pour les vérifier) sur un SUT et sont
+capables de produire différents rapports. Pour utiliser atoum, il faudra alors
+basiquement procéder en deux étapes~: écrire des assertions et les exécuter.
+Dans le vocabulaire d'atoum, un test est une méthode qui contient plusieurs
+assertions sur le SUT et une suite de tests est une classe.
 
 \begin{example}[Premier test avec atoum]
 
@@ -291,8 +291,8 @@ unitaires avec l'extension.}
 \end{figure}
 
 Dans la partie~\ref{section:test:criteria} page~\pageref{section:test:criteria},
-nous avons défini des critères de couvertures sur les contrats. Les critères
-sont satisfaits par un ensemble de chemins dans les contrats. Un chemin est
+nous avons défini des critères de couverture sur les contrats. Les critères sont
+satisfaits par un ensemble de chemins dans les contrats. Un chemin est
 représenté par un test. Praspel est capable de générer des tests correspondant à
 ces chemins à partir d'un modèle objet d'un contrat. C'est le point de départ du
 processus illustré dans la figure~\ref{figure:tools:extension}. Nous y

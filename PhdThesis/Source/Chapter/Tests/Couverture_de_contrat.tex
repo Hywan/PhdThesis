@@ -1,7 +1,7 @@
 \section{Couverture de contrat}
 \label{section:test:contract}
 
-Afin de définir des critères de couvertures sur les contrats, nous transformons
+Afin de définir des critères de couverture sur les contrats, nous transformons
 ces derniers en graphes. Dans cette partie, nous expliquons comment construire
 le graphe d'un contrat Praspel en forme normale (défini dans le
 chapitre~\ref{chapter:language} page~\pageref{chapter:language}). Ce graphe
@@ -35,8 +35,8 @@ ensemble fini d'{\strong arcs} de $V$ dans $V$ annotés par une expression dans
 $A$, $i \in V$ est le {\strong sommet initial}, $N$ est un ensemble de {\strong
 sommets finaux normaux}, $E$ est un ensemble de {\strong sommets finaux
 exceptionnels} et $U$ est un ensemble de {\strong sommets erreurs}, avec $N
-\disjunion E \disjunion U \subseteq V$\footnote{Avec $\disjunion$ représentant
-l'union disjointe.}.
+\disjunion E \disjunion U \subseteq V$, où $\disjunion$ représente l'union
+disjointe.
 
 \end{definition}
 
@@ -46,14 +46,13 @@ transformation de tout contrat Praspel en graphe de contrat. Le cas le plus
 simple est celui d'un contrat sans comportement, appelé {\strong contrat
 atomique}. Il est considéré dans les parties~\ref{subsection:test:atomic_graph}
 et \ref{subsection:test:throwable_graph}. Ensuite, les graphes de contrat avec
-des comportements sont définis par induction. Le cas simple avec seulement un
-comportement est traité dans la partie~\ref{subsection:test:behavior_graph}. Le
+des comportements sont définis par induction. Le cas de base, avec seulement un
+comportement, est traité dans la partie~\ref{subsection:test:behavior_graph}. Le
 pas d'induction considérant un ou plusieurs comportements est traité dans la
 partie~\ref{subsection:test:behaviors_graph}. Le cas d'un contrat avec une
 clause \adefault (respectivement \ainvariant) est traité dans la
 partie~\ref{subsection:test:default_graph} (respectivement
-\ref{subsection:test:invariant_graph}). Afin de rester simple, nous allons
-seulement considérer des contrats en forme normale.
+\ref{subsection:test:invariant_graph}).
 
 \subsection{Graphe d'une expression}
 \label{subsection:test:expression_graph}
@@ -62,7 +61,7 @@ Les expressions Praspel en forme normale sont décrites dans la
 figure~\ref{figure:language:grammar_part2}
 page~\pageref{figure:language:grammar_part2} par l'entité syntaxique
 \grule{expression}. Une expression est une conjonction de déclarations, de
-prédicats et de qualifications, respectivement décrit dans la
+prédicats et de qualifications, respectivement décrits dans la
 figure~\ref{figure:language:grammar_part3}
 page~\pageref{figure:language:grammar_part3} par les entités syntaxiques
 \grule{declaration}, \grule{predicate} et \grule{qualification}. Nous transformons
@@ -81,12 +80,12 @@ partir de $p$. Ces deux constructions sont détaillées ci-dessous.
 
 Une conjonction de déclarations a la forme générale \code{$i_1$: $D_1$ and
 $\dots$ and $i_m$: $D_m$}, où \code{$D_j = d_{j,1}$ or $\dots$ or $d_{j,k_j}$}
-est une disjonction de domaines réalistes, $1 \leq j \leq m$. Nous notons aussi
-par $D_j$ la liste $[d_{j,1}, \dots, d_{j,k_j}]$ de domaines réalistes dans la
-disjonction. Soit $S = [i_1, \dots, i_m]$ la liste des identifiants déclarés
-dans cette expression. La notation $s \in S$ signifie que $s$ est un élément de
-la liste $S$. Pour construire le graphe des domaines, nous utilisons la
-définition suivante.
+est une disjonction de domaines réalistes, pour $1 \leq j \leq m$. Nous notons
+aussi par $D_j$ la liste $[d_{j,1}, \dots, d_{j,k_j}]$ de domaines réalistes
+dans la disjonction. Soit $S = [i_1, \dots, i_m]$ la liste des identifiants
+déclarés dans cette expression. La notation $s \in S$ signifie que $s$ est un
+élément de la liste $S$. Pour construire le graphe des domaines, nous utilisons
+la définition suivante.
 
 \begin{definition}[Graphe des domaines]
 
@@ -95,7 +94,7 @@ $\dots$ and $i_m$: $D_m$} est~:
 %
 $$G = (\{\mathit{dom}\} \union \{v_s \;\vert\; s \in S\}, D, \mathit{dom}, v_{i_m})$$
 %
-avec $\mathit{dom}$ une étiquette permettant de typer le graphe et~:
+avec~:
 %
 $$D = \Union_{d \,\in\, D_1} \{(\mathit{dom}, \code{$i_1$: $d$}, v_{i_1})\} \union
       \Union_{2 \,\leq\, j \,\leq\, m}
@@ -103,7 +102,11 @@ $$D = \Union_{d \,\in\, D_1} \{(\mathit{dom}, \code{$i_1$: $d$}, v_{i_1})\} \uni
 
 \end{definition}
 
-\begin{example}[Expression simple de deux déclarations de domaines réalistes]
+Les étiquettes $\mathit{dom}$ et $\mathit{pred}$ (dans la partie suivante)
+permettent de typer les graphes. Ainsi, il est plus facile de savoir si ce sont
+des domaines ou des prédicats qui sont traités lors du parcours du graphe.
+
+\begin{example}[Deux déclarations de domaines réalistes]
 \label{example:test:expression_graph1}
 
 Dans l'expression suivante~:
@@ -112,8 +115,8 @@ $$\code{i: foo() or bar() and j: baz() or qux()}$$
 %
 nous avons $S = [\code{i}, \code{j}]$, $D_1 = [\code{foo()}, \code{bar()}]$ et
 $D_2 = [\code{baz()}, \code{qux()}]$. La première partie de la
-figure~\ref{figure:test:expression_graph} présente graphiquement le graphe
-associé à l'exemple~\ref{example:test:expression_graph1}.
+figure~\ref{figure:test:expression_graph} présente graphiquement le graphe des
+domaines associé à cet exemple.
 
 \end{example}
 
@@ -137,18 +140,19 @@ logique PHP en forme normale conjonctive (\inenglish{Conjunctive Normal Form},
 abrégé CNF), c'est~à~dire que $p$ est de la forme \code{$P_1$ and $\dots$ and
 $P_m$}, où $P_j = \code{$p_{j,1}$ or $\dots$ or $p_{j,k_j}$}$ est une
 disjonction de variables ou de prédicats PHP (fonctions booléennes ou opérations
-logiques), $1 \leq j \leq m$. Nous notons aussi par $P_j$ la liste $[p_{j,1},
-\dots, p_{j,k_j}]$ de variables ou prédicats PHP déclarés dans la conjonction.
-Pour construire le graphe des prédicats, nous utilisons la définition suivante.
+logiques), pour $1 \leq j \leq m$. Nous notons aussi par $P_j$ la liste
+$[p_{j,1}, \dots, p_{j,k_j}]$ de variables ou prédicats PHP déclarés dans la
+conjonction.  Pour construire le graphe des prédicats, nous utilisons la
+définition suivante.
 
 \begin{definition}[Graphe des prédicats]
 
-Le {\strong graphe des prédicats} associé à l'expression \apred{'\code{$P_1$ and
-$\dots$ and $P_m$}'} est~:
+Le {\strong graphe des prédicats} associé à l'expression \apred{'\code{$P_1$
+\&\& $\dots$ \&\& $P_m$}'} est~:
 %
 $$G = (\{\mathit{pred}\} \union \{v_j \;\vert\; j \in [1; m]\}, D, \mathit{pred}, v_m)$$
 %
-avec $\mathit{pred}$ une étiquette permettant de typer le graphe et~:
+avec~:
 %
 $$D = \Union_{p \,\in\, P_1} \{(\mathit{pred}, p, v_1)\} \union
       \Union_{2 \,\leq\, j \,\leq\, m}
@@ -156,7 +160,7 @@ $$D = \Union_{p \,\in\, P_1} \{(\mathit{pred}, p, v_1)\} \union
 
 \end{definition}
 
-\begin{example}[Exemple simple d'un prédicat]
+\begin{example}[Graphe d'un prédicat]
 \label{example:test:expression_graph2}
 
 Dans l'expression suivante~:
@@ -166,7 +170,7 @@ $$\apred{\code{'(\$a || \$b) \&\& (\$c || \$d)'}}$$
 nous avons $m = 2$, $P_1 = [\code{\$a}, \code{\$b}]$ et $P_2 = [\code{\$c},
 \code{\$d}]$. La deuxième partie de la
 figure~\ref{figure:test:expression_graph} présente graphiquement le graphe
-associé à l'exemple~\ref{example:test:expression_graph2}.
+associé à cet exemple de prédicat.
 
 \end{example}
 
@@ -223,15 +227,10 @@ atomique.}
 
 \end{figure}
 
-\begin{example}[Graphe d'un contrat atomique]
-
 La figure~\ref{figure:test:atomic_graph} présente graphiquement ce graphe. Dans
 cette figure ainsi que dans toutes celles qui vont suivre, les sommets normaux
-finaux sont représentés par un double cercle, les sommets finaux
-exceptionnels par un double rectangle et les sommets d'erreurs par un cercle
-avec des tirets.
-
-\end{example}
+finaux sont représentés par un double cercle, les sommets finaux exceptionnels
+par un double rectangle et les sommets d'erreurs par un cercle avec des tirets.
 
 \subsection{Contrat atomique avec plusieurs clauses \athrowable}
 \label{subsection:test:throwable_graph}
@@ -305,7 +304,7 @@ sommets et arcs de $G_\alpha$, complété avec un nouvel arc entre $v$, le nouve
 sommet initial, et $i_\alpha$, le sommet initial de $G_\alpha$. Le sommet
 $i_\alpha$ devient également un sommet final normal car la sémantique du contrat
 est qu'il n'est pas obligatoire d'emprunter un comportement. Par conséquent, $P$
-peut être évalué mais pas nécessairement $P_\alpha$.
+peut être évalué mais sans activer le comportement $\alpha$.
 
 \begin{figure}
 
@@ -330,8 +329,8 @@ contrat~:
 \}
 \end{pre}
 %
-Le comportement est atomique et contient une seule clause \athrowable. Dans la
-figure, les sommets sont renumérotés à partir de $v_1$.
+Le contrat du comportement $\alpha$ est atomique et contient une seule clause
+\athrowable. Dans la figure, les sommets sont renumérotés à partir de $v_1$.
 
 \end{example}
 
@@ -351,7 +350,7 @@ sommets de $G_\beta$ sont distincts de ceux de $G$ ($V \intersection V_\beta =
 U_\beta)$, où $D'_\beta$ (respectivement $N'_\beta$) est obtenu de $D_\beta$
 (respectivement $N_\beta$) en remplaçant $i_\beta$ par $v$.
 
-\begin{figure}
+\begin{figure}[p!]
 
 \fig{13cm}{!}{Graph_two_behaviors.tex}
 

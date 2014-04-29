@@ -1,9 +1,9 @@
 \section{Critères de couverture}
 \label{section:test:criteria}
 
-Nous définissons maintenant les critères de couverture par des propriétés de
-l'ensemble des chemins du graphe associé à un contrat Praspel annotant une
-méthode PHP.
+Nous définissons maintenant les critères de couverture de contrat, par des
+propriétés de l'ensemble des chemins du graphe associé à un contrat Praspel
+annotant une méthode PHP.
 
 Les exemples suivants sont basés sur le contrat de la
 figure~\ref{figure:test:irc} pour la méthode \code{compute} avec deux arguments:
@@ -50,8 +50,8 @@ public static function compute ( \$server, \$buffer ) \{ … \}
 Le graphe de contrat associé est présenté dans la
 figure~\ref{figure:test:irc_graph}. Tous les états ont été renommés en $v_i$
 avec $1 \leq i \leq 22$, pour éviter toute ambiguïté lorsque nous parlerons des
-chemins. Les graphes d'expressions y sont représentés. Par conséquent, sont
-représentés tous les sentiers. Les routes sont représentées par des arcs en
+chemins. Les graphes d'expressions sont représentés, ce qui permet de parcourir
+tous les sentiers. Les routes sont représentées par des arcs en
 pointillés. Certaines étiquettes sont tronquées pour réduire la taille du
 graphe. Dans cet exemple, nous avons deux comportements, un pour un message
 privé ou public (représenté par une expression régulière à travers le domaine
@@ -90,8 +90,8 @@ La suite de tests $\{t_1, t_2, t_3\}$ avec~:
 
 \end{itemize}
 %
-satisfait le Critère de Couverture de Clause, c'est~à~dire que ces cas de tests
-couvrent toutes les clauses avec les chemins respectifs suivants (sur les
+satisfait le Critère de Couverture de Clause, c'est~à~dire que ses cas de tests
+couvrent toutes les clauses, avec les chemins respectifs suivants (sur les
 routes)~:
 %
 \begin{align*}
@@ -137,9 +137,10 @@ La suite de tests $\{t_1, t_2, t_4\}$ avec~:
 
 \end{itemize}
 %
-satisfait le Critère de Couverture de Domaine: les deux déclarations de domaines
-réalistes de la variable \code{buffer} sont couverts. Cette suite de tests
-produit les chemins respectifs suivants (sur les sentiers)~:
+satisfait le Critère de Couverture de Domaine: la variable \code{server}, les
+trois déclarations de domaines réalistes de la variable \code{buffer} et la
+variable \aresult sont couvertes. Cette suite de tests produit les chemins
+respectifs suivants (sur les sentiers)~:
 %
 \begin{align*}
 %
@@ -207,8 +208,8 @@ avec \apred{\code{'network\_buffer\_state() > 0'}}.
 
 \end{itemize}
 %
-satisfait le Critère de Couverture de Prédicat. Cette suite de tests produit les
-chemins respectifs suivants (sur les sentiers)~:
+satisfait le Critère de Couverture de Prédicat. En effet, cette suite de tests
+produit les chemins suivants (sur les sentiers)~:
 %
 \begin{align*}
 %
@@ -248,10 +249,10 @@ T_\code{compute}(\{t_6\}) =\;
 Avoir de tels critères de couverture n'est pas suffisant pour produire ou
 qualifier des cas de tests {\em réalistes}. En effet, couvrir toutes les clauses
 d'un contrat n'assure pas que tous les domaines réalistes ont été couverts. À
-l'inverse, savoir que tous les domaines aient été couverts n'assure pas que
-toutes les clauses du contrat aient été exploitées. Ainsi, afin d'avoir des cas
-de tests plus réalistes, ces critères de couverture de contrat peuvent être
-combinés ensemble. Nous proposons les combinaisons suivantes~:
+l'inverse, tous les domaines n'assure pas que toutes les clauses du contrat
+aient été exploitées. Ainsi, afin d'avoir des cas de tests plus réalistes, ces
+critères de couverture de contrat peuvent être combinés ensemble. Nous proposons
+les combinaisons suivantes~:
 %
 \begin{itemize}
 

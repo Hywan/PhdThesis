@@ -2,7 +2,7 @@
 \label{section:tools:praspel}
 
 Cette partie présente l'implémentation et l'outillage de Praspel. Tout d'abord,
-la partie~\ref{subsection:tools:interpretation} présente comment le langage est
+la partie~\ref{subsection:tools:interpretation} explique comment le langage est
 analysé. Ensuite, la partie~\ref{subsection:tools:model} présente l'architecture
 de Praspel et son modèle objet, la pièce centrale. Les
 parties~\ref{subsection:tools:compilation}
@@ -55,11 +55,11 @@ programme.}
 
 La figure~\ref{figure:tools:dispatching} nous rappelle que, dans une classe, les
 commentaires qui annotent les méthodes contiennent des contrats écrits en
-Praspel. Les contrats seront donc extraits de ces commentaires pour être envoyés
-dans les outils de Praspel. Les méthodes vont constituer le SUT et seront
-utilisées lors de l'exécution des tests. Dans les prochaines figures, ces
-données sont identifiées par une lettre cerclée afin d'indiquer leur flux dans
-les différents outils. Ainsi, la notation %
+Praspel. Les contrats seront extraits de ces commentaires pour être envoyés dans
+les outils de Praspel. Les méthodes vont constituer le SUT et seront utilisées
+lors de l'exécution des tests. Dans les prochaines figures, ces données sont
+identifiées par une lettre cerclée afin d'indiquer leur flux dans les différents
+outils. Ainsi, la notation %
 \tikz[baseline=(p.base)] {
     \node (p) [anchor=east] at (0, 0) {Praspel};
     \node (pc) at (1, 0) {\circled{P}};
@@ -133,8 +133,8 @@ formes et le passage de l'une vers l'autre~:
 \begin{itemize}
 
 \item le langage est la forme textuelle de Praspel, provenant des commentaires
-des méthodes. Il est défini par la grammaire (définie dans la
-partie~\ref{section:language:praspel} page~\pageref{section:language:praspel}).
+des méthodes. Il est défini par la grammaire donnée dans la
+partie~\ref{section:language:praspel} page~\pageref{section:language:praspel}.
 En utilisant des analyseurs, le langage est transformé en modèle objet~;
 
 \item le modèle objet \circled{M} est la pièce centrale de Praspel~: c'est un
@@ -192,8 +192,8 @@ Pour obtenir le modèle objet de ce contrat, nous écrirons~:
 syntaxiques chargés depuis la grammaire. La variable \code{\$ast} contient l'AST
 produit par les analyses d'une chaîne de caractères représentant du code
 Praspel. Ces analyses sont exécutées en appelant la méthode \code{parse} sur le
-compilateur.  Ensuite, nous instancions un visiteur dans la variable
-\code{\$interpreter} qui va visiter, grâce à la méthode \code{visit}, l'AST pour
+compilateur. Ensuite, nous instancions un visiteur dans la variable
+\code{\$interpreter} qui va visiter l'AST, grâce à la méthode \code{visit}, pour
 le transformer en modèle objet.
 
 \end{example}
@@ -420,7 +420,7 @@ et l'erreur est consignée avec des informations supplémentaires.
 \begin{example}[Évaluer un modèle objet]
 
 À présent, illustrons comment utiliser le RAC de Praspel avec un modèle objet
-\circled{M} et où le SUT \circled{S} est la méthode \code{f} de la classe
+\circled{M}, lorsque le SUT \circled{S} est la méthode \code{f} de la classe
 \code{C} de la figure~\ref{figure:tools:dispatching} avec un seul paramètre
 \code{\$i}~:
 %
@@ -463,6 +463,8 @@ définir le générateur numérique des domaines réalistes. Ainsi~:
 Hoa\bslash{}Realdom::setDefaultSampler(new Hoa\bslash{}Math\bslash{}Sampler\bslash{}Random()); \\
 \$rac->automaticallyGenerateData(true);
 \end{pre}
+%
+avec la même définition originale de la variable \code{\$rac} que précédemment.
 
 \end{example}
 

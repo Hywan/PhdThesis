@@ -16,20 +16,20 @@ consortiums ou groupes de décision concernant plusieurs standards de
 l'Informatique ou du Web. Par conséquent, il est plus facile d'écrire, de
 maintenir et d'assurer la qualité des programmes constituant Praspel.
 
-\paragraph{Connaissances des besoins} Grâce à ce projet, il est possible d'avoir
-une meilleure connaissance des besoins. Et cette thèse tend à y répondre. Hoa et
-cette thèse sont donc complémentaires, puisque Hoa permettra de valoriser ces
-travaux de recherche et réciproquement.
+\paragraph{Connaissance des besoins} Grâce à ce projet, il est possible d'avoir
+une meilleure connaissance des besoins des utilisateurs finaux, à savoir les
+ingénieurs de tests. Et cette thèse tend à y répondre. Hoa et cette thèse sont
+donc complémentaires, puisque Hoa permettra de valoriser ces travaux de
+recherche et réciproquement.
 
-\paragraph{Aide et pérennité} Hoa est un pont entre le monde de la recherche et
-de l'industrie qui offre l'opportunité de faire valider nos expérimentations par
-sa communauté ou ses utilisateurs. Mais aussi, Hoa est aussi développé sous la
-licence libre \inenglish{New BSD License}\footnote{Voir
+\paragraph{Aide et pérennité} Hoa nous offre l'opportunité de faire valider nos
+expérimentations par sa communauté ou ses utilisateurs. Mais aussi, Hoa est
+aussi développé sous la licence libre \inenglish{New BSD License}\footnote{Voir
 \url{http://hoa-project.net/About.html\#License}.}, qui est une licence
-\inenglish{open-source}. Cela implique que les outils que nous avons développé
+\inenglish{open-source}. Cela implique que les outils que nous avons développés
 durant cette thèse, comme Praspel, le compilateur etc., sont gratuits et libres.
-Cette approche offre deux avantages majeurs. Tout d'abord, des contributeurs de
-tous horizons peuvent nous aider à corriger ou améliorer nos outils. Ce fut le
+Cette approche offre plusieurs avantages. Un majeur est que des contributeurs de
+tout horizon peuvent nous aider à corriger ou améliorer nos outils. Ce fut le
 cas à plusieurs reprises, où des contributeurs ont corrigé des erreurs dans
 Praspel ou ont amélioré le compilateur, notamment en y ajoutant le support
 Unicode, en améliorant les performances de l'analyseur lexical (pour l'analyse
@@ -256,7 +256,7 @@ langage Praspel~;
 système sous test~;
 
 \item \code{Visitor} permet de passer d'une forme à une autre du langage (comme
-le verrons dans les parties suivantes).
+nous le verrons dans les parties suivantes).
 
 \end{itemize}
 
@@ -299,7 +299,7 @@ séquences de lexèmes ne dépasse pas 10, nous écrirons~:
     \$length  /* \(\circled{3}\) */ \\
 ); \\
  \\
-foreach(\$sampler as \$data) \\
+foreach(\$sampler as \$i => \$data) \\
     // compute \$data
 \end{pre}
 %
@@ -313,14 +313,17 @@ page~\pageref{subsection:data:isotropic_generation}. Enfin, la variable
 variables sont distribuées sur le générateur exhaustif borné~: les analyseurs en
 \circled{1}, le générateur de valeurs pour les lexèmes en \circled{2} et la
 taille maximum de la séquence en \circled{3}. Ce générateur fonctionne comme un
-itérateur~: chaque donnée est calculée au besoin. La boucle \code{foreach}
-permet de parcourir un structure \inenglish{traversable}, dont les itérateurs.
-La variable \code{\$data} va contenir toutes les données les unes après les
-autres.
+itérateur~: chaque donnée est calculée au besoin. En PHP, le meilleur moyen
+d'exploiter un itérateur est d'utiliser la boucle \code{foreach}, qui permet de
+parcourir une structure \inenglish{traversable}, dont les itérateurs.  La
+variable \code{\$i} contient le numéro de la donnée et \code{\$data} contient
+toutes les données les unes après les autres.
 
 \end{example}
 
 La grammaire des expressions régulières se trouve également dans la bibliothèque
 \code{Hoa\bslash{}Regex}\footnote{Voir
 \url{http://central.hoa-project.net/Resource/Library/Regex}.} dans
-\code{hoa://Library/Regex/Grammar.pp}.
+\code{hoa://Library/Regex/Grammar.pp} (voir
+l'annexe~\ref{appendices:grammar_of_pcre}
+pa\-ge~\pageref{appendices:grammar_of_pcre}).

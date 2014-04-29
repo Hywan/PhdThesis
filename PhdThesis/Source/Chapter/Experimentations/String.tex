@@ -1,9 +1,9 @@
-\section{Étude cas~: approche basée sur une grammaire}
+\section{Test à partir de grammaires}
 \label{section:experimentation:grammar}
 
-Cette partie contient deux expérimentations menées dans
+Cette partie contient deux expérimentations publiées dans
 l'article~\acitei{EnderlinDGB12}. La première a été conçue pour valider que le
-compilateur de compilateurs $LL(\star)$ et les algorithmes de générations de
+compilateur de compilateurs $LL(\star)$ et les algorithmes de génération de
 chaînes de caractères fonctionnent correctement. Cette expérimentation est une
 auto-validation. La seconde expérimentation montre l'utilisation de Praspel pour
 valider des applications Web.
@@ -11,7 +11,7 @@ valider des applications Web.
 \subsection{Auto-validation du compilateur et des algorithmes}
 
 Notre première expérimentation vise à valider notre approche
-\inenglish{grammar-based testing}, soit à s'assurer que~: le compilateur de
+\inenglish{grammar-based testing}, soit à s'assurer que le compilateur de
 compilateurs $LL(\star)$ fonctionne correctement, c'est~à~dire qu'il accepte des
 données correctes et rejette des données incorrectes, et que les générateurs de
 chaînes de caractères fonctionnent correctement également, c'est~à~dire qu'ils
@@ -21,17 +21,17 @@ Nous travaillons alors en deux étapes. Premièrement, nous générons des donn�
 automatiquement à partir de grammaires qui utilisent toutes les constructions du
 langage de description de grammaires PP. Deuxièmement, toutes ces données seront
 analysées par notre propre compilateur et d'autres compilateurs. L'objectif est
-de vérifier que~: les données correctes sont acceptées par tous les
-compilateurs, que les données incorrectes sont refusées par tous les
-compilateurs et que tous les compilateurs ont le même avis sur la validité des
-données.
+de vérifier que les données correctes sont acceptées par tous les compilateurs,
+que les données incorrectes sont refusées par tous les compilateurs et que tous
+les compilateurs ont le même avis sur la validité des données.
 
-Nous considérons une grammaire de JSON et une grammaire simplifiée des PCRE. Ce
-choix est motivé par le fait que nous travaillons dans le domaine du web et que
-ces grammaires sont implémentées au sein de langages Web, comme PHP ou
-Javascript, avec des API simples nous permettant de valider les données que nous
-allons générer.
-
+Nous considérons une grammaire de JSON (\inenglish{JavaScript Object
+Notation}~\acite{JSON}) et une grammaire simplifiée des PCRE (\inenglish{Perl
+Compatible Regular Expressions}~\acite{Hazel05}). Ce choix est motivé par le
+fait que nous travaillons dans le domaine du web et que ces grammaires sont
+implémentées au sein de langages du Web, comme PHP ou Javascript, avec des API
+simples nous permettant de valider les données que nous allons générer.
+%
 \begin{figure}
 
 \small
@@ -134,19 +134,19 @@ indique que le temps de génération des données a dépassé 10~minutes.
 
 Nous avons tout d'abord expérimenté avec la grammaire de JSON pour générer des
 descriptions d'objet JSON. Nous avons utilisé l'algorithme exhaustif borné et
-basé sur la couverture. À cause du nombre important de règles imbriquées,
-l'algorithme exhaustif borné n'est pas capable de produire des données de taille
-raisonnable couvrant toutes les règles (et ainsi générer des descriptions
-complexes d'objet) malgré le fait que nous générions toutes les descriptions
-d'objets de taille $n \leq 0$ en un temps raisonnable (quelques minutes).
-L'algorithme basé sur la couverture produit moins de données mais il génère des
-descriptions complexes d'objets contenant jusqu'à 32~lexèmes.  Il est
+l'algorithme basé sur la couverture. À cause du nombre important de règles
+imbriquées, l'algorithme exhaustif borné n'est pas capable de produire des
+données de taille raisonnable couvrant toutes les règles (et ainsi générer des
+descriptions complexes d'objet) malgré le fait que nous générions toutes les
+descriptions d'objets de taille $n \leq 9$ en un temps raisonnable (quelques
+minutes). L'algorithme basé sur la couverture produit moins de données mais il
+génère des descriptions complexes d'objets contenant jusqu'à 32~lexèmes. Il est
 intéressant de noter que toutes les règles sont couvertes avec très peu de
 données, ici 3~données en moyenne sont nécessaires pour couvrir toute la
 grammaire de JSON. Nous avons également remarqué que cet algorithme se comporte
 comme l'algorithme du postier Chinois dans le domaine du test de FSM
-(\inenglish{Finite State Machines}) et tend à produire une première longue
-donnée qui couvre le maximum de règles, puis produit des données plus petites
+(\inenglish{Finite State Machines}) et tend à produire une première donnée
+longue qui couvre le maximum de règles, puis produit des données plus petites
 pour couvrir les quelques règles n'ayant pas été couvertes précédemment. Aussi,
 contrairement aux algorithmes précédents qui sont relativement lents
 (l'algorithme aléatoire uniforme nécessite une étape de dénombrement
@@ -154,11 +154,11 @@ exponentielle et l'algorithme exhaustif borné est hautement combinatoire), cet
 algorithme est capable de produire des données complexes en quelques
 millisecondes. Ainsi, nous l'avons utilisé de manière répétée pour produire
 d'importants ensembles de données dont la variété était assurée par les choix
-aléatoires dans la résolution des points des choix, comme expliquée dans la
+aléatoires dans la résolution des points des choix, comme expliqué dans la
 partie~\ref{subsection:data:coverage_based_generation}.
 
 Durant cette évaluation, nous avons trouvé une erreur dans deux de nos
-algorithmes qui étaient détectées par le compilateur. L'origine de l'erreur
+algorithmes, qui était détectée par le compilateur. L'origine de l'erreur
 était une mauvaise gestion des caractères échappés, et par conséquent, des
 données incorrectes étaient produites à partir d'une grammaire valide.
 
@@ -176,8 +176,8 @@ opérations simples de mutation de grammaires~\acite{Offutt06}, telles que~:
 remplacement des opérateurs de répétitions (\code{+} devient \code{*},
 modification des bornes minimales et maximales), suppression d'un lexème ou d'un
 appel à une sous-règle dans une règle, ajout de point de choix vers des règles
-existantes etc. Nous avons vérifié que les nouvelles données générées étaient
-soient acceptées soient refusées par notre compilateur et nous avons comparé les
+existantes etc. Nous avons vérifié si les nouvelles données générées étaient
+soit acceptées soit refusées par notre compilateur et nous avons comparé les
 verdicts avec ceux des deux autres outils. Durant cette validation, nous avons
 trouvé une erreur dans notre compilateur qui considérait incorrectes des données
 correctes. La cause de cette erreur était une mauvaise gestion du
@@ -231,8 +231,8 @@ sélectionnée par défaut.
 
 \end{itemize}
 %
-Nous avons conçu plusieurs prédicats pour vérifier la relation de conformité
-basés sur plusieurs degrés de granularité.
+Nous avons conçu plusieurs prédicats basés basés sur plusieurs degrés de
+granularité.
 
 Le premier niveau vérifie que le code HTML est bien structuré. Pour y arriver,
 nous avons utilisé une grammaire simplifiée du langage XML, vérifiant que toutes

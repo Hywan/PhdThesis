@@ -1,8 +1,12 @@
 \section{Définitions}
 \label{section:test:definitions}
 
+Cette partie présente plusieurs définitions sur les chemins, les tests, les cas
+de tests etc. Ces définitions sont importantes pour exprimer et comprendre
+correctment les critères de couverture. \\
+
 Tout au long de cette partie, nous considérons une méthode PHP \code{f} et nous
-désignons par $G(\code{f})$ ou $G$ son contrat $(V, D, i, N, E, U)$, comme
+désignons par $G(\code{f})$, ou $G$, son contrat $(V, D, i, N, E, U)$, comme
 défini dans la partie~\ref{section:test:contract}.
 
 Un {\strong chemin} est une séquence de transitions consécutives séparées par
@@ -12,13 +16,13 @@ est dans} le chemin $p$ si et seulement si le chemin $p$ contient une transition
 $(v, \alpha, w)$ ou $(w, \alpha, v)$.
 
 Nous associons deux sortes de chemins à un contrat $G = (V, D, i, N, E, U)$. Une
-{\strong route} de $G$ est un chemin dont les transitions sont dans $D$. À
-présent, soit $r$ une route de $G$, $e$ une expression et $H = (V_H, D_H, i_H,
-n_H)$ le graphe de l'expression. Nous remplaçons toutes les transitions $(v, e,
-w)$ dans $r$ par le chemin $(v, \varepsilon, i_H) \cdot q \cdot (n_H,
-\varepsilon, w)$ où $q$ est un chemin de $i_H$ à $n_H$ du graphe $H$. Le
-résultat est appelé un {\strong sentier} de $r$. Un sentier d'un graphe de
-contrat $G$ est n'importe quel sentier obtenu depuis une route de $G$.
+{\strong route} de $G$ est un chemin dont les transitions sont dans $D$. Soit
+$r$ une route de $G$. Remplaçons toutes les transitions $(v, e, w)$ dans $r$
+par le chemin $(v, \varepsilon, i_H) \cdot q \cdot (n_H, \varepsilon, w)$ où $q$
+est un chemin de $i_H$ à $n_H$ du graphe $H = (V_H, D_H, i_H, n_H)$ de
+l'expression $e$. Le résultat est appelé un {\strong sentier} de $r$. Un sentier
+d'un graphe de contrat $G$ est n'importe quel sentier obtenu ainsi, à partir
+d'une route de $G$.
 
 Un {\strong test unitaire} pour une méthode PHP \code{f} est un ensemble de
 données (appelées entrées), qui fixent les valeurs pour les
@@ -49,7 +53,7 @@ l'inverse, si la méthode termine normalement (c'est~à~dire sans lever
 d'exception), $e$ est considérée comme indéfinie.
 
 Afin de définir quels sont les chemins (autant les routes que les sentiers) d'un
-contrat qui sont activés par un cas de test $(s, t)$, nous explorons le contrat
+contrat qui sont activés par un cas de test $(s, t)$, nous explorons le graphe
 $G(\code{f})$ et nous collectons les chemins en évaluant les étiquettes des
 transitions tout en respectant le test $t$~:
 %
@@ -71,16 +75,15 @@ $s'$~;
 invariant évalué dans le post-état, la transition est activée si et seulement si
 $I$ est vraie dans le post-état $s'$~;
 
-\item si la transition est étiquetée par une déclaration de domaines réalistes
+\item si la transition est étiquetée par une déclaration de domaine réaliste
 \code{$i$: $d$}, la transition est activée si et seulement si la valeur courante
-de $i \in t$ appartient à un des domaines réalistes dans la disjonction $d$
-(grâce à la caractéristique de prédicabilité). Quand cette déclaration provient
-d'une précondition (c'est~à~dire dans un graphe d'expression d'une
-précondition), la valeur de $i$ est choisie dans le pré-état $s$ du test si $i$
-est un attribut de classe, ou dans les arguments de la méthode si $i$ est un
-argument de la méthode. Quand la déclaration est exprimée dans une postcondition
-(normale ou exceptionnelle), la valeur de $i$ est choisie dans le post-état
-$s'$~;
+de $i \in t$ appartient au domaine réaliste $d$ (grâce à la caractéristique de
+prédicabilité). Quand cette déclaration provient d'une précondition
+(c'est~à~dire dans un graphe d'expression d'une précondition), la valeur de $i$
+est choisie dans le pré-état $s$ du test si $i$ est un attribut de classe, ou
+dans les arguments de la méthode si $i$ est un argument de la méthode. Quand la
+déclaration est exprimée dans une postcondition (normale ou exceptionnelle), la
+valeur de $i$ est choisie dans le post-état $s'$~;
 
 \item si la transition est étiquetée par un prédicat, la transition est activée
 si et seulement le prédicat est satisfait avec l'état courant du système ($s$
