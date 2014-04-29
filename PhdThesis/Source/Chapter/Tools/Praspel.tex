@@ -162,9 +162,11 @@ et un compilateur, défini dans les parties~\ref{subsection:data:pp} et
 \ref{subsection:data:compiler-compiler} pages~\pageref{subsection:data:pp}
 et~\pageref{subsection:data:compiler-compiler}, l'\inenglish{Abstract Syntax
 Tree} du contrat analysé est produit. Cet AST sera ensuite visité afin de
-construire le modèle objet. Pour y arriver, nous avons deux façons de faire. La
-première détaille toutes les étapes, à savoir l'utilisation du compilateur pour
-produire un AST, puis l'appel d'un visiteur pour construire le modèle objet.
+construire le modèle objet. Pour y arriver, nous avons deux façons de faire.
+
+La première détaille toutes les étapes, à savoir l'utilisation du compilateur
+pour produire un AST, puis l'appel d'un visiteur pour construire le modèle
+objet.
 
 \begin{example}[Obtenir le modèle objet depuis un contrat]
 
@@ -385,14 +387,13 @@ Le fonctionnement d'un \inenglish{assertion checker} est illustré dans la
 figure~\ref{figure:tools:rac}. Il travaille avec 3~composants~: un modèle objet
 \circled{M} qui représente un contrat (provenant par exemple des commentaires
 des méthodes), un SUT \circled{S} (par exemple la méthode commentée) et des
-données. Ces composants forment un test. Un \inenglish{assertion checker} est
-capable de calculer le verdict d'un test.
+données. Un \inenglish{assertion checker} est capable de valider le contrat.
 
 Actuellement, nous nous appuyons sur un \inenglish{Runtime Assertion Checker},
-abrégé RAC, pour calculer le verdict du test. Ce verdict est basé sur la
-vérification d'assertions à l'exécution. Quand la vérification d'une assertion
-échoue, une erreur spécifique est produite. Les erreurs du RAC (aussi appelées
-\inenglish{Praspel failures} ou erreurs Praspel) peuvent être de 5~sortes~:
+abrégé RAC, pour valider le contrat à l'exécution et ainsi calculer le verdict
+du test. Quand la validation du contrat échoue, une erreur spécifique est
+produite. Les erreurs du RAC (aussi appelées \inenglish{Praspel failures} ou
+erreurs Praspel) peuvent être de 5~sortes~:
 %
 \begin{enumerate}
 
@@ -414,6 +415,7 @@ d'une \inenglish{precondition failure} à un niveau supérieur.
 
 \end{enumerate}
 %
+Ces erreurs sont inspirées de JML~\acite{JML} et de son RAC~\acite{CheonL02}.
 Le test réussit si aucune erreur Praspel n'est détectée. Autrement, il échoue,
 et l'erreur est consignée avec des informations supplémentaires.
 

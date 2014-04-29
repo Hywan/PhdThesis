@@ -29,13 +29,13 @@ aussi développé sous la licence libre \inenglish{New BSD License}\footnote{Voi
 \inenglish{open-source}. Cela implique que les outils que nous avons développés
 durant cette thèse, comme Praspel, le compilateur etc., sont gratuits et libres.
 Cette approche offre plusieurs avantages. Un majeur est que des contributeurs de
-tout horizon peuvent nous aider à corriger ou améliorer nos outils. Ce fut le
+tous horizons peuvent nous aider à corriger ou améliorer nos outils. Ce fut le
 cas à plusieurs reprises, où des contributeurs ont corrigé des erreurs dans
 Praspel ou ont amélioré le compilateur, notamment en y ajoutant le support
 Unicode, en améliorant les performances de l'analyseur lexical (pour l'analyse
 de très grandes données) etc.
 
-\paragraph{Diffusion rapide et large} Enfin, puisque le projet est gratuit,
+\paragraph{Lien avec l'industrie} Enfin, puisque le projet est gratuit,
 l'industrie peut l'utiliser et nous offrir des retours pertinents, comme nous le
 verrons dans le chapitre~\ref{chapter:experimentations} avec les
 expérimentations. \\
@@ -290,9 +290,7 @@ séquences de lexèmes ne dépasse pas 10, nous écrirons~:
 \$token   = new Hoa\bslash{}Regex\bslash{}Visitor\bslash{}Isotropic( \\
     new Hoa\bslash{}Math\bslash{}Sampler\bslash{}Random() \\
 ); \\
-\$length  = 10;
-\end{pre}
-\begin{pre}
+\$length  = 10; \\
 \$sampler = new Hoa\bslash{}Compiler\bslash{}Llk\bslash{}Sampler\bslash{}BoundedExhaustive( \\
     \$parser, /* \(\circled{1}\) */ \\
     \$token,  /* \(\circled{2}\) */ \\
