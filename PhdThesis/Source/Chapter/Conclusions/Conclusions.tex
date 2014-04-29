@@ -27,10 +27,11 @@ employée. Cette approche a rapidement montré ses limites pour les tableaux et
 les chaînes de caractères.
 
 Pour les tableaux, nous avons commencé par mener une étude sur leurs propriétés
-les plus utilisées. Nous en avons sélectionné quelques unes. La syntaxe de
-Praspel a été étendue pour introduire ces propriétés au sein même du langage.
-Enfin, nous avons défini une sémantique ensembliste de ces propriétés et nous
-avons construit notre propre solveur de contraintes.
+les plus utilisées. Nous en avons sélectionné trois qui se détachaient
+réellement des autres. La syntaxe de Praspel a été étendue pour introduire ces
+propriétés au sein même du langage. Enfin, nous avons défini une sémantique
+ensembliste de ces propriétés et nous avons construit notre propre solveur de
+contraintes.
 
 Pour les chaînes de caractères, nous avons opté pour deux approches~: à partir
 d'une grammaire ou d'une expression régulière. Nous avons défini un nouveau
@@ -51,48 +52,51 @@ circulaires et permet de réutiliser des objets déjà générés. \\
 La troisième contribution définit des critères de couverture sur les contrats.
 Ils nous fournissent des objectifs de tests. Ces critères sont satisfaits par un
 ensemble de tests auxquels nous associons des chemins dans les contrats. Nous
-avons proposé de transformer les contrats en graphes, afin de plus de définir
-plus facilement les critères. Au total, trois critères, plus des combinaisons,
-ont été définis~: Critère de Clause, Critère de Domaine et Critère de Prédicat.
-\\
+avons proposé de transformer les contrats en graphes, afin de définir plus
+facilement les critères. Au total, trois critères, plus des combinaisons, ont
+été définis~: Critère de Clause, qui couvre la structure du contrat, Critère de
+Domaine, qui couvre tous les domaines réalistes de toutes les variables, et
+Critère de Prédicat, qui couvre toutes les combinaisons possibles. \\
 
 Ces contributions ont été implémentées en tant que bibliothèques dans le projet
-Hoa. Nous avons vu comment manipuler Praspel à travers son modèle objet~: les
-différentes analyses, l'exportation et l'importation et le désassemblage. Nous
-avons vu également comment évaluer Praspel avec un \inenglish{Runtime Assertion
-Checker}. Puisque Praspel génère automatiquement des suites de tests
-abstraites, une extension à atoum, un \inenglish{framework} de tests unitaires,
-a été proposée pour compiler ces suites de tests abstraites en suites de tests
-concrètes et exécutables. Ces dernières sont écrites avec l'API d'atoum.
+Hoa. La manipulation de Praspel à travers son modèle objet a été présentée~: les
+différentes analyses, l'exportation et l'importation et le désassemblage.
+L'évaluation de Praspel, avec un \inenglish{Runtime Assertion Checker}, a
+également été présentée. Puisque Praspel génère automatiquement des suites de
+tests abstraites, une extension à atoum, un \inenglish{framework} de tests
+unitaires, a été proposée pour compiler ces suites de tests abstraites en suites
+de tests concrètes et exécutables. Ces dernières sont écrites avec l'API
+d'atoum.
 
 Nous avons choisi Hoa car l'auteur de ce mémoire est également l'auteur initial
 de cet ensemble de bibliothèques. Nous avons choisi atoum car c'est un
 \inenglish{framework} très utilisé et intégré à l'industrie. Les deux projets
 ont des licences \inenglish{open-source} et sont libres. Ils nous offrent ainsi
-une communauté, des utilisateurs et des contributeurs. Par leur biais, nous
+une communauté~: des utilisateurs et des contributeurs. Par leur biais, nous
 avons accès à des entreprises et des utilisateurs qui peuvent nous faire des
 retours précieux sur nos travaux. \\
 
 Cette démarche s'est confirmée par la participation d'un panel d'ingénieurs de
 tests bénévoles pour l'une de nos expérimentations. Ces expérimentations ont
-montré plusieurs choses. Tout d'abord, elles ont confirmé l'intérêt de la
-programmation par contrat dans les méthodologies de développement actuelles. La
-proximité entre les contrats et le code est un élément crucial~: les contrats
-jouent le rôle de documentation, ils sont plus facilement maintenus et sont
-toujours écrits en même temps que le code. La génération automatique de tests
-unitaires permet de générer des tests dits basiques, ce qui laisse le temps aux
-ingénieurs de tests de se concentrer sur des tests plus avancés. Quand nous
-savons que leur budget pour la qualité logicielle est limité, c'est un avantage.
-Pour ces tests plus avancés, les ingénieurs utilisent nos algorithmes de
-génération de données seuls. L'usage de ces algorithmes permet, en plus d'écrire
-des tests rapidement, de réduire les suites de tests tout en augmentant la
-confiance dans les tests restants. Enfin, les suites de tests finales sont plus
-facilement maintenables et compréhensibles. Ces expérimentations ont permis de
-détecter des erreurs dans des programmes déjà testés et parfois en production.
-\\
+répondu à plusieurs questions. Elles ont confirmé l'intérêt de la programmation
+par contrat dans les méthodologies de développement actuelles. La proximité
+entre les contrats et le code est un élément crucial~: les contrats jouent le
+rôle de documentation, ils sont plus facilement maintenus et sont toujours
+écrits en même temps que le code. La génération automatique de tests unitaires
+permet de générer des tests dits basiques, ce qui laisse le temps aux ingénieurs
+de tests de se concentrer sur des tests plus avancés. Quand nous savons que leur
+budget pour la qualité logicielle est limité, c'est un avantage. Pour ces tests
+plus avancés, les ingénieurs utilisent nos algorithmes de génération de données
+seuls, qui sont paramétrables manuellement par un ensemble de contraintes défini
+par l'utilisateur. L'usage de ces algorithmes permet, en plus d'écrire des tests
+rapidement, de réduire les suites de tests tout en assurant la même qualité et
+en augmentant la confiance dans les tests restants. Enfin, les suites de tests
+finales sont plus facilement maintenables et compréhensibles. Ces
+expérimentations ont permis de détecter des erreurs dans des programmes déjà
+testés et parfois en production.  \\
 
-Certaines de ces contributions ont d'ores et déjà été publiées dans des
-articles~\acite{EnderlinDGO11, EnderlinDGB12, EnderlinGB13}.
+Certaines de ces contributions ont été publiées dans des articles de
+conférence~\acite{EnderlinDGO11, EnderlinDGB12, EnderlinGB13}.
 
 \subsection{\inlatin{Summa summarum}}
 \label{subsection:conclusions:summa}
@@ -114,8 +118,9 @@ prédicabilité et de générabilité.  Ces derniers exposent des méthodes avan
 du test aux développeurs de manière simple.
 
 L'approche que nous avons présentée dans ce mémoire est satisfaisante.
-Toutefois, les expérimentations ont montré les limites de Praspel. Le langage
-n'est pas capable de tout spécifier et nous aimerions générer des tests encore
-plus pertinents. Il est probable que la solution se trouve dans d'autres
-méthodes du test, ce qui ouvre des perspectives intéressantes présentées dans le
-chapitre suivant.
+Toutefois, les expérimentations ont montré les limites de Praspel, notamment que
+le langage n'est pas capable de tout spécifier (comme du code technique
+manipulant par exemple des \inenglish{threads}). Nous aimerions générer des
+tests encore plus pertinents. Il est probable que la solution se trouve dans
+d'autres méthodes du test, ce qui ouvre des perspectives intéressantes
+présentées dans le chapitre suivant.

@@ -11,19 +11,29 @@ valider des applications Web.
 \subsection{Auto-validation du compilateur et des algorithmes}
 
 Notre première expérimentation vise à valider notre approche
-\inenglish{grammar-based testing}, soit à s'assurer que le compilateur de
-compilateurs $LL(\star)$ fonctionne correctement, c'est~à~dire qu'il accepte des
-données correctes et rejette des données incorrectes, et que les générateurs de
-chaînes de caractères fonctionnent correctement également, c'est~à~dire qu'ils
-ne génèrent pas de données incorrectes par rapport à une grammaire.
+\inenglish{grammar-based testing}, soit à s'assurer que, d'une part, le
+compilateur de compilateurs $LL(\star)$ fonctionne correctement, c'est~à~dire
+qu'il accepte des données correctes et rejette des données incorrectes, et que,
+d'autre part, les générateurs de chaînes de caractères fonctionnent correctement
+également, c'est~à~dire qu'ils ne génèrent pas de données incorrectes par
+rapport à une grammaire.
 
 Nous travaillons alors en deux étapes. Premièrement, nous générons des données
 automatiquement à partir de grammaires qui utilisent toutes les constructions du
 langage de description de grammaires PP. Deuxièmement, toutes ces données seront
 analysées par notre propre compilateur et d'autres compilateurs. L'objectif est
-de vérifier que les données correctes sont acceptées par tous les compilateurs,
-que les données incorrectes sont refusées par tous les compilateurs et que tous
-les compilateurs ont le même avis sur la validité des données.
+triple~:
+%
+\begin{enumerate}
+
+\item vérifier que les données correctes sont acceptées par tous les
+compilateurs~;
+
+\item les données incorrectes sont refusées par tous les compilateurs~;
+
+\item tous les compilateurs ont le même avis sur la validité des données.
+
+\end{enumerate}
 
 Nous considérons une grammaire de JSON (\inenglish{JavaScript Object
 Notation}~\acite{JSON}) et une grammaire simplifiée des PCRE (\inenglish{Perl
@@ -130,37 +140,44 @@ pour chaque grammaire.}
 La figure~\ref{figure:experimentation:strings} montre un aperçu des tailles des
 grammaires en terme de nombres de données d'une certaine taille $n$ qui peuvent
 être produites. Dans la figure, {\scshape to} signifie \inenglish{Time Out} et
-indique que le temps de génération des données a dépassé 10~minutes.
+indique que le temps de génération des données a dépassé 10~minutes. Ces tailles
+ont été calculées à partir du nombre de données générées par l'algorithme
+exhaustif borné.
 
 Nous avons tout d'abord expérimenté avec la grammaire de JSON pour générer des
 descriptions d'objet JSON. Nous avons utilisé l'algorithme exhaustif borné et
-l'algorithme basé sur la couverture. À cause du nombre important de règles
+l'algorithme basé sur la couverture.
+
+\paragraph{Algorithme exhaustif borné} À cause du nombre important de règles
 imbriquées, l'algorithme exhaustif borné n'est pas capable de produire des
 données de taille raisonnable couvrant toutes les règles (et ainsi générer des
 descriptions complexes d'objet) malgré le fait que nous générions toutes les
 descriptions d'objets de taille $n \leq 9$ en un temps raisonnable (quelques
-minutes). L'algorithme basé sur la couverture produit moins de données mais il
-génère des descriptions complexes d'objets contenant jusqu'à 32~lexèmes. Il est
-intéressant de noter que toutes les règles sont couvertes avec très peu de
-données, ici 3~données en moyenne sont nécessaires pour couvrir toute la
-grammaire de JSON. Nous avons également remarqué que cet algorithme se comporte
-comme l'algorithme du postier Chinois dans le domaine du test de FSM
-(\inenglish{Finite State Machines}) et tend à produire une première donnée
-longue qui couvre le maximum de règles, puis produit des données plus petites
-pour couvrir les quelques règles n'ayant pas été couvertes précédemment. Aussi,
-contrairement aux algorithmes précédents qui sont relativement lents
-(l'algorithme aléatoire uniforme nécessite une étape de dénombrement
-exponentielle et l'algorithme exhaustif borné est hautement combinatoire), cet
-algorithme est capable de produire des données complexes en quelques
-millisecondes. Ainsi, nous l'avons utilisé de manière répétée pour produire
-d'importants ensembles de données dont la variété était assurée par les choix
-aléatoires dans la résolution des points des choix, comme expliqué dans la
+minutes).
+
+\paragraph{Algorithme basé sur la couverture} L'algorithme basé sur la
+couverture produit moins de données mais il génère des descriptions complexes
+d'objets contenant jusqu'à 32~lexèmes. Il est intéressant de noter que toutes
+les règles sont couvertes avec très peu de données, ici 3~données en moyenne
+sont nécessaires pour couvrir toute la grammaire de JSON. Nous avons également
+remarqué que cet algorithme se comporte comme l'algorithme du postier Chinois
+dans le domaine du test de FSM (\inenglish{Finite State Machines}) et tend à
+produire une première donnée longue qui couvre le maximum de règles, puis
+produit des données plus petites pour couvrir les quelques règles n'ayant pas
+été couvertes précédemment. Aussi, contrairement aux algorithmes précédents qui
+sont relativement lents (l'algorithme aléatoire uniforme nécessite une étape de
+dénombrement exponentielle et l'algorithme exhaustif borné est hautement
+combinatoire), cet algorithme est capable de produire des données complexes en
+quelques millisecondes. Ainsi, nous l'avons utilisé de manière répétée pour
+produire d'importants ensembles de données dont la variété était assurée par les
+choix aléatoires dans la résolution des points des choix, comme expliqué dans la
 partie~\ref{subsection:data:coverage_based_generation}.
 
-Durant cette évaluation, nous avons trouvé une erreur dans deux de nos
-algorithmes, qui était détectée par le compilateur. L'origine de l'erreur
-était une mauvaise gestion des caractères échappés, et par conséquent, des
-données incorrectes étaient produites à partir d'une grammaire valide.
+\paragraph{Validation et erreurs} Durant cette évaluation, nous avons trouvé une
+erreur dans deux de nos algorithmes, qui était détectée par le compilateur.
+L'origine de l'erreur était une mauvaise gestion des caractères échappés, et par
+conséquent, des données incorrectes étaient produites à partir d'une grammaire
+valide.
 
 Pour évaluer notre compilateur de compilateurs, nous avons réinjecté ces données
 dans le compilateur. Nous n'avons relevé aucune erreur durant cette étape~:
@@ -181,7 +198,7 @@ soit acceptées soit refusées par notre compilateur et nous avons comparé les
 verdicts avec ceux des deux autres outils. Durant cette validation, nous avons
 trouvé une erreur dans notre compilateur qui considérait incorrectes des données
 correctes. La cause de cette erreur était une mauvaise gestion du
-\inenglish{backtracking}.
+\inenglish{backtracking}. \\
 
 Après correction de cette erreur, nous avons recommencé l'expérimentation en
 entier avec la grammaire des PCRE au lieu de JSON. Aucune erreur n'a été
@@ -192,7 +209,7 @@ détectée, validant alors nos algorithmes et notre compilateur.
 Nous avons aussi conçu une expérimentation qui utilise Praspel pour la
 validation d'applications Web. Nous avons sélectionné des projets d'étudiants du
 cours de «~Langage Web~», dans lequel les étudiants apprennent le langage PHP et
-l'utilisent pour générer des programmes écrits en HTML. En premier exercice, les
+l'utilisent pour générer des documents écrits en HTML. En premier exercice, les
 étudiants devaient écrire des fonctions qui vérifient des données provenant de
 formulaires, incluant des adresses emails. Nous avons utilisé le domaine
 réaliste des adresses emails pour générer des données de test pour ces
@@ -205,16 +222,17 @@ l'expérimentation précédente, mais en utilisant une grammaire pour les adress
 emails, ce afin de générer des adresses invalides. Nous avons comparé les
 résultats de toutes ces fonctions avec notre propre fonction qui utilise le
 domaine réaliste initial validant des adresses emails correctes. Plusieurs
-erreurs ont été détectées, notre intuition était fondée.
+erreurs ont été détectées. Ce premier exercice montre qu'il est possible
+d'utiliser Praspel et les domaines réalistes pour générer des données valides et
+invalides.
 
 En second exercice, les étudiants devaient générer des blocs de code HTML qui
 seraient par la suite assemblés. Le SUT est une fonction, existant sous
-7~versions différentes et faite par plusieurs étudiants. Cette fonction est
-utilisée pour sélectionner une date, représentée par trois balises
-\code{select}, respectivement pour sélectionner le jour, le mois et l'année. Les
-paramètres de cette fonction sont trois entiers représentant les valeurs par
-défaut de ces trois balises. La spécification informelle de cette fonction est
-la suivante~:
+7~versions différentes et faite par 7~étudiants. Cette fonction est utilisée
+pour sélectionner une date, représentée par trois balises \code{select},
+respectivement pour sélectionner le jour, le mois et l'année. Les paramètres de
+cette fonction sont trois entiers représentant les valeurs par défaut de ces
+trois balises. La spécification informelle de cette fonction est la suivante~:
 %
 \begin{itemize}
 
@@ -233,21 +251,25 @@ sélectionnée par défaut.
 %
 Nous avons conçu plusieurs prédicats basés basés sur plusieurs degrés de
 granularité.
+%
+\begin{enumerate}
 
-Le premier niveau vérifie que le code HTML est bien structuré. Pour y arriver,
-nous avons utilisé une grammaire simplifiée du langage XML, vérifiant que toutes
-les balises ouvertes sont correctement fermées et que les attributs sont
-syntaxiquement corrects. Tous les étudiants ont passé ce niveau.
+\item Le premier niveau vérifie que le code HTML est bien structuré. Pour y
+arriver, nous avons utilisé une grammaire simplifiée du langage XML, vérifiant
+que toutes les balises ouvertes sont correctement fermées et que les attributs
+sont syntaxiquement corrects. Tous les étudiants ont passé ce niveau.
 
-Le deuxième niveau vérifie que le code HTML généré contient trois balises
+\item Le deuxième niveau vérifie que le code HTML généré contient trois balises
 \code{select} syntaxiquement correctes. Pour y arriver, nous avons utilisé une
-grammaire d'un sous-ensemble du langage HTML. 4~étudiants n'ont pas passé ce
-niveau.
+grammaire d'un sous-ensemble du langage HTML représentant ces trois balises
+\code{select}. 4~étudiants n'ont pas passé ce niveau.
 
-Finalement, le troisième niveau ajoute un visiteur dédié qui vérifie le contenu
-du code généré~: les valeurs des options pour chaque balise \code{select},
-l'existence d'exactement une option sélectionnée par défaut par balise etc.
-Seulement 2~des étudiants restants ont passé ce niveau.
+\item Finalement, le troisième niveau ajoute un visiteur dédié qui vérifie le
+contenu du code généré~: les valeurs des options pour chaque balise
+\code{select}, l'existence d'exactement une option sélectionnée par défaut par
+balise etc. Seulement 2~des étudiants restants ont passé ce niveau.
+
+\end{enumerate}
 
 En plus de nous montrer que seulement 2~étudiants sur 7~sont capables de suivre
 des spécifications simples, cette expérimentation nous a montré que Praspel est

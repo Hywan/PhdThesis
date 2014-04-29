@@ -1,6 +1,6 @@
 digraph {
-    graph [rankdir=LR];
-    node  [style="state", width=1.2];
+    graph [rankdir=LR, ranksep=.1];
+    node  [style="state", width=1.0];
 
     subgraph {
         a -> b   [style=invis];
@@ -8,9 +8,9 @@ digraph {
     }
 
     subgraph {
-        model     -> suite;
-        suite     -> extension [label=" ", texlbl="sélection"];
-        extension -> reports   [label=" ", texlbl="exécution"];
+        model     -> suite     [label=" ", texlbl="\begin{tabular}{c}génération\\de tests\end{tabular}"];
+        suite     -> extension [label=" ", texlbl="sélection"                                          ];
+        extension -> reports   [label=" ", texlbl="exécution"                                          ];
     }
 
     subgraph {
@@ -23,12 +23,12 @@ digraph {
     SUT  -> extension;
     data -> extension;
 
-    model     [label=" ", texlbl="\tikzref{boxextom}modèle objet"];
-    suite     [label=" ", texlbl="suite de tests"                ];
-    SUT       [label=" ", texlbl="\tikzref{boxextsut}SUT"        ];
-    data      [label=" ", texlbl="données"                       ];
-    extension [label=" ", texlbl="atoum"                         ];
-    reports   [style="accepting", label=" ", texlbl="rapports"   ];
+    model     [label=" ", texlbl="\tikzref{boxextom}modèle objet"                ];
+    suite     [label=" ", texlbl="\begin{tabular}{c}suite de\\tests\end{tabular}"];
+    SUT       [label=" ", texlbl="\tikzref{boxextsut}SUT"                        ];
+    data      [label=" ", texlbl="données"                                       ];
+    extension [label=" ", texlbl="atoum"                                         ];
+    reports   [style="accepting", label=" ", texlbl="rapports"                   ];
 
     a [style=invis];
     b [style=invis];

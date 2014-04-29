@@ -110,18 +110,8 @@ L'expérimentation a été ouverte pendant une première semaine avec un premier
 panel puis pendant deux autres semaines avec un second panel plus important. Les
 parties suivantes regroupent toutes les données et informations des deux panels.
 
-%On présente les ingénieurs et ce qu'on va faire~: groupe de méthodes, 2 TS etc.
-%Que va-t-on comparer~? Les métriques sont~: nombres de tests, code coverage,
-%temps.
-
 \subsection{Couverture de code des suites de tests}
 \label{subsection:experimentation:coverage}
-
-%Ici, on compare les suites de test en fonction de la couverture de tests.
-%Regarder les données manipulées des deux côtés, comment ça a été testé (aux
-%limites, aléatoirement etc.). Donner un sens aux chiffres (100\% ne veut rien
-%dire). La couverture de code tous-les-arcs n'est probablement pas la meilleure,
-%ça devrait se voir à un moment ou un autre.
 
 Un moyen de comparer les suites de tests est d'utiliser la couverture de code
 avec le critère tous-les-arcs, comme pour l'expérimentation précédente.  Les
@@ -161,12 +151,6 @@ Maintenant, comparons le temps de rédaction de ces suites de tests.
 \subsection{Temps de rédaction des suites de tests}
 \label{subsection:experimentation:time}
 
-%Ils sont tous habitués à écrire des tests. Personne ne connaît Praspel. Est-ce
-%qu'on compte le temps d'apprentissage~? Ils n'ont peut-être pas le temps
-%d'écriture de la suite MT en tête~: on travaillera pas estimation.
-%
-%Faire 2 fois l'XP en fait. Une fois avec apprentissage, une fois sans.
-
 Tous les membres du panel sont habitués à écrire des tests. Ils en écrivent des
 dizaines par jour. Aucun d'entre eux n'avait écrit un contrat en Praspel avant
 cette expérimentation, mais certains connaissaient toutefois ce paradigme. Nous
@@ -179,12 +163,12 @@ des AGT~: savoir les lire, les comprendre et les positionner par rapport aux MT.
 Durant cette période, écrire des MT était bien plus rapide que d'écrire des
 contrats et produire des AGT. Pour l'autre partie du panel, même si elle
 connaissait la programmation par contrat, elle ne l'avait jamais pratiquée. Les
-problèmes rencontrés étaient les mêmes~: savoir en lire, comprendre et analyser
-les AGT. Le panel pondère toutefois cet effort~: en comparaison avec les autres
-outils qu'ils manipulent quotidiennement, l'installation de Praspel et son
-extension pour atoum est très rapide (autour d'une minute) et le langage est
-simple à utiliser.  Même si les notions sous-jacentes (les algorithmes et les
-méthodes du test utilisés) ne sont pas connues ou comprises, les domaines
+problèmes rencontrés étaient les mêmes~: savoir lire des contrats, comprendre et
+analyser les AGT. Le panel pondère toutefois cet effort~: en comparaison avec
+les autres outils qu'ils manipulent quotidiennement, l'installation de Praspel
+et son extension pour atoum est très rapide (autour d'une minute) et le langage
+est simple à utiliser. Même si les notions sous-jacentes (les algorithmes et
+les techniques du test utilisés) ne sont pas connues ou comprises, les domaines
 réalistes sont également une notion simple à comprendre et à utiliser.
 
 Une fois le cap de l'apprentissage franchi, le panel a observé que pour peu de
@@ -218,19 +202,15 @@ le panel était constitué de bénévoles.
 \subsection{Génération de données de test}
 \label{subsection:experimentation:data}
 
-%Les suites AGT ne sont pas toutes complètes. Il faut compléter avec des MT.
-%Est-ce que les algos de génération de données sont utiles~? Sont-ils aussi
-%efficaces~? Ont-ils réécrit des tests en utilisant la génération de données~?
-%Quels résultats a-t-il apporté~?
-
 Nous avons précisé dans les parties précédentes que les suites d'AGT ne sont pas
-toujours complètes. En effet, Praspel n'est pas capable de tout spécifier et
-certaines parties du code ne sont pas testables facilement. Heureusement, la
-partie précédente nous a montré que le temps gagné grâce aux contrats est
-réinvesti dans l'écriture de MT. Dans cette étape, les ingénieurs de test ont
-utilisés nos générateurs de données. Rappelons qu'atoum ne possède aucun
-générateur de données. Le seul outil qu'il propose consiste à se brancher sur un
-dictionnaire de données écrit manuellement. Nous présentons trois constats.
+toujours complètes. En effet, Praspel n'est pas capable de tout spécifier (nous
+détaillerons plusieurs cas dans la suite de cette partie) et certaines parties
+du code ne sont pas testables facilement. Heureusement, la partie précédente
+nous a montré que le temps gagné grâce aux contrats est réinvesti dans
+l'écriture de MT. Dans cette étape, les ingénieurs de test ont utilisés nos
+générateurs de données. Rappelons qu'atoum ne possède aucun générateur de
+données. Le seul outil qu'il propose consiste à se brancher sur un dictionnaire
+de données écrit manuellement. Nous présentons trois constats.
 
 \paragraph{Premier constat} Les domaines réalistes permettent de spécifier
 simplement et facilement une grande majorité des données. Pouvoir utiliser les
@@ -301,15 +281,37 @@ maintenance.
 \subsection{Tests paramétrés}
 \label{subsection:experimentation:parameterized}
 
-%Certains auront probablement fait des tests paramétrés (ça se fait déjà un peu
-%dans atoum, ça s'est fait dans UniTestor, je les encouragerai à le faire). Quels
-%résultats~? C'est une approche «~hybride~», est-ce qu'elle comble certains
-%manques de Praspel~? Ou même des MT~?
-
 Le test paramétré est une approche hybride entre le test manuel et automatique.
 Le principe est d'écrire un test dont les paramètres sont spécifiés par un
 contrat. À partir d'un test paramétré, nous pouvons alors générer plusieurs
-nouveaux tests. Ils permettent deux choses. La première est d'automatiser des
+nouveaux tests. Un test annoté par un contrat et qui pré-calcule un verdict est
+présenté dans la figure~\ref{figure:experimentation:parameterized}.
+%
+\begin{figure}
+
+\begin{pre}
+/** \\
+ * \arequires i: 7..42 and \\
+ *           j: /[a-i][1-5]+/; \\
+ * \aensures  \aresult: true; \\
+ */ \\
+public function testSomething ( \$i, \$j ) \{ \\
+ \\
+    \$out = false; \\
+ \\
+    if(…) … \\
+    // some asserts \\
+    // compute \$out \\
+ \\
+    return \$out; \\
+\}
+\end{pre}
+
+\caption{\label{figure:experimentation:parameterized} Un test paramétré.}
+
+\end{figure}
+
+Les tests paramétrés permettent deux choses. La première est d'automatiser des
 tests compliqués à générer automatiquement en décrivant un préambule de test
 non-trivial ou en facilitant le travail de l'oracle. Par exemple, si le succès
 ou l'échec d'un test est déterminé par des informations contenues dans un autre
@@ -348,7 +350,8 @@ dates. Une erreur a été découverte avec des dates relatives comme entre «~le
 dernier vendredi de février~» (spécifié avec \code{time\-stamp('last Friday of
 February')}) et «~le lundi suivant~» (spécifié avec \code{time\-stamp('first
 Monday of March')}). Certains cas avec des samedis et dimanches lors d'années
-bissextiles étaient sources d'erreurs.
+bissextiles étaient sources d'erreurs. L'erreur a été détectée par des gardes
+dans le programme qui ont levé des exceptions.
 
 Une autre erreur a été détectée dans un programme qui formatait mal les dates.
 Le mois de janvier était formaté en \code{1} au lieu de \code{01}. La donnée de
@@ -356,7 +359,7 @@ test manuelle portait sur le mois de décembre, mois durant lequel a été écri
 test (l'ingénieur de test s'est inspiré du mois courant de l'époque pour écrire
 la donnée de test). Lorsqu'il a spécifié sa donnée avec le domaine réaliste
 \code{date('d')}, où \code{d} représente les mois sur deux chiffres, l'erreur
-est apparue.
+est apparue. L'erreur a été détectée avec la clause \aensures des contrats.
 
 Une fois qu'un contrat a été écrit ou qu'un générateur de données a été utilisé
 manuellement, 2~minutes en moyenne sont nécessaires pour détecter ces erreurs.
@@ -368,7 +371,8 @@ aurait été «~important~».
 en JSON. Les données de test manuelles ne couvraient pas tous les cas et
 l'utilisation d'un générateur de chaînes de caractères exhaustif a permis de
 détecter plusieurs erreurs. Elles ont été détectées en autant de temps qu'il
-était nécessaire pour écrire le test, c'est~à~dire moins de 3~minutes. 
+était nécessaire pour écrire le test, c'est~à~dire moins de 3~minutes. L'erreur
+a été détectée par PHP à l'exécution lors d'opérations incomplètes.
 
 Ce programme n'était pas encore en production, il était en cours de
 développement. L'impact des erreurs aurait pu être important puisqu'il
@@ -391,40 +395,26 @@ Heureusement, aucune formule de cette forme n'a été écrite par les utilisateu
 
 \paragraph{Erreurs dans les tests} Dans les deux derniers points abordés, la
 correction des erreurs a permis de détecter d'autres erreurs dans les tests. En
-effet, les tests calculaient mal leurs verdicts. Praspel générait des AGT qui
-échouaient alors que les MT équivalent étaient des succès. Après analyses des
-AGT et des MT, il s'est avéré qu'il y avait des erreurs dans les MT.
+effet, les tests calculaient mal leurs verdicts ou étaient incomplets. Praspel
+générait des AGT qui échouaient alors que les MT équivalent étaient des succès.
+Après analyses des AGT et des MT, il s'est avéré qu'il y avait des erreurs dans
+les MT. Les contrats avaient des postconditions simples (clause \aensures) mais
+réparties dans plusieurs comportements (clause \abehavior). Les AGT reflétaient
+toute la combinatoire possible alors que certains cas étaient oubliés dans les
+MT. C'est la raison principale de ce genre d'erreurs dans les tests. Une autre
+raison est que les AGT utilisent des générateurs de données plus complets que
+les MT écrits sans nos générateurs de données. Un seul AGT exécuté plusieurs
+fois couvrent alors plus de données qu'un MT. Lorsqu'un AGT détectait une erreur
+sur les données, cette erreur n'était pas détectée dans les MT car la couverture
+des données était nettement plus faible.
 
 \paragraph{Autres erreurs} D'autres erreurs ont été détectées notamment avec les
 domaines réalistes \code{Regex} et \code{Array} qui généraient des données non
 prévues par l'implémentation. Ces erreurs ont principalement été détectées en
-2~minutes en moyenne.
+2~minutes en moyenne, grâce aux clauses \aensures des contrats.
 
 \subsection{Expertise humaine~: discussion}
 \label{subsection:experimentation:discuss}
-
-%Plutôt sous la forme d'une interview~? Est-ce que l'approche des contrats est
-%pertinente~? Est-ce que vous avez l'impression de gagner du temps~? De
-%l'argent~? De la qualité logiciel~? Qu'est-ce qu'il faudrait pour gagner en
-%maturité~? Les bugs qui ont été trouvés (s'il y en a), peut-on estimer leurs
-%coût~: en temps, en personne, en argent (par rapport à la criticité du bug)~?
-%
-%Autre question, moins empirique~: est-ce que l'ingénieur aurait écrit ces tests
-%là, ou pas, des tests trop simples, des tests trop complexes, pertinents, ça
-%remplit nos objectifs qualités, de couverture etc.
-%
-%Expressivité de Praspel~: est-ce que ce le langage est assez complet, est-ce
-%qu'ils peuvent tout exprimer avec ou pas~?
-%
-%Est-ce qu'ils sont limités par les générateurs de données~? Est-ce qu'ils les
-%ont un peu hacker pour obtenir la donnée qu'ils voulaient~? Est-ce qu'ils
-%voulaient faire quelque chose qui n'était pas possible~? Est-ce qu'ils se
-%s'auraient poser la question sans Praspel~?
-%
-%\subsubsection{Bénéfices des contrats}
-%
-%Qu'est-ce que cela apporte à votre méthodologie~? Vous travaillez plus
-%lentement, plus rapidement~? Facile à prendre en main et à comprendre~?
 
 Pour finir cette expérimentation, nous avons discuté en groupe avec les membres
 du panel. Nous avons synthétisé ces discussions en plusieurs sujets.
@@ -517,10 +507,13 @@ une fois exécuté, aura un comportement similaire à la classe bouchée {\em
 modulo} certaines méthodes ou attributs avec des comportements différents.
 Praspel pourrait valider que le code PHP produit est correct d'un point de vue
 syntaxique, mais spécifier qu'il est correct d'un point de vue sémantique est
-nettement plus difficile. Actuellement, le seul moyen de spécifier une telle
-postcondition se ferait par le biais d'un domaine réaliste sur mesure ou alors
-en utilisant la construction \apred{\empty}. Si cet effort est ponctuel, il est
-plus rapide d'écrire un test manuel. Cependant, un test manuel pourrait être
-limité et l'utilisation d'un test paramétré (c'est~à~dire annoté par un contrat,
-voir la partie~\ref{subsection:experimentation:parameterized}) serait
-particulièrement adaptée à ce genre de cas de figure.
+nettement plus difficile. Un autre exemple de code technique est un code créant
+des \inenglish{threads}. Praspel est un incapable de spécifier que des
+\inenglish{threads} ont été créés ou fermés. Actuellement, le seul moyen de
+spécifier de telles postconditions se ferait par le biais d'un domaine réaliste
+sur mesure ou alors en utilisant la construction \apred{\empty}. Si cet effort
+est ponctuel, il est plus rapide d'écrire un test manuel. Cependant, un test
+manuel pourrait être limité et l'utilisation d'un test paramétré (c'est~à~dire
+annoté par un contrat, voir la
+partie~\ref{subsection:experimentation:parameterized}) serait particulièrement
+adaptée à ce genre de cas de figure.

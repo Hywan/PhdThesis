@@ -35,38 +35,40 @@ propriétés décrits par \acitei{DwyerAC99}. Ces patrons permettent de définir
 propriété temporelle comme un motif qui doit être satisfait à l'intérieur d'une
 portée (une portion d'exécution du système). Ils permettent donc d'exprimer
 simplement un large panel de propriétés temporelles avec un ensemble restreint
-de constructions. Un nouveau langage~\acite{CastillosDJKT13} basé sur ces
-patrons a été créé. Ce langage comprend des variantes aux motifs et aux portées
-afin d'améliorer l'expressivité et corriger certaines incohérences. Des nouveaux
-critères de couverture ont alors été définis et permettent de vérifier plusieurs
-propriétés temporelles.
+de constructions. Un langage~\acite{CastillosDJKT13} basé sur ces patrons a été
+créé. Ce langage comprend des variantes aux motifs et aux portées afin
+d'améliorer l'expressivité et corriger certaines incohérences des patrons
+initiaux. Des nouveaux critères de couverture ont alors été définis et
+permettent de vérifier plusieurs propriétés temporelles.
 
-La démarche de~\acitea{Castillos13} est similaire à la notre mais les objectifs
-de tests sont différents. Cependant, puisque ce langage est très simple et
-permet d'exprimer un grand nombre de propriétés temporelles, nous pensons que ce
-langage pourrait être une extension à Praspel. Ainsi, en plus des attributs et
-des méthodes, les classes pourraient être annotées par ces propriétés. Nous les
-exploiterions pour générer de nouveaux préambules de test, des objets plus
-réalistes, des suites de tests fonctionnels ou alors pour vérifier des
-propriétés temporelles.
+La démarche de~\acitea{Castillos13} est similaire à la notre~: proposer un
+langage et définir des critères de couverture pour obtenir des objectifs de
+tests, mais ces objectifs sont différents. Cependant, puisque ce langage est
+très simple et permet d'exprimer un grand nombre de propriétés temporelles, nous
+pensons que ce langage pourrait être une extension à Praspel. Ainsi, en plus des
+attributs et des méthodes, les classes pourraient être annotées par ces
+propriétés. Nous les exploiterions pour générer de nouveaux préambules de test,
+des objets plus réalistes, des suites de tests fonctionnels ou alors pour
+vérifier des propriétés temporelles.
 
 \subsubsection{\inenglish{Grey-box} avec le \inenglish{Search-based Testing}}
 
 Dans les expérimentations, nous avons vu certaines limites de Praspel. La
 méthode du \inenglish{Search-based Testing}~\acite{McMinn04} utilise des
-métaheuristiques pour générer automatiquement des données de test. Le SUT est en
-premier lieu exécuté avec des données aléatoires. Des fonctions de
-\inenglish{fitness} (fonctions objectifs) placées sur les points de choix du SUT
-permettent d'évaluer la «~distance~» entre les données courantes et les données
-nécessaires pour activer ou désactiver ce point de choix. En utilisant la
-programmation génétique, ces données initiales sont mutées pour former une
-nouvelle population de données. Des algorithmes de sélections vont réduire cette
-population. Chaque donnée de cette population sera ensuite réutilisée comme
-données de test pour exécuter à nouveau le SUT. Les fonctions de
-\inenglish{fitness} vont produire de nouveaux résultats qui serviront à guider
-l'évolution de la population de données. Par exemple, avec la condition \code{x
-== y}, la fonction de \inenglish{fitness} sera $\mathrm{abs}(\code{x} -
-\code{y})$. Quand cette fonction tend vers 0, alors la condition est activée.
+métaheuristiques pour générer automatiquement des données de test à partir du
+code source. Cette méthode travaille en boîte blanche. Le SUT est en premier
+lieu exécuté avec des données aléatoires. Des fonctions de \inenglish{fitness}
+(fonctions objectifs) placées sur les points de choix du SUT permettent
+d'évaluer la «~distance~» entre les données courantes et les données nécessaires
+pour activer ou désactiver ce point de choix. En utilisant la programmation
+génétique, ces données initiales sont mutées pour former une nouvelle population
+de données. Des algorithmes de sélections vont réduire cette population. Chaque
+donnée de cette population sera ensuite réutilisée comme données de test pour
+exécuter à nouveau le SUT. Les fonctions de \inenglish{fitness} vont produire de
+nouveaux résultats qui serviront à guider l'évolution de la population de
+données. Par exemple, avec la condition \code{x == y}, la fonction de
+\inenglish{fitness} sera $\mathrm{abs}(\code{x} - \code{y})$. Quand cette
+fonction tend vers 0, alors la condition est activée.
 
 Les suites de tests générées par Praspel sont basées sur les critères de
 couverture des contrats. Les données de test, spécifiées majoritairement avec
@@ -87,14 +89,6 @@ compliquerait pas le langage en y ajoutant de nouvelles constructions, mais
 offrirait plus de services à l'utilisateur. Ce dernier n'aurait aucun effort à
 produire à part mettre à jour ses outils.
 
-\subsection{Améliorer le langage}
-
-Le langage Praspel n'est pas complet. Certaines choses pourraient être mieux
-spécifiées. Nous sommes toujours dans cette démarche d'analyser ce que les
-développeurs écrivent dans les contrats et d'améliorer le langage en
-conséquence. Nous avons relevé deux points importants, puis un dernier point que
-nous aurions aimé traiter mais le temps nous a manqué.
-
 \subsubsection{Solveurs sur les entiers et réels}
 
 Quand des entiers sont manipulés, il est courant de vouloir spécifier des
@@ -104,29 +98,38 @@ fonctionnalité, nous n'avons pas eu le temps de la développer. Il serait alors
 nécessaire d'étudier le domaine, de voir comment nous pouvons y contribuer, et
 proposer une solution dans Praspel.
 
+\subsection{Améliorer le langage}
+
+Le langage Praspel n'est pas complet. Certaines données pourraient être encore
+mieux spécifiées. Nous sommes toujours dans cette démarche d'analyser ce que les
+développeurs écrivent dans les contrats et d'améliorer le langage en
+conséquence. Nous avons relevé deux points importants, puis un dernier point que
+nous aurions aimé traiter mais le temps nous a manqué.
+
 \subsubsection{De nouveaux domaines réalistes}
 
 Durant l'expérimentation, les ingénieurs de tests ont trouvé notre approche
 pertinente. Toutefois, la bibliothèque standard des domaines réalistes n'était
 pas suffisante. Les ingénieurs ont demandé la création de plus de domaines
 réalistes représentant des données métiers, comme des numéros de comptes
-bancaires, des numéros de téléphones etc. Ce ne sont pas des perspectives
-scientifiques mais industrielles. Toutefois, elles participent à l'adoption de
-nos outils dans l'industrie.
+bancaires, des numéros de téléphones etc. Les ingénieurs ont créé certains de
+ces domaines réalistes par eux mêmes mais ils n'ont pas eu le temps de tous les
+créer. Ce ne sont pas des perspectives scientifiques mais industrielles.
+Toutefois, elles participent à l'adoption de nos outils dans l'industrie.
 
 \subsubsection{Pureté des méthodes}
 
 À l'origine de Praspel, il existait la clause \ais. Elle permet de qualifier la
-catégorie de la méthode. Le seul qualificatif était \code{pure}, pour
-contrôler la mutabilité de l'environnement. En effet, une méthode peut modifier
-ou pas son environnement lors de son exécution. Si elle ne le modifie pas, alors
-nous parlons d'une méthode {\strong pure}, sinon nous parlons d'une méthode
-{\strong impure} (par défaut).
+catégorie de la méthode. Le seul qualificatif était \code{pure}, pour contrôler
+la mutabilité de l'environnement. En effet, une méthode peut modifier ou pas son
+environnement lors de son exécution. Si elle ne le modifie pas, alors nous
+parlons d'une méthode pure, sinon nous parlons d'une méthode impure (par
+défaut).
 
-Il serait intéressant de détecter la pureté d'une méthode. De même, une méthode
-pure peut être utilisée dans un contrat car elle ne modifie par l'état du SUT.
-Ainsi, détecter la pureté d'une méthode peut permettre d'écrire des contrats
-plus élaborés.
+Nous pensons qu'il serait pertinent de détecter la pureté d'une méthode. De
+même, une méthode pure peut être utilisée dans un contrat car elle ne modifie
+par l'état du SUT.  Ainsi, détecter la pureté d'une méthode peut permettre
+d'écrire des contrats plus élaborés.
 
 \subsection{Vers des outils industriels~?}
 
@@ -189,8 +192,8 @@ Praspel va rapidement se propager et être utilisé. Durant ces travaux de thès
 nous n'avons pas alloué de temps spécifiquement pour la promotion de Praspel
 auprès de l'industrie. Malgré quelques conférences industrielles, nos
 implémentations sont terminées depuis peu et l'outil est «~industriellement~»
-utilisable depuis quelques mois. Aux vues des résultats de l'expérimentation,
-nous espérons que la communauté de Hoa et d'atoum sauront promouvoir Praspel.
-Nous allons les rejoindre et participer à cet effort au maximum car nous pensons
-que Praspel et le lien qui s'est créé entre nous et ces communautés sont
-bénéfiques pour la recherche.
+utilisable depuis février-mars 2014. Aux vues des résultats de
+l'expérimentation, nous espérons que la communauté de Hoa et d'atoum sauront
+promouvoir Praspel. Nous allons les rejoindre et participer à cet effort au
+maximum car nous pensons que Praspel et le lien qui s'est créé entre nous et ces
+communautés sont bénéfiques pour la recherche.

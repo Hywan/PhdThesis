@@ -2,18 +2,31 @@
 \label{section:experimentation:solver}
 
 Cette partie présente l'expérimentation que nous avons menée dans
-l'article~\acitei{EnderlinGB13}. Dans cette partie, nous utilisons le mot {\em
-système} pour parler d'un ensemble de propriétés sur les tableaux.  Cette
-expérimentation évalue l'efficacité du solveur présenté dans la
+l'article~\acitei{EnderlinGB13}. Dans cette partie, nous utilisons le mot
+{\strong système} pour parler d'un ensemble de propriétés sur les tableaux.
+Cette expérimentation évalue l'efficacité du solveur présenté dans la
 partie~\ref{section:data:arrays} page~\pageref{section:data:arrays},
 c'est~à~dire sa capacité à supprimer ou réduire le rejet lors de la génération
 de données à partir d'un système. Nous mesurons le nombre de
 \inenglish{backtracks} dans le solveur, le temps de génération de données à
 partir d'un système satisfaisable et le nombre de systèmes non satisfaisables
-détectés. L'expérimentation est composée de trois étapes~: génération de
-systèmes, génération de données et enfin une étape de mesures. Nous générons des
-systèmes sur des tableaux contenant des chaînes de caractères et des entiers, et
-dont la taille des tableaux varie entre 5 et 20.
+détectés. L'expérimentation est composée de trois étapes~:
+%
+\begin{enumerate}
+
+\item génération de systèmes (à partir d'une grammaire et des algorithmes
+présentés dans la partie~\ref{subsection:data:algorithms}
+page~\pageref{subsection:data:algorithms})~;
+
+\item exécution du solveur sur chaque système généré~;
+
+\item mesures.
+
+\end{enumerate}
+%
+Nous générons automatiquement des systèmes dont les propriétés portent sur des
+tableaux contenant des chaînes de caractères et des entiers, et dont la taille
+des tableaux varie entre 5 et 20.
 
 Praspel est décrit par une grammaire. Afin de générer des systèmes, nous
 réutilisons les travaux présentés dans la partie~\ref{section:data:strings}
@@ -134,15 +147,18 @@ des temps de génération des tableaux. La quatrième colonne indique le taux de
 Pour $n \leq 20$, nous observons qu'aucun système n'est rejeté, ce qui est une
 importante amélioration par comparaison avec la génération standard qui est
 aléatoire (voir la partie~\ref{section:data:random}
-page~\pageref{section:data:random}). Toutes les données générées satisfont leur
-spécification. Le solveur génère avec succès et rapidement des données avec un
-faible nombre de \inenglish{backtracks}. $n = 20$ représente approximativement
-3~propriétés avec des disjonctions~: l'algorithme exhaustif borné génère
-492~systèmes distincts et les exécutions produisent seulement
+page~\pageref{section:data:random}). La génération standard introduisait un taux
+de rejet supérieur à 90\% face à de tels systèmes. Toutes les données générées
+satisfont leur spécification. Le solveur génère avec succès et rapidement des
+données avec un faible nombre de \inenglish{backtracks}. $n = 20$ représente
+approximativement 3~propriétés avec des disjonctions~: l'algorithme exhaustif
+borné génère 492~systèmes distincts et les exécutions produisent seulement
 114~\inenglish{backtracks}, soit approximativement 1~\inenglish{backtrack} pour
 4~systèmes. C'est un bon résultat. Néanmoins, nous n'avons pas été capables de
 caractériser le nombre de \inenglish{backtracks} par rapport au nombre de
-propriétés. Enfin, cette expérimentation nous a permis de détecter une erreur
+propriétés. Cela aurait pu permettre d'observer la réaction du solveur face à
+certaines formes de contraintes, et potentiellement de lui ajouter des
+optimisations. Enfin, cette expérimentation nous a permis de détecter une erreur
 dans le solveur. Cette erreur conduisait systématiquement au rejet de systèmes
 ayant un certain motif. Par conséquent, nous remarquons que cette démarche de
 validation est efficace pour détecter des erreurs.

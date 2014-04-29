@@ -6,10 +6,7 @@
     Vector *-- "2" Coordinates
 
     class Robot {
-        # Clock _clock
-        # float _energy
-        # Coordinates _coordinates
-        # LandSensor _landSensor
+        # float energy
 
         + move()
         + moveTo()
@@ -17,15 +14,15 @@
     }
 
     class Coordinates {
-        # float _x
-        # float _y
+        # float x
+        # float y
 
         + getX()
         + getY()
     }
 
     class Clock {
-        # DateTime _date
+        # DateTime date
 
         + reset()
         + getDifference()
@@ -38,9 +35,6 @@
     }
 
     class Vector {
-        # Coordinates _c1
-        # Coordinates _c2
-
         + getFirstCoordinates()
         + getSecondCoordinates()
         + getLength()

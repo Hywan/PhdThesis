@@ -45,6 +45,7 @@ Dans le vocabulaire d'atoum, un test est une méthode qui contient plusieurs
 assertions sur le SUT et une suite de tests est une classe.
 
 \begin{example}[Premier test avec atoum]
+\label{example:tools:first-test}
 
 Ainsi, nous allons tester que le résultat retourné par une certaine méthode
 \code{say}, en \circled{1}, d'une classe \code{Project\bslash{}\-Hel\-lo\-World}
@@ -79,7 +80,8 @@ Le rapport simple nous informe que le test s'est exécuté en moins de
 0.005~seconde, en utilisant 0.25~Mb de mémoire, avec une couverture de code
 (avec le critère tous-les-arcs) de 100\%, que l'ensemble s'est exécuté en
 0.08~seconde et que l'exécution de la seule suite de tests, ne contenant qu'un
-seul test représentant deux assertions, a été un succès.
+seul test représentant deux assertions (\code{string} et \code{isEqualTo}), a
+été un succès.
 
 \end{example}
 
@@ -88,9 +90,10 @@ rapports détaillés, nous pouvons citer trois points forts de cet outil.
 
 \subsubsection{Moteurs d'exécution}
 
-Tout d'abord, il permet nativement (comprendre sans \inenglish{plugin}
+Tout d'abord, atoum permet nativement (comprendre sans \inenglish{plugin}
 supplémentaire) l'exécution des tests en ligne, en isolation ou en parallèle.
-Une exécution en ligne va exécuter tous les tests les uns après les autres de
+Une exécution en ligne (traduction de l'anglais \inenglish{inline}, et non
+\inenglish{online}) va exécuter tous les tests les uns après les autres de
 manière séquentielle dans le même processus. Une exécution en isolation va
 exécuter tous les tests les uns après les autres mais dans un processus
 nouvellement créé à chaque fois afin d'isoler le test des exécutions
@@ -276,11 +279,11 @@ foreach(\$this->sampleMany(\$data, 7) as \$string) \\
 \end{tikzbox}
 %
 \begin{tikzannotation}
-    \node (sc) [left of=boxextsut, xshift=-4.25cm, yshift=-1.9cm] {};
+    \node (sc) [left of=boxextsut, xshift=-3.9cm, yshift=-1.75cm] {};
     \node (Sc) [left of=sc, node distance=1.5cm] {\circled{S}};
     \draw [mywavyarrow] (Sc) -- (sc);
 
-    \node (mc) [above of=boxextom, xshift=.4cm, yshift=-1.75cm] {};
+    \node (mc) [above of=boxextom, xshift=.48cm, yshift=-1.6cm] {};
     \node (Mc) at (Sc -| mc) {\circled{M}};
     \draw [mywavyarrow] (Mc) -- (mc);
 \end{tikzannotation}
@@ -377,5 +380,11 @@ commande suivante~:
 \end{pre}
 %
 Sans surprise, la suite de tests a été exécutée avec succès.
+
+Nous remarquons une assertion de moins par rapport à
+l'exemple~\ref{example:tools:first-test}.  Au moment de la rédaction de ce
+mémoire, l'extension n'est pas encore totalement branchée avec le composant
+dédié aux rapports dans atoum. Ainsi, toutes les «~assertions~» de Praspel ne
+sont pas comptabilisées (seulement 1~par test).
 
 \end{example}
