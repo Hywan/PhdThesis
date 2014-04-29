@@ -170,7 +170,7 @@ avec l'analyseur JSON de Gecko (créé par Mozilla et utilisé par exemple dans
 Firefox pour Javascript) et l'analyseur JSON de PHP. Toutes les données générées
 ont été correctement analysées par ces deux autres outils.
 
-Pour tester d'avantages, nous avons modifier la grammaire en y introduisant des
+Pour tester davantage, nous avons modifié la grammaire en y introduisant des
 erreurs, afin de générer des données incorrectes. Nous avons considéré des
 opérations simples de mutation de grammaires~\acite{Offutt06}, telles que~:
 remplacement des opérateurs de répétitions (\code{+} devient \code{*},
@@ -204,7 +204,7 @@ détecter ces erreurs, nous avons décidé d'utiliser des mutations similaires �
 l'expérimentation précédente, mais en utilisant une grammaire pour les adresses
 emails, ce afin de générer des adresses invalides. Nous avons comparé les
 résultats de toutes ces fonctions avec notre propre fonction qui utilise le
-domaine réalistes initial validant des adresses emails correctes. Plusieurs
+domaine réaliste initial validant des adresses emails correctes. Plusieurs
 erreurs ont été détectées, notre intuition était fondée.
 
 En second exercice, les étudiants devaient générer des blocs de code HTML qui
@@ -212,7 +212,7 @@ seraient par la suite assemblés. Le SUT est une fonction, existant sous
 7~versions différentes et faite par plusieurs étudiants. Cette fonction est
 utilisée pour sélectionner une date, représentée par trois balises
 \code{select}, respectivement pour sélectionner le jour, le mois et l'année. Les
-paramètres de cette fonction sont trois entiers représentants les valeurs par
+paramètres de cette fonction sont trois entiers représentant les valeurs par
 défaut de ces trois balises. La spécification informelle de cette fonction est
 la suivante~:
 %
@@ -237,7 +237,7 @@ basés sur plusieurs degrés de granularité.
 Le premier niveau vérifie que le code HTML est bien structuré. Pour y arriver,
 nous avons utilisé une grammaire simplifiée du langage XML, vérifiant que toutes
 les balises ouvertes sont correctement fermées et que les attributs sont
-syntaxiquement correctes. Tous les étudiants ont passé ce niveau.
+syntaxiquement corrects. Tous les étudiants ont passé ce niveau.
 
 Le deuxième niveau vérifie que le code HTML généré contient trois balises
 \code{select} syntaxiquement correctes. Pour y arriver, nous avons utilisé une

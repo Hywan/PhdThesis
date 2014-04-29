@@ -57,11 +57,11 @@ volumineux, il a sa propre suite de tests. Les parties qui ont été abordées
 durant cette expérimentation étaient le calcul de ces données, les tests
 unitaires et les tests fonctionnels.
 
-\item outils de comptabilité~: 2~outils développés sur mesure pour des calculs
+\item outils de comptabilités~: 2~outils développés sur mesure pour des calculs
 de comptabilités. Les parties abordées étaient multiples.
 
 \item outil d'évaluation de formules mathématiques~: des utilisateurs écrivent
-eux-mêmes des formules arithmétiques décrivant l'évolution en temps réels des
+eux-mêmes des formules arithmétiques décrivant l'évolution en temps réel des
 tarifs de certains produits. Une bibliothèque de fonctions, de constantes et de
 variables est mise à la disposition de ces utilisateurs. La partie abordée était
 l'évaluation de ces formules analysées avec un compilateur et une grammaire
@@ -71,7 +71,7 @@ spécifiques.
 
 Tous ces programmes font intervenir tous les types de données, à savoir des
 booléens, des entiers, des réels, des chaînes de caractères, des tableaux et des
-objets. La plupart des chaînes de caractères pouvait être spécifiée par une
+objets. La plupart des chaînes de caractères pouvaient être spécifiées par une
 expression régulière, et quelques-unes par des grammaires.
 
 Sur ces programmes variés, nous avons demandé à notre panel d'appliquer deux
@@ -132,7 +132,7 @@ Quand les AGT couvrent moins le code que les MT, le panel nous a fait remarquer
 que c'était à cause de l'utilisation des bouchons (des \inenglish{mocks}). Un
 bouchon remplace une partie d'un programme et nous prédéfinissons la manière
 dont il va se comporter, c'est~à~dire que nous décrivons un comportement bien
-spécifique et testons le SUT dans ces conditions. Les bouchons permettent
+spécifique et testons le SUT dans ces conditions.  Les bouchons permettent
 d'améliorer la testabilité des programmes (en plus d'accélérer l'exécution des
 suites de tests par effet de bord). Les bouchons ne concernent que les objets ou
 les fonctions, et Praspel n'est pas capable de générer de tels bouchons. Par
@@ -141,11 +141,11 @@ connexion réseau est interrompue, Praspel ne sera pas capable de couper lui-mê
 la connexion. Il faut alors boucher les interfaces réseaux et simuler des
 déconnexions.
 
-Quand les AGT couvrent plus le code que les MT, c'était à cause d'une limitation
+Lorsque les AGT couvrent plus le code que les MT, c'est à cause d'une limitation
 des outils. En effet, atoum ne permet pas de tester les méthodes avec une
-visibilité autre que publique, alors que Praspel le permet. Le panel devait
-alors tester les méthodes protégées et privées à travers les méthodes publiques.
-Il est évident que certains chemins dans le code n'étaient pas accessibles
+visibilité autre que publique, alors que Praspel le permet. Le panel doit alors
+tester les méthodes protégées et privées à travers les méthodes publiques. Il
+est évident que certains chemins dans le code n'étaient pas accessibles
 facilement.
 
 Dans certains cas, malgré une couverture de code de 100\% pour les MT et les
@@ -205,7 +205,7 @@ Pendant le temps imparti, ils n'étaient capables d'écrire que des tests dits
 code. Avec les contrats, ils spécifient toutes les méthodes car ils sont écrits
 en même temps que le code. La proximité entre le code et les contrats \via les
 annotations est un avantage. Par conséquent, plus de code est testé sans
-nécessiter autant de temps que si ça devait être fait manuellement. Le temps qui
+nécessiter autant de temps que s'il devait être testé manuellement. Le temps qui
 a été économisé est ainsi réinvesti pour des tests plus complets, qui n'auraient
 pas pu être faits en temps normal. Autrement dit, les tests «~usuels~» sont
 gérés par Praspel, ce qui permet aux ingénieurs de test de se concentrer sur les
@@ -283,7 +283,7 @@ ensembles de sous-chaînes de caractères. Les autres écrivaient quelques chaî
 de caractères manuellement. Dans le cas des grammaires, un ingénieur a fait
 remarquer qu'en plus d'apprendre le langage Praspel, il fallait apprendre le
 langage PP pour décrire des grammaires. Les autres membres du panel n'ont pas
-relevé cet inconvénient arguant que, vus des services rendus, l'effort demandé
+relevé cet inconvénient arguant que, vus les services rendus, l'effort demandé
 était très rapidement amorti.
 
 Enfin, dans le cas des tableaux, le panel a apprécié le fait de pouvoir générer
