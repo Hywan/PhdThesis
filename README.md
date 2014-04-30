@@ -5,11 +5,15 @@ My PhdThesis. This is a “subtree” of a private SVN repository.
 How to compile the document? Deadly simple:
 
     $ cd PhdThesis
-    $ make bib
-    $ make
+    $ make bib && make && make
     $ make open # on Darwin
 
 A PDF is produced in `PhdThesis/Dist/`.
+
+To compile the “print” version:
+
+    $ FORMAT=.print make bib && make && make
+    $ FORMAT=.print make open
 
 # Requirements
 
