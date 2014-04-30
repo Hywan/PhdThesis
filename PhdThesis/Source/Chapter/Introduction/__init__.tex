@@ -42,65 +42,72 @@ PHPUnit~\acite{PHPUnit} pour PHP, CUnit~\acite{CUnit} pour C etc. Le travail des
 ingénieurs de test peut se résumer à écrire une spécification informelle
 exécutable, puisqu'ils transforment le cahier des charges en tests afin de
 vérifier et valider le programme. Cela reste toutefois informel, et surtout, une
-tâche laborieuse qui peut revenir cher. Pourquoi alors ne pas écrire une
-spécification formelle et la rendre exécutable~? C'est~à~dire utiliser un
-langage formel pour décrire le fonctionnement du programme, puis dériver, à
-partir de cette spécification, des tests qui soient exécutables et qui vont
-vérifier ou valider plusieurs aspects de cette spécification.
+tâche laborieuse. Pourquoi alors ne pas écrire une spécification formelle et la
+rendre exécutable~? C'est~à~dire utiliser un langage formel pour décrire le
+fonctionnement du programme, puis dériver, à partir de cette spécification, des
+tests qui soient exécutables et qui vont vérifier ou valider plusieurs aspects
+de cette spécification.
 
 \section{\inenglish{Behavioral Interface Specification Language}}
 
 Le terme {\strong spécification} signifie généralement une description précise
-d'un comportement d'un artéfact. {\strong Vérification} signifie prouver qu'une
-implémentation (un programme) satisfait une spécification particulière dans
-toutes les exécutions et configurations possibles. Généralement, une telle
-preuve est accomplie à l'aide de raisonnements statiques, c'est~à~dire
-uniquement par analyse du programme. Lorsqu'un raisonnement statique n'est pas
-possible ou suffisant, nous pourrons utiliser une {\strong validation}
-dynamique, pour tester l'implémentation, c'est~à~dire que nous exécuterons le
-programme. Une validation dynamique est aussi appelée \inenglish{Runtime
-Assertion Checking}, abrégé RAC~\acite{Geller76}.
+des comportements et propriétés d'un artéfact. {\strong Vérification} signifie
+prouver qu'une implémentation (un programme) satisfait une spécification
+particulière dans toutes les exécutions et configurations possibles.
+Généralement, une telle preuve est accomplie à l'aide de raisonnements
+statiques, c'est~à~dire uniquement par analyse du programme. Lorsqu'un
+raisonnement statique n'est pas possible ou suffisant, nous pourrons utiliser
+une {\strong validation} dynamique, pour tester l'implémentation, c'est~à~dire
+que nous exécuterons le programme dans des configurations différentes (qui sont
+des sous-ensembles de toutes les configurations possibles). Une validation
+dynamique est un test. Elle est souvent accompagné d'un \inenglish{Runtime
+Assertion Checker}, abrégé RAC~\acite{Geller76}, qui permet de valider une
+spécification lors d'une exécution du programme.
 
 Un {\strong langage de spécification} formel est une notation précise pour
 décrire les comportements et propriétés d'un programme. Les {\strong notations
 formelles} aident à rendre les spécifications non-ambiguës, moins dépendantes
-des normes culturelles, et ainsi moins sujettes à une mauvaise interprétation.
-Les langages de spécification sont conçus pour répondre à des problèmes généraux
-ou spécialisés. Les langages de spécification généraux, tels que
-Z~\acite{Spivey89} ou OCL~\acite{RichtersG98}, ne sont pas conçus pour une
-méthodologie particulière ou des outils de vérification. Cependant, les
-langages de spécification sont très souvent spécialisés, en fonction de la
-catégorie de langages qu'ils visent~: typage statique et fort, ou dynamique et
-faible, orienté objet ou fonctionnel etc.
+des normes culturelles\footnote{Par exemple, une pinte représente $473$ml aux
+États-Unis d'Amérique, mais $586$ml en Angleterre.}, et ainsi moins sujettes à
+une mauvaise interprétation. Les langages de spécification sont conçus pour
+répondre à des problèmes généraux ou spécialisés. Les langages de spécification
+généraux, tels que Z~\acite{Spivey89} ou OCL~\acite{RichtersG98}, ne sont pas
+conçus pour une méthodologie particulière ou des outils de vérification.
+Cependant, les langages de spécification sont très souvent spécialisés, en
+fonction de la catégorie de problèmes ou langages qu'ils visent~: ensembliste,
+logique, typage statique et fort, ou dynamique et faible, orienté objet ou
+fonctionnel etc.
 
-Par ailleurs, comme une notation est formelle, elle peut être exploitée par une
-machine pour y appliquer un traitement automatique. Les spécifications
-formelles peuvent alors aider à {\strong automatiser le test}, autant pour
-générer les données de test~\acite{BernotGM91, KorelA98, SankarH94, Jalote92}
-que pour calculer le verdict du test~\acite{CheonL02}. C'est dans ces deux
-directions que nous allons nous tourner.
+Par ailleurs, puisqu'une notation est formelle, elle peut être exploitée par une
+machine pour y appliquer un traitement automatique. Les spécifications formelles
+peuvent alors aider à {\strong automatiser le test}, autant pour générer les
+données de test~\acite{BernotGM91, KorelA98, SankarH94, Jalote92} que pour
+calculer le verdict du test~\acite{CheonL02}. C'est dans ces deux directions que
+nous allons nous tourner.
 
 Les spécifications peuvent documenter les {\strong interfaces} d'un programme.
 Par interfaces, il faut comprendre les parties du programme permettant de
-manipuler les données. Nous parlons alors de {\strong langage d'annotations}.
-De tels langages peuvent jouer un rôle central dans la programmation. Par
-exemple, ils facilitent la maintenance du code, qui n'est généralement pas
-suffisament expressif pour faire comprendre au développeur ses tenants et ses
-aboutissants. Par ailleurs, lors d'une phase de \inenglish{debugging}, les
-annotations permettent de localiser plus facilement l'erreur. Dans le cas où
-nous travaillons en {\strong boîte blanche} (\inenglish{white-box}),
+manipuler les données. Une catégorie de ces spécifications est appelée {\strong
+langage d'annotations}. De tels langages peuvent jouer un rôle central dans la
+programmation. Par exemple, ils facilitent la maintenance du code, qui n'est
+généralement pas suffisament expressif pour faire comprendre au développeur ses
+tenants et ses aboutissants. Par ailleurs, lors d'une phase de
+\inenglish{debugging}, les annotations permettent de localiser plus facilement
+l'erreur. Par exemple, si un comportement ou une propriété est violé, il sera
+plus facile à l'utilisateur de situer l'erreur dans un contexte spécifique. Dans
+le cas où nous travaillons en {\strong boîte blanche} (\inenglish{white-box}),
 c'est~à~dire où nous avons accès au code source du programme, les annotations
 peuvent faire partie de la grammaire du langage, ou alors, elles sont écrites
-dans des {\strong commentaires}. Dans le cas où nous travaillons en {\strong
-boîte noire} (\inenglish{black-box}), c'est~à~dire où nous n'avons pas ou
-partiellement accès au code source, les annotations peuvent parfois être
-externes au programme, par exemple sur un langage de définition d'interface
-(\inenglish{Interface Definition Language}, abrégé IDL) ou sur un modèle, ce qui
-nous rapprocherait du \inenglish{Model-based Testing}, abrégé
-MbT~\acite{Utting07}. La différence entre boîte noire et boîte blanche peut
-parfois être plus subtile~\acite{Gaudel11}~: nous considérons que nous sommes en
-boîte noire quand nous n'exploitons pas la structure du code, basiquement le
-contenu des fonctions et méthodes, sinon, nous sommes en boîte blanche.
+dans des commentaires. Dans le cas où nous travaillons en {\strong boîte noire}
+(\inenglish{black-box}), c'est~à~dire où nous n'avons pas ou partiellement accès
+au code source, les annotations peuvent parfois être externes au programme, par
+exemple sur un langage de définition d'interface (\inenglish{Interface
+Definition Language}, abrégé IDL) ou sur un modèle, ce qui nous rapprocherait du
+\inenglish{Model-based Testing}, abrégé MbT~\acite{Utting07}. La différence
+entre boîte noire et boîte blanche peut parfois être plus
+subtile~\acite{Gaudel11}~: nous considérons que nous sommes en boîte noire quand
+nous n'exploitons pas la structure du code, basiquement le contenu des fonctions
+et méthodes, sinon, nous sommes en boîte blanche.
 
 Les langages d'annotations sont des \inenglish{Behavioral Interface
 Specification Language}, abrégé BISL. C'est dans cette catégorie de langages que
@@ -132,7 +139,7 @@ langage «~glue~» (comme la majorité des langages de script), c'est~à~dire qu
 communique avec à peu près tout et est au centre de beaucoup de logiciels. La
 syntaxe du langage est inspirée de C, C++, Java ou encore Perl.  Depuis
 plusieurs années, le langage connaît des améliorations importantes afin de faire
-oublier les erreurs de modélisation passées qui lui sont trop souvent associées.
+oublier les erreurs de conceptions passées qui lui sont trop souvent associées.
 Nous nous intéressons à des programmes écrits en PHP pour plusieurs raisons
 décrites dans cette partie et les suivantes.
 
@@ -172,14 +179,14 @@ sécurité, et d'autre part, tester des programmes existants.
 
 Toutefois les méthodes de développement ont énormément évolué ces dernières
 années avec la qualité logicielle~\acite{LepineSF09}. Les horribles programmes
-tels ceux que nous avons lus ou écrits en PHP ont disparu. De nouveaux
+tels ceux que nous avons lus ou écrits en PHP tendent à disparaître. De nouveaux
 \inenglish{frameworks} ou de nouvelles bibliothèques PHP ont fait leur
 apparition et mettent en avant l'usage intensif de bonnes pratiques pour le
 développement de programmes maintenables et testables. Des
 \inenglish{frameworks} de test de plusieurs natures ont également fait leur
 apparition et un programme non testé ne sera même plus installé. 
 
-De plus, aucun travail de recherche n'a fait de propositions pour spécifier des
+En outre, aucun travail de recherche n'a fait de propositions pour spécifier des
 programmes écrits en PHP. Pourtant cela permettrait d'éviter en amont une
 multitude de problèmes. Enfin, aucun travail ne considère PHP pour la génération
 automatique de données de test ou encore la génération automatique de tests
@@ -187,39 +194,38 @@ unitaires.
 
 Nous profitons de cette tendance d'amélioration de la qualité logicielle et de
 l'absence de travaux dans le domaine des langages de spécification pour
-introduire les contrats dans PHP. Nos travaux s'inscrivent au niveau des tests
-unitaires et au niveau du programme PHP lui-même, c'est~à~dire que nous ne
-tenons pas compte du contexte d'utilisation du programme (client-serveur, client
-seul, démon etc.).
+introduire un langage de spécification dans PHP. Nos travaux s'inscrivent au
+niveau des tests unitaires et au niveau du programme PHP lui-même, c'est~à~dire
+que nous ne tenons pas compte du contexte d'utilisation du programme
+(client-serveur, client seul, démon etc.).
 
-\subsection{Langage de contrat}
+\subsection{Langage de spécification}
 
 Comme PHP est un langage «~glue~», il manipule des données de toutes sortes.
 C'est une première contrainte. De plus, les utilisateurs de PHP sont aussi bien
-des débutants que des experts. La palette des utilisateurs est très large. C'est
-un avantage et un inconvénient du langage~: il est simple à utiliser et permet
-d'obtenir des résultats rapidement mais il permet aussi de faire des choses très
-poussées. Toutefois, tous ces utilisateurs suivent la tendance d'amélioration de
-la qualité logicielle. C'est une deuxième contrainte. Enfin, le langage PHP est
-très pragmatique, c'est ce qui le rend si facile d'accès. Les choses ne sont pas
-toujours faites comme elles le devraient, mais elles sont tout de même bien
-faites. La majorité des fonctionnalités du langage sont des compromis. Les
+des débutants que des experts. La palette des utilisateurs est donc très large.
+C'est un avantage et un inconvénient du langage~: il est simple à utiliser et
+permet d'obtenir des résultats rapidement mais il permet aussi de faire des
+choses très poussées. Toutefois, tous ces utilisateurs suivent la tendance
+d'amélioration de la qualité logicielle. C'est une deuxième contrainte. Enfin,
+le langage PHP est très pragmatique, c'est ce qui le rend si facile d'accès. Il
+est possible d'écrire un programme PHP en très peu de lignes de code sans
+connaître et installer des dizaines de bibliothèques ou d'autres outils. Les
 utilisateurs du langage sont habitués à ce pragmatisme. C'est une troisième
 contrainte.
 
 Si nous proposons un langage de spécification pour PHP, il doit impérativement
 tenir compte de ces trois contraintes. Il doit être simple pour être utilisé et
 compris par la majorité des utilisateurs. Il doit être pragmatique pour que le
-travail puisse être fait rapidement et comme il faut. L'objectif n'est pas de
-traiter tous les problèmes mais les problèmes les plus courants et les plus
-préoccupants. Nous pouvons trouver une manière élégante de présenter des
-solutions. Et enfin, puisque culturellement PHP est un langage «~glue~» et que
-nous voulons traiter plusieurs problèmes, le langage de spécification que nous
-proposons doit assembler plusieurs méthodes du test. Ces trois points, notamment
-le dernier, sont de réels défis scientifiques.
+travail de spécification et de génération automatique de tests unitaires puisse
+être fait rapidement et comme il faut. L'objectif n'est pas de traiter tous les
+problèmes mais les problèmes les plus courants et les plus préoccupants. Et
+enfin, puisque culturellement PHP est un langage «~glue~» et que nous voulons
+traiter plusieurs problèmes, le langage de spécification que nous proposons doit
+assembler plusieurs méthodes du test.
 
 Nous pensons que la programmation par contrat est pertinente pour répondre à
-toutes ces contraintes.
+toutes ces contraintes et pour générer automatiquement des tests sunitaires.
 
 \section{Contributions}
 \label{section:introduction:contributions}
@@ -238,18 +244,18 @@ Le langage de contrat que nous proposons s'appelle {\strong Praspel}~:
 \inenglish{PHP Realistic Annotation and SPecification Language}. Cette première
 contribution, présentée dans le chapitre~\ref{chapter:language}, s'intéresse au
 langage en lui-même, à savoir sa syntaxe et sa sémantique. Nous avons également
-étudié
-comment évaluer un contrat pour qu'il vérifie des données à l'exécution. Ce
-langage est inspiré de JML~\acite{JML} mais se différencie sur la façon de
+étudié comment évaluer un contrat pour qu'il vérifie des données à l'exécution.
+Ce langage est inspiré de JML~\acite{JML} mais se différencie sur la façon de
 spécifier les données. En effet, il s'appuye en grande partie sur les {\strong
 domaines réalistes}, des structures permettant de valider et générer des données
 et pouvant être emboîtées afin de représenter des données plus complexes. Cette
-contribution a été publiée dans~\acitei{EnderlinDGO11}.
+contribution, à savoir Praspel et les domaines réalistes, a été publiée
+dans~\acitei{EnderlinDGO11}.
 
 \subsection{Générateurs de données}
 
 Un contrat peut être utilisé pour générer automatiquement des tests unitaires.
-Un test est constitué de trois choses~: un SUT, des données de test et un
+Un test est constitué de trois parties~: un SUT, des données de test et un
 oracle. Cette contribution, présentée dans le chapitre~\ref{chapter:data},
 s'intéresse à générer des données de test. Ces données sont spécifiées au mieux
 par le contrat. Nous devons proposer des solutions capables de générer toutes
@@ -285,8 +291,8 @@ Ce mémoire s'articule en 8~chapitres plus annexes et bibliographie~:
 %
 \begin{enumerate}[$\mathrm{chapitre}$ 1,]
 
-\item ce chapitre, avec l'introduction, le contexte, la problématique et les
-contributions~;
+\item contient ce chapitre, avec l'introduction, le contexte, la problématique
+et les contributions~;
 
 \item contient l'état de l'art nécessaire pour comprendre cette thèse et situer
 nos contributions~;
@@ -311,5 +317,4 @@ nous semblant pertinentes.
 \end{enumerate}
 %
 Les chapitres 3 à 6 sont des contributions. Le chapitre 7 valide ces
-contributions par des expérimentations. Une des expérimentations a une approche
-originale mettant en avant des résultats qualitatifs.
+contributions par des expérimentations.
