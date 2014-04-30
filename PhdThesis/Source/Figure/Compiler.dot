@@ -1,5 +1,5 @@
 digraph {
-    graph [rankdir=LR];
+    graph [rankdir=LR, ranksep=.2];
     node  [style="state"];
     nodesep=0.1;
 
@@ -9,8 +9,8 @@ digraph {
     }
 
     subgraph {
-        word     -> sequence [label=" ", texlbl="lexicale"];
-        sequence -> result   [label=" ", texlbl="syntaxique"];
+        word     -> sequence [label=" ", texlbl="$\begin{tabular}{c}analyse\\lexicale\end{tabular}$"  ];
+        sequence -> result   [label=" ", texlbl="$\begin{tabular}{c}analyse\\syntaxique\end{tabular}$"];
     }
 
     wordX     [shape=plaintext, label=" ", texlbl="\code{7 + 42}"];

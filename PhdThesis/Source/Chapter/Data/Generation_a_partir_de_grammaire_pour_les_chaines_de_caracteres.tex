@@ -7,12 +7,12 @@ programmes qu'à l'extérieur, pour des bases de données, des protocoles de
 communication, des descriptions d'objets etc. Il est donc nécessaire de proposer
 un moyen rapide et simple de spécifier des chaînes de caractères dans Praspel.
 
-Une grammaire formelle permet de décrire avec précisions des données textuelles
+Une grammaire formelle permet de décrire avec précision des données textuelles
 complexes. Nous proposons des domaines réalistes de chaînes de caractères
 définis par une grammaire. Des analyseurs lexicaux et syntaxiques permettent de
-s'assurer qu'une chaîne de caractères est conforme à une grammaire. C'est une
-caractéristique sur deux d'un domaine réaliste~: ce qui fait des grammaires de
-bonnes candidates pour être un domaine réaliste.
+s'assurer qu'une chaîne de caractères est conforme à une grammaire. Ceci
+correspond à la caractéristique de prédicabilité d'un domaine réaliste~: ce qui
+fait des grammaires de bonnes candidates pour être un domaine réaliste.
 
 Nous allons, dans les parties~\ref{subsection:data:pp} et
 \ref{subsection:data:compiler-compiler}, nous concentrer sur la première
@@ -34,7 +34,7 @@ Une grammaire est définie par un quadruplet $G = (\Sigma, N, P, S)$, où~:
 
 \item $\Sigma$ est l'ensemble fini de {\strong symboles terminaux} disjoint de
 $N$~; aussi appelés {\strong lexèmes}, ce sont les unités atomiques lexicales
-d'une langue~;
+d'un language~;
 
 \item $N$ est l'ensemble fini de {\strong symboles non-terminaux}~;
 
@@ -71,7 +71,7 @@ reconnaissant les langages réguliers.
 
 \end{enumerate}
 %
-Chaque niveau reconnaît le niveau suivant.
+Chaque niveau est plus général que le niveau suivant.
 
 Nous proposons le langage \inenglish{PHP Parser}, abrégé PP, pour exprimer des
 grammaires algébriques (et donc également régulières). Sa syntaxe est
@@ -87,16 +87,16 @@ où \code{name} représente son nom, \code{value} sa valeur exprimée avec une
 expression régulière, et \code{ns\_source} et \code{ns\_dest} sont des espaces
 de noms optionnels. Les expressions régulières sont écrites en utilisant la
 syntaxe standard des \inenglish{Perl Compatible Regular Expressions}, abrégé
-PCRE~\acite{Hazel05}, très expressives, largement utilisées et supportées (par
-exemple dans PHP, Javascript, Perl, Python, Apache, KDE etc.). Les espaces de
-noms servent à représenter des sous-ensembles disjoints de lexèmes pour la phase
-d'analyse lexicale (détaillée ci-après). Une déclaration \code{\%skip} est
-similaire à une déclaration \code{\%token} excepté qu'elle représente un lexème
-à ne pas retenir pour la suite. Typiquement les espaces dans une expression
-arithmétique n'ont pas d'importance, nous pouvons ne pas les retenir, ils
-n'apportent rien à l'expression. Si un espace de noms source n'est pas précisé,
-alors il prendra la valeur \code{default}, qui est l'espace de noms par défaut.
-L'espace de noms de destination peut être de la forme spéciale
+PCRE~\acite{Hazel05}, proposant de nombreux raccourcis, largement utilisées et
+supportées (par exemple dans PHP, Javascript, Perl, Python, Apache, KDE etc.).
+Les espaces de noms servent à représenter des sous-ensembles disjoints de
+lexèmes pour la phase d'analyse lexicale (détaillée ci-après). Une déclaration
+\code{\%skip} est similaire à une déclaration \code{\%token} excepté qu'elle
+représente un lexème à ne pas retenir pour la suite. Typiquement les espaces
+dans une expression arithmétique n'ont pas d'importance, nous pouvons ne pas les
+retenir, ils n'apportent rien à l'expression. Si un espace de noms source n'est
+pas précisé, alors il prend la valeur \code{default}, qui est l'espace de noms
+par défaut. L'espace de noms de destination peut être de la forme spéciale
 \code{\_\_shift\_\_ * $j$}, avec $j \geq 1$, ou simplement \code{\_\_shift\_\_}
 (équivalent à avoir $j = 1$), pour revenir de $j$ espaces de noms précédents. Il
 est parfois possible d'accéder à un lexème depuis plusieurs espaces de noms
@@ -122,7 +122,11 @@ tag: \\
     ::lt:: <name[0]> attributes() \\
     ( \\
       ::slash:: ::gt:: #atomic \\
-    | ::gt:: ( tag()+ #composite | <text> #textual )? \\
+    | ::gt:: \\
+      ( \\
+          tag()+ #composite \\
+        | <text> #textual \\
+      )? \\
       ::lt:: ::slash:: ::name[0]:: ::gt:: \\
     ) \\
 #attributes: \\
@@ -133,18 +137,15 @@ tag: \\
 
 \end{figure}
 
-La figure~\ref{figure:data:xml} montre l'exemple des règles de productions $P$
+La figure~\ref{figure:data:xml} montre l'exemple $P$ des règles de production
 d'une grammaire $(\Sigma, N, P, S)$ simplifiée d'un document XML~\acite{xml}.
 Elle commence par la déclaration des lexèmes, en utilisant des espaces de noms
 pour identifier si l'analyse se déroule à l'extérieur ou à l'intérieur d'une
 balise. Nous avons alors~:
 %
-\begin{align*}
-\Sigma = \{ & \code{space}, \code{lt}, \code{text}, \code{in\_tag:space},
-              \code{in\_tag:name}, \\
-            & \code{in\_tag:slash}, \code{in\_tag:gt}, \code{in\_tag:equal},
-              \code{in\_tag:value} \}
-\end{align*}
+\begin{align*} \Sigma = \{ & \code{space}, \code{lt}, \code{text},
+\code{in\_tag:space}, \code{in\_tag:name}, \\ & \code{in\_tag:slash},
+\code{in\_tag:gt}, \code{in\_tag:equal}, \code{in\_tag:value} \} \end{align*}
 %
 Nous avons aussi les non-terminaux~:
 %
@@ -158,21 +159,22 @@ balises, chaque balise ayant potentiellement des attributs et étant atomique
 est suivi du symbole \code{:} puis d'une nouvelle ligne, immédiatement suivie
 par une règle de production, préfixée par des caractères blancs horizontaux
 (espaces ou tabulations). Les lexèmes peuvent être référencés en utilisant deux
-types de constructions. La construction \code{::token::} signifie que le lexème
-ne sera pas conservé à la fin du processus de compilation (détaillé ci-après),
-contrairement à la construction \code{<token>}. La construction \code{rule()}
-représente un appel à une règle. Évidemment, nous pouvons avoir des appels
-récursifs. Les opérations de répétition sont classiques: \code{\{$x$, $y$\}}
-pour répéter le motif de $x$ à $y$ fois, \code{?} est identique à \code{\{0,
-1\}}, \code{+} à \code{\{1, \}}, \code{*} à \code{\{0, \}}. Quand $y$ est vide,
-cela signifie l'infini. Les disjonctions sont représentées par le symbole
-\code{\mvert} et le groupement par \code{(} et \code{)}. La construction
-\code{\#node} (parfois utilisé comme nom de règle) est utile pour la fin du
-processus de compilation, comme nous le verrons dans la partie suivante.
+types de constructions. La construction \code{::$t$::} signifie que le lexème
+$t$ ne sera pas conservé à la fin du processus de compilation (détaillé
+ci-après), contrairement à la construction \code{<$t$>}. La construction
+\code{$r$()} représente un appel à une règle $r$. Évidemment, nous pouvons avoir
+des appels récursifs. Les opérations de répétition sont classiques: \code{\{$x$,
+$y$\}} pour répéter le motif de $x$ à $y$ fois, \code{?} est identique à
+\code{\{0, 1\}}, \code{+} à \code{\{1, \}}, \code{*} à \code{\{0, \}}. Quand $y$
+est vide, cela signifie l'infini. Les disjonctions sont représentées par le
+symbole \code{\mvert} et le groupement par \code{(} et \code{)}. La construction
+\code{\#$n$} (parfois utilisé comme nom de règle), avec $n$ un identifiant, est
+utile pour la fin du processus de compilation, comme nous le verrons dans la
+partie suivante.
 
 Une nouvelle construction présente dans le langage PP, par rapport aux langages
-de descriptions de gramaires existants, est l'unification. Présente uniquement
-sur les lexèmes, elle impose que tous les \code{token[$i$]} avec le même $i$ ont
+de description de gramaires existants, est l'unification. Présente uniquement
+sur les lexèmes, elle impose que tous les \code{$t$[$i$]} avec le même $i$ aient
 la même valeur localement à la règle, avec $i \geq 0$.  Remarquons la présence
 d'une unification de lexèmes dans la figure~\ref{figure:data:xml}~:
 \code{name[0]} indique que les balises d'ouverture et de fermeture doivent avoir
@@ -206,21 +208,9 @@ ci-après).
 
 \end{figure}
 %
-Nous parlons de {\strong compilateur de compilateurs} car la grammaire est tout
-d'abord transformée en compilateur, c'est à dire en un analyseur lexical et un
+Un {\strong compilateur de compilateurs} est un programme qui transforme une
+grammaire en compilateur, c'est à dire en un analyseur lexical et un analyseur
 syntaxique. La grammaire nous évite d'avoir à écrire un compilateur à la main.
-
-Nous expliquons le fonctionnement de l'analyseur lexical par l'algorithme dans
-la figure~\ref{figure:data:algo_lexer}. À partir d'une donnée textuelle (mot),
-nous allons calculer une séquence de lexèmes. Nous allons appliquer toutes les
-expressions régulières des lexèmes de l'espace de noms courant les uns après les
-autres sur le début du mot jusqu'à trouver un lexème valide (reconnaissant le
-début du mot). Quand un lexème est trouvé, nous lui associons certaines données,
-comme son nom, sa valeur, sa position et son espace de noms. Ensuite, nous
-mettons à jour l'espace de noms courant à partir de l'espace de noms sortant du
-lexème (soit un nom d'espace, soit le mot-clé \code{\_\_shift\_\_ * $j$}). Si
-aucun lexème n'est trouvé, une erreur sera levée, sinon nous ajoutons le lexème
-à la séquence et nous continuons jusqu'à atteindre la fin de la donnée analysée.
 
 \begin{figure}
 
@@ -243,24 +233,25 @@ aucun lexème n'est trouvé, une erreur sera levée, sinon nous ajoutons le lex�
   \State $\avar{namespaceStack}: \atype{stack\astype{string}} \gets []$
   \State $\avar{offset}: \atype{integer} \gets 0$
   \State $\avar{nextToken}: \atype{Token}$
+  \State $\avar{length}: \atype{integer} \gets \avar{word}.\acall{length()}$
 
-  \While{$\avar{offset} \leq \avar{word}.\acall{length()}$}
+  \While{$\avar{offset} < \avar{length}$}
 
       \State $\avar{nextToken} \gets \akw{null}$
 
-      \ForAll{$\{\avar{name}, \avar{regex}, \avar{namespace\_out}\} \in \avar{tokens[namespace]}$}
+      \ForAll{$\{\avar{name}, \avar{regex}, \avar{namespaceOut}\} \in \avar{tokens[namespace]}$}
 
           \If{$\avar{word} \akw{matches} \avar{regex} \akw{at} \avar{offset} \asets \avar{value}$}
 
               \State $\avar{nextToken} \gets \atype{Token}\{\avar{name}, \avar{value}, \avar{offset}, \avar{namespace}\}$
 
-              \If{$\avar{namespace\_out} \akw{matches} \astring{'\_\_shift\_\_ * \mathit{j}'}$}
+              \If{$\avar{namespaceOut} \akw{matches} \astring{'\_\_shift\_\_ * \mathit{j}'}$}
 
                   \State $\avar{j}.\acall{times}(\avar{namespaceStack}.\acall{pop})$
 
               \Else
 
-                  \State $\avar{namespaceStack}.\acall{push}(\avar{namespace\_out})$
+                  \State $\avar{namespaceStack}.\acall{push}(\avar{namespaceOut})$
 
               \EndIf
 
@@ -289,6 +280,23 @@ aucun lexème n'est trouvé, une erreur sera levée, sinon nous ajoutons le lex�
 \caption{\label{figure:data:algo_lexer} Algorithme de l'analyseur lexical.}
 
 \end{figure}
+
+Nous expliquons le fonctionnement de l'analyseur lexical par l'algorithme de la
+figure~\ref{figure:data:algo_lexer}. À partir d'une donnée textuelle (le mot
+$\avar{word}$), nous allons calculer une séquence $\avar{sequence}$ de lexèmes .
+Nous allons appliquer (ligne 10) toutes les expressions régulières
+$\avar{regex}$ des lexèmes de l'espace de noms courant
+$\avar{tokens[namespace]}$ les uns après les autres sur le mot (ligne 11)
+jusqu'à trouver un lexème valide (reconnaissant un sous-mot à la position
+$\avar{offset}$). Quand un lexème est trouvé, nous lui associons certaines
+données, comme son nom $\avar{name}$, sa valeur $\avar{value}$, sa position
+$\avar{offset}$ et son espace de noms $\avar{namespace}$ (ligne 12). Ensuite,
+nous mettons à jour l'espace de noms courant à partir de l'espace de noms
+sortant $\avar{namespaceOut}$ du lexème~: soit un nom d'espace, soit le mot-clé
+\code{\_\_shift\_\_ * $j$} (lignes 13-18).  Si aucun lexème n'est trouvé, une
+erreur sera levée (ligne 23), sinon nous ajoutons le lexème $\avar{nextToken}$ à
+la séquence $\avar{sequence}$ (ligne 26) et nous continuons jusqu'à atteindre la
+fin de la donnée analysée (ligne 8).
 
 \begin{example}[Analyse lexicale de \code{<a x="y"><b /><c>foo</c></a>}]
 \label{example:data:lexical_analyze}
@@ -791,7 +799,7 @@ utilisée pour borner les répétitions afin de réduire encore plus l'explosion
 combinatoire et garantir la terminaison de l'algorithme~: l'opérateur \code{*}
 est déplié 0, 1 ou 2~fois, \code{+} est déplié 1 ou 2~fois, et $\{x, y\}$ est
 déplié $x$, $x + 1$, $y - 1$ et $y$~fois. L'aspect aléatoire est représenté par
-la fonction $\mathrm{rand}(i, j)$ dans la fonction $\phi$.
+la fonction $\mrand(i, j)$ dans la fonction $\phi$.
 
 À chaque construction du langage PP est associée une fonction $\phi(p, e)$ qui
 va calculer la prochaine séquence. Cette fonction prend en argument $p$, qui est
@@ -820,12 +828,12 @@ comporte également comme un itérateur. Ainsi~:
     \\
 %
 \phi(p, e^*) & =
-    [] \oplus \bigoplus_{i = 1}^{\mathrm{rand}(0, 2)}
+    [] \oplus \bigoplus_{i = 1}^{\mrand(0, 2)}
     \phi(p, \underbrace{e \cdot \dotso \cdot e}_i)
     \\
 %
 \phi(p, e^+) & =
-    \bigoplus_{i = 1}^{\mathrm{rand}(1, 2)}
+    \bigoplus_{i = 1}^{\mrand(1, 2)}
     \phi(p, \underbrace{e \cdot \dotso \cdot e}_i)
     \\
 %
@@ -863,13 +871,13 @@ règles et tous les lexèmes de la grammaire.
 \end{example}
 
 Cet algorithme est rapide pour des séquences de taille moyenne ou grande avec
-une complexité logarithmique $\m{O}(\mathrm{log}~n)$. En pratique, l'algorithme
-de génération aléatoire uniforme est plus rapide pour calculer des séquences
-avec $n \leq 10$, mais il est rapidement dépassé par celui-ci au-delà. La
-diversité entre les séquences générées est dû au choix aléatoire sur les points
-de choix. Il génère peu de données mais il couvre toutes les règles et tous les
-lexèmes. Enfin, contrairement aux algorithmes précédents, nous ne pouvons pas
-contrôler la taille de la séquence.
+une complexité logarithmique $\m{O}(\mlog~n)$. En pratique, l'algorithme de
+génération aléatoire uniforme est plus rapide pour calculer des séquences avec
+$n \leq 10$, mais il est rapidement dépassé par celui-ci au-delà. La diversité
+entre les séquences générées est dû au choix aléatoire sur les points de choix.
+Il génère peu de données mais il couvre toutes les règles et tous les lexèmes.
+Enfin, contrairement aux algorithmes précédents, nous ne pouvons pas contrôler
+la taille de la séquence.
 
 \subsubsection{Concrétisation aléatoire isotropique de lexèmes}
 \label{subsection:data:isotropic_generation}

@@ -1,16 +1,16 @@
 %%
 \pgfsetcolor{dot}
   % Edge: word -> sequence
-  \draw [->] (54.002bp,66bp) .. controls (74.739bp,66bp) and (104.96bp,66bp)  .. (143.69bp,66bp);
+  \draw [->] (54.028bp,66bp) .. controls (72.946bp,66bp) and (99.658bp,66bp)  .. (135.69bp,66bp);
   \pgfsetstrokecolor{dotstroke}
-  \draw (94bp,75.5bp) node {lexicale};
+  \draw (90bp,84bp) node {$\begin{tabular}{c}analyse\\lexicale\end{tabular}$};
   % Edge: wordX -> sequenceX
-  \draw [->] (54.002bp,20bp) .. controls (72.429bp,20bp) and (98.348bp,20bp)  .. (134.2bp,20bp);
+  \draw [->] (54.028bp,20bp) .. controls (70.668bp,20bp) and (93.337bp,20bp)  .. (126.23bp,20bp);
   % Edge: sequence -> result
-  \draw [->] (288.24bp,66bp) .. controls (321.69bp,66bp) and (360.14bp,66bp)  .. (397.86bp,66bp);
-  \draw (346bp,76.5bp) node {syntaxique};
+  \draw [->] (280bp,66bp) .. controls (310.86bp,66bp) and (345.72bp,66bp)  .. (381.6bp,66bp);
+  \draw (334bp,84bp) node {$\begin{tabular}{c}analyse\\syntaxique\end{tabular}$};
   % Edge: sequenceX -> resultX
-  \draw [->] (297.62bp,20bp) .. controls (327.42bp,20bp) and (359.89bp,20bp)  .. (394.46bp,20bp);
+  \draw [->] (289.65bp,20bp) .. controls (316.63bp,20bp) and (345.52bp,20bp)  .. (378.17bp,20bp);
   % Node: word
 \begin{scope}
   \pgfsetstrokecolor{dotstroke}
@@ -20,24 +20,24 @@
   % Node: resultX
 \begin{scope}
   \pgfsetstrokecolor{dotstroke}
-  \draw (425bp,20bp) node {\begin{tikzpicture}[node distance=2cm] \node [state, scale=.3] (foo1) {}; \node [state, scale=.3, below left of=foo1] (foo2) {}; \node [state, scale=.3, below right of=foo1] (foo3) {}; \node [state, scale=.3, below left of=foo3] (foo4) {}; \node [state, scale=.3, below right of=foo3] (foo5) {}; \draw [thick] (foo1) -- (foo2) (foo1) -- (foo3) (foo3) -- (foo4) (foo3) -- (foo5); \end{tikzpicture}};
+  \draw (409bp,20bp) node {\begin{tikzpicture}[node distance=2cm] \node [state, scale=.3] (foo1) {}; \node [state, scale=.3, below left of=foo1] (foo2) {}; \node [state, scale=.3, below right of=foo1] (foo3) {}; \node [state, scale=.3, below left of=foo3] (foo4) {}; \node [state, scale=.3, below right of=foo3] (foo5) {}; \draw [thick] (foo1) -- (foo2) (foo1) -- (foo3) (foo3) -- (foo4) (foo3) -- (foo5); \end{tikzpicture}};
 \end{scope}
   % Node: sequence
 \begin{scope}
   \pgfsetstrokecolor{dotstroke}
-  \draw [state] (216bp,66bp) ellipse (72bp and 18bp);
-  \draw (216bp,66bp) node {séquence de lexèmes};
+  \draw [state] (208bp,66bp) ellipse (72bp and 18bp);
+  \draw (208bp,66bp) node {séquence de lexèmes};
 \end{scope}
   % Node: result
 \begin{scope}
   \pgfsetstrokecolor{dotstroke}
-  \draw [state,accepting] (425bp,66bp) ellipse (27bp and 18bp);
-  \draw (425bp,66bp) node {AST};
+  \draw [state,accepting] (409bp,66bp) ellipse (27bp and 18bp);
+  \draw (409bp,66bp) node {AST};
 \end{scope}
   % Node: sequenceX
 \begin{scope}
   \pgfsetstrokecolor{dotstroke}
-  \draw (216bp,20bp) node {$[[\code{7} \mapsto \dots], [\code{+} \mapsto \dots], [\code{42} \mapsto \dots]]$};
+  \draw (208bp,20bp) node {$[[\code{7} \mapsto \dots], [\code{+} \mapsto \dots], [\code{42} \mapsto \dots]]$};
 \end{scope}
   % Node: wordX
 \begin{scope}

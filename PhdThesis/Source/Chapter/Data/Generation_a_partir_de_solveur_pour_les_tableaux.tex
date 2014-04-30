@@ -17,7 +17,7 @@ partie~\ref{subsection:data:array_properties}.  Enfin, dans la
 partie~\ref{subsection:data:solver_semantics}, nous traduisons ces propriétés en
 contraintes pour notre propre solveur, présenté dans la
 partie~\ref{subsection:data:solver}. Dans cette dernière partie, nous
-expliquerons pourquoi nous avons choisi de développer notre propre solveur.
+expliquons pourquoi nous avons choisi de développer notre propre solveur.
 
 \subsection{Étude des propriétés les plus utilisées}
 \label{subsection:data:study}
@@ -190,21 +190,21 @@ seulement les domaines réalistes qui implémentent les interfaces
 
 \begin{example}[\code{a[$K$]: $V$} en PHP]
 
-La propriété \code{a[7..8]: true} signifie que \code{true} est associé aux clés
-\code{7} et \code{8}, ce qui correspond en PHP au prédicat suivant~:
+La propriété \code{a[7..8]: true or 42} signifie que les valeurs \code{true} ou
+\code{42} sont associées aux clés \code{7} et \code{8}, ce qui correspond en PHP
+au prédicat suivant~:
 %
 \begin{pre}
    array\_key\_exists(7, \$a) \\
-\&\& in\_array(true, \$a) \\
-\&\& \$a[7] === true \\
 \&\& array\_key\_exists(8, \$a) \\
-\&\& in\_array(true, \$a) \\
-\&\& \$a[8] === true
+\&\& (in\_array(true, \$a) || in\_array(42, \$a)) \\
+\&\& (\$a[7] === true     || \$a[7] === 42) \\
+\&\& (\$a[8] === true     || \$a[8] === 42)
 \end{pre}
 %
-Nous vérifions que la clé \code{7} existe dans le tableau \code{\$a}, puis nous
-vérifions que la valeur \code{true} existe également, et enfin, nous vérifions
-qu'elles forment une paire.
+Nous vérifions que les clés \code{7} et \code{8} existent dans le tableau
+\code{\$a}, puis nous vérifions que les valeurs \code{true} ou \code{42}
+existent également, et enfin, nous vérifions qu'elles forment une paire.
 
 \end{example}
 
@@ -238,14 +238,11 @@ valeur \code{'foo'}~; ce qui correspond en PHP au prédicat suivant~:
 \end{example}
 
 Au lieu d'utiliser le symbole \code{:} nous pouvons utiliser le symbole
-\code{!:} pour exprimer la négation. La propriété \code{a[$K$]!: $V$} signifie
-que toute valeur de $K$ est la clé d'une paire dans le tableau \code{a}, et que
-toute paire dont la clé est dans $K$ n'a pas sa valeur dans $V$. Le
-fonctionnement est similaire avec le symbole \code{\_}. La propriété
-\code{a[$K$]!: \_} signifie que toute valeur de $K$ est la clé d'une paire dans
-le tableau \code{a}, et que toute paire dont la clé est dans $K$ n'a pas sa
-valeur dans \code{\_} (tout). Autrement dit~: aucune paire du tableau \code{a}
-ne doit avoir de clé dans $K$.
+\code{!:}. La propriété \code{a[$K$]!: $V$} signifie que toute valeur de $K$ est
+la clé d'une paire dans le tableau \code{a}, et que toute paire dont la clé est
+dans $K$ n'a pas sa valeur dans $V$. La signification est similaire avec le
+symbole \code{\_}. La propriété \code{a[$K$]!: \_} signifie qu'aucune paire du
+tableau \code{a} n'a sa clé dans $K$.
 
 Les clés des tableaux sont toujours uniques, mais pas les valeurs. Nous pouvons
 exprimer la propriété d'unicité sur les valeurs en écrivant~:
@@ -285,17 +282,18 @@ un solveur de contraintes pour construire un tableau satisfaisant toutes ces
 propriétés. Cette partie explique comment les propriétés sur les tableaux sont
 transformées en contraintes pour le solveur, ou plus précisément en problème de
 satisfaction de contraintes (\inenglish{Constraint Satisfaction Problem}, abrégé
-CSP). Un CSP~\acite{Tsang93} est un triplet composé de variables, de valeurs
-pour ces variables (aussi appelés domaines) et de contraintes. Les variables
-sont déclarées en Praspel, les valeurs sont données par des disjonctions de
-domaines réalistes, et les contraintes entre ces variables sont données par des
-propriétés sur les tableaux.
+CSP). Un CSP~\acite{Tsang93} est un triplet composé de variables, de domaines de
+valeurs pour ces variables et de contraintes. Les variables sont déclarées en
+Praspel, les domaines sont donnés par des disjonctions de domaines réalistes, et
+les contraintes entre ces variables sont données par des propriétés sur les
+tableaux.
 
-Une seule de ces propriétés est supposée être une déclaration de tableau de la
-forme \code{a: array($D$, $L$)}, où $D$ est en forme normale, c'est~à~dire que
-$D$ est une liste de $p$ constructions \code{from $F_i$ to $T_i$} avec $1 \leq i
-\leq p$, et $L$ est une disjonction de domaines réalistes $L_1, \dots, L_m$
-héritant du domaine réaliste \code{Integer} et étant positifs ou nuls.
+Une et une seule de ces propriétés est supposée être une déclaration de tableau
+de la forme \code{a: array($D$, $L$)}, où $D$ est en forme normale, c'est~à~dire
+que $D$ est une liste de $p$ constructions \code{from $F_i$ to $T_i$} avec $1
+\leq i \leq p$, et $L$ est une disjonction de domaines réalistes $L_1, \dots,
+L_m$ héritant du domaine réaliste \code{Integer} dont les valeurs sont
+supérieures ou égales à zéro.
 
 Dans l'exemple~\ref{example:data:array_proprietes}, $p = 1$, $m = 2$, $L_1 =
 [\code{0..5}]$ et $L_2 = \{\code{10}\}$. Dans la description du tableau, aucun
@@ -305,8 +303,7 @@ et avec un pas de 1, soit \code{0}, \code{1}, \code{2}, \code{3} etc. Dans cet
 exemple, $F_1 = \code{natural(0, 1)}$ et $T_1 = \code{string('a', 'e', 1)}$.
 
 Nous précisons qu'une disjonction de domaines réalistes \code{$D_1$ or $\dots$
-or $D_n$} sera souvent identifiée comme l'ensemble $D_1 \union \dots \union
-D_n$.
+or $D_n$} sera souvent identifiée avec l'ensemble $D_1 \union \dots \union D_n$.
 
 \subsubsection{Variables}
 
@@ -314,7 +311,8 @@ Les variables du CSP sont~:
 %
 \begin{enumerate}
 
-\item la taille du tableau, notée $S$, qui est un entier positif ou nul~;
+\item la taille du tableau, notée $S$, qui est un entier positif ou nul, et qui
+est définie par les domaines réalistes $L_1, \dots, L_m$~;
 
 \item les ensembles $X$ et $Y$ qui sont respectivement le domaine du tableau
 (l'ensemble des clés) et le co-domaine (l'ensemble des valeurs)~;
@@ -329,37 +327,38 @@ le tableau.
 
 \end{enumerate}
 
-Nous sommes essentiellement intéressés à trouver le contenu de $X$ et les
-valeurs de la fonction $H$. Les autres variables sont seulement introduites pour
-simplifier l'expression des contraintes.
+Le solveur doit trouver le contenu de $X$ et les valeurs de la fonction $H$. Les
+autres variables sont seulement introduites pour simplifier l'expression des
+contraintes.
 
-Nous désignons par $H(x) = y$, avec $x \in X$, que la paire $(x, y)$ est dans le
-tableau. Nous étendons $H$ aux parties de $X$ par la fonction $\hat{H}$ définie
-par $\hat{H}(E) = \{H(x) \;\vert\; x \in E\}$ pour toute partie $E$ de $X$.
+La contrainte $H(x) = y$, avec $x \in X$, traduit que la paire $(x, y)$ est dans
+le tableau. Nous étendons $H$ aux parties de $X$ par la fonction $\hat{H}$
+définie par $\hat{H}(E) = \{H(x) \;\vert\; x \in E\}$ pour toute partie $E$ de
+$X$.
 
 \subsubsection{Contraintes de cardinalité}
 
-Nous désignons par $\mathrm{card}(E)$ la cardinalité de l'ensemble fini $E$. Les
+Nous désignons par $\mcard(E)$ la cardinalité de l'ensemble fini $E$. Les
 con\-train\-tes~:
 %
-$$\mathrm{card}(X) = S \quad\mathrm{et}\quad S \geq 0$$
+$$\mcard(X) = S \quad\mathrm{et}\quad S \geq 0$$
 %
 expriment que la taille du tableau est son nombre de clés et que ce nombre est
 positif ou nul. Par défaut, il n'y a pas de contrainte d'unicité sur les
 co-domaines, donc nous avons seulement la contrainte~:
 %
-$$\mathrm{card}(X) \geq \mathrm{card}(Y)$$
+$$\mcard(X) \geq \mcard(Y)$$
 %
 Cependant, en présence de la propriété \code{a is unique}, cette contrainte
 devient~:
 %
-$$\mathrm{card}(X) = \mathrm{card}(Y)$$
+$$\mcard(X) = \mcard(Y)$$
 
 \subsubsection{Contraintes sur la taille du tableau}
 
 Pendant la propagation des contraintes, le solveur peut raffiner les domaines
 réalistes $L_1, \dots, L_m$, représentant les valeurs possibles pour la taille
-$S$ du tableau. Cette taille appartient à un de ses domaines réalistes, nous
+$S$ du tableau. Cette taille appartient à un de ces domaines réalistes, nous
 avons donc la contrainte suivante~:
 %
 $$S \in L_1 \union \dots \union L_m$$
@@ -370,7 +369,7 @@ par $S \in L_1 \union L_2$.
 
 \subsubsection{Contraintes sur les domaines et co-domaines}
 
-Le domaine $X$ est le co-domaine $Y$ de $H$ sont reliés par la contrainte~:
+Le domaine $X$ et le co-domaine $Y$ de $H$ sont reliés par la contrainte~:
 %
 $$Y = \hat{H}(X)$$
 
@@ -403,10 +402,10 @@ X$ et $\hat{H}(\{\code{0}\}) \subseteq \{\code{'b'}, \code{'c'}\}$.
 
 \subsubsection{Contraintes sur les clés et les valeurs}
 
-La propriété \code{a[$K$]: \_} est traduite en contrainte $K \subseteq X$ et sa
-négation \code{a[$K$]!: \_} en contrainte $K \intersection X = \emptyset$. La
-propriété \code{a[\_]: $V$} est traduite en contrainte $V \subseteq Y$ et sa
-négation \code{a[\_]!: $V$} en contrainte $V \intersection Y = \emptyset$.
+La propriété \code{a[$K$]: \_} est traduite en contrainte $K \subseteq X$ et
+\code{a[$K$]!: \_} en contrainte $K \intersection X = \emptyset$. La propriété
+\code{a[\_]: $V$} est traduite en contrainte $V \subseteq Y$ et sa négation
+\code{a[\_]!: $V$} en contrainte $V \intersection Y = \emptyset$.
 
 \subsection{Solveur de contraintes}
 \label{subsection:data:solver}
@@ -545,18 +544,18 @@ Supposons que nous avons le CSP suivant~:
 \end{itemize}
 
 Sans algorithme AC3, intuitivement, nous commençons par vérifier la contrainte
-$X = Y$, c'est~à~dire que toutes les valeurs des domaines $D(X)$ et $D(Y)$ qui
-ne sont pas égales seront supprimées. Alors nous obtenons $D(X) = \{4, 5, 6\}$,
-$D(Y) = \{4, 5, 6\}$ et $D(Z)$ est inchangé. Ensuite, nous vérifions la
-contrainte $Y = Z$. Nous obtenons $D(Y) = \{5, 6\}$, $D(Z) = \{5, 6\}$ et $D(X)$
-est inchangé.  Mais nous avons un problème~: la contrainte $X = Y$ n'est plus
-satisfaite. Nous savons alors qu'il faut re-vérifier la contrainte $X = Y$ pour
-obtenir $D(X) = \{5, 6\}$, mais une machine ne le saurait pas nécessairement.
+$X = Y$, c'est~à~dire que toutes les valeurs du domaine $D(X)$ qui ne sont pas
+dans le domaine $D(Y)$ seront supprimées, et inversement. Alors nous obtenons
+$D(X) = \{4, 5, 6\}$, $D(Y) = \{4, 5, 6\}$ et $D(Z)$ est inchangé. Ensuite, nous
+vérifions la contrainte $Y = Z$. Nous obtenons $D(Y) = \{5, 6\}$, $D(Z) = \{5,
+6\}$ et $D(X)$ est inchangé. Mais nous avons un problème~: la contrainte $X = Y$
+n'est plus consistante. Nous savons alors qu'il faut re-vérifier la contrainte
+$X = Y$ pour obtenir $D(X) = \{5, 6\}$, mais une machine ne le saurait pas
+nécessairement.
 
 Maintenant, voyons comment opère l'algorithme AC3. Nous avons les mêmes
 variables, domaines et contraintes qu'au début de cet exemple. Le graphe du CSP
-est le suivant, il représente les liens par les contraintes entre les
-variables~:
+est le suivant, il représente les contraintes entre les variables par des arcs~:
 %
 \fig{6cm}{!}{AC3.tex}
 %
@@ -577,29 +576,30 @@ Ensuite, dans l'algorithme $\akw{AC3}$, la variable $\avar{queue}$ contient au
 départ tous les arcs du graphe, soit $\avar{queue} = \{(X, Y), (Y, X), (Y, Z),
 (Z, Y)\}$. Nous commençons par traiter la première paire de $\avar{queue}$ après
 l'avoir supprimée. Nous traitons alors la contrainte impliquant $X$ et $Y$, soit
-$X = Y$ mais nous n'allons travailler que sûr $X$.  Ainsi $\avar{Domains}(X) =
-\{4, 5, 6\}$, $\avar{Domains}(Y)$ et $\avar{Domains}(Z)$ restant inchangés. La
-variable $X$ n'a pas d'arc vers d'autres variables, donc nous ne modifions pas
-$\avar{queue}$.  Ensuite, la paire suivante est $(Y, X)$, donc nous traitons la
-contrainte $X = Y$ mais cette fois-ci, nous modifions $Y$. Ainsi
-$\avar{Domains}(Y) = \{4, 5, 6\}$, $\avar{Domains}(X)$ et $\avar{Domains}(Z)$
-restant inchangés.  La variable $Y$ a un arc vers $Z$ en plus de vers $X$, donc
-nous devrions ajouter la paire $(Z, Y)$ mais elle existe déjà dans
-$\avar{Domains}$, nous ne faisons rien.  La paire suivante dans $\avar{queue}$
-est $(Y, Z)$, donc nous traitons la contrainte $Y = Z$ en modifiant uniquement
-$Y$. Ainsi~: $\avar{Domains}(Y) = \{5, 6\}$, $\avar{Domains}(X)$ et
-$\avar{Domains}(Z)$ restant inchangés. La variable $Z$ n'a pas d'arc vers une
-autre variable, donc nous ne modifions pas $\avar{queue}$. La paire suivante est
-$(Z, Y)$, donc nous vérifions la contrainte $Y = Z$ en modifiant $Z$. Ainsi (en
-rappelant tous les domaines)~: $\avar{Domains}(X) = \{4, 5, 6\}$,
-$\avar{Domains}(Y) = \{5, 6\}$ et $\avar{Domains}(Z) = \{5, 6\}$. La variable
-$Y$ a un arc vers la variable $X$, donc nous ajoutons la paire $(X, Y)$ dans
-$\avar{queue}$.  Comme $\avar{queue}$ était vide, cela devient notre paire
-suivante que nous traitons. Nous appliquons alors la contrainte $X = Y$ en
-modifiant $X$.  Ainsi, nous obtenons~: $\avar{Domains}(X) = \avar{Domains}(Y) =
-\avar{Domains}(Z) = \{5, 6\}$. La variable $X$ n'a pas d'arc vers d'autres
-variables que $Y$, donc nous ne modifions pas $\avar{queue}$. Cette dernière est
-vide, donc l'algorithme se termine.
+$X = Y$ mais la fonction $\akw{AC3\_Arc\_Reduce}$ ne va travailler que sûr $X$.
+Ainsi $\avar{Domains}(X) = \{4, 5, 6\}$, $\avar{Domains}(Y)$ et
+$\avar{Domains}(Z)$ restant inchangés. La variable $X$ n'a pas d'arc vers
+d'autres variables, donc nous ne modifions pas $\avar{queue}$. Ensuite, la paire
+suivante est $(Y, X)$, donc nous traitons la contrainte $X = Y$ mais cette
+fois-ci, nous modifions $Y$. Ainsi $\avar{Domains}(Y) = \{4, 5, 6\}$,
+$\avar{Domains}(X)$ et $\avar{Domains}(Z)$ restant inchangés. La variable $Y$ a
+aussi un arc vers $Z$, donc nous devrions ajouter la paire $(Z, Y)$ mais elle
+existe déjà dans $\avar{queue}$, nous ne faisons rien.  La paire suivante dans
+$\avar{queue}$ est $(Y, Z)$, donc nous traitons la contrainte $Y = Z$ en
+modifiant uniquement $Y$. Ainsi~: $\avar{Domains}(Y) = \{5, 6\}$,
+$\avar{Domains}(X)$ et $\avar{Domains}(Z)$ restant inchangés. La variable $Z$
+n'a pas d'arc vers une autre variable, donc nous ne modifions pas
+$\avar{queue}$. La paire suivante est $(Z, Y)$, donc nous vérifions la
+contrainte $Y = Z$ en modifiant $Z$. Ainsi (en rappelant tous les domaines)~:
+$\avar{Domains}(X) = \{4, 5, 6\}$, $\avar{Domains}(Y) = \{5, 6\}$ et
+$\avar{Domains}(Z) = \{5, 6\}$. La variable $Y$ a un arc vers la variable $X$,
+donc nous ajoutons la paire $(X, Y)$ dans $\avar{queue}$.  Comme $\avar{queue}$
+était vide, cela devient notre paire suivante que nous traitons. Nous appliquons
+alors la contrainte $X = Y$ en modifiant $X$.  Ainsi, nous obtenons~:
+$\avar{Domains}(X) = \avar{Domains}(Y) = \avar{Domains}(Z) = \{5, 6\}$. La
+variable $X$ n'a pas d'arc vers d'autres variables que $Y$, donc nous ne
+modifions pas $\avar{queue}$. Cette dernière est vide, donc l'algorithme se
+termine.
 
 \end{example}
 
@@ -627,59 +627,95 @@ les contraintes suivantes~:
 %
 S & \geq 0 \\
 %
-\mathrm{card}(X) & = S \\
+\mcard(X) & = S \\
 %
-\mathrm{card}(X) & = \mathrm{card}(Y) \\
+\mcard(X) & = \mcard(Y) \\
 %
 S & \in [\code{0..5}] \union \{\code{10}\} \\
 %
+X & = X_1 \\
+%
+X_1 & \subseteq F_1 \\
+%
+F_1 & = \code{natural(0, 1)} \\
+%
+Y & = Y_1 \\
+%
+Y_1 & \subseteq T_1 \\
+%
+T_1 & = \code{string('a', 'e', 1)} \\
+%
 Y & = \hat{H}(X) \\
-%
-X & = \ingray{X_1 =\;} \code{natural(0, 1)} \\
-%
-Y & = \ingray{Y_1 =\;} \code{string('a', 'e', 1)} \\
 %
 \{\code{0}\} & \subseteq X \\
 %
-\ingray{\hat{H}(\{\code{0}\})} & \ingray{\;\subseteq \{\code{'b'}, \code{'c'}\}
-                                 \quad \text{simplifiée en}} \\
-%
-H(\code{0}) & = \{\code{'b'}, \code{'c'}\}
+\hat{H}(\{\code{0}\}) & \subseteq \{\code{'b'}, \code{'c'}\} \\
 %
 \end{align*}
 
-Nous appliquons l'algorithme. Nous sélectionnons et retirons la première paire
-$(S, X)$ avec la contrainte $\mathrm{card}(X) = S$. Nous révisons les valeurs de
-$S$~: la cardinalité de $X = \code{natural(0, 1)}$ est égale à $+\infty$, $S$
-reste inchangée. Nous ajoutons la paire $(Y, S)$. Nous sélectionnons et retirons
-le deuxième paire $(X, Y)$ lié par la contrainte $\mathrm{card}(X) =
-\mathrm{card}(Y)$. Nous n'avons rien à réviser pour l'instant~; en revanche,
-nous savons que les deux ensembles auront la même cardinalité. Ensuite, nous
-sélectionnons et retirons la paire $(Y, S)$ avec la contrainte $\mathrm{card}(Y)
-= S$ (que nous avons déduite par propagation). Nous révisons les valeurs de
-$S$~: la variable $Y = \code{string('a', 'e', 1)}$ peut contenir 1 à 5 données
-maximum (de \code{a} jusqu'à \code{e}), alors nous enlevons 0 et 10 de $S$. Sa
-disjonction est constituée de deux domaines réalistes. Le premier est un
-intervalle d'entiers (domaine réaliste \code{Boundinteger}) implémentant entre
-autre les interfaces \code{Interval} et \code{Nonconvex}. Nous appelons la
-méthode \code{discredit} pour supprimer 0 de l'interval. Le second domaine
-réaliste est une constante représentant l'entier 10, nous le supprimons
-simplement de la disjonction. Ainsi, nous obtenons $S = [\code{1..5}]$. Nous
-ajoutons la paire $(X, Y)$ traitée juste avant. Cette fois-ci, nous pouvons
-réviser $Y$ avec la contrainte $\mathrm{card}(X) = \mathrm{card}(Y)$ qui peut
-maintenir s'écrire $5 = \mathrm{card}(Y)$. Nous révisons alors \code{natural(0,
-1)} pour qu'il ne produise que 5 données au maximum. Ensuite, nous prenons une
-autre paire et nous vérifions la consistance de $\{\code{0}\} \subseteq X$, ce
-qui est le cas car $\code{0} \in \code{natural(0, 1)}$. Pareil avec
-$\{\code{'b'}, \code{'c'}\} \subseteq \code{string('a', 'e', 1)}$. Nous n'avons
-plus de paires à vérifier, l'algorithme termine.
+Nous appliquons l'algorithme. Au départ, nous avons la variable $\avar{queue}$
+initialisée à $\{(S, X), (S, S), (X, Y), (X, X)\}$.
+
+\begin{itemize}
+
+\item Nous sélectionnons et retirons la première paire $(S, X)$. Nous
+travaillons sur la variable $S$ et nous avons la contrainte $\mcard(X) = S$. La
+cardinalité de $X$ est égale à la cardinalité de $X_1$, qui est égale à la
+cardinalité de $F_1$ au maximum. La cardinalité de $F_1 = \code{natural(0, 1)}$
+vaut $[0; +\infty[$.  Nous n'avons rien à réviser, $S$ reste alors inchangée.
+$X$ a un arc vers $Y$, donc nous devrions ajouter la paire $(Y, X)$, mais elle
+est déjà présente dans la variable $\avar{queue}$.
+
+\item Nous sélectionnons et retirons la deuxième paire $(S, S)$. Nous avons la
+con\-train\-te $S \geq 0$. Nous n'avons rien à réviser. $S$ a un arc vers $X$,
+donc nous ajoutons la paire $(X, S)$.
+
+\item La troisième paire que nous sélectionnons et retirons est $(X, Y)$. Nous
+avons la première contrainte $\mcard(X) = \mcard(Y)$. Nous traitons uniquement
+la variable $X$ et nous n'avons rien à faire. La seconde contrainte est
+$\hat{H}(\{\code{0}\}) \subseteq \{\code{'b'}, \code{'c'}\}$. Nous vérifions
+$\code{0} \in \code{natural(0, 1)}$, $\code{'b'} \in \code{string('a', 'e', 1)}$
+et $\code{'c'} \in \code{string('a', 'e', 1)}$. Tout est consistant. Nous
+devrions ajouter la paire $(Y, X)$ mais elle est déjà présente dans la variable
+$\avar{queue}$.
+
+\item La quatrième paire est $(X, X)$. Nous avons la contrainte $\{\code{0}\}
+\subset X$. Nous vérifions $\code{0} \in \code{natural(0, 1)}$. Tout est
+consistent. Nous ajoutons la paire $(S, X)$ (la paire $(Y, X)$ étant déjà
+présente).
+
+\item Nous sélectionnons et retirons la paire $(Y, X)$. Nous avons toujours la
+contrainte $\mcard(X) = \mcard(Y)$ mais nous traitons maintenant la variable
+$Y$. La cardinalité de $Y$ est égale à la cardinalité de $Y_1$, qui est égale à
+la cardinalité de $T_1$ au maximum. La cardinalité de $T_1 = \code{string('a',
+'e', 1)}$ vaut $[1; 5]$ car ce domaine réaliste peut produire les données
+\code{a} jusqu'à \code{e}. Ainsi, $\mcard(X) = [1; 5]$. Nous devrions ajouter la
+paire $(X, S)$, mais elle est déjà présente.
+
+\item Nous sélectionnons et retirons la paire $(X, S)$. Nous travaillons sur la
+variable $X$ avec la contrainte $\mcard(X) = S$. Nous n'avons rien à faire à
+part ajouter la paire $(Y, X)$.
+
+\item L'avant-dernière paire est $(S, X)$. Nous travaillons sur la variable $S$
+avec la contrainte $\mcard(X) = S$. Nous révisons $S \in [\code{0..5}] \union
+\{\code{10}\}$ pour enlever la valeur $0$ et $10$. Sa disjonction est constituée
+de deux domaines réalistes. Le premier est un intervalle d'entiers (domaine
+réaliste \code{Boundinteger}) implémentant entre autre les interfaces
+\code{Interval} et \code{Nonconvex}. Nous appelons la méthode \code{discredit}
+pour supprimer $0$ de l'intervalle. Le second domaine réaliste est une constante
+représentant l'entier $10$, nous le supprimons simplement de la disjonction.
+Ainsi, nous obtenons $S \in [\code{1..5}]$.
+
+\item Enfin, la dernière paire est $(Y, X)$. Tout est consistant. $Y$ n'a pas
+d'autre arc. L'algorithme termine.
+
+\end{itemize}
 
 \end{example}
 
 La consistance vérifie également qu'il n'y a pas de domaine réaliste vide pour
 les quatres variables $S$, $H$, $X$ et $Y$. L'objectif est de détecter les
-inconsistances au plus tôt. Toutefois, toutes les inconsistances ne sont pas
-détectées, ceci étant un problème NP-difficile.
+inconsistances au plus tôt.
 
 \subsubsection{\inenglish{Labelling}}
 
@@ -690,9 +726,9 @@ recommencer avec une autre variable etc. Le choix de la variable à sélectionne
 dépend de la dépendance entre les variables (les arcs vus dans la partie
 précédente).
 
-À chaque choix de valeur, la consistance entre les contraintes sont
-vérifiées. Si une inconsistance est détectée, alors le processus va revenir en
-arrière, nous parlons de \inenglish{backtracking}.
+À chaque choix de valeur, la consistance entre les contraintes est vérifiée. Si
+une inconsistance est détectée, alors le processus va revenir en arrière, nous
+parlons de \inenglish{backtracking}.
 
 À chaque fois que l'algorithme sélectionne une nouvelle variable, sa disjonction
 de domaines réalistes est clonée (dupliquée)~; ainsi lors du
@@ -704,10 +740,8 @@ Dans notre implémentation, le choix d'une valeur utilise la caractéristique de
 générabilité des domaines réalistes, avec un générateur numérique
 pseudo-aléatoire. Afin de faire converger le solveur rapidement vers une
 solution, nous utilisons une heuristique qui consiste à choisir une valeur pour
-la variable $S$ en premier.  Cette approche permet de déplier les
-quantificateurs $\forall$ et $\exists$ (puisque $F_i$ et $T_i$ sont énumérables,
-nous ne manipulons que des ensembles finis). Ensuite, le solveur essaye de
-calculer les ensembles $X_i$ et $Y_i$.
+la variable $S$ en premier. Ensuite, le solveur essaie de calculer les ensembles
+$X_i$ et $Y_i$.
 
 Quand toutes les variables sont étiquetées, c'est~à~dire que chacune a une
 valeur valide, le solveur retourne la solution.
