@@ -1,23 +1,26 @@
 \section{Langages de contrat}
 \label{section:sota:bisl}
 
-Les spécifications sont souvent utilisées sous la forme de {\strong
-contrats}~\acite{Liskov86, Meyer92}. Nous parlons de programmation par contrat
-ou encore de \inenglish{Design by Contract} (abrégé DbC). Le terme {\em contrat}
-est une métaphore conceptuelle des conditions et des obligations d'un contrat
+Les spécifications existent sous la forme de {\strong contrats}~\acite{Liskov86,
+Meyer92}. Nous parlons de programmation par contrat ou encore de
+\inenglish{Design by Contract} (abrégé DbC). Le terme {\em contrat} est une
+métaphore conceptuelle des conditions et des obligations d'un contrat
 d'entreprise. Ce paradigme demande au développeur d'écrire une spécification
 formelle qui étend la définition classique des types abstraits~\acite{LiskovZ74}
 avec les contraintes formelles suivantes~: des {\strong préconditions}, des
-{\strong postconditions} et des {\strong invariants}. Ces contraintes formelles
-sont aussi appelées des {\strong clauses}. Il est admis de dire qu'une clause
-contient des {\strong assertions}. Les contrats sont apparus dans le langage
-Eiffel~\acite{MeyerNM87}, basé sur le paradigme de la programmation orienté
-objet. Dans un tel contexte, les préconditions et postconditions portent sur les
-méthodes (aussi appelées procédures ou routines) et les invariants sur les
-classes (aussi appelés modules). D'autres usages des contrats ont été faits hors
-du paradigme de la programmation orientée objet, par exemple avec des fonctions
-d'ordre supérieur~\acite{FindlerF02}. Le \inenglish{Design by Contract} définit
-les critères de conformité suivants~:
+{\strong postconditions} et des {\strong invariants}. Une précondition spécifie
+l'état du SUT (\inenglish{System Under Test}) avant son exécution. Une
+postcondition spécifie l'état du SUT après son exécution (et peu comparer cet
+état avec l'état précédent). Un invariant, quant à lui, est état-indépendant.
+Ces contraintes formelles sont aussi appelées des {\strong clauses}. Il est
+admis de dire qu'une clause contient des {\strong assertions}. Les contrats sont
+apparus dans le langage Eiffel~\acite{MeyerNM87}, basé sur le paradigme de la
+programmation orienté objet. Dans un tel contexte, les préconditions et
+postconditions portent sur les méthodes (aussi appelées procédures ou routines)
+et les invariants sur les classes (aussi appelés modules). D'autres usages des
+contrats ont été faits hors du paradigme de la programmation orientée objet, par
+exemple avec des fonctions d'ordre supérieur~\acite{FindlerF02}. Le
+\inenglish{Design by Contract} définit les critères de conformité suivants~:
 %
 \begin{itemize}
 
@@ -28,23 +31,23 @@ son appel,
 après son exécution.
 
 \end{itemize}
-
-Nous comprenons qu'il existe deux états pour le SUT (\inenglish{System Under
-Test})~: avant l'exécution d'une méthode, il se trouve dans un {\strong
-pré-état}, et après l'exécution d'une méthode, il se trouve dans un {\strong
-post-état}. Pour les langages supportant les exceptions, il existe un post-état
-normal et un post-état exceptionnel, dans le cas où une exception est levée. Par
-ailleurs, quand le contrat est évalué, nous disons que c'est un {\strong succès}
-si aucune clause n'est violée, sinon c'est un {\strong échec}. Nous verrons par
-la suite comment est évalué un contrat.
+%
+Avant l'exécution d'une méthode, le SUT se trouve dans un {\strong pré-état}, et
+après l'exécution d'une méthode, il se trouve dans un {\strong post-état}. Pour
+les langages supportant les exceptions, il existe un post-état normal et un
+post-état exceptionnel, dans le cas où une exception est levée. Par ailleurs,
+quand le contrat est évalué, nous disons que c'est un {\strong succès} si aucune
+clause n'est violée, sinon c'est un {\strong échec}. Nous verrons par la suite
+comment est évalué un contrat.
 
 Les langages décrivant une spécification formelle à travers des contrats pour le
 comportement des programmes, et utilisés comme annotations, sont appelés des
 {\strong langages de contrat}. Il en existe plusieurs~\acite{HatcliffLLMP12}.
-La suite de cette partie en décrit quelques-uns.
+La suite de cette partie décrit les plus influents et connus~: Eiffel, JML pour
+Java, ACSL pour C et Spec\# pour C\#.
 
 \paragraph{Eiffel} Le langage Eiffel~\acite{MeyerNM87} est un langage de
-programmation orienté objet. Sa plus grosse contribution au domaine a été
+programmation orienté objet. Sa contribution majeure au domaine a été
 l'utilisation importante du \inenglish{Design by Contract} au sein même du
 langage (c'est~à~dire sans être placé en annotation), dont les assertions,
 préconditions, postconditions et invariants étaient utilisés pour assurer la

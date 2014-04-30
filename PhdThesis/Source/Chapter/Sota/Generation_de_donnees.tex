@@ -1,7 +1,6 @@
 \section{Génération de données}
 \label{section:sota:data_generation}
 
-La manière dont Praspel spécifie les données se situe entre JSConTest et JML.
 Nous exprimons beaucoup plus que les types usuels mais nous n'exprimons pas des
 contraintes sous forme logique. Nous sommes alors intéressés par la génération
 (et la validation) de données au sens large. Cette partie présente tout d'abord
@@ -14,21 +13,23 @@ Beaucoup de travaux et d'outils considèrent la génération de données aléato
 comme efficace pour trouver des erreurs. Elle permet de très rapidement explorer
 un modèle, une spécification ou une structure de code à moindre coût. Le
 \inenglish{fuzzing}~\acite{GodefroidLM12}, par exemple, est une technique
-s'appuyant sur ces deux aspects~: beaucoup de données différentes générées
-rapidement, qui permettent d'éprouver le programme. Malgré ses limitations
-évidentes (un test d'égalité entre deux entiers générés aléatoirement a une
-probabilité très faible d'être validé), la génération aléatoire est souvent un
-moyen de «~déblayer le terrain~» et de repérer les points non triviaux à tester
-du programme. C'est pourquoi plusieurs outils considèrent une approche hybride~:
-utiliser de l'aléatoire pour éliminer les cas triviaux et éviter l'utilisation
-systématique de techniques de génération plus gourmandes. D'autres techniques
-vont guider l'aléatoire afin de conserver un certain degré de non-déterminisme
-tout en respectant par exemple des critères de couverture.
+s'appuyant entre autre sur ces deux aspects~: beaucoup de données différentes
+générées rapidement, qui permettent d'éprouver le programme. Malgré ses
+limitations évidentes (un test d'égalité entre deux entiers générés
+aléatoirement a une probabilité très faible d'être validé), la génération
+aléatoire est souvent un moyen de «~déblayer le terrain~» et de repérer les
+points non triviaux à tester du programme. C'est pourquoi plusieurs outils
+considèrent une approche hybride~: utiliser de l'aléatoire pour éliminer les cas
+triviaux et éviter l'utilisation systématique de techniques de génération plus
+gourmandes. D'autres techniques vont guider l'aléatoire afin de conserver un
+certain degré de non-déterminisme tout en respectant par exemple des critères de
+couverture.
 
-D'autres techniques travaillent à partir de solveurs de contraintes. Ils vont
-explorer et analyser le code (de manière symbolique ou concrète) afin de
-récolter un ensemble de contraintes. Ce dernier sera résolu afin de générer des
-données de test qui seront alors utilisées pour exécuter le programme.
+D'autres techniques travaillent à partir de solveurs de contraintes. Ces
+techniques explorent et analysent le code (de manière symbolique ou concrète)
+afin de récolter un ensemble de contraintes. Ce dernier sera résolu afin de
+générer des données de test qui seront alors utilisées pour exécuter le
+programme.
 
 Nous présentons quelques outils qui adoptent ces techniques.
 
@@ -46,11 +47,23 @@ va dupliquer les exécutions et les contraindre à emprunter chaque chemin de
 l'embranchement (pour une condition, ce sera un chemin à vrai et un à faux).
 Quand EXE arrive à la fin d'un chemin ou qu'il trouve une erreur, alors il va
 automatiquement générer des données de test à partir des contraintes récoltées.
-EXE est accompagné de STP~\acite{GaneshD07}, un solveur de contraintes maison
+EXE est accompagné de STP~\acite{GaneshD07}, un solveur de contraintes dédié
 conçu à l'origine pour EXE. C'est grâce à ce solveur que les valeurs vont être
 concrétisées et utilisées comme données de test sur le programme
 non-instrumenté. Les mêmes chemins seront empruntés et les mêmes erreurs seront
 trouvées, mais avec des valeurs concrètes, donc exploitables par le développeur.
+
+\paragraph{KLEE} L'outil KLEE~\acite{CadarDE08} est la suite d'EXE. Ses auteurs
+font le constat suivant~: malgré le fait que les travaux sur l'exécution
+symbolique soient encourageants, les outils ne sont toujours pas capables de
+passer à l'échelle. En effet, le nombre de chemins dans les programmes est
+exponentiel, et les techniques d'exécution symbolique n'arrivent plus à résoudre
+toutes les contraintes générées. De même, l'exécution symbolique ne prenait pas
+en compte l'environnement du programme, comme l'OS, le réseau ou l'utilisateur.
+Ce sont ces deux problèmes qu'adresse KLEE grâce à de la réduction et
+simplification de contraintes, des améliorations sur l'exploration des chemins
+et des optimisations de la représentation de l'environnement. KLEE utilise
+toujours STP comme solveur de contraintes.
 
 \paragraph{DART} \inenglish{Directed Automated Random Testing}, abrégé
 DART~\acite{GodefroidKS05}, est également un outil de génération de données de
@@ -68,30 +81,17 @@ générer les données de test suivantes, il prendra la négation des contrainte
 une par une, générera de nouvelles valeurs et le processus continuera.
 Toutefois, DART ne sait gérer que les contraintes sur les entiers alors qu'EXE
 sait gérer des contraintes sur les entiers, les tableaux, les vecteurs de bits,
-le transtypage, les opérations arithmétiques etc.
+le transtypage, les opérations arithmétiques etc. \\
 
-\paragraph{KLEE} L'outil KLEE~\acite{CadarDE08} est la suite d'EXE. Ses auteurs
-font le constat suivant~: malgré le fait que les travaux sur l'exécution
-symbolique soient encourageants, les outils ne sont toujours pas capables de
-passer à l'échelle. En effet, le nombre de chemins dans les programmes est
-exponentiel, et les techniques d'exécution symbolique n'arrivent plus à
-résoudre toutes les contraintes générées. De même, l'exécution symbolique ne
-prenait pas en compte l'environnement du programme, comme l'OS, le réseau ou
-l'utilisateur. Ce sont ces deux problèmes qu'adresse KLEE grâce à de la
-réduction et simplification de contraintes, des améliorations sur l'exploration
-des chemins et des optimisations de la représentation de l'environnement.
-
-KLEE utilise toujours STP comme solveur de contraintes. \\
-
-Nous voyons qu'il existe de nombreuses techniques avancées pour la génération de
-données de test à partir d'exécution symbolique. Nous pouvons citer
-CUTE~\acite{SenMA05}, Pex~\acite{HalleuxT08} ou ARTOO~\acite{CiupaLOM08} qui
-sont aussi des travaux du même genre. Toutefois, si nous repensons aux contrats
-et que nous prenons du recul, nous remarquons que l'exécution symbolique ne
-permet pas de vérifier qu'un programme fait bien ce que nous souhaitons. Les
-erreurs à l'exécution (comme des pointeurs nuls, des dépassements de tableaux,
-de tampons etc.) seront détectées, mais rien ne nous assure que le programme est
-correct par rapport à une spécification.
+Nous pouvons citer CUTE~\acite{SenMA05}, Pex~\acite{HalleuxT08} ou
+ARTOO~\acite{CiupaLOM08} qui sont aussi des travaux du même genre. Nous voyons
+qu'il existe plusieurs techniques avancées pour la génération de données de test
+à partir d'exécution symbolique. Toutefois, si nous repensons aux contrats et
+que nous prenons du recul, nous remarquons que l'exécution symbolique ne permet
+pas de vérifier qu'un programme fait bien ce que nous souhaitons. Les erreurs à
+l'exécution (comme des pointeurs nuls, des dépassements de tableaux, de tampons
+etc.) seront détectées, mais rien ne nous assure que le programme est correct
+par rapport à une spécification.
 
 \subsection{Données générées}
 
@@ -131,7 +131,7 @@ plusieurs fois) ou \code{*} (zéro ou plusieurs fois) n'ont pas de bornes
 supérieures. Afin d'éviter la génération d'énormes données ou de données
 explosives, yagg propose de borner ces opérateurs. agg a une approche
 exhaustive, c'est~à~dire qu'il va énumérer toutes les séquences possibles de
-lexèmes.  Les lexèmes sont exprimés avec un sous-langage des expressions
+lexèmes. Les lexèmes sont exprimés avec un sous-langage des expressions
 régulières qui ajoute des constructions comme l'alternance équivalente ou des
 générateurs d'équivalence.  Ce choix sert également à borner les valeurs
 possibles des lexèmes.
@@ -151,7 +151,7 @@ réductions \inenglish{pair-wises}.
 La plupart des techniques ayant une approche aléatoire ou exhaustive bornée se
 basent respectivement sur les travaux de \acitei{Howden86} et
 \acitei{FlajoletZC94}. La démarche est très souvent similaire~: à partir d'une
-grammaire, nous sommes capables de générer une donnée. Mais des annotations sont
+grammaire, il est possible de générer une donnée. Mais des annotations sont
 ajoutées pour guider cette génération afin d'obtenir des données plus réalistes
 selon le contexte d'utilisation. Ces outils demandent toujours une intervention
 du développeur mais ces interventions tendent à devenir de plus en plus simples.
