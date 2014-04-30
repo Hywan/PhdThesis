@@ -58,7 +58,10 @@
 
 % Document.
 \color{foreground}
-%\pagecolor{background}
+\ifthenelse
+    {\equal{\myoutputformat}{print}}
+    {}
+    {\pagecolor{background}}
 
 % Hyperref.
 \hypersetup{

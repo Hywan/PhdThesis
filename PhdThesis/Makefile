@@ -1,5 +1,6 @@
 SHELL = bash
 
+# FORMAT=.print to get the print version.
 
 all: tex
 
@@ -9,7 +10,7 @@ tex: | Dist/Page/Covers.pdf
 		-output-format pdf \
 		-interaction errorstopmode \
 		-halt-on-error \
-		-shell-escape PhdThesis.tex;
+		-shell-escape PhdThesis$(FORMAT).tex;
 
 Dist/Page/Covers.pdf:
 	@pdflatex \
@@ -19,10 +20,8 @@ Dist/Page/Covers.pdf:
 		-halt-on-error \
 		-shell-escape Source/Page/Covers.tex;
 
-bib: | Dist/PhdThesis.aux
-	@bibtex Dist/PhdThesis.aux;
-
-Dist/PhdThesis.aux: tex
+bib: tex
+	@bibtex Dist/PhdThesis$(FORMAT).aux;
 
 summary:
 	@pdflatex \
@@ -108,10 +107,10 @@ External/plantuml.jar:
 		> External/plantuml.jar;
 
 open:
-	@open -g -F Dist/PhdThesis.pdf;
+	@open -g -F Dist/PhdThesis$(FORMAT).pdf;
 
 open-new:
-	@open -g -F -n Dist/PhdThesis.pdf;
+	@open -g -F -n Dist/PhdThesis$(FORMAT).pdf;
 
 clean:
 	@echo -e 'Dist\nDist/Page' \
