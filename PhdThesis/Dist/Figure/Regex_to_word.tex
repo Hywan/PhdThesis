@@ -1,13 +1,13 @@
 %%
 \pgfsetcolor{dot}
   % Edge: ast -> word
-  \draw [->] (208.12bp,77bp) .. controls (233.23bp,77bp) and (271.41bp,77bp)  .. (309.75bp,77bp);
+  \draw [->] (208.35bp,77bp) .. controls (235.81bp,77bp) and (279.03bp,77bp)  .. (319.99bp,77bp);
   \pgfsetstrokecolor{dotstroke}
-  \draw (261bp,87.5bp) node {isotropique};
+  \draw (266bp,95bp) node {\begin{tabular}{c}génération\\isotropique\end{tabular}};
   % Edge: regexX -> astX
   \draw [->] (56.345bp,20bp) .. controls (79.754bp,20bp) and (113.76bp,20bp)  .. (150.27bp,20bp);
   % Edge: astX -> wordX
-  \draw [->] (211.69bp,20bp) .. controls (236.85bp,20bp) and (273bp,20bp)  .. (309.98bp,20bp);
+  \draw [->] (211.7bp,20bp) .. controls (239.16bp,20bp) and (280.04bp,20bp)  .. (319.77bp,20bp);
   % Edge: regex -> ast
   \draw [->] (55.302bp,77bp) .. controls (79.769bp,77bp) and (116.45bp,77bp)  .. (154bp,77bp);
   \draw (103bp,87.5bp) node {analyseurs};
@@ -20,8 +20,8 @@
   % Node: word
 \begin{scope}
   \pgfsetstrokecolor{dotstroke}
-  \draw [state,accepting] (337bp,77bp) ellipse (27bp and 18bp);
-  \draw (337bp,77bp) node {mot};
+  \draw [state,accepting] (347bp,77bp) ellipse (27bp and 18bp);
+  \draw (347bp,77bp) node {mot};
 \end{scope}
   % Node: ast
 \begin{scope}
@@ -42,6 +42,6 @@
   % Node: wordX
 \begin{scope}
   \pgfsetstrokecolor{dotstroke}
-  \draw (337bp,20bp) node {\code{f377}};
+  \draw (347bp,20bp) node {\code{f377}};
 \end{scope}
 %

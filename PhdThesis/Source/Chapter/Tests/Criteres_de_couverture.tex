@@ -65,14 +65,14 @@ d'une exception doit être un entier entre 400 et 491.
 \subsection{Critère de Clause}
 
 Le Critère de Clause vise à couvrir la structure d'un contrat. Ainsi, le Critère
-de Clause est satisfait par une suite de tests $S$ d'une méthode \code{f} de
+de Clause est satisfait par une suite de test $S$ d'une méthode \code{f} de
 graphe de contrat $G(\code{f}) = (V, D, i, N, E, U)$ si tous les états de $V
 \bslash{}U$ sont dans une route de $R_\code{f}(S)$.
 
 \begin{example}[Suite de tests satisfaisant le Critère de Clause]
 
 La syntaxe \code{object($c$)} représente une instance valide d'une classe $c$.
-La suite de tests $\{t_1, t_2, t_3\}$ avec~:
+La suite de test $\{t_1, t_2, t_3\}$ avec~:
 %
 \begin{itemize}
 
@@ -119,7 +119,7 @@ R_\code{compute}(\{t_3\}) =\;
 
 Le Critère de Domaine raffine le Critère de Clause en considérant la déclaration
 de domaines réalistes à l'intérieur des graphes d'expression. Plus formellement,
-le Critère de Domaine est satisfait par une suite de tests $S$ pour une méthode
+le Critère de Domaine est satisfait par une suite de test $S$ pour une méthode
 \code{f} si toutes les transitions de la forme \code{$i$: $d$} dans le graphe de
 contrat $G(\code{f})$ (qui sont dans les graphes d'expressions étiquetant les
 transitions de $G(\code{f})$ et contenant le nœud $\mathit{dom}$) apparaissent
@@ -127,7 +127,7 @@ dans au moins un sentier de $T_\code{f}(S)$.
 
 \begin{example}[Suite de tests satisfaisant le Critère de Domaine]
 
-La suite de tests $\{t_1, t_2, t_4\}$ avec~:
+La suite de test $\{t_1, t_2, t_4\}$ avec~:
 %
 \begin{itemize}
 
@@ -139,7 +139,7 @@ La suite de tests $\{t_1, t_2, t_4\}$ avec~:
 %
 satisfait le Critère de Couverture de Domaine: la variable \code{server}, les
 trois déclarations de domaines réalistes de la variable \code{buffer} et la
-variable \aresult sont couvertes. Cette suite de tests produit les chemins
+variable \aresult sont couvertes. Cette suite de test produit les chemins
 respectifs suivants (sur les sentiers)~:
 %
 \begin{align*}
@@ -187,7 +187,7 @@ T_\code{compute}(\{t_4\}) =\;
 
 Similairement au Critère de Domaine, le Critère de Prédicat s'applique aux
 prédicats dans les graphes d'expression, et vise à tous les couvrir. Plus
-formellement, le Critère de Prédicat est satisfait par une suite de tests $S$
+formellement, le Critère de Prédicat est satisfait par une suite de test $S$
 pour une méthode \code{f} si toutes les transitions qui ne sont pas de la forme
 \code{$i$: $d$} dans le graphe de contrat $G(\code{f})$ (qui sont dans les
 graphes d'expressions étiquetant les transitions de $G(\code{f})$ et contenant
@@ -196,7 +196,7 @@ $T_\code{f}(S)$.
 
 \begin{example}[Suite de tests satisfaisant le Critère de Prédicat]
 
-La suite de tests $\{t_5, t_6\}$ avec~:
+La suite de test $\{t_5, t_6\}$ avec~:
 %
 \begin{itemize}
 
@@ -208,7 +208,7 @@ avec \apred{\code{'network\_buffer\_state() > 0'}}.
 
 \end{itemize}
 %
-satisfait le Critère de Couverture de Prédicat. En effet, cette suite de tests
+satisfait le Critère de Couverture de Prédicat. En effet, cette suite de test
 produit les chemins suivants (sur les sentiers)~:
 %
 \begin{align*}
@@ -283,9 +283,9 @@ $B$ est également satisfait.}
 \begin{example}[Suite de tests satisfaisant les combinaisons des Critères de
 Couverture de Contrat]
 
-La suite de tests $\{t_1, t_2, t_3, t_4\}$ satisfait le Critère de Couverture
-Clause~+~Domaine. La suite de tests $\{t_1, t_3, t_5, t_6\}$ satisfait le
-Critère de Couverture Clause~+~Prédicat. La suite de tests $\{t_1, t_3, t_4,
-t_5, t_6\}$ satisfait le Critère de Couverture \inenglish{All}-$G$
+La suite de test $\{t_1, t_2, t_3, t_4\}$ satisfait le Critère de Couverture
+Clause~+~Domaine. La suite de test $\{t_1, t_3, t_5, t_6\}$ satisfait le Critère
+de Couverture Clause~+~Prédicat. La suite de test $\{t_1, t_3, t_4, t_5, t_6\}$
+satisfait le Critère de Couverture \inenglish{All}-$G$
 
 \end{example}

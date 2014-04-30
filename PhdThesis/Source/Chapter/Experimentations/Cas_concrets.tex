@@ -53,12 +53,12 @@ centrale dans cet outil.
 \item générateur de données de test~: pour tester certaines parties techniques
 d'un outil, un générateur de données de test spécifique a été créé. Afin de
 s'assurer que ce générateur ne comporte pas d'erreurs et étant lui-même assez
-volumineux, il a sa propre suite de tests. Les parties qui ont été abordées
+volumineux, il a sa propre suite de test. Les parties qui ont été abordées
 durant cette expérimentation étaient le calcul de ces données, les tests
 unitaires et les tests fonctionnels.
 
 \item outils de comptabilités~: 2~outils développés sur mesure pour des calculs
-de comptabilités. Les parties abordées étaient multiples.
+de comptabilité. Les parties abordées étaient multiples.
 
 \item outil d'évaluation de formules mathématiques~: des utilisateurs écrivent
 eux-mêmes des formules arithmétiques décrivant l'évolution en temps réel des
@@ -90,7 +90,7 @@ manuellement (avec atoum)~;
 
 \item annoter ces méthodes avec des contrats Praspel~;
 
-\item générer automatiquement une suite de tests satisfaisant le critère de
+\item générer automatiquement une suite de test satisfaisant le critère de
 couverture de contrat \inenglish{All}-$G$, et l'exécuter~;
 
 \item comparer la suite MT (\inenglish{Manual Tests}) avec la suite AGT
@@ -98,38 +98,39 @@ couverture de contrat \inenglish{All}-$G$, et l'exécuter~;
 
 \end{enumerate}
 
-Puis, nous leur avons demandé d'expérimenter les algorithmes de générations de
+Puis, nous leur avons demandé d'expérimenter les algorithmes de génération de
 données seuls, sans Praspel. Nous rappelons que l'extension introduisant Praspel
 dans atoum permet la définition et l'utilisation des domaines réalistes
 facilement (voir la partie~\ref{subsection:tools:extension}). Il n'y avait pas
-de protocole expérimental pré-défini mais nous leur avons demandé d'observer
-l'impact de certains générateurs sur la couverture de code ainsi que l'impact
-sur les suites de tests (par exemple une réduction du nombres de tests).
+de protocole expérimental pré-défini mais nous avons demandé aux ingénieurs
+d'observer l'impact de certains générateurs sur la couverture de code ainsi que
+l'impact sur les suites de test (par exemple une réduction du nombre de
+tests).
 
 L'expérimentation a été ouverte pendant une première semaine avec un premier
 panel puis pendant deux autres semaines avec un second panel plus important. Les
 parties suivantes regroupent toutes les données et informations des deux panels.
 
-\subsection{Couverture de code des suites de tests}
+\subsection{Couverture de code des suites de test}
 \label{subsection:experimentation:coverage}
 
-Un moyen de comparer les suites de tests est d'utiliser la couverture de code
-avec le critère tous-les-arcs, comme pour l'expérimentation précédente.  Les
-résultats sont les suivants. Nous avons observé que les AGT couvrent autant le
-code que les MT, à $\pm 5\%$ près.
+Un moyen de comparer les suites de test est d'utiliser la couverture de code
+avec le critère tous-les-arcs, comme pour l'expérimentation précédente. Les
+résultats sont les suivants.
 
-Quand les AGT couvrent moins le code que les MT, le panel nous a fait remarquer
-que c'était à cause de l'utilisation des bouchons (des \inenglish{mocks}). Un
-bouchon remplace une partie d'un programme et nous prédéfinissons la manière
-dont il va se comporter, c'est~à~dire que nous décrivons un comportement bien
-spécifique et testons le SUT dans ces conditions.  Les bouchons permettent
-d'améliorer la testabilité des programmes (en plus d'accélérer l'exécution des
-suites de tests par effet de bord). Les bouchons ne concernent que les objets ou
-les fonctions, et Praspel n'est pas capable de générer de tels bouchons. Par
-exemple, si un contrat précise qu'une exception peut être levée quand une
-connexion réseau est interrompue, Praspel ne sera pas capable de couper lui-même
-la connexion. Il faut alors boucher les interfaces réseaux et simuler des
-déconnexions.
+Nous avons observé que les AGT couvrent autant le code que les MT, à $\pm 5\%$
+près. Quand les AGT couvrent moins le code que les MT, le panel nous a fait
+remarquer que c'était à cause de l'utilisation des bouchons (des
+\inenglish{mocks}). Un bouchon remplace une partie d'un programme et nous
+prédéfinissons la manière dont il va se comporter, c'est~à~dire que nous
+décrivons un comportement bien spécifique et testons le SUT dans ces conditions.
+Les bouchons permettent d'améliorer la testabilité des programmes (en plus
+d'accélérer l'exécution des suites de test par effet de bord). Les bouchons ne
+concernent que les objets ou les fonctions, et Praspel n'est pas capable de
+générer de tels bouchons. Par exemple, si un contrat précise qu'une exception
+peut être levée quand une connexion réseau est interrompue, Praspel ne sera pas
+capable de couper lui-même la connexion. Il faut alors boucher les interfaces
+réseaux et simuler des déconnexions.
 
 Lorsque les AGT couvrent plus le code que les MT, c'est à cause d'une limitation
 des outils. En effet, atoum ne permet pas de tester les méthodes avec une
@@ -146,9 +147,9 @@ n'auraient pas dû être activées. Comme le critère de couverture
 les variables, certaines combinaisons peuvent activer ces conditions d'une
 manière qui n'avait pas été testée manuellement.
 
-Maintenant, comparons le temps de rédaction de ces suites de tests.
+Maintenant, comparons le temps de rédaction de ces suites de test.
 
-\subsection{Temps de rédaction des suites de tests}
+\subsection{Temps de rédaction des suites de test}
 \label{subsection:experimentation:time}
 
 Tous les membres du panel sont habitués à écrire des tests. Ils en écrivent des
@@ -167,8 +168,8 @@ problèmes rencontrés étaient les mêmes~: savoir lire des contrats, comprendr
 analyser les AGT. Le panel pondère toutefois cet effort~: en comparaison avec
 les autres outils qu'ils manipulent quotidiennement, l'installation de Praspel
 et son extension pour atoum est très rapide (autour d'une minute) et le langage
-est simple à utiliser. Même si les notions sous-jacentes (les algorithmes et
-les techniques du test utilisés) ne sont pas connues ou comprises, les domaines
+est simple à utiliser. Même si les notions sous-jacentes (les algorithmes et les
+méthodes de test utilisés) ne sont pas connues ou comprises, les domaines
 réalistes sont également une notion simple à comprendre et à utiliser.
 
 Une fois le cap de l'apprentissage franchi, le panel a observé que pour peu de
@@ -186,14 +187,14 @@ pas encore une priorité dans les budgets alloués au développement logiciel. P
 conséquent, les ingénieurs ont un temps limité pour tester leurs programmes.
 Pendant le temps imparti, ils n'étaient capables d'écrire que des tests dits
 «~basiques~» ou alors ils ne testaient que les parties les plus critiques du
-code. Avec les contrats, ils spécifient toutes les méthodes car ils sont écrits
-en même temps que le code. La proximité entre le code et les contrats \via les
-annotations est un avantage. Par conséquent, plus de code est testé sans
-nécessiter autant de temps que s'il devait être testé manuellement. Le temps qui
-a été économisé est ainsi réinvesti pour des tests plus complets, qui n'auraient
-pas pu être faits en temps normal. Autrement dit, les tests «~usuels~» sont
-gérés par Praspel, ce qui permet aux ingénieurs de test de se concentrer sur les
-parties plus critiques.
+code. Avec les contrats, ils spécifient toutes les méthodes car les contrats
+sont écrits en même temps que le code. La proximité entre le code et les
+contrats \via les annotations est un avantage. Par conséquent, plus de code est
+testé sans nécessiter autant de temps que s'il devait être testé manuellement.
+Le temps qui a été économisé est ainsi réinvesti pour des tests plus complets,
+qui n'auraient pas pu être faits en temps normal. Autrement dit, les tests
+«~usuels~» sont gérés par Praspel, ce qui permet aux ingénieurs de test de se
+concentrer sur les parties plus critiques.
 
 Nous aurions aimé faire l'expérimentation 2~fois de suite pour comparer la
 courbe d'apprentissage, mais nous n'en avons pas eu le temps. Nous rappelons que
@@ -207,7 +208,7 @@ toujours complètes. En effet, Praspel n'est pas capable de tout spécifier (nou
 détaillerons plusieurs cas dans la suite de cette partie) et certaines parties
 du code ne sont pas testables facilement. Heureusement, la partie précédente
 nous a montré que le temps gagné grâce aux contrats est réinvesti dans
-l'écriture de MT. Dans cette étape, les ingénieurs de test ont utilisés nos
+l'écriture de MT. Dans cette étape, les ingénieurs de test ont utilisé nos
 générateurs de données. Rappelons qu'atoum ne possède aucun générateur de
 données. Le seul outil qu'il propose consiste à se brancher sur un dictionnaire
 de données écrit manuellement. Nous présentons trois constats.
@@ -226,7 +227,7 @@ pénible. De même, cela simplifie aussi la lecture des tests. En effet, le
 contenu du test se restreint à sa logique plutôt qu'à la manipulation des
 données de test. Le panel insiste sur le fait que les tests sont par conséquent
 plus facilement maintenables. Cela implique que les ingénieurs n'hésiteront pas
-à modifier les suites de tests car ce processus est simplifié.
+à modifier les suites de test car ce processus est simplifié.
 
 \paragraph{Deuxième constat} Sans générateur automatique de données, le panel
 nous avoue que les données de test utilisées étaient très peu nombreuses~:
@@ -235,7 +236,7 @@ certaine couverture du code avec le critère tous-les-arcs. Avec nos générateu
 de données, beaucoup de données sont générables «~instantanément~» pour
 reprendre leurs termes. En effet, le temps de génération est suffisamment rapide
 pour qu'il en devienne «~négligeable~». Le panel souligne qu'«~aucune différence
-n'est perceptible~» entre l'exécution des suites de tests avec ou sans
+n'est perceptible~» entre l'exécution des suites de test avec ou sans
 générateurs de données. Dans certaines méthodologies de développement comme le
 \inenglish{Test-Driven Development} ou les méthodes Agile, les tests sont
 exécutés en permanence, plusieurs dizaines de fois par heure. La rapidité
@@ -275,7 +276,7 @@ Dans tous les cas, les membres du panel ont remarqué une diminution du nombre d
 tests. En effet, comme un test manipule plus de données pertinentes, les autres
 tests du même genre deviennent inutiles. Cette diminution a été difficile à
 quantifier~: 5\% pour certains, 75\% pour d'autres, mais il y a toujours une
-simplification de la suite de tests~: la quantité, la lecture, l'écriture et la
+simplification de la suite de test~: la quantité, la lecture, l'écriture et la
 maintenance.
 
 \subsection{Tests paramétrés}
@@ -283,9 +284,9 @@ maintenance.
 
 Le test paramétré est une approche hybride entre le test manuel et automatique.
 Le principe est d'écrire un test dont les paramètres sont spécifiés par un
-contrat. À partir d'un test paramétré, nous pouvons alors générer plusieurs
-nouveaux tests. Un test annoté par un contrat et qui pré-calcule un verdict est
-présenté dans la figure~\ref{figure:experimentation:parameterized}.
+contrat. À partir d'un test paramétré, nous pouvons générer plusieurs nouveaux
+tests. Un test annoté par un contrat et qui pré-calcule un verdict est présenté
+dans la figure~\ref{figure:experimentation:parameterized}.
 %
 \begin{figure}
 
@@ -344,10 +345,10 @@ Cette expérimentation a permis de révéler plusieurs erreurs dans tous les
 programmes testés. Nous analysons les plus intéressantes d'entre elles.
 
 \paragraph{Erreurs avec les dates} Les dates sont régulièrement des sources
-d'erreurs dans plusieurs programmes. L'utilisation des domaines réalistes
-\code{Date} et \code{Time\-stamp} permettent de générer et valider finement des
-dates. Une erreur a été découverte avec des dates relatives comme entre «~le
-dernier vendredi de février~» (spécifié avec \code{time\-stamp('last Friday of
+d'erreurs dans les programmes. L'utilisation des domaines réalistes \code{Date}
+et \code{Time\-stamp} permettent de générer et valider finement des dates. Une
+erreur a été découverte avec des dates relatives comme entre «~le dernier
+vendredi de février~» (spécifié avec \code{time\-stamp('last Friday of
 February')}) et «~le lundi suivant~» (spécifié avec \code{time\-stamp('first
 Monday of March')}). Certains cas avec des samedis et dimanches lors d'années
 bissextiles étaient sources d'erreurs. L'erreur a été détectée par des gardes
@@ -397,7 +398,7 @@ Heureusement, aucune formule de cette forme n'a été écrite par les utilisateu
 correction des erreurs a permis de détecter d'autres erreurs dans les tests. En
 effet, les tests calculaient mal leurs verdicts ou étaient incomplets. Praspel
 générait des AGT qui échouaient alors que les MT équivalent étaient des succès.
-Après analyses des AGT et des MT, il s'est avéré qu'il y avait des erreurs dans
+Après analyse des AGT et des MT, il s'est avéré qu'il y avait des erreurs dans
 les MT. Les contrats avaient des postconditions simples (clause \aensures) mais
 réparties dans plusieurs comportements (clause \abehavior). Les AGT reflétaient
 toute la combinatoire possible alors que certains cas étaient oubliés dans les
@@ -453,7 +454,7 @@ les tests générés automatiquement sont considérés comme «~basiques~», ils
 couvrent tout de même toute la spécification et sont pertinents. Le panel nous a
 confirmé que la majorité des AGT auraient pu être écrits par eux-mêmes mais
 qu'il leur aurait fallu beaucoup de temps. Le critère de couverture de contrat
-\inenglish{All}-$G$ couvre toutes la structure du contrat (qui réflète plus ou
+\inenglish{All}-$G$ couvre toute la structure du contrat (qui réflète plus ou
 moins la structure de l'implémentation) et les combinaisons des données. Écrire
 un contrat étant plus rapide que d'écrire les tests manuellement, le
 \inenglish{Contract-based Testing} apporte un gain de temps et de confiance dans
@@ -473,15 +474,15 @@ déjà testés.
 
 L'utilisation de générateurs simplifie également l'écriture des tests, ainsi que
 leur lecture et leur maintenance. Les générateurs permettent de réduire la
-taille des suites de tests.
+taille des suites de test.
 
 Ne pas connaître les algorithmes sous-jacents n'est pas réellement un problème.
 Toutefois, utiliser ce type d'algorithmes pousse la réflexion plus loin. En
 effet, certains des ingénieurs ont commencé à détourner certains algorithmes,
 notamment sur les grammaires, pour répondre à des besoins très spécifiques. Ces
 modifications ne sont pas à la portée de tout le monde et il a été demandé une
-documentation et des informations détaillée sur ces sujets. Le panel a souligné
-que sans Praspel, ils n'auraient même pas songé à ce genre de techniques. En
+documentation et des informations détaillées sur ces sujets. Le panel a souligné
+que, sans Praspel, ils n'auraient même pas songé à ce genre de techniques. En
 effet, comparé aux dictionnaires de données ou aux données manuelles qu'ils
 utilisent quotidiennement, Praspel va plus loin et offre des services plus
 efficaces.

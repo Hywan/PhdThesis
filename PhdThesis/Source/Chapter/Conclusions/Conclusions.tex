@@ -14,15 +14,15 @@ La première contribution est Praspel, un nouveau langage de spécification pour
 PHP basé sur la programmation par contrat. Praspel spécifie les données avec des
 domaines réalistes~: des structures permettant de valider et générer des
 données. Les domaines réalistes peuvent hériter entre eux et être emboîtés pour
-représenter des données plus complexes. La syntaxe et la sémantique de Praspel a
-été définie.  À partir d'un contrat écrit en Praspel, nous pouvons faire du
+représenter des données plus complexes. La syntaxe et la sémantique de Praspel
+ont été définies. À partir d'un contrat écrit en Praspel, nous pouvons faire du
 \inenglish{Contract-based Testing}, c'est~à~dire que nous exploitons le contrat
 pour générer automatiquement des tests unitaires. La précondition est utilisée
 pour générer des données de test et la postcondition est utilisée comme oracle.
 \\
 
-La deuxième contribution concerne alors la génération de données de test. Pour
-les booléens, les entiers et les réels, une génération aléatoire uniforme est
+La deuxième contribution concerne la génération de données de test. Pour les
+booléens, les entiers et les réels, une génération aléatoire uniforme est
 employée. Cette approche a rapidement montré ses limites pour les tableaux et
 les chaînes de caractères.
 
@@ -31,11 +31,11 @@ les plus utilisées. Nous en avons sélectionné trois qui se détachaient
 réellement des autres. La syntaxe de Praspel a été étendue pour introduire ces
 propriétés au sein même du langage. Enfin, nous avons défini une sémantique
 ensembliste de ces propriétés et nous avons construit notre propre solveur de
-contraintes.
+contraintes pour générer des tableaux à partir de ces propriétés.
 
 Pour les chaînes de caractères, nous avons opté pour deux approches~: à partir
-d'une grammaire ou d'une expression régulière. Nous avons défini un nouveau
-langage de description de grammaire appelé PP, avec un compilateur de
+d'une grammaire ou à partir d'une expression régulière. Nous avons défini un
+nouveau langage de description de grammaire appelé PP, avec un compilateur de
 compilateurs $LL(\star)$. Ces derniers permettent de valider une donnée. Pour
 générer une donnée, nous avons proposé trois algorithmes de génération
 permettant de répondre à plusieurs besoins différents~: aléatoire uniforme,
@@ -63,10 +63,9 @@ Hoa. La manipulation de Praspel à travers son modèle objet a été présentée
 différentes analyses, l'exportation et l'importation et le désassemblage.
 L'évaluation de Praspel, avec un \inenglish{Runtime Assertion Checker}, a
 également été présentée. Puisque Praspel génère automatiquement des suites de
-tests abstraites, une extension à atoum, un \inenglish{framework} de tests
-unitaires, a été proposée pour compiler ces suites de tests abstraites en suites
-de tests concrètes et exécutables. Ces dernières sont écrites avec l'API
-d'atoum.
+test abstraites, une extension à atoum, un \inenglish{framework} de tests
+unitaires, a été proposée pour compiler ces suites de test abstraites en suites
+de test concrètes et exécutables. Ces dernières sont écrites avec l'API d'atoum.
 
 Nous avons choisi Hoa car l'auteur de ce mémoire est également l'auteur initial
 de cet ensemble de bibliothèques. Nous avons choisi atoum car c'est un
@@ -89,8 +88,8 @@ budget pour la qualité logicielle est limité, c'est un avantage. Pour ces test
 plus avancés, les ingénieurs utilisent nos algorithmes de génération de données
 seuls, qui sont paramétrables manuellement par un ensemble de contraintes défini
 par l'utilisateur. L'usage de ces algorithmes permet, en plus d'écrire des tests
-rapidement, de réduire les suites de tests tout en assurant la même qualité et
-en augmentant la confiance dans les tests restants. Enfin, les suites de tests
+rapidement, de réduire les suites de test tout en assurant la même qualité et en
+augmentant la confiance dans les tests restants. Enfin, les suites de test
 finales sont plus facilement maintenables et compréhensibles. Ces
 expérimentations ont permis de détecter des erreurs dans des programmes déjà
 testés et parfois en production.  \\
@@ -101,20 +100,20 @@ conférence~\acite{EnderlinDGO11, EnderlinDGB12, EnderlinGB13}.
 \subsection{\inlatin{Summa summarum}}
 \label{subsection:conclusions:summa}
 
-Le langage de spécification que nous avons proposé répond à nos attentes aux
-vues des résultats des expérimentations. Nous voulions que le langage soit
-simple. Le principe de la programmation par contrat, la syntaxe de Praspel et
-l'usage des domaines réalistes a permis de répondre à cette contrainte. Nous
-voulions également que le langage soit pragmatique. Nous adressons tous les
-types de données que les développeurs manipulent au quotidien. Pour les chaînes
-de caractères et les tableaux, nous avons des stratégies spécifiques qui ne
+Le langage de spécification que nous avons proposé répond à nos attentes au vu
+des résultats des expérimentations. Nous voulions que le langage soit simple. Le
+principe de la programmation par contrat, la syntaxe de Praspel et l'usage des
+domaines réalistes ont permis de répondre à cette attente. Nous voulions
+également que le langage soit pragmatique. Nous traitons tous les types de
+données que les développeurs manipulent au quotidien. Pour les chaînes de
+caractères et les tableaux, nous avons des stratégies spécifiques qui ne
 demandent pas d'efforts supplémentaires aux développeurs pour être utilisées
 correctement. Enfin, nous voulions un langage permettant d'assembler plusieurs
 méthodes du test. Dans Praspel, nous trouvons de la génération aléatoire, de la
 génération basée sur les solveurs et de la génération basée sur les grammaires.
 Toutes ces méthodes fonctionnent ensemble au sein d'un même langage par le
 truchement des domaines réalistes et leurs deux caractéristiques de
-prédicabilité et de générabilité.  Ces derniers exposent des méthodes avancées
+prédicabilité et de générabilité. Ces derniers exposent des méthodes avancées
 du test aux développeurs de manière simple.
 
 L'approche que nous avons présentée dans ce mémoire est satisfaisante.
@@ -122,5 +121,5 @@ Toutefois, les expérimentations ont montré les limites de Praspel, notamment q
 le langage n'est pas capable de tout spécifier (comme du code technique
 manipulant par exemple des \inenglish{threads}). Nous aimerions générer des
 tests encore plus pertinents. Il est probable que la solution se trouve dans
-d'autres méthodes du test, ce qui ouvre des perspectives intéressantes
-présentées dans le chapitre suivant.
+d'autres méthodes de test, ce qui ouvre des perspectives intéressantes
+présentées dans la partie suivante.

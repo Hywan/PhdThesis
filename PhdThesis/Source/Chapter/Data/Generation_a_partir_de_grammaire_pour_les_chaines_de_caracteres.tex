@@ -368,8 +368,8 @@ poursuit avec un appel à la règle \code{attributes} qui commence avec le lexè
 cinquième lexème (\code{value}).
 
 \item[6.] Le sixième lexème est \code{gt}. La règle \code{attributes} demande
-soit d'avoir un nouvel attribut, soit la fin de la règle est atteinte, ce qui
-est le cas. Donc le processus revient dans la règle \code{tag}. Il y a une
+soit d'avoir un nouvel attribut, soit que la fin de la règle soit atteinte, ce
+qui est le cas. Donc le processus revient dans la règle \code{tag}. Il y a une
 disjonction~: le premier élément ne peut pas dériver \code{gt} (il attend
 \code{slash}), mais le second élément le permet. Il y a une correspondance, le
 processus continue.
@@ -420,7 +420,7 @@ vérification de typage. \\
 Ce compilateur de compilateurs $LL(\star)$ nous permet de valider une donnée
 textuelle complexe. Ainsi, nous respectons la première caractéristique d'un
 domaine réaliste~: la prédicabilité. Les parties suivantes illustrent plusieurs
-algorithmes de générations de chaînes de caractères à partir d'une grammaire.
+algorithmes de génération de chaînes de caractères à partir d'une grammaire.
 
 \subsection{Algorithmes de génération à partir de grammaires}
 \label{subsection:data:algorithms}
@@ -450,10 +450,10 @@ Pour générer des séquences de lexèmes, les algorithmes vont explorer les rè
 de la grammaire selon différentes contraintes~: la taille de la séquence, la
 fréquence d'apparition des lexèmes, la quantité de séquences etc. Ces
 contraintes sont extraites d'une étude menée de manière empirique auprès d'une
-demi-douzaine d'ingénieurs de tests qualifiés, ajoutés à notre propre
-expérience. Certains souhaitaient des données de taille fixe ou bornée,
-d'autres insistaient sur la diversité des données, ou encore sur la quantité
-avec par exemple de l'exhaustivité.
+demi-douzaine d'ingénieurs de test qualifiés, ajoutée à notre propre expérience.
+Certains souhaitaient des données de taille fixe ou bornée, d'autres insistaient
+sur la diversité des données, ou encore sur la quantité avec par exemple de
+l'exhaustivité.
 
 \subsubsection{Génération aléatoire uniforme}
 \label{subsection:data:random_uniform_generation}
@@ -461,13 +461,13 @@ avec par exemple de l'exhaustivité.
 Cet algorithme permet de générer des séquences de lexèmes de taille $n$ fixe.
 Chaque séquence est générée aléatoirement et avec une distribution uniforme
 parmi toutes les séquences possibles de taille $n$. Afin d'assurer cette
-uniformité, nous allons nous baser sur les travaux de \acitei{FlajoletZC94}. Les
+uniformité, nous nous basons sur les travaux de \acitei{FlajoletZC94}. Les
 auteurs proposent une méthode de calcul récursive pour compter le nombre de
 sous-structures de taille $n$. Ce dénombrement va nous permettre de calculer des
 fonctions de répartition pour guider l'algorithme dans l'exploration des règles
-à chaque point de choix rencontré. \\
-Cet algorithme fonctionne donc en deux étapes. La première est le dénombrement
-et la seconde est la génération à proprement parler.
+à chaque point de choix rencontré. \\ Cet algorithme fonctionne donc en deux
+étapes. La première est le dénombrement et la seconde est la génération à
+proprement parler.
 
 À chaque construction du langage PP est associée une fonction de dénombrement
 $\psi(n, e)$ qui compte le nombre de sous-structures de taille $n$ qu'il est
@@ -518,11 +518,11 @@ et pour le premier $k$-uplet, $\gamma_1 = 2$ et $\gamma_2 = \gamma_3 = 0$.
 Pour la concaténation, représentée par l'opérateur $\cdot$, la fonction $\psi$
 somme la distribution de $n$ parmi toutes les sous-structures. Pour la
 disjonction, représentée par l'opérateur $\vert$, la fonction $\psi$ somme la
-taille des sous-structures de taille $n$. Et enfin, une répétition, représentée
-par $\{x, y\}$, est une disjonction de concaténations (par exemple,
-$e^{\{2,4\}}$ est équivalent à $e \cdot e \,\vert\, e \cdot e \cdot e \,\vert\,
-e \cdot e \cdot e \cdot e$). Quand $y$ est non défini (avec \code{*} et
-\code{+}), il est considéré égal à $n$.
+taille des sous-structures de taille $n$. Une répétition, représentée par $\{x,
+y\}$, est une disjonction de concaténations (par exemple, $e^{\{2,4\}}$ est
+équivalent à $e \cdot e \,\vert\, e \cdot e \cdot e \,\vert\, e \cdot e \cdot e
+\cdot e$). Quand $y$ est non défini (avec \code{*} et \code{+}), il est
+considéré égal à $n$.
 
 \begin{example}[Exploration aléatoire uniforme]
 \label{example:data:random_uniform_generation}
@@ -537,22 +537,22 @@ g: ( <b> <c> | <d> | f() )\{1,3\}
 L'axiome est \code{f}. Nous voulons compter le nombre de sous-structures
 possibles de taille 5. Les résultats sont présentés dans la
 figure~\ref{figure:data:random_tabular}.  La première colonne montre les valeurs
-possibles de $n$.  La deuxième colonne montre les résultats pour $f(n)$.
-Ensuite, nous avons les résultats pour $g(n)$, avec le détail~: pour chaque
-branche de la disjonction et pour la répétition avec $r = 1$, 2 et 3. Le symbole
-«~-~» représente une donnée dupliquée sur la même ligne.
+possibles de $n$. La deuxième colonne montre les résultats pour $\code{f}(n)$,
+qui signifie~: le nombre de sous-structures de taille $n$ que peut produire la
+règle \code{f}. Ensuite, nous avons les résultats pour $\code{g}(n)$, avec le
+détail pour chaque branche de la disjonction et pour la répétition avec $r = 1$,
+$2$ et $3$. Le symbole «~-~» représente une donnée dupliquée sur la même ligne.
 
-Nous commençons avec $f(5)$ qui signifie~: le nombre de sous-structures de
-taille 5 que peut produire la règle \code{f}, soit le résultat de $\psi(5,
-\code{<a>} \cdot \code{g()})$. Cette règle commence par un lexème \code{<a>},
+Avec $n = 5$, la règle \code{f} peut produire $\psi(5, \code{<a>} \cdot
+\code{g()})$ sous-structures. Cette règle commence par un lexème \code{<a>},
 donc le reste de la séquence (donné par la règle \code{g}) devra faire une
-taille de 4. Nous calculons alors $g(4)$, soit $\psi(4, \code{( <b> <c> | <d> |
-f() )}^{\{1,3\}})$. La règle \code{g} est une répétition $r \in [1; 3]$ d'une
-disjonction. Avec $r = 1$, le seul moyen d'avoir une sous-structure de taille 4
-et de passer par \code{f}, donc nous devons calculer $f(4)$. Avec $r = 2$, nous
-pouvons avoir \code{<b> <c> <b> <c>}, ou \code{<b> <c>} puis $f(2)$, ou
-\code{<d>} puis $f(3)$ etc. Tous les résultats sont présents dans la
-figure~\ref{figure:data:random_tabular}.
+taille de 4. Nous calculons alors $\code{g}(4)$, soit $\psi(4, $\code{( <b> <c>
+| <d> | f() )}$^{\{1,3\}})$. La règle \code{g} est une répétition $r \in [1; 3]$
+d'une disjonction. Avec $r = 1$, le seul moyen d'avoir une sous-structure de
+taille 4 et de passer par \code{f}, donc nous devons calculer $\code{f}(4)$.
+Avec $r = 2$, nous pouvons avoir \code{<b> <c> <b> <c>}, ou \code{<b> <c>} puis
+$\code{f}(2)$, ou \code{<d>} puis $\code{f}(3)$ etc. Tous les résultats sont
+présents dans la figure~\ref{figure:data:random_tabular}.
 
 \begin{figure}
 
@@ -587,7 +587,7 @@ $\psi$.}
 Maintenant, nous sommes outillés pour générer des chaînes de caractères à partir
 de la grammaire. Imaginons que nous sommes sur l'exploration de la règle
 \code{g} avec $n = 3$. Nous avons une répétition $r \in [1; 3]$. Nous savons
-grâce à la fonction $\psi$ que $g(3) = 8$, c'est~à~dire que \code{g} peut
+grâce à la fonction $\psi$ que $\code{g}(3) = 8$, c'est~à~dire que \code{g} peut
 produire 8 sous-structures de taille 3. Il faut choisir aléatoirement et
 uniformément une valeur pour $r$, grâce aux probabilités données par la fonction
 $\psi(3, \code{( <b> <c> | <d> | f() )}^r)$. Avec $r = 1$, 3 sous-structures
@@ -623,13 +623,13 @@ aléatoirement et uniformément. Avec $i = 5$, nous obtenons $r = 2$.
 %
 Donc nous répétons la disjonction 2~fois. Rappelons que nous traitons la règle
 \code{g} avec une taille de 3, donc 3~lexèmes à répartir sur 2~répétitions. Nous
-utilisons la fonction $\Gamma$ pour calculer cette répartition~: $\Gamma_2^3 =
-\{(2, 1), (1, 2)\}$ (tous les $k$-uplets contenant un 0 ont été supprimés car il
-est impossible de distribuer 0 lexème dans une répétition). Nous allons utiliser
-soit 2~lexèmes lors de la première répétition et 1~lexème pour la seconde, soit
-l'inverse. Pour choisir, nous choisissons un entier $j \in [1; 2]$ aléatoirement
-et uniformément pour sélectionner le $k$-uplet. Soit $j = 1$, nous allons donc
-utiliser le $k$-uplet $(2, 1)$.
+utilisons la fonction $\Gamma$ pour calculer toutes les répétitions possibles~:
+$\Gamma_2^3 = \{(2, 1), (1, 2)\}$ (tous les $k$-uplets contenant un 0 ont été
+supprimés car il est impossible de distribuer 0 lexème dans une répétition).
+Nous allons utiliser soit 2~lexèmes lors de la première répétition et 1~lexème
+pour la seconde, soit l'inverse. Pour choisir, nous générons un entier $j \in
+[1; 2]$ aléatoirement et uniformément pour sélectionner le $k$-uplet. Nous
+obtenons $j = 1$, le $k$-uplet $(2, 1)$ sera alors utilisé.
 
 Pour la première répétition, il y a $n = 2$ lexèmes à distribuer. La disjonction
 peut produire 2~sous-structures. Nous allons utiliser une nouvelle fonction de
@@ -641,11 +641,11 @@ Et ainsi de suite.
 \end{example}
 
 Cet algorithme est efficace comparé aux autres pour calculer des petites
-séquences de taille fixe avec beaucoup de diversités dans les résultats
+séquences de taille fixe avec beaucoup de diversité dans les résultats
 (puisqu'aléatoire). Toutefois, la complexité de l'étape du dénombrement avec la
 fonction $\psi$ est quadratique~: $\m{O}(n^2)$. Et malgré l'utilisation
 d'heuristiques inspirées de la programmation dynamique, pour une valeur de $n >
-10$, au moins 2~heures de calculs sont nécessaires. Ce problème ne concerne que
+10$, au moins 2~heures de calcul sont nécessaires. Ce problème ne concerne que
 la première étape de l'algorithme, car l'étape de génération a une complexité
 linéaire $\m{O}(n)$~: la génération d'une séquence est la plus rapide de tous
 les algorithmes.
@@ -660,9 +660,9 @@ de données de façon exhaustive peut être efficace pour détecter des erreurs 
 toutes les données sont testées.
 
 À chaque construction du langage PP est associée une fonction $\beta(n, e)$ qui
-va calculer le multi-ensemble contenant des séquences de lexèmes de taille $n$
-pour la construction grammaticale $e$. Un multi-ensemble, noté $\amultiset{A}$,
-est un ensemble avec des répétitions~: en effet, rien ne nous assure que la
+calcule le multi-ensemble contenant des séquences de lexèmes de taille $n$ pour
+la construction grammaticale $e$. Un multi-ensemble, noté $\amultiset{A}$, est
+un ensemble avec des répétitions~: en effet, rien ne nous assure que la
 grammaire ne puisse pas produire au moins deux séquences identiques mais par des
 dérivations/chemins différents. Dans notre implémentation, cette fonction se
 comporte comme un itérateur où chaque pas calcule la séquence de lexèmes
@@ -734,19 +734,19 @@ f: <a> g() \\
 g: ( <b> <c> | <d> | f() )\{1,3\}
 \end{pre}
 
-Nous allons dérouler un exemple pour $n = 10$. Nous commençons par explorer la
-règle \code{f}. Nous produisons \code{<a>}, puis nous explorons la règle
-\code{g} qui propose une répétition d'une disjonction.  Nous commençons par la
-borne inférieure de la répétition puis la première branche de la disjonction,
-soit \code{<b> <c>}. La première séquence est donc~: \code{<a> <b> <c>}. La
-séquence suivante revient au dernier point de choix pour prendre le chemin
-suivant, à savoir la deuxième branche de la disjonction. La deuxième séquence
-est donc~: \code{<a> <d>}. Nous continuons avec le troisième point de choix de
-la disjonction qui est la règle \code{f}. Nous reprenons un chemin équivalent~:
-\code{<a>} puis \code{g}. Nous explorons à nouveau notre répétition, nous
-choisissons la borne inférieure et le premier élément de la disjonction. La
-troisième séquence est donc~: \code{<a> <a> <b> <c>}. Les séquences suivantes
-sont~:
+Nous allons calculer les premières séquences générées pour $n = 10$. Nous
+commençons par explorer la règle \code{f}. Nous produisons \code{<a>}, puis nous
+explorons la règle \code{g} qui propose une répétition d'une disjonction.  Nous
+commençons par la borne inférieure de la répétition puis la première branche de
+la disjonction, soit \code{<b> <c>}. La première séquence est donc~: \code{<a>
+<b> <c>}. La séquence suivante revient au dernier point de choix pour prendre le
+chemin suivant, à savoir la deuxième branche de la disjonction. La deuxième
+séquence est donc~: \code{<a> <d>}. Nous continuons avec le troisième point de
+choix de la disjonction qui est la règle \code{f}. Nous reprenons un chemin
+équivalent~: \code{<a>} puis \code{g}. Nous explorons à nouveau notre
+répétition, nous choisissons la borne inférieure et le premier élément de la
+disjonction. La troisième séquence est donc~: \code{<a> <a> <b> <c>}. Les
+séquences suivantes sont~:
 
 \begin{enumerate}
 %\setcounter{enumi}{3}
@@ -781,11 +781,11 @@ la grammaire est déterministe, il est linéaire.
 
 Cet algorithme essaye de réduire l'explosion combinatoire de l'algorithme
 précédent. Il va générer des séquences en respectant deux critères de
-couvertures sur la grammaire~:
+couverture sur la grammaire~:
 %
 \begin{itemize}
 
-\item une règle est dite couverte si et si seulement toutes ses sous-règles ont
+\item une règle est dite couverte si et seulement si toutes ses sous-règles ont
 été couvertes~;
 
 \item un lexème est dit couvert s'il a été utilisé avec succès dans une
@@ -864,7 +864,7 @@ pas le choisir). Nous choisissons \code{<b> <c>}. Enfin, à la troisième
 répétition, il n'y a plus qu'un seul choix n'ayant pas été couvert dans la
 disjonction~: nous déplions \code{f} à nouveau. Nous produisons \code{<a>} et
 nous continuons dans \code{g}. Tout a été couvert, nous choisissons alors
-aléatoirement une répétition (disons 1~fois), puis \code{<a>} dans la
+aléatoirement une répétition (disons 1~fois), puis \code{<d>} dans la
 disjonction. L'unique séquence \code{<a> <d> <b> <c> <a> <d>} couvre toutes les
 règles et tous les lexèmes de la grammaire.
 
@@ -989,17 +989,19 @@ lire le manuel~\acite{Hazel05}, le langage est très riche.
 
 \subsubsection{Domaines réalistes \code{Grammar} et \code{Regex}}
 
-Les quatres algorithmes précédents complètent les caractéristiques d'un domaine
+Les quatre algorithmes précédents complètent les caractéristiques d'un domaine
 réaliste en assurant la générabilité. Nous pouvons alors ajouter à la
 bibliothèque standard le domaine réaliste~:
 %
-$$\code{grammar($F$, $L$)}$$
+$$\code{grammar($F$)}$$
 %
 où $F$ est le chemin vers le fichier PP contenant la grammaire. Par défaut, ce
 domaine réaliste utilise la génération basée sur la couverture car elle produit
 peu de données différentes, relativement vite et couvrant toute la grammaire.
-Bien sûr, il est possible de modifier l'algorithme à utiliser pour la
-génération. Dans ce cas, $L$ représentera la taille de la séquence souhaitée.
+Bien sûr, il est possible de modifier l'algorithme à utiliser pour la génération
+(se reporter au chapitre~\ref{chapter:tools}). Dans ce cas, un second paramètre
+au domaine réaliste pourra être utilisé pour représenter la taille de la
+séquence souhaitée.
 
 \begin{example}[Utilisation du domaine réaliste \code{Grammar}]
 

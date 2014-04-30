@@ -8,8 +8,8 @@ digraph {
     }
 
     subgraph {
-        regex -> ast  [label=" ", texlbl="analyseurs"];
-        ast   -> word [label=" ", texlbl="isotropique"];
+        regex -> ast  [label=" ", texlbl="analyseurs"                                            ];
+        ast   -> word [label=" ", texlbl="\begin{tabular}{c}génération\\isotropique\end{tabular}"];
     }
 
     regexX [shape=plaintext, label=" ", texlbl="\code{\bslash{}w[3-7]+}"];

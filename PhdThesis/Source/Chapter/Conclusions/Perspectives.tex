@@ -2,15 +2,15 @@
 \label{section:conclusions:perspectives}
 
 Les perspectives qui se dégagent de ces travaux se classent en trois parties. La
-première concerne l'utilisation d'autres méthodes du test dans Praspel. La
-deuxième partie concerne des améliorations possibles sur le langage. Et enfin,
-la dernière partie offre une réflexion sur l'avenir des travaux présentés dans
-ce mémoire.
+première concerne l'utilisation d'autres méthodes de test dans Praspel. La
+deuxième partie concerne des améliorations possibles sur le langage. Enfin, la
+dernière partie offre une réflexion sur l'avenir des travaux présentés dans ce
+mémoire.
 
-\subsection{Inclure de nouvelles méthodes du test}
+\subsection{Inclure de nouvelles méthodes de test}
 
 Grâce aux domaines réalistes et à la conception modulaire et extensible des
-outils de Praspel, il est possible d'assembler plusieurs méthodes du test. Les
+outils de Praspel, il est possible d'assembler plusieurs méthodes de test. Les
 expérimentations ont montré certaines limites du langage et des outils. Nous
 pensons qu'il est pertinent de s'intéresser aux méthodes suivantes.
 
@@ -27,7 +27,7 @@ ou d'un objet n'est pas aussi trivial et mérite plus d'attention. Une fois ces
 limites connues, nous pourrions utiliser un générateur numérique aux limites
 dans les domaines réalistes pour produire de nouvelles données aux limites.
 
-\subsubsection{Scénario et propriétés temporelles}
+\subsubsection{Scénarios et propriétés temporelles}
 
 Dans le contexte du \inenglish{Scenario-based Testing}, nous nous intéressons
 aux travaux de \acitei{Castillos13}. Ces travaux s'inspirent des patrons de
@@ -38,18 +38,18 @@ simplement un large panel de propriétés temporelles avec un ensemble restreint
 de constructions. Un langage~\acite{CastillosDJKT13} basé sur ces patrons a été
 créé. Ce langage comprend des variantes aux motifs et aux portées afin
 d'améliorer l'expressivité et corriger certaines incohérences des patrons
-initiaux. Des nouveaux critères de couverture ont alors été définis et
-permettent de vérifier plusieurs propriétés temporelles.
+initiaux. De nouveaux critères de couverture ont alors été définis et permettent
+de vérifier plusieurs propriétés temporelles.
 
-La démarche de~\acitea{Castillos13} est similaire à la notre~: proposer un
+La démarche de~\acitea{Castillos13} est similaire à la nôtre~: proposer un
 langage et définir des critères de couverture pour obtenir des objectifs de
 tests, mais ces objectifs sont différents. Cependant, puisque ce langage est
 très simple et permet d'exprimer un grand nombre de propriétés temporelles, nous
 pensons que ce langage pourrait être une extension à Praspel. Ainsi, en plus des
 attributs et des méthodes, les classes pourraient être annotées par ces
 propriétés. Nous les exploiterions pour générer de nouveaux préambules de test,
-des objets plus réalistes, des suites de tests fonctionnels ou alors pour
-vérifier des propriétés temporelles.
+des objets plus réalistes, des suites de test fonctionnel ou alors pour vérifier
+des propriétés temporelles.
 
 \subsubsection{\inenglish{Grey-box} avec le \inenglish{Search-based Testing}}
 
@@ -62,15 +62,15 @@ lieu exécuté avec des données aléatoires. Des fonctions de \inenglish{fitnes
 d'évaluer la «~distance~» entre les données courantes et les données nécessaires
 pour activer ou désactiver ce point de choix. En utilisant la programmation
 génétique, ces données initiales sont mutées pour former une nouvelle population
-de données. Des algorithmes de sélections vont réduire cette population. Chaque
-donnée de cette population sera ensuite réutilisée comme données de test pour
+de données. Des algorithmes de sélection vont réduire cette population. Chaque
+donnée de cette population sera ensuite réutilisée comme donnée de test pour
 exécuter à nouveau le SUT. Les fonctions de \inenglish{fitness} vont produire de
 nouveaux résultats qui serviront à guider l'évolution de la population de
 données. Par exemple, avec la condition \code{x == y}, la fonction de
 \inenglish{fitness} sera $\mathrm{abs}(\code{x} - \code{y})$. Quand cette
 fonction tend vers 0, alors la condition est activée.
 
-Les suites de tests générées par Praspel sont basées sur les critères de
+Les suites de test générées par Praspel sont basées sur les critères de
 couverture des contrats. Les données de test, spécifiées majoritairement avec
 les domaines réalistes, sont générées aléatoirement. Si le résultat des
 fonctions de \inenglish{fitness} pouvait être remonté dans les domaines
@@ -108,7 +108,7 @@ nous aurions aimé traiter mais le temps nous a manqué.
 
 \subsubsection{De nouveaux domaines réalistes}
 
-Durant l'expérimentation, les ingénieurs de tests ont trouvé notre approche
+Durant l'expérimentation, les ingénieurs de test ont trouvé notre approche
 pertinente. Toutefois, la bibliothèque standard des domaines réalistes n'était
 pas suffisante. Les ingénieurs ont demandé la création de plus de domaines
 réalistes représentant des données métiers, comme des numéros de comptes
@@ -135,8 +135,8 @@ d'écrire des contrats plus élaborés.
 
 Il nous a semblé pertinent de développer nos travaux de thèse dans des projets
 \inenglish{open-source} et libres avec une communauté, des utilisateurs et des
-contributeurs. Cela nous a été bénéfique mais comme l'ont fait remarquer les
-ingénieurs de tests lors de notre expérimentation, il est nécessaire d'écrire
+contributeurs. Cela nous a été bénéfique mais, comme l'ont fait remarquer les
+ingénieurs de test lors de notre expérimentation, il est nécessaire d'écrire
 beaucoup de documentation pour permettre une utilisation plus importante de nos
 travaux au sein de l'industrie.
 
@@ -169,11 +169,11 @@ et le test.
 Il est difficile de mesurer l'impact de nos contributions et l'usage de nos
 algorithmes dans l'industrie. Les quelques chiffres que nous pouvons obtenir
 sont le nombre d'installations quotidiennes des bibliothèques que nous avons
-créées au sein de Hoa ou auxquelles nous avons contribuées.
+créées au sein de Hoa ou auxquelles nous avons contribué.
 
 La bibliothèque \code{Hoa\bslash{}Compiler} contient notre compilateur de
 compilateurs LL($\star$), le langage de description de grammaire PP et nos
-algorithmes de générations de données à partir de grammaires. Elle a été
+algorithmes de génération de données à partir de grammaires. Elle a été
 installée plus de 9000~fois depuis sa création, soit 15~installations en moyenne
 par jour. La bibliothèque \code{Hoa\bslash{}Regex} contient la grammaire des
 PCRE au format PP et l'algorithme de génération isotropique. Elle est installée
@@ -184,16 +184,16 @@ arithmétiques à la volée contenues dans des chaînes de caractères. Cette
 bibliothèque est installée en moyenne 14~fois par jour. La bibliothèque
 \code{Hoa\bslash{}Praspel} est installée en moyenne 1~fois par jour.  D'autres
 outils utilisant nos contributions sur les grammaires sont installés entre 3 et
-6~fois par jours en moyenne et compte des milliers d'utilisateurs. 
+6~fois par jour en moyenne et comptent des milliers d'utilisateurs. 
 
 Comme nous avons créé une extension qui fait le pont entre atoum et Praspel, et
-que atoum est installé environ plus de 100~fois par jour, nous espérons que
-Praspel va rapidement se propager et être utilisé. Durant ces travaux de thèse,
-nous n'avons pas alloué de temps spécifiquement pour la promotion de Praspel
-auprès de l'industrie. Malgré quelques conférences industrielles, nos
-implémentations sont terminées depuis peu et l'outil est «~industriellement~»
-utilisable depuis février-mars 2014. Aux vues des résultats de
-l'expérimentation, nous espérons que la communauté de Hoa et d'atoum sauront
-promouvoir Praspel. Nous allons les rejoindre et participer à cet effort au
-maximum car nous pensons que Praspel et le lien qui s'est créé entre nous et ces
-communautés sont bénéfiques pour la recherche.
+que atoum est installé plus de 100~fois par jour, nous espérons que Praspel va
+rapidement se propager et être utilisé. Durant ces travaux de thèse, nous
+n'avons pas alloué de temps spécifiquement pour la promotion de Praspel auprès
+de l'industrie. Malgré quelques conférences industrielles, nos implémentations
+sont terminées depuis peu et l'outil est «~industriellement~» utilisable depuis
+février-mars 2014. Au vu des résultats de l'expérimentation, nous espérons que
+les communautés de Hoa et d'atoum sauront promouvoir Praspel. Nous allons les
+rejoindre et participer à cet effort au maximum car nous pensons que Praspel et
+le lien qui s'est créé entre nous et ces communautés sont bénéfiques pour la
+recherche.
