@@ -110,11 +110,11 @@ traduisibles et donc ne peuvent pas être vérifiées.
 Le programme Java d'origine est ainsi enrichi par la vérification des contrats
 JML. Un inconvénient est que le binaire résultant est plus important, ce qui
 engendre des ralentissements à l'exécution. En revanche, si une contrainte n'est
-pas vérifiée, une exception spécifique est déclenchée signalant le type de
-clause qui n'a pas été vérifiée (invariant, précondition etc.) ainsi que l'état
-visible du système au moment de l'exécution. L'utilisation du RAC confère un
-moyen direct et efficace de s'assurer que les contrats JML ne sont pas violés
-durant une exécution.
+pas validée, une exception spécifique est déclenchée signalant le type de clause
+qui n'a pas été validée (invariant, précondition etc.) ainsi que l'état visible
+du système au moment de l'exécution. L'utilisation du RAC confère un moyen
+direct et efficace de s'assurer que les contrats JML ne sont pas violés durant
+une exécution.
 
 \paragraph{ACSL} Le \inenglish{ANSI/ISO C Specification Language}~\acite{ACSL}
 est un langage de contrat pour C~\acite{C}, inspiré principalement du langage de
@@ -135,13 +135,14 @@ langage, comme la logique des pointeurs, et d'autres ne sont pas présentes,
 comme les exceptions.
 
 Les outils d'ACSL sont intégrés dans le \inenglish{Framework for Modular
-Analyses of C}, abrégé Frama-C~\acite{FramaC}. Ce dernier propose plusieurs
-analyses de programmes C. Les outils d'ACSL l'utilisent pour de la vérification
-statique. C'est la grande différence avec JML, qui lui repose sur un RAC, donc
-une vérification à l'exécution, ce que ne fait pas ACSL. Des extensions à
-Frama-C peuvent être installées pour permettre à des outils externes, comme des
-assistants de preuve interactifs ou des prouveurs automatiques de théorèmes,
-d'aider à la vérification de certaines spécifications.
+Analyses of C}, abrégé Frama-C~\acite{FramaC, CuoqKKPSY12}. Ce dernier propose
+plusieurs analyses de programmes C. Les outils d'ACSL l'utilisent pour de la
+vérification statique. C'est la grande différence avec JML, qui lui repose sur
+un RAC, donc une validation à l'exécution, ce que ne fait pas ACSL. Des
+extensions à Frama-C peuvent être installées pour permettre à des outils
+externes, comme des assistants de preuve interactifs ou des prouveurs
+automatiques de théorèmes, d'aider à la vérification de certaines
+spécifications.
 
 \paragraph{Spec\#} Le langage Spec\#~\acite{SpecSharp} permet de faire de la
 programmation par contrat pour C\#~\acite{CSharp}. Ce langage est très similaire

@@ -1,11 +1,11 @@
 \section{Génération de données}
 \label{section:sota:data_generation}
 
-Nous exprimons beaucoup plus que les types usuels mais nous n'exprimons pas des
-contraintes sous forme logique. Nous sommes alors intéressés par la génération
-(et la validation) de données au sens large. Cette partie présente tout d'abord
-des techniques de génération de données puis, orthogonalement, des outils qui
-génèrent des types de données spécifiques.
+Dans Praspel, nous exprimons beaucoup plus que les types usuels mais nous
+n'exprimons pas des contraintes sous forme logique. Nous sommes alors intéressés
+par la génération (et la validation) de données au sens large. Cette partie
+présente tout d'abord des techniques de génération de données puis,
+orthogonalement, des outils qui génèrent des types de données spécifiques.
 
 \subsection{Technique de génération}
 
@@ -26,10 +26,11 @@ certain degré de non-déterminisme tout en respectant par exemple des critères
 couverture.
 
 D'autres techniques travaillent à partir de solveurs de contraintes. Ces
-techniques explorent et analysent le code (de manière symbolique ou concrète)
-afin de récolter un ensemble de contraintes. Ce dernier sera résolu afin de
-générer des données de test qui seront alors utilisées pour exécuter le
-programme.
+techniques explorent et analysent le code de manière symbolique et concrète afin
+de récolter un ensemble de contraintes. Ce dernier sera résolu afin de générer
+des données de test qui seront alors utilisées pour exécuter le programme. Le
+terme \inenglish{concolic} est la contraction de \inenglish{concrete} et
+\inenglish{symbolic} et désigne ce genre de technique.
 
 Nous présentons quelques outils qui adoptent ces techniques.
 
@@ -45,7 +46,7 @@ alors il va analyser son environnement et générer de nouvelles contraintes.
 Quand des embranchements sont rencontrés (comme une condition par exemple), EXE
 va dupliquer les exécutions et les contraindre à emprunter chaque chemin de
 l'embranchement (pour une condition, ce sera un chemin à vrai et un à faux).
-Quand EXE arrive à la fin d'un chemin ou qu'il trouve une erreur, alors il va
+Quand EXE arrive à la fin d'un chemin ou qu'il détecte une erreur, alors il va
 automatiquement générer des données de test à partir des contraintes récoltées.
 EXE est accompagné de STP~\acite{GaneshD07}, un solveur de contraintes dédié
 conçu à l'origine pour EXE. C'est grâce à ce solveur que les valeurs vont être
@@ -81,17 +82,41 @@ générer les données de test suivantes, il prendra la négation des contrainte
 une par une, générera de nouvelles valeurs et le processus continuera.
 Toutefois, DART ne sait gérer que les contraintes sur les entiers alors qu'EXE
 sait gérer des contraintes sur les entiers, les tableaux, les vecteurs de bits,
-le transtypage, les opérations arithmétiques etc. \\
+le transtypage, les opérations arithmétiques etc.
 
-Nous pouvons citer CUTE~\acite{SenMA05}, Pex~\acite{HalleuxT08} ou
-ARTOO~\acite{CiupaLOM08} qui sont aussi des travaux du même genre. Nous voyons
-qu'il existe plusieurs techniques avancées pour la génération de données de test
-à partir d'exécution symbolique. Toutefois, si nous repensons aux contrats et
-que nous prenons du recul, nous remarquons que l'exécution symbolique ne permet
-pas de vérifier qu'un programme fait bien ce que nous souhaitons. Les erreurs à
-l'exécution (comme des pointeurs nuls, des dépassements de tableaux, de tampons
-etc.) seront détectées, mais rien ne nous assure que le programme est correct
-par rapport à une spécification.
+\paragraph{PathCrawler} L'outil PathCrawler~\acite{BotellaDHKMRW09} est un
+générateur de tests structurels pour des programmes écrits en C, combinant, lui
+aussi, des exécutions symboliques et concrètes. Le test structurel vise à
+satisfaire certains critères de couverture de code. PathCrawler utilise son
+propre solveur de contraintes, appelé Colibri. Ce dernier est utilisé par
+d'autres outils de test et implémente des fonctionnalités avancées comme le
+support des réels ou de l'arithmétiques modulaire sur les entiers. PathCrawler
+propose plusieurs stratégies de couverture de code, comme
+\inenglish{all-$k$-paths} (tous les chemins atteignables avec au plus $k$
+itérations dans les boucles) et \inenglish{all-paths} (tous les chemins
+atteignables sans limitation d'itérations dans les boucles). PathCrawler est
+sûre, c'est~à~dire que chaque cas de test active un objectif de test (un chemin,
+une branche, une instruction etc.) pour lequel il a été généré. Cette propriété
+est validé par une exécution concrète. Quand toutes les fonctionnalités du
+programme testé sont supportées par PathCrawler et quand la génération de test,
+impliquant le solveur de contrainte, termine pour tous les chemins, l'outil est
+aussi complet, c'est~à~dire que l'absence de cas de test pour certains objectifs
+de test signifie que ces objectifs sont inatteignables. Cette propriété est
+possible car PathCrawler ne fait pas d'approximation pour les constraintes sur
+les chemins, comme c'est le cas dans d'autres outils de type
+\inenglish{concolic}. PathCrawler a toutefois des limitations. Par exemple, il
+ne supporte pas les structures récursives, les fonctions récursives et les
+pointeurs sur les fonctions. \\
+
+Nous pouvons citer CUTE~\acite{SenMA05}, Pex~\acite{TillmannH08},
+SAGE~\acite{GodefroidLM12} ou ARTOO~\acite{CiupaLOM08} qui sont aussi des
+travaux du même genre. Nous voyons qu'il existe plusieurs techniques avancées
+pour la génération de données de test à partir d'exécution symbolique.
+Toutefois, si nous repensons aux contrats et que nous prenons du recul, nous
+remarquons que l'exécution symbolique ne permet pas de vérifier qu'un programme
+fait bien ce que nous souhaitons. Les erreurs à l'exécution (comme des pointeurs
+nuls, des dépassements de tableaux, de tampons etc.) seront détectées, mais rien
+ne nous assure que le programme est correct par rapport à une spécification.
 
 \subsection{Données générées}
 
@@ -129,7 +154,7 @@ avec des grammaires, la question de la combinatoire se pose forcément. Certains
 opérateurs de répétition de séquences de lexèmes, comme \code{+} (une ou
 plusieurs fois) ou \code{*} (zéro ou plusieurs fois) n'ont pas de bornes
 supérieures. Afin d'éviter la génération d'énormes données ou de données
-explosives, yagg propose de borner ces opérateurs. agg a une approche
+explosives, yagg propose de borner ces opérateurs. yagg a une approche
 exhaustive, c'est~à~dire qu'il va énumérer toutes les séquences possibles de
 lexèmes. Les lexèmes sont exprimés avec un sous-langage des expressions
 régulières qui ajoute des constructions comme l'alternance équivalente ou des
