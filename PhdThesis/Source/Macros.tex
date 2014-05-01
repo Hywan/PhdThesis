@@ -20,7 +20,7 @@
 \makeatother
 
 % TOC.
-\newcommand{\mminitoc}{{\hypersetup{linkcolor=sbase02} \minitoc}}
+\newcommand{\mminitoc}{{\hypersetup{linkcolor=sbase02} \minitoc\vspace{.5cm}}}
 
 % Style.
 \newcommand{\code}[1]{\texttt{#1}}
@@ -68,6 +68,10 @@
 }{
     \end{longtable}
     \end{alltt}
+}
+
+\newcommand{\mylettrine}[3][]{%
+    \lettrine[lines=3, lhang=.5, loversize=.1, #1]{\textcolor{sbase01}{#2}}{#3}%
 }
 
 % Shortcut.
