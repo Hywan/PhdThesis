@@ -84,29 +84,30 @@ Toutefois, DART ne sait gérer que les contraintes sur les entiers alors qu'EXE
 sait gérer des contraintes sur les entiers, les tableaux, les vecteurs de bits,
 le transtypage, les opérations arithmétiques etc.
 
-\paragraph{PathCrawler} L'outil PathCrawler~\acite{BotellaDHKMRW09} est un
-générateur de tests structurels pour des programmes écrits en C, combinant, lui
-aussi, des exécutions symboliques et concrètes. Le test structurel vise à
-satisfaire certains critères de couverture de code. PathCrawler utilise son
-propre solveur de contraintes, appelé Colibri. Ce dernier est utilisé par
-d'autres outils de test et implémente des fonctionnalités avancées comme le
-support des réels ou de l'arithmétiques modulaire sur les entiers. PathCrawler
-propose plusieurs stratégies de couverture de code, comme
-\inenglish{all-$k$-paths} (tous les chemins atteignables avec au plus $k$
-itérations dans les boucles) et \inenglish{all-paths} (tous les chemins
-atteignables sans limitation d'itérations dans les boucles). PathCrawler est
-sûre, c'est~à~dire que chaque cas de test active un objectif de test (un chemin,
-une branche, une instruction etc.) pour lequel il a été généré. Cette propriété
-est validé par une exécution concrète. Quand toutes les fonctionnalités du
-programme testé sont supportées par PathCrawler et quand la génération de test,
-impliquant le solveur de contrainte, termine pour tous les chemins, l'outil est
-aussi complet, c'est~à~dire que l'absence de cas de test pour certains objectifs
-de test signifie que ces objectifs sont inatteignables. Cette propriété est
-possible car PathCrawler ne fait pas d'approximation pour les constraintes sur
-les chemins, comme c'est le cas dans d'autres outils de type
-\inenglish{concolic}. PathCrawler a toutefois des limitations. Par exemple, il
-ne supporte pas les structures récursives, les fonctions récursives et les
-pointeurs sur les fonctions. \\
+\paragraph{PathCrawler} L'outil PathCrawler~\acite{WilliamsMMR05,
+BotellaDHKMRW09} est un générateur de tests structurels pour des programmes
+écrits en C, combinant, lui aussi, des exécutions symboliques et concrètes. Le
+test structurel vise à satisfaire certains critères de couverture de code.
+PathCrawler utilise son propre solveur de contraintes, appelé Colibri. Ce
+dernier est utilisé par d'autres outils de test et implémente des
+fonctionnalités avancées comme le support des réels ou de l'arithmétiques
+modulaire sur les entiers. PathCrawler propose plusieurs stratégies de
+couverture de code, comme \inenglish{all-$k$-paths} (tous les chemins
+atteignables avec au plus $k$ itérations dans les boucles) et
+\inenglish{all-paths} (tous les chemins atteignables sans limitation
+d'itérations dans les boucles). PathCrawler est sûre, c'est~à~dire que chaque
+cas de test active un objectif de test (un chemin, une branche, une instruction
+etc.) pour lequel il a été généré. Cette propriété est validé par une exécution
+concrète. Quand toutes les fonctionnalités du programme testé sont supportées
+par PathCrawler et quand la génération de test, impliquant le solveur de
+contrainte, termine pour tous les chemins, l'outil est aussi complet,
+c'est~à~dire que l'absence de cas de test pour certains objectifs de test
+signifie que ces objectifs sont inatteignables. Cette propriété est possible car
+PathCrawler ne fait pas d'approximation pour les constraintes sur les chemins,
+comme c'est le cas dans d'autres outils de type \inenglish{concolic}.
+PathCrawler a toutefois des limitations. Par exemple, il ne supporte pas les
+structures récursives, les fonctions récursives et les pointeurs sur les
+fonctions. \\
 
 Nous pouvons citer CUTE~\acite{SenMA05}, Pex~\acite{TillmannH08},
 SAGE~\acite{GodefroidLM12} ou ARTOO~\acite{CiupaLOM08} qui sont aussi des outils
@@ -117,13 +118,13 @@ recul, nous remarquons que l'exécution symbolique ou concrète ne permet pas de
 valider qu'un programme fait bien ce que nous souhaitons. Les erreurs à
 l'exécution (comme des pointeurs nuls, des dépassements de tableaux, de tampons
 etc.) seront détectées, mais rien ne nous assure que le programme est correct
-par rapport à une spécification. Nous pouvons citer toutefois le prototype
-{\scshape sante} qui fait à une approche intéressante entre le
-\inenglish{concolic} et les contrats.
+par rapport à une spécification. Cependant, des travaux mélangent les exécutions
+symboliques ou concrètes avec les contrats, comme c'est le cas de {\scshape
+sante} ou Euclide.
 
-\paragraph{Sante} Les outils de \inenglish{concolic} sont efficaces pour valider
-des programmes mais passent difficilement à l'échelle sur des programmes de
-taille importante. Le prototype~\inenglish{Static ANalysis and
+\paragraph{\scshape sante} Les outils de \inenglish{concolic} sont efficaces
+pour valider des programmes mais passent difficilement à l'échelle sur des
+programmes de taille importante. Le prototype~\inenglish{Static ANalysis and
 TEsting}~\acite{ChebaroKGJ12} répond à ce constat en utilisant la technique du
 \inenglish{slicing}. L'idée est de supprimer du code inutile pour l'objectif de
 test fixé.
@@ -135,12 +136,22 @@ PathCrawler et travaille donc sur des programmes écrits en C. Ces programmes
 sont annotés par des contrats écrits en ACSL. Le code de ces programmes a été
 \inenglish{sliced} pour le simplifier et ainsi faciliter le travail de
 PathCrawler. Avant de simplifier le code, les contrats ACSL sont compilés en
-code C (comme JML est compilé en Java avec JMLUnit), et le programme est
-instrumenté pour les exécuter. Ainsi, PathCrawler prendra en considération les
-contrats ACSL lors de la génération de tests. Toutefois, {\scshape sante} ne
-supporte qu'un petit sous-ensemble du langage ACSL~: les assertions prévenant
-les divisions par zéro, les dépassements de tableaux et des débordements
-arithmétiques.
+code C (comme JML est compilé en Java avec son RAC~\acite{Raghavan2005}), et le
+programme est instrumenté pour les exécuter. Ainsi, PathCrawler prendra en
+considération les contrats ACSL lors de la génération de tests. Toutefois,
+{\scshape sante} ne supporte qu'un petit sous-ensemble du langage ACSL~: les
+assertions prévenant les divisions par zéro, les dépassements de tableaux et des
+débordements arithmétiques.
+
+\paragraph{Euclide} L'outil Euclide~\acite{Gotlieb09} permet de faire du test à
+partir de contrain\-tes en mélangeant trois aspects~: analyse structurelle du
+code source du programme, production de contre-exemples et preuve partielle du
+programme. L'objectif est de mélanger les techniques pour dépasser la limite de
+chacune et ainsi, de générer des données permettant de satisfaire plus de
+critères de couverture de code. Optionellement, Euclide peut utiliser des
+contrats écrits en ACSL pour exprimer des préconditions et des postconditions.
+Dans ce cas, Euclide est capable de prouver que les contrats sont valides et
+conformes par rapport au programme.
 
 \subsection{Données générées}
 
@@ -157,15 +168,14 @@ différentes, allant d'une adresse email à des langages comme XML ou JSON, en
 passant par des requêtes SQL etc. La façon la plus répandue dans l'industrie
 pour représenter une donnée textuelle est d'utiliser une expression régulière ou
 une grammaire algébrique~\acite{Chomsky56}. Une grammaire est exprimée à partir
-d'un {\strong langage de description} qui déclare des {\strong lexèmes}, unités
-lexicales atomiques d'un langage, et des {\strong entités syntaxiques} (aussi
-appelées {\strong règles}) exprimant l'enchaînement possible des lexèmes les uns
-par rapport aux autres.
+d'un langage de description qui déclare des lexèmes, unités lexicales atomiques
+d'un langage, et des entités syntaxiques (aussi appelées règles) exprimant
+l'enchaînement possible des lexèmes les uns par rapport aux autres.
 
 L'idée commune que nous retrouvons dans la majorité des travaux est d'explorer
-ces règles afin de générer une {\strong séquence de lexèmes} qui représente une
-donnée valide. Quand les grammaires sont utilisées pour représenter des données
-de test, nous parlons de \inenglish{Grammar-based Testing}, abrégé GbT.
+ces règles afin de générer une séquence de lexèmes qui représente une donnée
+valide. Quand les grammaires sont utilisées pour représenter des données de
+test, nous parlons de \inenglish{Grammar-based Testing}, abrégé GbT.
 
 \inenglish{yet another generator-generator}, abrégé yagg~\acite{CoppitL05} est
 un outil de génération de données textuelles complexes à partir d'une grammaire
@@ -187,15 +197,15 @@ possibles des lexèmes.
 
 L'outil Geno~\acite{LammelS06} propose une solution au problème de l'explosion
 combinatoire. Certains travaux proposent des critères de couverture sur les
-grammaires. D'autres proposent d'annoter des grammaires avec par exemple des
-poids probabilistes afin de guider l'exploration de la grammaire. Geno propose à
-l'utilisateur d'annoter une grammaire avec des mots-clés afin de guider la
-génération. Ces mots-clés sont une abstraction de choix probabilistes, {\em a
-priori} plus simples et concrets. Ces mots-clés sont traités de façon à
-conserver une certaine exhaustivité dans les résultats. Similairement, l'outil
-YouGen~\acite{HoffmanLSW11} propose à l'utilisateur d'ajouter des
-\inenglish{tags} pour borner l'exploration de plusieurs règles en appliquant des
-réductions \inenglish{pair-wises}.
+grammaires ou d'annoter des grammaires avec par exemple des poids probabilistes
+afin de guider l'exploration de la grammaire~\acite{Lammel01, Maurer90,
+SirerB99, McKeeman98}. Geno propose à l'utilisateur d'annoter une grammaire avec
+des mots-clés afin de guider la génération. Ces mots-clés sont une abstraction
+de choix probabilistes, \inlatin{a priori} plus simples et concrets. Ces
+mots-clés sont traités de façon à conserver une certaine exhaustivité dans les
+résultats. Similairement, l'outil YouGen~\acite{HoffmanLSW11} propose à
+l'utilisateur d'ajouter des \inenglish{tags} pour borner l'exploration de
+plusieurs règles en appliquant des réductions \inenglish{pair-wises}.
 
 La plupart des techniques ayant une approche aléatoire ou exhaustive bornée se
 basent respectivement sur les travaux de \acitei{Howden86} et
@@ -207,13 +217,10 @@ du développeur mais ces interventions tendent à devenir de plus en plus simple
 
 \paragraph{Génération de tableaux} Les tableaux sont aussi très utilisés dans le
 Web pour représenter toutes sortes de collections ou organiser de manière
-structurelles des informations. Dans la même lignée que TestEra, CUTE ou encore
-PathCrawler~\acite{WilliamsMMR05}, nous trouvons Euclide~\acite{Gotlieb09} qui
-est un outil de test à partir de contraintes exprimées en ACSL. Euclide mélange
-trois aspects~: analyse structurelle du code source du programme, production de
-contre-exemples et preuve partielle du programme. L'objectif est de mélanger les
-techniques pour dépasser la limite de chacune et ainsi, de générer des données
-permettant de satisfaire plus de critères de couverture de code.
+structurelles des informations. Plusieurs solveurs supportent les tableaux en
+plus d'autres données, comme c'est le cas de STP (pour EXE et KLEE), Colibri
+(pour PathCrawler), le solveur de l'outil Euclide etc. Toutefois, nous pouvons
+citer {\scshape fdcc} qui est un solveur dédié au tableau uniquement.
 
 {\scshape fdcc}~\acite{BardinG12} est un solveur pour les tableaux avec
 contraintes sur des domaines finis. Les auteurs font le constat que les tableaux
@@ -229,6 +236,15 @@ Mentionnons aussi l'outil Minion~\acite{GentJM06} qui fait un constat et une
 approche similaire à {\scshape fdcc}~: les auteurs préfèrent coupler des
 solutions ensemble et les faire communiquer. Les résultats sont très
 encourageants~: comme pour {\scshape fdcc}, le solveur converge beaucoup plus
-rapidement et est capable de répondre à davantage de problèmes. La partie
-délicate est toujours de filtrer et transformer les problèmes pour que les
-différents solveurs puissent commniquer entre eux.
+rapidement et est capable de répondre à davantage de problèmes.
+
+La partie délicate est toujours de faire communiquer les solveurs entre eux. En
+effet, chaque solveur a son propre formalisme et son propre langage de
+description de contrainte. Ainsi, le travail de l'outil Minion consiste à
+proposer un langage commun entre tous ces solveurs, et de faire des traducteurs
+pour chacun d'eux. Cette phase de transformation fait intervenir des filtres, et
+donc, potentiellement, des pertes d'informations. Par conséquent, même si les
+solveurs sont capables de trouver des solutions à nos problèmes, ces solutions
+sont difficilement compréhensibles par le programme d'origine car beaucoup
+d'informations ont été transformées ou perdues (car non nécessaires aux solveurs
+mais nécessaires pour la tracabilité des données).
