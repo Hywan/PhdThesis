@@ -220,7 +220,7 @@ protected \$_arguments = [ \\
 %
 où \code{Constinteger} et \code{Conststring} représentent respectivement un
 entier et une chaîne de caractères Praspel comme \code{7} ou \code{'foo'}.
-Alors, nous pouvons écrire \code{str\-ing('a', 'z', 4..12)} sans produire
+Ainsi, nous pouvons écrire \code{str\-ing('a', 'z', 4..12)} sans produire
 d'erreur, mais \code{string(true, 'z', 4..12)} produira une erreur car
 \code{true} est une valeur du domaine réaliste \code{Constboolean} et le
 paramètre \code{codepointMin} n'accepte que les domaines \code{Constinteger} ou
@@ -243,10 +243,10 @@ un mot en minuscule écrit en grec.
 
 L'héritage que nous venons de voir en
 \ref{subsection:language:realdom:hierarchy} est une classification. Une autre
-classification {\strong transversale} est possible grâce aux interfaces. Elles
-aident à caractériser les domaines réalistes. Les interfaces les plus
-intéressantes sont~:
-
+classification transversale est possible grâce aux interfaces. Elles aident à
+caractériser les domaines réalistes. Les interfaces les plus intéressantes
+sont~:
+%
 \begin{itemize}
 
 \item \code{Constant}, pour représenter un domaine réaliste immuable avec

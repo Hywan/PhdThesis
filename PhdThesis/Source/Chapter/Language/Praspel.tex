@@ -436,8 +436,8 @@ Par défaut, les variables utilisées dans le contrat appartiennent au système,
 c'est~à~dire qu'elles existent en tant qu'argument d'une méthode ou attribut de
 classe. Toutefois, il est possible de déclarer une variable qui appartient au
 modèle si elle est précédée par le mot-clé \code{let}. Nous pouvons voir cette
-variable comme étant {\strong locale} au modèle. Cette catégorie de variables
-est très utile pour manipuler des expressions apparaissant par exemple plusieurs
+variable comme étant locale à la spécification. Cette catégorie de variables est
+très utile pour manipuler des expressions apparaissant par exemple plusieurs
 fois.
 
 La variable spéciale \aresult représente la valeur {\strong retournée} par la
@@ -549,8 +549,8 @@ utilisée.
 
 La description de tableaux est une partie très importante de Praspel.
 
-Dans PHP, un tableau est toujours un {\strong tableau associatif} (ou une
-\inenglish{map}, un {\strong dictionnaire}), \ie une collection de paires
+Pour mémoire, dans PHP, un tableau est toujours un {\strong tableau associatif}
+(ou une \inenglish{map}, un dictionnaire), \ie une collection de paires
 clé-valeur, où chaque clé apparaît au maximum une fois. Les clés peuvent être de
 type nul, booléen, entier, réel ou chaîne de caractères. PHP accepte ces types
 de clés mais les booléens sont transtypés en entier et les réels sont réduits à
@@ -558,22 +558,21 @@ leur partie entière. Les valeurs quant à elles peuvent être de n'importe quel
 type. Un tableau peut être {\strong homogène} ou {\strong hétérogène}. Dans un
 tableau homogène, toutes les clés ont le même type, ainsi que toutes les
 valeurs. Dans un tableau hétérogène, les clés peuvent avoir des types distincts,
-tout comme les valeurs. Les clés peuvent être auto-incrémentées, en ajoutant 1
-à la dernière clé entière, à partir de 0. La longueur (ou la taille) d'un
-tableau est son nombre de paires. Un tableau n'a pas de longueur prédéfinie,
-mais sa longueur (stockée en interne par le moteur PHP) peut être connue grâce à
-la fonction PHP \code{count()}. Un tableau n'a également pas de profondeur
+tout comme les valeurs. Les clés peuvent être auto-incrémentées, en ajoutant 1 à
+la dernière clé entière, à partir de 0. La longueur (ou la taille) d'un tableau
+est son nombre de paires. Un tableau n'a pas de longueur prédéfinie, mais sa
+longueur (stockée en interne par le moteur PHP) peut être connue grâce à la
+fonction PHP \code{count()}. Un tableau n'a également pas de profondeur
 prédéfinie, \ie il peut contenir un nombre arbitraire de sous-tableaux.
 
 Dans Praspel, \code{array($D$, $L$)} dénote le domaine réaliste des tableaux
 dont les domaines et codomaines sont décrits par $D$ et dont la longueur
-appartient à la disjonction $L$ de domaines réalistes d'entiers naturels.
-$D$ est une liste séparée par une virgule, entre \code{[} et \code{]}, de
-{\strong descriptions} de paires de la forme \code{from $K$ to $V$}, où $K$ et
-$V$ sont des disjonctions de domaines réalistes, respectivement pour les clés et
-les valeurs. Quand le mot-clé \code{from} est manquant, nous introduisons le
-domaine réaliste représentant un entier auto-incrémenté démarrant de 0 avec un
-pas de 1.
+appartient à la disjonction $L$ de domaines réalistes d'entiers naturels.  $D$
+est une liste séparée par une virgule, entre \code{[} et \code{]}, de {\strong
+descriptions} de paires de la forme \code{from $K$ to $V$}, où $K$ et $V$ sont
+des disjonctions de domaines réalistes, respectivement pour les clés et les
+valeurs. Quand le mot-clé \code{from} est manquant, nous introduisons le domaine
+réaliste représentant un entier auto-incrémenté démarrant de 0 avec un pas de 1.
 
 \begin{example}[Tableaux homogènes et hétérogènes]
 

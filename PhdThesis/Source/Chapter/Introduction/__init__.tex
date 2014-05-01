@@ -12,11 +12,11 @@ réseau, le plus souvent Internet. Ce dernier nous permet d'accéder à des
 milliers de millions de sites Web. Plus de 85\% de ces sites Web sont développés
 en PHP. La majorité de ces programmes ont besoin d'être vérifiés et validés.
 
-Les travaux présentés dans ce mémoire portent sur la validation et la
-vérification de programmes PHP à travers un nouveau langage de spécification,
-accompagné de ses outils. Ces travaux s'articulent selon trois axes majeurs~:
-langage de spécification, génération automatique de données de test et
-génération automatique de tests unitaires. \\
+Les travaux présentés dans ce mémoire portent sur la validation de programmes
+PHP à travers un nouveau langage de spécification, accompagné de ses outils. Ces
+travaux s'articulent selon trois axes majeurs~: langage de spécification,
+génération automatique de données de test et génération automatique de tests
+unitaires. \\
 
 Informellement, nous pouvons voir un test comme étant composé de trois parties~:
 %
@@ -40,11 +40,11 @@ Dans le cas des tests {\strong automatisés}, l'exécution et le calcul du verdi
 sont faits par la machine. C'est le rôle qui incombe aux \inenglish{frameworks}
 «~xUnit~», comme JUnit~\acite{JUnit} pour Java, atoum~\acite{atoum} ou
 PHPUnit~\acite{PHPUnit} pour PHP, CUnit~\acite{CUnit} pour C etc. Le travail des
-ingénieurs de test peut se résumer à écrire une spécification informelle
-exécutable, puisqu'ils transforment le cahier des charges en tests afin de
-vérifier et valider le programme. Cela reste toutefois informel, et surtout, une
-tâche laborieuse. Pourquoi alors ne pas écrire une spécification formelle et la
-rendre exécutable~? C'est~à~dire utiliser un langage formel pour décrire le
+ingénieurs de test peut se résumer à écrire une spécification exécutable,
+puisqu'ils transforment le cahier des charges en tests afin de valider le
+programme. Cela reste toutefois informel, et surtout, une tâche laborieuse.
+Pourquoi alors ne pas écrire une spécification formelle et la rendre
+exécutable~? C'est~à~dire utiliser un langage formel pour décrire le
 fonctionnement du programme, puis dériver, à partir de cette spécification, des
 tests qui soient exécutables et qui vont vérifier ou valider plusieurs aspects
 de cette spécification.
@@ -282,9 +282,9 @@ peut exprimer plusieurs comportements et nous devons nous assurer que tous ces
 comportements sont testés. Nous avons alors défini plusieurs critères de
 couverture sur les contrats afin d'avoir des objectifs de test à atteindre. Par
 conséquent, nous avons développé des algorithmes générant autant de tests
-unitaires que nécessaire pour satisfaire certains critères et ainsi couvrir tous
-les comportements des contrats. Les données nécessaires pour exécuter ces tests
-seront générées automatiquement avec la contribution précédente.
+unitaires que nécessaire pour satisfaire certains critères. Les données
+nécessaires pour exécuter ces tests seront générées automatiquement avec la
+contribution précédente.
 
 \section{Plan du mémoire}
 
