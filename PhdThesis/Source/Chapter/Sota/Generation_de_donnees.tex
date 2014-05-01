@@ -109,14 +109,38 @@ ne supporte pas les structures récursives, les fonctions récursives et les
 pointeurs sur les fonctions. \\
 
 Nous pouvons citer CUTE~\acite{SenMA05}, Pex~\acite{TillmannH08},
-SAGE~\acite{GodefroidLM12} ou ARTOO~\acite{CiupaLOM08} qui sont aussi des
-travaux du même genre. Nous voyons qu'il existe plusieurs techniques avancées
-pour la génération de données de test à partir d'exécution symbolique.
-Toutefois, si nous repensons aux contrats et que nous prenons du recul, nous
-remarquons que l'exécution symbolique ne permet pas de vérifier qu'un programme
-fait bien ce que nous souhaitons. Les erreurs à l'exécution (comme des pointeurs
-nuls, des dépassements de tableaux, de tampons etc.) seront détectées, mais rien
-ne nous assure que le programme est correct par rapport à une spécification.
+SAGE~\acite{GodefroidLM12} ou ARTOO~\acite{CiupaLOM08} qui sont aussi des outils
+de \inenglish{concolic}. Nous voyons qu'il existe plusieurs techniques avancées
+pour la génération de données de test à partir d'exécution symbolique ou
+concrète. Toutefois, si nous repensons aux contrats et que nous prenons du
+recul, nous remarquons que l'exécution symbolique ou concrète ne permet pas de
+valider qu'un programme fait bien ce que nous souhaitons. Les erreurs à
+l'exécution (comme des pointeurs nuls, des dépassements de tableaux, de tampons
+etc.) seront détectées, mais rien ne nous assure que le programme est correct
+par rapport à une spécification. Nous pouvons citer toutefois le prototype
+{\scshape sante} qui fait à une approche intéressante entre le
+\inenglish{concolic} et les contrats.
+
+\paragraph{Sante} Les outils de \inenglish{concolic} sont efficaces pour valider
+des programmes mais passent difficilement à l'échelle sur des programmes de
+taille importante. Le prototype~\inenglish{Static ANalysis and
+TEsting}~\acite{ChebaroKGJ12} répond à ce constat en utilisant la technique du
+\inenglish{slicing}. L'idée est de supprimer du code inutile pour l'objectif de
+test fixé.
+
+Nous mentionnons ces travaux car ils font un usage intéressant des contrats.
+{\scshape sante} propose de combiner PathCrawler avec des extensions Frama-C
+pour détecter des erreurs à l'exécution. {\scshape sante} est une extension à
+PathCrawler et travaille donc sur des programmes écrits en C. Ces programmes
+sont annotés par des contrats écrits en ACSL. Le code de ces programmes a été
+\inenglish{sliced} pour le simplifier et ainsi faciliter le travail de
+PathCrawler. Avant de simplifier le code, les contrats ACSL sont compilés en
+code C (comme JML est compilé en Java avec JMLUnit), et le programme est
+instrumenté pour les exécuter. Ainsi, PathCrawler prendra en considération les
+contrats ACSL lors de la génération de tests. Toutefois, {\scshape sante} ne
+supporte qu'un petit sous-ensemble du langage ACSL~: les assertions prévenant
+les divisions par zéro, les dépassements de tableaux et des débordements
+arithmétiques.
 
 \subsection{Données générées}
 
