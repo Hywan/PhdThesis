@@ -675,7 +675,7 @@ avons la première contrainte $\mcard(X) = \mcard(Y)$. Nous traitons uniquement
 la variable $X$ et nous n'avons rien à faire. La seconde contrainte est
 $\hat{H}(\{\code{0}\}) \subseteq \{\code{'b'}, \code{'c'}\}$. Nous vérifions
 $\code{0} \in \code{natural(0, 1)}$, $\code{'b'} \in \code{string('a', 'e', 1)}$
-et $\code{'c'} \in \code{string('a', 'e', 1)}$. Tout est consistant. Nous
+et $\code{'c'} \in$ \code{string('a', 'e', 1)}. Tout est consistant. Nous
 devrions ajouter la paire $(Y, X)$ mais elle est déjà présente dans la variable
 $\avar{queue}$.
 
@@ -699,10 +699,10 @@ variable $X$ avec la contrainte $\mcard(X) = S$. Nous n'avons rien à faire à
 part ajouter la paire $(Y, X)$.
 
 \item L'avant-dernière paire est $(S, X)$. Nous travaillons sur la variable $S$
-avec la contrainte $\mcard(X) = S$. Nous révisons $S \in [\code{0..5}] \union
-\{\code{10}\}$ pour enlever la valeur $0$ et $10$. Sa disjonction est constituée
-de deux domaines réalistes. Le premier est un intervalle d'entiers (domaine
-réaliste \code{Boundinteger}) implémentant entre autre les interfaces
+avec la con\-train\-te $\mcard(X) = S$. Nous révisons $S \in [\code{0..5}]
+\union \{\code{10}\}$ pour enlever la valeur $0$ et $10$. Sa disjonction est
+constituée de deux domaines réalistes. Le premier est un intervalle d'entiers
+(domaine réaliste \code{Boundinteger}) implémentant entre autre les interfaces
 \code{Interval} et \code{Nonconvex}. Nous appelons la méthode \code{discredit}
 pour supprimer $0$ de l'intervalle. Le second domaine réaliste est une constante
 représentant l'entier $10$, nous le supprimons simplement de la disjonction.
