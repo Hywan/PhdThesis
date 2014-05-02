@@ -2,15 +2,15 @@ digraph {
     graph [rankdir=TB];
     node [style="state", label=" ", width=1.3];
 
-    in        -> variable  [label=" ", texlbl="$\tau = 1$"                                    ];
-    variable  -> sample    [label=" ", texlbl="\underline{$V \neq \emptyset$}, $v = \mpop(V)$"];
-    variable  -> out       [label=" ", texlbl="\underline{$V = \emptyset$}"                   ];
-    sample    -> predicate [label=" ", texlbl="\underline{$\tau \leq \tau_{\mmax}$}"          ];
-    sample    -> error     [label=" ", texlbl="\underline{$\tau > \tau_{\mmax}$}"             ];
-    predicate -> sample    [label=" ", texlbl="\underline{invalide}, $\tau = \tau + 1$"       ];
-    predicate -> pred      [label=" ", texlbl="\underline{valide}"                            ];
-    pred      -> sample    [label=" ", texlbl="\underline{invalide}"                          ];
-    pred      -> variable  [label=" ", texlbl="\underline{valide}, $\tau = 1$"                ];
+    in        -> variable  [label=" ", texlbl="$\tau = 1$"                                      ];
+    variable  -> sample    [label=" ", texlbl="\;\underline{$V \neq \emptyset$}, $v = \mpop(V)$"];
+    variable  -> out       [label=" ", texlbl="\underline{$V = \emptyset$}"                     ];
+    sample    -> predicate [label=" ", texlbl="\;\;\underline{$\tau \leq \tau_{\mmax}$}"        ];
+    sample    -> error     [label=" ", texlbl="\;\;\underline{$\tau > \tau_{\mmax}$}"           ];
+    predicate -> sample    [label=" ", texlbl="\underline{invalide}, $\tau = \tau + 1$"         ];
+    predicate -> pred      [label=" ", texlbl="\underline{valide}"                              ];
+    pred      -> sample    [label=" ", texlbl="\underline{invalide}"                            ];
+    pred      -> variable  [label=" ", texlbl="\underline{valide}, $\tau = 1$"                  ];
 
     in        [style=invis                          ];
     variable  [texlbl="\code{pick}"                 ];
