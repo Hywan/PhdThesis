@@ -1,0 +1,94 @@
+\newgeometry{top=0cm, right=0cm, bottom=0cm, left=0cm}
+
+\parindent0pt
+\null
+\vfill
+
+{
+\large
+
+\begin{tikzpicture}[overlay,
+                    align=center,
+                    every node/.style={inner sep=0, outer sep=0}]
+
+\node [anchor=north west, minimum width=\paperwidth]
+      at (0, \paperheight)
+      {\includegraphics[width=\textwidth]{\sourcedirectory/Page/SPIMHeader.pdf}};
+
+\node [anchor=north west]
+      at (1.5cm, .65\paperheight)
+      {N\textsuperscript{{\scshape o}} \begin{tabular}{|c|c|c|}X & X & X \\ \hline\end{tabular}};
+
+\matrix[anchor=north,
+        matrix of nodes,
+        nodes={text width=15cm}]
+       at (.5\paperwidth, .63\paperheight)
+       {
+       THÈSE présentée par \\[.5em]
+       {\huge Ivan {\scshape Enderlin}} \\[1.5em]
+%
+       pour obtenir le \\[.5em]
+       {\Large Grade de Docteur de} \\[.5em]
+       {\Large l'Université de France-Comté} \\[2em]
+%
+       {\huge \adforn{26}\quad\adforn{11}\quad\adforn{54}} \\[2em]
+       {\Huge \inenglish{The Art of Contract-based Testing}} \\
+       {\Huge \inenglish{in PHP with Praspel}} \\[1.5em]
+       {\huge Génération automatique de tests unitaires avec Praspel, un langage de
+       spécification pour PHP} \\[2em]
+%
+       Spécialité~: {\strong Informatique} \\[.5em]
+       Laboratoires DISC et INRIA \\
+%
+       };
+
+\matrix[anchor=south,
+        matrix of nodes,
+        row sep=.3em,
+        column sep=1em,
+        text depth=.25ex,
+        nodes={anchor=base west}]
+       at (.5\paperwidth, 1cm)
+       {
+%       Soutenue publiquement le 1 juillet 2014 devant le Jury composé de~: \\
+%
+       Foo {\scshape Bar} &
+       Rapporteur &
+       … \\
+%
+       Baz {\scshape Qux} &
+       Rapporteur &
+       … \\
+%
+       Fabrice {\scshape Bouquet} &
+       Directeur de thèse &
+       Professeur à l'Université de Franche-Comté \\
+%
+       Frédéric {\scshape Dadeau} &
+       Co-directeur &
+       Maître de conférences à l'Université de Franche-Comté \\
+%
+       Alain {\scshape Giorgetti} &
+       Co-directeur &
+       Maître de conférences à l'Université de Franche-Comté \\
+%
+       Arnaud {\scshape Gotlieb} &
+       Examinateur &
+       Professeur à l'INRIA \\
+%
+       Michel {\scshape Rueher} &
+       Examinateur &
+       Professeur à l'Université de Nice Sophia Antipolis \\
+%
+       Lydie {\scshape du Bousquet} &
+       Examinateur &
+       Professeur à l'Université Joseph Fourier \\
+       };
+
+\end{tikzpicture}
+
+}
+
+\pagebreak
+
+\restoregeometry
