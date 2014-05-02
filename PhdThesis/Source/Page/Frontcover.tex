@@ -17,7 +17,8 @@
 
 \node [anchor=north west]
       at (1.5cm, .65\paperheight)
-      {N\textsuperscript{{\scshape o}} \begin{tabular}{|c|c|c|}X & X & X \\ \hline\end{tabular}};
+      {N\textsuperscript{{\scshape o}}
+       \begin{tabular}{|c|c|c|}X & X & X \\ \hline\end{tabular}};
 
 \matrix[anchor=north,
         matrix of nodes,
@@ -31,18 +32,22 @@
        {\Large Grade de Docteur de} \\[.5em]
        {\Large l'Université de France-Comté} \\[2em]
 %
-       {\huge \adforn{26}\quad\adforn{11}\quad\adforn{54}} \\[2em]
+       {\color{sbase02}
+        \huge \adforn{26}\quad\adforn{11}\quad\adforn{54}
+        \color{foreground}
+       } \\[2em]
        {\Huge \inenglish{The Art of Contract-based Testing}} \\
        {\Huge \inenglish{in PHP with Praspel}} \\[1.5em]
-       {\huge Génération automatique de tests unitaires avec Praspel, un langage de
-       spécification pour PHP} \\[2em]
+       {\huge Génération automatique de tests unitaires avec Praspel, un langage
+        de spécification pour PHP} \\[2em]
 %
        Spécialité~: {\strong Informatique} \\[.5em]
        Laboratoires DISC et INRIA \\
 %
        };
 
-\matrix[anchor=south,
+\matrix (jury)
+        [anchor=south,
         matrix of nodes,
         row sep=.3em,
         column sep=1em,
@@ -50,8 +55,6 @@
         nodes={anchor=base west}]
        at (.5\paperwidth, 1cm)
        {
-%       Soutenue publiquement le 1 juillet 2014 devant le Jury composé de~: \\
-%
        Foo {\scshape Bar} &
        Rapporteur &
        … \\
@@ -84,6 +87,9 @@
        Examinateur &
        Professeur à l'Université Joseph Fourier \\
        };
+
+\node [above=1.5em of jury]
+      {Soutenue publiquement le 1 juillet 2014 devant le Jury composé de~:};
 
 \end{tikzpicture}
 
