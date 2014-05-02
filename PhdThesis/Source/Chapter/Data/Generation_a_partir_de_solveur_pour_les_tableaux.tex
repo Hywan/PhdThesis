@@ -294,6 +294,7 @@ que $D$ est une liste de $p$ constructions \code{from $F_i$ to $T_i$} avec $1
 \leq i \leq p$, et $L$ est une disjonction de domaines réalistes $L_1, \dots,
 L_m$ héritant du domaine réaliste \code{Integer} dont les valeurs sont
 supérieures ou égales à zéro.
+\footnote{TODO}
 
 Dans l'exemple~\ref{example:data:array_proprietes}, $p = 1$, $m = 2$, $L_1 =
 [\code{0..5}]$ et $L_2 = \{\code{10}\}$. Dans la description du tableau, aucun
@@ -311,8 +312,9 @@ Les variables du CSP sont~:
 %
 \begin{enumerate}
 
-\item la taille du tableau, notée $S$, qui est un entier positif ou nul, et qui
-est définie par les domaines réalistes $L_1, \dots, L_m$~;
+\item les domaines réalistes $L_1, \dots, L_m$~;
+
+\item la taille du tableau, notée $S$, qui est un entier positif ou nul~;
 
 \item les ensembles $X$ et $Y$ qui sont respectivement le domaine du tableau
 (l'ensemble des clés) et le co-domaine (l'ensemble des valeurs)~;
@@ -329,7 +331,7 @@ le tableau.
 
 Le solveur doit trouver le contenu de $X$ et les valeurs de la fonction $H$. Les
 autres variables sont seulement introduites pour simplifier l'expression des
-contraintes.
+contraintes.\footnote{Et $L_1$ et $S$~?}
 
 La contrainte $H(x) = y$, avec $x \in X$, traduit que la paire $(x, y)$ est dans
 le tableau. Nous étendons $H$ aux parties de $X$ par la fonction $\hat{H}$
@@ -402,10 +404,10 @@ X$ et $\hat{H}(\{\code{0}\}) \subseteq \{\code{'b'}, \code{'c'}\}$.
 
 \subsubsection{Contraintes sur les clés et les valeurs}
 
-La propriété \code{a[$K$]: \_} est traduite en contrainte $K \subseteq X$ et
-\code{a[$K$]!: \_} en contrainte $K \intersection X = \emptyset$. La propriété
-\code{a[\_]: $V$} est traduite en contrainte $V \subseteq Y$ et sa négation
-\code{a[\_]!: $V$} en contrainte $V \intersection Y = \emptyset$.
+La propriété \code{a[$K$]: \_} est traduite en contrainte $K \subseteq X$ et la
+propriété \code{a[$K$]!: \_} est traduite en $K \intersection X = \emptyset$. La
+propriété \code{a[\_]: $V$} est traduite en contrainte $V \subseteq Y$ et la
+propriété \code{a[\_]!: $V$} en contrainte $V \intersection Y = \emptyset$.
 
 \subsection{Solveur de contraintes}
 \label{subsection:data:solver}
@@ -549,8 +551,8 @@ dans le domaine $D(Y)$ seront supprimées, et inversement. Alors nous obtenons
 $D(X) = \{4, 5, 6\}$, $D(Y) = \{4, 5, 6\}$ et $D(Z)$ est inchangé. Ensuite, nous
 vérifions la contrainte $Y = Z$. Nous obtenons $D(Y) = \{5, 6\}$, $D(Z) = \{5,
 6\}$ et $D(X)$ est inchangé. Mais nous avons un problème~: la contrainte $X = Y$
-n'est plus consistante. Nous savons alors qu'il faut re-vérifier la contrainte
-$X = Y$ pour obtenir $D(X) = \{5, 6\}$, mais une machine ne le saurait pas
+n'est plus satisfaite. Nous savons alors qu'il faut re-vérifier la contrainte $X
+= Y$ pour obtenir $D(X) = \{5, 6\}$, mais une machine ne le saurait pas
 nécessairement.
 
 Maintenant, voyons comment opère l'algorithme AC3. Nous avons les mêmes
