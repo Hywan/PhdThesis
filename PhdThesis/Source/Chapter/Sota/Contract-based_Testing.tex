@@ -3,10 +3,10 @@
 
 Les contrats sont utilisés pour {\strong filtrer} les données manipulées par un
 programme ou pour vérifier que le programme ne produira pas d'erreur. Cependant,
-l'un des intérêts et usages principaux des contrats est pour le {\strong test}.
-Le {\strong test à partir de contrats} (\inenglish{Contract-based Testing},
-abrégé CbT) a été introduit pour exploiter les langages de contrat afin de
-tester des programmes~\acite{Aichernig03}~:
+l'un des intérêts et usages principaux des contrats est pour le test. Le
+{\strong test à partir de contrats} (\inenglish{Contract-based Testing}, abrégé
+CbT) a été introduit pour exploiter les langages de contrat afin de tester des
+programmes~\acite{Aichernig03}~:
 %
 \begin{itemize}
 
@@ -18,10 +18,6 @@ le verdict du test à l'exécution.
 
 \end{itemize}
 %
-Rappelons qu'un test est composé d'un SUT, de données de test et d'un oracle. En
-général, le contrat annote le programme, donc nous connaissons le SUT. Les deux
-dernières parties nous sont données en exploitant le contrat.
-
 À partir d'une spécification formelle, sous la forme d'un contrat, il est
 possible de générer des suites de test automatiquement. Comme nous sommes au
 niveau du code source du programme, et plus précisément, sur les méthodes des
@@ -33,7 +29,7 @@ présentés ci-dessous.
 \paragraph{JMLUnit} L'outil JMLUnit~\acite{CheonL02, ZimmermanN10} permet de
 transformer un contrat JML en une suite de test exécutable avec JUnit. L'outil
 assure un moyen simple et efficace d'automatiser la génération d'oracles de
-tests L'objectif est de décharger l'utilisateur du calcul du verdict de test, à
+test. L'objectif est de décharger l'utilisateur du calcul du verdict de test, à
 savoir si le test unitaire est un succès ou un échec. L'outil génère
 automatiquement deux classes pour chaque interface ou classe Java annotée en
 JML~: un squelette où déclarer les données de test, et les oracles, permettant
@@ -97,7 +93,7 @@ pour obtenir l'ensemble de tous les états concrets est possible. L'outil est
 également capable de vérifier les propriétés JML à la volée et d'afficher un
 contre-exemple si l'une d'entre elles est violée.
 
-Le générateur de tests mélange les spécifications JML et le modèle. L'outil va
+Le générateur de test mélange les spécifications JML et le modèle. L'outil va
 tout d'abord extraire un ensemble de comportements (normaux et exceptionnels) à
 partir de la spécification JML. Un comportement est représenté par un prédicat
 en forme disjonctive. Cet ensemble de comportements va être réduit en fonction
@@ -127,20 +123,20 @@ post-état, qui sont abstraits pour se ramener au formalisme d'Alloy afin d'y
 vérification échoue, un contre-exemple est produit. Sinon, le processus itère à
 l'instance suivante.
 
-\paragraph{Korat} L'outil Korat~\acite{BoyapatiKM02} est la suite de TestEra.
-L'objectif de Korat est de couvrir des structures de données
-complexes non-isomorphiques de taille finie. Pour cela, il demande à
-l'utilisateur d'écrire un prédicat en Java (appelé \code{repOK}), qui va valider
-ou invalider les structures générées automatiquement. Il y a plusieurs avantages
-à cette démarche~: l'utilisateur est familier avec le langage puisqu'il
-l'utilise pour développer, il y a plusieurs outils et environnements de
-développement qui peuvent aider à la rédaction ou l'analyse de ce prédicat, et
-enfin, le prédicat peut potentiellement déjà exister dans le programme. Korat va
-ensuite générer des structures à partir des entrées de ce prédicat. Pour cela,
-Korat va analyser le prédicat et indexer quels sont les accès aux méthodes et
-attributs sur la structure qui influencent la décision du prédicat. Korat va
-ensuite jouer sur ces méthodes et attributs afin de générer plusieurs structures
-candidates. Korat demande également à l'utilisateur d'écrire une méthode de
+\paragraph{Korat} L'outil Korat~\acite{BoyapatiKM02} est la suite de Test\-Era.
+L'objectif de Korat est de couvrir des structures de données complexes
+non-isomorphiques de taille finie. Pour cela, il demande à l'utilisateur
+d'écrire un prédicat en Java (appelé \code{repOK}), qui va valider ou invalider
+les structures générées automatiquement. Il y a plusieurs avantages à cette
+démarche~: l'utilisateur est familier avec le langage puisqu'il l'utilise pour
+développer, il y a plusieurs outils et environnements de développement qui
+peuvent aider à la rédaction ou l'analyse de ce prédicat, et enfin, le prédicat
+peut potentiellement déjà exister dans le programme. Korat va ensuite générer
+des structures à partir des entrées de ce prédicat. Pour cela, Korat va analyser
+le prédicat et indexer quels sont les accès aux méthodes et attributs sur la
+structure qui influencent la décision du prédicat. Korat va ensuite jouer sur
+ces méthodes et attributs afin de générer plusieurs structures candidates. Korat
+demande également à l'utilisateur d'écrire une méthode de
 \inenglish{finitization} qui précise la taille et la nature des données portées
 par la structure. L'idée est de préciser à Korat dans quelle mesure il peut
 modifier la structure pour générer de nouvelles structures candidates. Cette
@@ -196,15 +192,15 @@ sur les choix retardés~\acite{NollS07}, c'est~à~dire sur des évaluations
 non-déterministes tardives~\acite{FischerKS09}.
 
 \paragraph{JSConTest} Le langage JSConTest~\acite{HeideggerT12} est un langage
-de contrat annotant des programmes Javascript. Ce dernier est un langage à typage
-non déclaré. C'est pourquoi JSConTest propose que le contrat ne contienne que
-la signature de la fonction annotée, soit ses entrées et sa sortie,
+de contrat annotant des programmes Javascript. Ce dernier est un langage à
+typage non déclaré. C'est pourquoi JSConTest propose que le contrat ne contienne
+que la signature de la fonction annotée, soient ses entrées et sa sortie,
 respectivement une précondition et une postcondition. JSConTest ne permet pas
 d'exprimer d'invariants ni de comportements. Le fait de préciser les types
 permet à JSConTest de réduire l'effort d'inférence en se limitant à un minimum
 de fonctions à analyser. Les résultats de l'inférence servent à guider la
 génération aléatoire de données de test. Le langage permettant d'exprimer la
-signature est enrichi de quelques constructions également pour guider la
+signature est enrichi de quelques constructions, toujours pour guider la
 génération aléatoire. Un outil permet d'exécuter les tests et d'en calculer le
 verdict grâce à un RAC.
 
@@ -218,7 +214,25 @@ faible comme Javascript ou PHP, même un contrat très simple qui spécifie le
 typage des données peut être très utile et offrir de bons résultats, notamment
 dans la détection de régressions. \\
 
-La manière dont Praspel spécifie les données se situe entre JSConTest et JML.
+Tous les outils de \inenglish{Contract-based Testing} ne génèrent pas de données
+automatiquement. Quand ils génèrent des données, ce sont souvent une petite
+catégorie de données, comme les entiers, les réels et parfois les objets. La
+génération des données se fait à partir d'un solveur ou aléatoirement. La
+capacité des outils à générer des données automatiquement est liée à la façon
+dont les assertions sont exprimées. En JML, il est nécessaire d'utiliser un
+solveur, alors que JSConTest utilise de l'aléatoire mais sur tous les types
+natifs du langage. Des outils comme Korat ou UDITA permettent de générer des
+données plus finement mais demandent un effort plus important à l'utilisateur.
+
+Praspel a son propre langage pour définir les assertions car nous voulons que
+chaque construction du langage puisse être utilisée pour de la validation
+{\strong et} de la génération~: tout ce que l'utilisateur peut écrire doit
+fonctionner dans ces deux contextes. JSConTest montre que l'utilisation de
+contrats simples spécifiant le typage des données offrent déjà de bons
+résultats, mais l'expressivité qu'il offre est très faible comparé à JML.
+Ainsi, Praspel doit spécifier plus que du typage simple et doit être capable de
+valider et générer des données de tout type, ou en tout cas, des types les plus
+manipulés par les développeurs au quotidien.
 
 %Le test à partir de contrat répond au constat suivant. La validation
 %dynamique souffre d'une limitation majeure~: elle fournit des résultats limités.

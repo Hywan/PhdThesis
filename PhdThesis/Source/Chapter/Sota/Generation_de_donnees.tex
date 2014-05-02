@@ -68,11 +68,11 @@ toujours STP comme solveur de contraintes.
 
 \paragraph{DART} \inenglish{Directed Automated Random Testing}, abrégé
 DART~\acite{GodefroidKS05}, est également un outil de génération de données de
-test à partir de l'analyse du programme. DART opère en trois étapes. Il commence
-par extraire les interfaces du programme pour connaître ses entrées. Ensuite il
-génère aléatoirement des données pour ses entrées, et exécute le programme.
-Enfin, il analyse le comportement du programme pendant son exécution pour
-détecter quels sont les chemins ou zones qui n'ont pas été atteints. Cette
+test à partir de l'analyse du programme C. DART opère en trois étapes. Il
+commence par extraire les interfaces du programme pour connaître ses entrées.
+Ensuite il génère aléatoirement des données pour ses entrées, et exécute le
+programme.  Enfin, il analyse le comportement du programme pendant son exécution
+pour détecter quels sont les chemins ou zones qui n'ont pas été atteints. Cette
 analyse va permettre de guider la génération des nouvelles entrées pour la
 prochaine exécution.
 
@@ -87,13 +87,13 @@ le transtypage, les opérations arithmétiques etc.
 \paragraph{PathCrawler} L'outil PathCrawler~\acite{WilliamsMMR05,
 BotellaDHKMRW09} est un générateur de tests structurels pour des programmes
 écrits en C, combinant, lui aussi, des exécutions symboliques et concrètes. Le
-test structurel vise à satisfaire certains critères de couverture de code.
-PathCrawler utilise son propre solveur de contraintes, appelé Colibri. Ce
-dernier est utilisé par d'autres outils de test et implémente des
-fonctionnalités avancées comme le support des réels ou de l'arithmétiques
-modulaire sur les entiers. PathCrawler propose plusieurs stratégies de
-couverture de code, comme \inenglish{all-$k$-paths} (tous les chemins
-atteignables avec au plus $k$ itérations dans les boucles) et
+test structurel vise à satisfaire certains critères de couverture de
+code~\acite{MillerM63, Myers04, GargantiniGM12}.  PathCrawler utilise son propre
+solveur de contraintes, appelé Colibri. Ce dernier est utilisé par d'autres
+outils de test et implémente des fonctionnalités avancées comme le support des
+réels ou de l'arithmétiques modulaire sur les entiers. PathCrawler propose
+plusieurs stratégies de couverture de code, comme \inenglish{all-$k$-paths}
+(tous les chemins atteignables avec au plus $k$ itérations dans les boucles) et
 \inenglish{all-paths} (tous les chemins atteignables sans limitation
 d'itérations dans les boucles). PathCrawler est sûre, c'est~à~dire que chaque
 cas de test active un objectif de test (un chemin, une branche, une instruction
@@ -164,13 +164,14 @@ découpée en fonction de ces deux types de données.
 
 \paragraph{Génération de chaînes de caractères} Les chaînes de caractères sont
 intensivement utilisées dans les programmes Web. Leurs formes sont très
-différentes, allant d'une adresse email à des langages comme XML ou JSON, en
-passant par des requêtes SQL etc. La façon la plus répandue dans l'industrie
-pour représenter une donnée textuelle est d'utiliser une expression régulière ou
-une grammaire algébrique~\acite{Chomsky56}. Une grammaire est exprimée à partir
-d'un langage de description qui déclare des lexèmes, unités lexicales atomiques
-d'un langage, et des entités syntaxiques (aussi appelées règles) exprimant
-l'enchaînement possible des lexèmes les uns par rapport aux autres.
+différentes, allant d'une adresse email à des langages comme XML~\acite{xml} ou
+JSON~\acite{JSON}, en passant par des requêtes SQL etc. La façon la plus
+répandue dans l'industrie pour représenter une donnée textuelle est d'utiliser
+une expression régulière ou une grammaire algébrique~\acite{Chomsky56}. Une
+grammaire est exprimée à partir d'un langage de description qui déclare des
+lexèmes, unités lexicales atomiques d'un langage, et des entités syntaxiques
+(aussi appelées règles) exprimant l'enchaînement possible des lexèmes les uns
+par rapport aux autres.
 
 L'idée commune que nous retrouvons dans la majorité des travaux est d'explorer
 ces règles afin de générer une séquence de lexèmes qui représente une donnée
@@ -219,8 +220,9 @@ du développeur mais ces interventions tendent à devenir de plus en plus simple
 Web pour représenter toutes sortes de collections ou organiser de manière
 structurelles des informations. Plusieurs solveurs supportent les tableaux en
 plus d'autres données, comme c'est le cas de STP (pour EXE et KLEE), Colibri
-(pour PathCrawler), le solveur de l'outil Euclide etc. Toutefois, nous pouvons
-citer {\scshape fdcc} qui est un solveur dédié au tableau uniquement.
+(pour PathCrawler), Alcoa (pour Alloy), le solveur de l'outil Euclide etc.
+Toutefois, nous pouvons citer {\scshape fdcc} qui est un solveur dédié au
+tableau uniquement.
 
 {\scshape fdcc}~\acite{BardinG12} est un solveur pour les tableaux avec
 contraintes sur des domaines finis. Les auteurs font le constat que les tableaux
@@ -243,8 +245,8 @@ effet, chaque solveur a son propre formalisme et son propre langage de
 description de contrainte. Ainsi, le travail de l'outil Minion consiste à
 proposer un langage commun entre tous ces solveurs, et de faire des traducteurs
 pour chacun d'eux. Cette phase de transformation fait intervenir des filtres, et
-donc, potentiellement, des pertes d'informations. Par conséquent, même si les
-solveurs sont capables de trouver des solutions à nos problèmes, ces solutions
-sont difficilement compréhensibles par le programme d'origine car beaucoup
-d'informations ont été transformées ou perdues (car non nécessaires aux solveurs
-mais nécessaires pour la tracabilité des données).
+donc engendre, potentiellement, des pertes d'informations. Par conséquent, même
+si les solveurs sont capables de trouver des solutions à nos problèmes, ces
+solutions sont difficilement compréhensibles par le programme d'origine car
+beaucoup d'informations ont été transformées ou perdues (car non nécessaires aux
+solveurs mais nécessaires pour la tracabilité des données).

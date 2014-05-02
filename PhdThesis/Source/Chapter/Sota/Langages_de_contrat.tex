@@ -98,18 +98,18 @@ premier, le \inenglish{Runtime Assertion Checker} (abrégé RAC), sert de
 \inenglish{monitoring} au programme Java, et le second, JMLUnit, permet de
 transformer un contrat en test (nous le détaillons dans la
 partie~\ref{section:sota:cbt}). Le RAC de JML~\acite{Cheon02} est un outil
-permettant de vérifier les contrats JML lors de l'exécution du programme. Les
+permettant de valider les contrats JML lors de l'exécution du programme. Les
 contrats JML sont traduits en Java~\acite{Raghavan2005}. La proximité entre ces
 deux langages est la clé de la démarche. En effet, la syntaxe des contrats JML
 est similaire à celle de Java, et les mots-clés JML spécifiques (par exemple
 pour les clauses, les quantificateurs etc.) sont traduits par des structures
 Java adéquates.  Néanmoins, cette similitude a des limites~: certaines
 constructions du langage, comme les quantifications sur les objets, ne sont pas
-traduisibles et donc ne peuvent pas être vérifiées.
+traduisibles et donc ne peuvent pas être validées.
 
-Le programme Java d'origine est ainsi enrichi par la vérification des contrats
+Le programme Java d'origine est ainsi enrichi par la validation des contrats
 JML. Un inconvénient est que le binaire résultant est plus important, ce qui
-engendre des ralentissements à l'exécution. En revanche, si une contrainte n'est
+engendre des ralentissements à l'exécution. En revanche, si une assertion n'est
 pas validée, une exception spécifique est déclenchée signalant le type de clause
 qui n'a pas été validée (invariant, précondition etc.) ainsi que l'état visible
 du système au moment de l'exécution. L'utilisation du RAC confère un moyen
@@ -127,7 +127,7 @@ postcondition. Les invariants de boucle sont introduits avec le mot-clé
 méthode, avec le mot-clé \code{behavior}. ACSL propose d'autres clauses pour
 exprimer des lemmes, des axiomes ou des fonctions logiques.
 
-Contrairement à JML qui utilise Java pour exprimer ces contraintes, ACSL
+Contrairement à JML qui utilise Java pour exprimer ces assertions, ACSL
 n'utilise pas C mais un langage plus simple, qui s'inspire toutefois de C (pour
 les opérateurs arithmétiques, logiques, les tableaux etc.) afin de ne pas
 perturber l'utilisateur. D'autres contraintes sont présentes car intrinsèques au
@@ -150,7 +150,7 @@ programmation par contrat pour C\#~\acite{CSharp}. Ce langage est très similair
 le mot-clé \code{requires}, les postconditions avec le mot-clé \code{ensures}.
 De même, les invariants sont introduits avec le mot-clé \code{invariant}. En
 plus des quantificateurs \code{forall}, \code{exists} et \code{exists unique},
-Spec\# propose \code{sum}, \code{product}, \code{min} etc. Les contraintes sont
+Spec\# propose \code{sum}, \code{product}, \code{min} etc. Les assertions sont
 exprimées avec un langage proche de C\#, toujours pour ne pas perturber
 l'utilisateur, mais toutes les constructions de C\# ne sont pas présentes,
 seulement un sous-ensemble.  Par ailleurs, Spec\# enrichit le langage C\# en lui
@@ -164,15 +164,23 @@ intermédiaire pour encoder des conditions de vérification pour les langages
 impératifs et orientés objets. Boogie s'appuye sur des solveurs externes,
 notamment Z3~\acite{DeMoura2008}, pour vérifier les contrats. \\
 
-Dans cette édude des langages de contrat, deux grandes familles de vérification
-de contrats se distinguent~: statique, à l'aide de prouveurs maisons et
-externes, ou dynamique, à l'aide d'un RAC. Notre contribution, Praspel,
-appartient à la seconde famille. Plusieurs langages de programmation répandus
-ont leur propre langage de contrat, mais pas PHP, d'où l'importance de Praspel.
-\\
-
-L'approche par les contrats est en général bien acceptée par les développeurs
-car elle est proche du code source du programme. Toutefois, selon la complexité
-du langage de spécification, elle sera plus ou moins utilisée. Cette complexité
-ressentie peut être compensée par d'autres services que peuvent offrir les
-contrats, comme le \inenglish{Contract-based Testing}.
+Dans cette étude des langages de contrat, deux grandes familles de vérification
+de contrats se distinguent~: statique, à l'aide de prouveurs dédiés et externes,
+ou dynamique, à l'aide d'un RAC. Notre contribution, Praspel, appartient à cette
+seconde famille et utilise un RAC. Le vocabulaire pour introduire les
+préconditions et postconditions est souvent identique d'un langage de contrat à
+un autre, à savoir \code{requires} et \code{ensures}. PHP supporte les
+exceptions, donc il est important de faire la distinction entre les
+postconditions normales et exceptionnelles. ACSL introduit le mot-clé
+\code{behavior} pour clairement spécifier les comportements du SUT, Praspel s'en
+est inspiré. Les constructions \aresult et \aold{\empty} sont également
+répandues, Praspel ne change pas de vocabulaire. En revanche, la façon
+d'exprimer les assertions change beaucoup d'un langage à l'autre~: soit avec un
+sous-ensemble des constructions du langage cible (comme c'est le cas pour JML),
+ou avec un langage différent (comme c'est le cas pour ACSL ou Spec\#).  Utiliser
+un sous-ensemble du langage cible a pour avantage principal de ne pas demander
+un effort trop important à l'utilisateur. Toutefois, l'utilisateur peut écrire
+des assertions qui seront difficiles à analyser pour la génération automatique
+de données (par exemple avec l'utilisation de quantificateurs). En effet, nous
+utilisons Praspel pour faire du \inenglish{Contract-based Testing}, présenté
+dans la partie suivante.
