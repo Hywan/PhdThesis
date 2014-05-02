@@ -662,9 +662,9 @@ initialisée à $\{(S, X), (S, S), (X, Y), (X, X)\}$.
 travaillons sur la variable $S$ et nous avons la contrainte $\mcard(X) = S$. La
 cardinalité de $X$ est égale à la cardinalité de $X_1$, qui est égale à la
 cardinalité de $F_1$ au maximum. La cardinalité de $F_1 = \code{natural(0, 1)}$
-vaut $[0; +\infty[$.  Nous n'avons rien à réviser, $S$ reste alors inchangée.
-$X$ a un arc vers $Y$, donc nous devrions ajouter la paire $(Y, X)$, mais elle
-est déjà présente dans la variable $\avar{queue}$.
+vaut $\infty$. Nous n'avons rien à réviser, $S$ reste alors inchangée. $X$ a un
+arc vers $Y$, donc nous devrions ajouter la paire $(Y, X)$, mais elle est déjà
+présente dans la variable $\avar{queue}$.
 
 \item Nous sélectionnons et retirons la deuxième paire $(S, S)$. Nous avons la
 con\-train\-te $S \geq 0$. Nous n'avons rien à réviser. $S$ a un arc vers $X$,
@@ -681,16 +681,18 @@ $\avar{queue}$.
 
 \item La quatrième paire est $(X, X)$. Nous avons la contrainte $\{\code{0}\}
 \subset X$. Nous vérifions $\code{0} \in \code{natural(0, 1)}$. Tout est
-consistent. Nous ajoutons la paire $(S, X)$ (la paire $(Y, X)$ étant déjà
-présente).
+consistent. Le tableau ne peut pas être vide car il contiendra au moins une
+paire. Dans la variable $\avar{queue}$, nous ajoutons uniquement la paire $(S,
+X)$, la paire $(Y, X)$ étant déjà présente.
 
 \item Nous sélectionnons et retirons la paire $(Y, X)$. Nous avons toujours la
 contrainte $\mcard(X) = \mcard(Y)$ mais nous traitons maintenant la variable
 $Y$. La cardinalité de $Y$ est égale à la cardinalité de $Y_1$, qui est égale à
 la cardinalité de $T_1$ au maximum. La cardinalité de $T_1 = \code{string('a',
-'e', 1)}$ vaut $[1; 5]$ car ce domaine réaliste peut produire les données
-\code{a} jusqu'à \code{e}. Ainsi, $\mcard(X) = [1; 5]$. Nous devrions ajouter la
-paire $(X, S)$, mais elle est déjà présente.
+'e', 1)}$ vaut $5$ car ce domaine réaliste peut produire les données \code{a}
+jusqu'à \code{e}. Nous savons aussi que le tableau contiendra au moins une
+paire. Ainsi, $\mcard(X) = [1; 5]$. Dans la variable $\avar{queue}$, nous
+devrions ajouter la paire $(X, S)$, mais elle est déjà présente.
 
 \item Nous sélectionnons et retirons la paire $(X, S)$. Nous travaillons sur la
 variable $X$ avec la contrainte $\mcard(X) = S$. Nous n'avons rien à faire à
