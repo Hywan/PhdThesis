@@ -171,22 +171,21 @@ les plus fréquentes sur les tableaux.
 \subsection{Syntaxe des propriétés}
 \label{subsection:data:array_properties}
 
-Nous étendons la syntaxe d'une déclaration de tableau~:
+Dans Praspel, nous étendons la syntaxe d'une déclaration de tableau~:
 %
 $$\code{a: array($D$, $L$)}$$
 %
-dans Praspel avec les propriétés sur les tableaux suivantes. Une propriété sur
-une paire est de la forme~:
+où $D$ est une déclaration de tableau et $L$ la taille du tableau, avec les
+propriétés suivantes. Une propriété sur une paire est de la forme~:
 %
 $$\code{a[$K$]: $V$}$$
 %
 où $K$ et $V$ sont des disjonctions de domaines réalistes. La propriété signifie
 que toute valeur de $K$ est la clé d'une paire dans le tableau \code{a}, et que
-toute paire dont la clé est dans $K$ a sa valeur dans $V$. $K$ accepte
-seulement les domaines réalistes qui implémentent les interfaces
-\code{Constant}, \code{Interval} et \code{Enumerable}. Cette propriété est
-équivalente à utiliser les fonctions \code{array\_key\_exists()} et
-\code{in\_array()} combinées.
+toute paire dont la clé est dans $K$ a sa valeur dans $V$. $K$ accepte seulement
+les domaines réalistes qui implémentent les interfaces \code{Constant},
+\code{Interval} et \code{Enumerable}. Cette propriété est équivalente à utiliser
+les fonctions \code{array\_key\_exists()} et \code{in\_array()} combinées.
 
 \begin{example}[\code{a[$K$]: $V$} en PHP]
 
@@ -292,9 +291,8 @@ Une et une seule de ces propriétés est supposée être une déclaration de tab
 de la forme \code{a: array($D$, $L$)}, où $D$ est en forme normale, c'est~à~dire
 que $D$ est une liste de $p$ constructions \code{from $F_i$ to $T_i$} avec $1
 \leq i \leq p$, et $L$ est une disjonction de domaines réalistes $L_1, \dots,
-L_m$ héritant du domaine réaliste \code{Integer} dont les valeurs sont
-supérieures ou égales à zéro.
-\footnote{TODO}
+L_m$ héritant du domaine réaliste \code{Integer}. La taille doit être supérieure
+ou égale à zéro.
 
 Dans l'exemple~\ref{example:data:array_proprietes}, $p = 1$, $m = 2$, $L_1 =
 [\code{0..5}]$ et $L_2 = \{\code{10}\}$. Dans la description du tableau, aucun
@@ -312,9 +310,8 @@ Les variables du CSP sont~:
 %
 \begin{enumerate}
 
-\item les domaines réalistes $L_1, \dots, L_m$~;
-
-\item la taille du tableau, notée $S$, qui est un entier positif ou nul~;
+\item les domaines réalistes $L_1, \dots, L_m$ et la taille du tableau, notée
+$S$, qui est un entier positif ou nul~;
 
 \item les ensembles $X$ et $Y$ qui sont respectivement le domaine du tableau
 (l'ensemble des clés) et le co-domaine (l'ensemble des valeurs)~;
@@ -329,9 +326,9 @@ le tableau.
 
 \end{enumerate}
 
-Le solveur doit trouver le contenu de $X$ et les valeurs de la fonction $H$. Les
-autres variables sont seulement introduites pour simplifier l'expression des
-contraintes.\footnote{Et $L_1$ et $S$~?}
+Le solveur doit trouver le contenu de $S$, $X$ et les valeurs de la fonction
+$H$. Les autres variables sont seulement introduites pour simplifier
+l'expression des contraintes.
 
 La contrainte $H(x) = y$, avec $x \in X$, traduit que la paire $(x, y)$ est dans
 le tableau. Nous étendons $H$ aux parties de $X$ par la fonction $\hat{H}$
@@ -455,12 +452,12 @@ Cet algorithme travaille sur un CSP transformé en graphe orienté où les nœud
 représentent les variables et les arcs représentent les contraintes entre deux
 variables. Un arc $(X, Y)$ est considéré comme consistant si et seulement si
 pour chaque valeur $x$ de la variable $X$, il existe une valeur $y$ de la
-variable $Y$ telle que $(x, y)$ satisfasse la contrainte entre $X$ et $Y$.  Si
-ce n'est pas le cas, l'algorithme supprime des valeurs du domaine de $x$ pour
-obtenir la consistance de l'arc. Cet algorithme permet aussi de propager les
-contraintes d'une variable à l'autre en même temps qu'il vérifie la consistance.
-Seules les contraintes unaires et binaires sont gérées par cet algorithme,
-c'est~à~dire des contraintes portant sur une et deux variables. La
+variable $Y$ telle que la paire $(x, y)$ satisfasse la contrainte entre $X$ et
+$Y$. Si ce n'est pas le cas, l'algorithme supprime des valeurs du domaine de
+$x$ pour obtenir la consistance de l'arc. Cet algorithme permet aussi de
+propager les contraintes d'une variable à l'autre en même temps qu'il vérifie la
+consistance.  Seules les contraintes unaires et binaires sont gérées par cet
+algorithme, c'est~à~dire des contraintes portant sur une et deux variables. La
 figure~\ref{figure:data:ac3} présente l'algorithme AC3, tandis que
 l'exemple~\ref{example:data:ac3} illustre le problème auquel répond cet
 algorithme.
@@ -551,9 +548,9 @@ dans le domaine $D(Y)$ seront supprimées, et inversement. Alors nous obtenons
 $D(X) = \{4, 5, 6\}$, $D(Y) = \{4, 5, 6\}$ et $D(Z)$ est inchangé. Ensuite, nous
 vérifions la contrainte $Y = Z$. Nous obtenons $D(Y) = \{5, 6\}$, $D(Z) = \{5,
 6\}$ et $D(X)$ est inchangé. Mais nous avons un problème~: la contrainte $X = Y$
-n'est plus satisfaite. Nous savons alors qu'il faut re-vérifier la contrainte $X
-= Y$ pour obtenir $D(X) = \{5, 6\}$, mais une machine ne le saurait pas
-nécessairement.
+n'est plus vraie, $4 \in D(X)$ alors que $4 \notin D(Y)$. Nous savons alors
+qu'il faut re-vérifier la contrainte $X = Y$ pour obtenir $D(X) = \{5, 6\}$,
+mais une machine ne le saurait pas nécessairement.
 
 Maintenant, voyons comment opère l'algorithme AC3. Nous avons les mêmes
 variables, domaines et contraintes qu'au début de cet exemple. Le graphe du CSP
