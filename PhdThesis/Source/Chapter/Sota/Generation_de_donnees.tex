@@ -133,15 +133,17 @@ Nous mentionnons ces travaux car ils font un usage intéressant des contrats.
 {\scshape sante} propose de combiner PathCrawler avec des extensions Frama-C
 pour détecter des erreurs à l'exécution. {\scshape sante} est une extension à
 PathCrawler et travaille donc sur des programmes écrits en C. Ces programmes
-sont annotés par des contrats écrits en ACSL. Le code de ces programmes a été
-simplifié par \inenglish{slicing} pour faciliter le travail de
-PathCrawler. Avant de simplifier le code, les contrats ACSL sont compilés en
-code C (comme JML est compilé en Java avec son RAC~\acite{Raghavan2005}), et le
-programme est instrumenté pour les exécuter. Ainsi, PathCrawler prendra en
-considération les contrats ACSL lors de la génération de tests. Toutefois,
-{\scshape sante} ne supporte qu'un petit sous-ensemble du langage ACSL~: les
-assertions prévenant les divisions par zéro, les dépassements de tableaux et des
-débordements arithmétiques.
+sont annotés par des contrats écrits en ACSL. Il n'est pas tout à fait correct
+de parler de contrats car {\scshape sante} ne supporte qu'un petit sous-ensemble
+du langage ACSL~: les assertions prévenant les divisions par zéro, les
+dépassements de tableaux et des débordements arithmétiques. Il est alors plus
+réaliste de parler d'assertions ACSL. Le code des programmes annotés a été
+simplifié par \inenglish{slicing} pour faciliter le travail de PathCrawler.
+Avant de simplifier le code, les assertions ACSL sont compilées en code C (la
+démarche est similaire à JML qui est compilé en Java avec son
+RAC~\acite{Raghavan2005}), et le programme est instrumenté pour les exécuter.
+Ainsi, PathCrawler prendra en considération des assertions ACSL lors de la
+génération de tests.
 
 \paragraph{Euclide} L'outil Euclide~\acite{Gotlieb09} permet de faire du test à
 partir de contrain\-tes en mélangeant trois aspects~: analyse structurelle du
