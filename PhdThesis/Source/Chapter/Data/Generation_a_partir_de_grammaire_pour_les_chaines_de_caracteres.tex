@@ -237,15 +237,15 @@ syntaxique. La grammaire nous évite d'avoir à écrire un compilateur à la mai
 
   \While{$\avar{offset} < \avar{length}$}
 
-      \State $\avar{nextToken} \gets \akw{null}$
+      \State $\avar{nextToken} \gets~\akw{null}$
 
       \ForAll{$\{\avar{name}, \avar{regex}, \avar{namespaceOut}\} \in \avar{tokens[namespace]}$}
 
-          \If{$\avar{word} \akw{matches} \avar{regex} \akw{at} \avar{offset} \asets \avar{value}$}
+          \If{$\avar{word}~\akw{matches} \avar{regex}~\akw{at} \avar{offset} \asets \avar{value}$}
 
               \State $\avar{nextToken} \gets \atype{Token}\{\avar{name}, \avar{value}, \avar{offset}, \avar{namespace}\}$
 
-              \If{$\avar{namespaceOut} \akw{matches} \astring{'\_\_shift\_\_ * \mathit{j}'}$}
+              \If{$\avar{namespaceOut}~\akw{matches} \astring{'\_\_shift\_\_ * \mathit{j}'}$}
 
                   \State $\avar{j}.\acall{times}(\avar{namespaceStack}.\acall{pop})$
 
