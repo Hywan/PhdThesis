@@ -402,7 +402,7 @@ X$ et $\hat{H}(\{\code{0}\}) \subseteq \{\code{'b'}, \code{'c'}\}$.
 \subsubsection{Contraintes sur les clés et les valeurs}
 
 La propriété \code{a[$K$]: \_} est traduite en contrainte $K \subseteq X$ et la
-propriété \code{a[$K$]!: \_} est traduite en $K \intersection X = \emptyset$. La
+propriété \code{a[$K$]!: \_} en contrainte $K \intersection X = \emptyset$. La
 propriété \code{a[\_]: $V$} est traduite en contrainte $V \subseteq Y$ et la
 propriété \code{a[\_]!: $V$} en contrainte $V \intersection Y = \emptyset$.
 
@@ -648,15 +648,11 @@ L_2 & \subseteq \{\code{10}\} \\
 %
 X & = X_1 \\
 %
-X_1 & \subseteq F_1 \\
-%
-F_1 & = \code{natural(0, 1)} \\
+X_1 & \subseteq \code{natural(0, 1)} \\
 %
 Y & = Y_1 \\
 %
-Y_1 & \subseteq T_1 \\
-%
-T_1 & = \code{string('a', 'e', 1)} \\
+Y_1 & \subseteq \code{string('a', 'e', 1)} \\
 %
 Y & = \hat{H}(X) \\
 %
@@ -673,15 +669,15 @@ initialisée à $\{(S, X), (S, S), (X, Y), (X, X)\}$.
 
 \item Nous sélectionnons et retirons la première paire $(S, X)$. Nous
 travaillons sur la variable $S$ et nous avons la contrainte $\mcard(X) = S$. La
-cardinalité de $X$ est égale à la cardinalité de $X_1$, qui est égale à la
-cardinalité de $F_1$ au maximum. La cardinalité de $F_1 = \code{natural(0, 1)}$
-vaut $\infty$. Nous n'avons rien à réviser, $S$ reste alors inchangée. $X$ a un
-arc vers $Y$, donc nous devrions ajouter la paire $(Y, X)$, mais elle est déjà
-présente dans la variable $\avar{queue}$.
+cardinalité de $X$ est égale à la cardinalité de $X_1$, qui est inférieure ou
+égale à la cardinalité de \code{natural(0, 1)}, qui vaut $+\infty$. Nous n'avons
+rien à réviser, $S$ reste alors inchangée. $X$ a un arc vers $Y$, donc ajoutons
+la paire $(Y, X)$ dans la variable $\avar{queue}$.
 
 \item Nous sélectionnons et retirons la deuxième paire $(S, S)$. Nous avons la
-con\-train\-te $S \geq 0$. Nous n'avons rien à réviser. $S$ a un arc vers $X$,
-donc nous ajoutons la paire $(X, S)$.
+con\-train\-te unaire (ne portant que sur une seule variable) $S \geq 0$. Nous
+n'avons rien à réviser. $S$ a un arc vers $X$, donc nous ajoutons la paire $(X,
+S)$.
 
 \item La troisième paire que nous sélectionnons et retirons est $(X, Y)$. Nous
 avons la première contrainte $\mcard(X) = \mcard(Y)$. Nous traitons uniquement
@@ -693,19 +689,19 @@ devrions ajouter la paire $(Y, X)$ mais elle est déjà présente dans la variab
 $\avar{queue}$.
 
 \item La quatrième paire est $(X, X)$. Nous avons la contrainte $\{\code{0}\}
-\subset X$. Nous vérifions $\code{0} \in \code{natural(0, 1)}$. Tout est
+\subseteq X$. Nous vérifions $\code{0} \in \code{natural(0, 1)}$. Tout est
 consistant. Le tableau ne peut pas être vide car il contiendra au moins une
 paire. Dans la variable $\avar{queue}$, nous ajoutons uniquement la paire $(S,
 X)$, la paire $(Y, X)$ étant déjà présente.
 
 \item Nous sélectionnons et retirons la paire $(Y, X)$. Nous avons toujours la
 contrainte $\mcard(X) = \mcard(Y)$ mais nous traitons maintenant la variable
-$Y$. La cardinalité de $Y$ est égale à la cardinalité de $Y_1$, qui est égale à
-la cardinalité de $T_1$ au maximum. La cardinalité de $T_1 = \code{string('a',
-'e', 1)}$ vaut $5$ car ce domaine réaliste peut produire les données \code{a}
-jusqu'à \code{e}. Nous savons aussi que le tableau contiendra au moins une
-paire. Ainsi, $\mcard(X) = [1; 5]$. Dans la variable $\avar{queue}$, nous
-devrions ajouter la paire $(X, S)$, mais elle est déjà présente.
+$Y$. La cardinalité de $Y$ est égale à la cardinalité de $Y_1$, qui est
+inférieure ou égale à la cardinalité de \code{string('a', 'e', 1)}, qui vaut $5$
+car ce domaine réaliste peut produire les données \code{a} jusqu'à \code{e}.
+Nous savons aussi que le tableau contiendra au moins une paire. Ainsi,
+$\mcard(X) \in [1; 5]$. Dans la variable $\avar{queue}$, nous devrions ajouter
+la paire $(X, S)$, mais elle est déjà présente.
 
 \item Nous sélectionnons et retirons la paire $(X, S)$. Nous travaillons sur la
 variable $X$ avec la contrainte $\mcard(X) = S$. Nous n'avons rien à faire à
@@ -714,7 +710,7 @@ part ajouter la paire $(Y, X)$.
 \item L'avant-dernière paire est $(S, X)$. Nous travaillons sur la variable $S$
 avec la con\-train\-te $\mcard(X) = S$. Nous révisons $S \in L_1 \union L_2$
 avec $L_1 \subseteq [\code{0..5}]$ et $L_2 \subseteq \{\code{10}\}$, pour
-enlever la valeur \code{0} et \code{10}. $L_1$ est un domaine réaliste
+enlever les valeurs \code{0} et \code{10}. $L_1$ est un domaine réaliste
 représantant un intervalle d'entiers (domaine réaliste \code{Boundinteger})
 implémentant entre autre les interfaces \code{Interval} et \code{Nonconvex}.
 Nous appelons la méthode \code{discredit} pour supprimer \code{0} de

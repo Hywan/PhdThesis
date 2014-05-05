@@ -91,29 +91,29 @@ test structurel vise à satisfaire certains critères de couverture de
 code~\acite{MillerM63, Myers04, GargantiniGM12}.  PathCrawler utilise son propre
 solveur de contraintes, appelé Colibri. Ce dernier est utilisé par d'autres
 outils de test et implémente des fonctionnalités avancées comme le support des
-réels ou de l'arithmétiques modulaire sur les entiers. PathCrawler propose
+réels ou de l'arithmétique modulaire sur les entiers. PathCrawler propose
 plusieurs stratégies de couverture de code, comme \inenglish{all-$k$-paths}
 (tous les chemins atteignables avec au plus $k$ itérations dans les boucles) et
 \inenglish{all-paths} (tous les chemins atteignables sans limitation
-d'itérations dans les boucles). PathCrawler est sûre, c'est~à~dire que chaque
+d'itérations dans les boucles). PathCrawler est correct, c'est~à~dire que chaque
 cas de test active un objectif de test (un chemin, une branche, une instruction
-etc.) pour lequel il a été généré. Cette propriété est validé par une exécution
+etc.) pour lequel il a été généré. Cette propriété est validée par une exécution
 concrète. Quand toutes les fonctionnalités du programme testé sont supportées
 par PathCrawler et quand la génération de test, impliquant le solveur de
-contrainte, termine pour tous les chemins, l'outil est aussi complet,
+contraintes, termine pour tous les chemins, l'outil est aussi complet,
 c'est~à~dire que l'absence de cas de test pour certains objectifs de test
 signifie que ces objectifs sont inatteignables. Cette propriété est possible car
-PathCrawler ne fait pas d'approximation pour les constraintes sur les chemins,
-comme c'est le cas dans d'autres outils de type \inenglish{concolic}.
+PathCrawler ne fait pas d'approximation pour les contraintes sur les chemins,
+comme c'est le cas dans d'autres outils de test \inenglish{concolic}.
 PathCrawler a toutefois des limitations. Par exemple, il ne supporte pas les
 structures récursives, les fonctions récursives et les pointeurs sur les
 fonctions. \\
 
 Nous pouvons citer CUTE~\acite{SenMA05}, Pex~\acite{TillmannH08},
 SAGE~\acite{GodefroidLM12} ou ARTOO~\acite{CiupaLOM08} qui sont aussi des outils
-de \inenglish{concolic}. Nous voyons qu'il existe plusieurs techniques avancées
-pour la génération de données de test à partir d'exécution symbolique ou
-concrète. Toutefois, si nous repensons aux contrats et que nous prenons du
+de test \inenglish{concolic}. Nous voyons qu'il existe plusieurs techniques
+avancées pour la génération de données de test à partir d'exécution symbolique
+ou concrète. Toutefois, si nous repensons aux contrats et que nous prenons du
 recul, nous remarquons que l'exécution symbolique ou concrète ne permet pas de
 valider qu'un programme fait bien ce que nous souhaitons. Les erreurs à
 l'exécution (comme des pointeurs nuls, des dépassements de tableaux, de tampons
@@ -122,9 +122,9 @@ par rapport à une spécification. Cependant, des travaux mélangent les exécut
 symboliques ou concrètes avec les contrats, comme c'est le cas de {\scshape
 sante} ou Euclide.
 
-\paragraph{\scshape sante} Les outils de \inenglish{concolic} sont efficaces
-pour valider des programmes mais passent difficilement à l'échelle sur des
-programmes de taille importante. Le prototype~\inenglish{Static ANalysis and
+\paragraph{\scshape sante} Les outils de test \inenglish{concolic} sont
+efficaces pour valider des programmes mais passent difficilement à l'échelle sur
+des programmes de taille importante. Le prototype~\inenglish{Static ANalysis and
 TEsting}~\acite{ChebaroKGJ12} répond à ce constat en utilisant la technique du
 \inenglish{slicing}. L'idée est de supprimer du code inutile pour l'objectif de
 test fixé.
@@ -134,7 +134,7 @@ Nous mentionnons ces travaux car ils font un usage intéressant des contrats.
 pour détecter des erreurs à l'exécution. {\scshape sante} est une extension à
 PathCrawler et travaille donc sur des programmes écrits en C. Ces programmes
 sont annotés par des contrats écrits en ACSL. Le code de ces programmes a été
-\inenglish{sliced} pour le simplifier et ainsi faciliter le travail de
+simplifié par \inenglish{slicing} pour faciliter le travail de
 PathCrawler. Avant de simplifier le code, les contrats ACSL sont compilés en
 code C (comme JML est compilé en Java avec son RAC~\acite{Raghavan2005}), et le
 programme est instrumenté pour les exécuter. Ainsi, PathCrawler prendra en
