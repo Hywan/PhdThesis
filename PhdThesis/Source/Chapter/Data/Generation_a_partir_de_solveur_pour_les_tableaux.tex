@@ -22,7 +22,7 @@ expliquons pourquoi nous avons choisi de développer notre propre solveur.
 \subsection{Étude des propriétés les plus utilisées}
 \label{subsection:data:study}
 
-Nous avons sélectionnés 61~projets PHP sur plusieurs plateformes, comme
+Nous avons sélectionné 61~projets PHP sur plusieurs plateformes, comme
 Github\footnote{Voir \url{http://github.com/}.} ou Sourceforge\footnote{Voir
 \url{http://sourceforge.net/}.}, à partir de leur popularité, leur impact sur
 l'industrie et leur complexité. Tous ces projets représentent 28~066 fichiers,
@@ -578,7 +578,7 @@ départ tous les arcs du graphe, soit $\avar{queue} = \{(\avar{X}, \avar{Y}),
 commençons par traiter la première paire de $\avar{queue}$ après l'avoir
 supprimée. Nous traitons alors la contrainte impliquant $\avar{X}$ et
 $\avar{Y}$, soit $\avar{X} = \avar{Y}$ mais la fonction $\akw{AC3\_Arc\_Reduce}$
-ne va travailler que sûr $\avar{X}$. Ainsi, cette fonction va regarder si pour
+ne va travailler que sur $\avar{X}$. Ainsi, cette fonction va regarder si pour
 toute valeur $\avar{x}$ de $\avar{Domains}(\avar{X})$ la contrainte avec les
 valeurs de $\avar{Domains}(\avar{Y})$ est satisfaite. Si une valeur $\avar{x}$
 ne satisfait pas la contrainte, elle est supprimée de
