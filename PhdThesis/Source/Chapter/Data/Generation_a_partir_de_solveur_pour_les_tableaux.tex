@@ -476,17 +476,17 @@ algorithme.
 \Function{$\akw{AC3}$}{}
 
   \Require $\avar{csp}: \atype{CSP}$
-  \State $\avar{queue}: \atype{list\astype{(\atype{Variable}, \atype{Variable})}} \gets \akw{all~the~arcs}$
+  \State $\avar{queue}: \atype{list\astype{(\atype{Variable}, \atype{Variable})}} \gets~\akw{all~the~arcs}$
 
   \While{$\avar{queue} \neq \emptyset$}
 
-      \State $(X, Y) \gets \avar{queue}.\acall{pop}()$
+      \State $(\avar{X}, \avar{Y}) \gets \avar{queue}.\acall{pop}()$
 
-      \If{$\acall{AC3\_Arc\_Reduce}(X, Y)$}
+      \If{$\acall{AC3\_Arc\_Reduce}(\avar{X}, \avar{Y})$}
 
-          \ForAll{$Z \in \avar{Neighbours}(X)$}
+          \ForAll{$Z \in \avar{Neighbours}(\avar{X})$}
 
-              \State $\avar{queue}.\acall{push}((Z, X))$
+              \State $\avar{queue}.\acall{push}((\avar{Z}, \avar{X}))$
 
           \EndFor
 
@@ -502,13 +502,13 @@ algorithme.
 
     \Require $\avar{X}: \atype{Variable}$
     \Require $\avar{Y}: \atype{Variable}$
-    \Ensure  $\avar{removed}: \atype{boolean} \gets \akw{false}$
+    \Ensure  $\avar{removed}: \atype{boolean} \gets~\akw{false}$
 
-    \ForAll{$x \in \avar{Domains}(X)$}
+    \ForAll{$\avar{x} \in \avar{Domains}(\avar{X})$}
 
-        \If{$\akw{there~is~no} y \in \avar{Domains}(Y) \akw{such~that} y.\acall{reduce}(y)$}
+        \If{$\akw{there~is~no} y \in \avar{Domains}(\avar{Y})~\akw{such~that} (\avar{x}, \avar{y})~\akw{satisfies~the~constraint}$}
 
-            \State $\akw{delete} x \akw{from} \avar{Domains}(X)$
+            \State $\akw{delete} \avar{x}~\akw{from} \avar{Domains}(\avar{X})$
             \State $\avar{removed} \gets true$
 
         \EndIf
@@ -562,42 +562,52 @@ D'après la figure~\ref{figure:data:ac3}, nous avons~:
 %
 \begin{itemize}
 
-\item $\avar{Variables} = \{X, Y, Z\}$~;
+\item $\avar{Variables} = \{\avar{X}, \avar{Y}, \avar{Z}\}$~;
 
-\item $\avar{Domains} = \{X \rightarrow \{4, 5, 6, 7\}, Y \rightarrow \{4, 5, 6,
-8, 9\}, Z \rightarrow \{3, 5, 6, 7, 9\}\}$~;
+\item $\avar{Domains} = \{\avar{X} \rightarrow \{4, 5, 6, 7\}, \avar{Y}
+\rightarrow \{4, 5, 6, 8, 9\}, \avar{Z} \rightarrow \{3, 5, 6, 7, 9\}\}$~;
 
-\item $\avar{Neighbours} = \{X \rightarrow \{Y\}, Y \rightarrow \{X, Z\}, Z \rightarrow \{Y\}\}$.
+\item $\avar{Neighbours} = \{\avar{X} \rightarrow \{\avar{Y}\}, \avar{Y}
+\rightarrow \{\avar{X}, \avar{Z}\}, \avar{Z} \rightarrow \{\avar{Y}\}\}$.
 
 \end{itemize}
 %
 Ensuite, dans l'algorithme $\akw{AC3}$, la variable $\avar{queue}$ contient au
-départ tous les arcs du graphe, soit $\avar{queue} = \{(X, Y), (Y, X), (Y, Z),
-(Z, Y)\}$. Nous commençons par traiter la première paire de $\avar{queue}$ après
-l'avoir supprimée. Nous traitons alors la contrainte impliquant $X$ et $Y$, soit
-$X = Y$ mais la fonction $\akw{AC3\_Arc\_Reduce}$ ne va travailler que sûr $X$.
-Ainsi $\avar{Domains}(X) = \{4, 5, 6\}$, $\avar{Domains}(Y)$ et
-$\avar{Domains}(Z)$ restant inchangés. La variable $X$ n'a pas d'arc vers
-d'autres variables, donc nous ne modifions pas $\avar{queue}$. Ensuite, la paire
-suivante est $(Y, X)$, donc nous traitons la contrainte $X = Y$ mais cette
-fois-ci, nous modifions $Y$. Ainsi $\avar{Domains}(Y) = \{4, 5, 6\}$,
-$\avar{Domains}(X)$ et $\avar{Domains}(Z)$ restant inchangés. La variable $Y$ a
-aussi un arc vers $Z$, donc nous devrions ajouter la paire $(Z, Y)$ mais elle
-existe déjà dans $\avar{queue}$, nous ne faisons rien.  La paire suivante dans
-$\avar{queue}$ est $(Y, Z)$, donc nous traitons la contrainte $Y = Z$ en
-modifiant uniquement $Y$. Ainsi~: $\avar{Domains}(Y) = \{5, 6\}$,
-$\avar{Domains}(X)$ et $\avar{Domains}(Z)$ restant inchangés. La variable $Z$
-n'a pas d'arc vers une autre variable, donc nous ne modifions pas
-$\avar{queue}$. La paire suivante est $(Z, Y)$, donc nous vérifions la
-contrainte $Y = Z$ en modifiant $Z$. Ainsi (en rappelant tous les domaines)~:
-$\avar{Domains}(X) = \{4, 5, 6\}$, $\avar{Domains}(Y) = \{5, 6\}$ et
-$\avar{Domains}(Z) = \{5, 6\}$. La variable $Y$ a un arc vers la variable $X$,
-donc nous ajoutons la paire $(X, Y)$ dans $\avar{queue}$.  Comme $\avar{queue}$
-était vide, cela devient notre paire suivante que nous traitons. Nous appliquons
-alors la contrainte $X = Y$ en modifiant $X$.  Ainsi, nous obtenons~:
-$\avar{Domains}(X) = \avar{Domains}(Y) = \avar{Domains}(Z) = \{5, 6\}$. La
-variable $X$ n'a pas d'arc vers d'autres variables que $Y$, donc nous ne
-modifions pas $\avar{queue}$. Cette dernière est vide, donc l'algorithme se
+départ tous les arcs du graphe, soit $\avar{queue} = \{(\avar{X}, \avar{Y}),
+(\avar{Y}, \avar{X}), (\avar{Y}, \avar{Z}), (\avar{Z}, \avar{Y})\}$. Nous
+commençons par traiter la première paire de $\avar{queue}$ après l'avoir
+supprimée. Nous traitons alors la contrainte impliquant $\avar{X}$ et
+$\avar{Y}$, soit $\avar{X} = \avar{Y}$ mais la fonction $\akw{AC3\_Arc\_Reduce}$
+ne va travailler que sûr $\avar{X}$. Ainsi, cette fonction va regarder si pour
+toute valeur $\avar{x}$ de $\avar{Domains}(\avar{X})$ la contrainte avec les
+valeurs de $\avar{Domains}(\avar{Y})$ est satisfaite. Si une valeur $\avar{x}$
+ne satisfait pas la contrainte, elle est supprimée de
+$\avar{Domains}(\avar{X})$. Nous obtenons alors $\avar{Domains}(\avar{X}) = \{4,
+5, 6\}$, $\avar{Domains}(\avar{Y})$ et $\avar{Domains}(\avar{Z})$ restant
+inchangés. La variable $\avar{X}$ n'a pas d'arc vers d'autres variables, donc
+nous ne modifions pas $\avar{queue}$.  Ensuite, la paire suivante est
+$(\avar{Y}, \avar{X})$, donc nous traitons la contrainte $\avar{X} = \avar{Y}$
+mais cette fois-ci, nous modifions $\avar{Y}$.  Ainsi $\avar{Domains}(\avar{Y})
+= \{4, 5, 6\}$, $\avar{Domains}(\avar{X})$ et $\avar{Domains}(\avar{Z})$ restant
+inchangés. La variable $\avar{Y}$ a aussi un arc vers $\avar{Z}$, donc nous
+devrions ajouter la paire $(\avar{Z}, \avar{Y})$ mais elle existe déjà dans
+$\avar{queue}$, nous ne faisons rien. La paire suivante dans $\avar{queue}$ est
+$(\avar{Y}, \avar{Z})$, donc nous traitons la contrainte $\avar{Y} = \avar{Z}$
+en modifiant uniquement $\avar{Y}$. Ainsi~: $\avar{Domains}(\avar{Y}) = \{5,
+6\}$, $\avar{Domains}(\avar{X})$ et $\avar{Domains}(\avar{Z})$ restant
+inchangés. La variable $\avar{Z}$ n'a pas d'arc vers une autre variable, donc
+nous ne modifions pas $\avar{queue}$. La paire suivante est $(\avar{Z},
+\avar{Y})$, donc nous vérifions la contrainte $\avar{Y} = \avar{Z}$ en modifiant
+$\avar{Z}$. Ainsi (en rappelant tous les domaines)~: $\avar{Domains}(\avar{X}) =
+\{4, 5, 6\}$, $\avar{Domains}(\avar{Y}) = \{5, 6\}$ et $\avar{Domains}(\avar{Z})
+= \{5, 6\}$. La variable $\avar{Y}$ a un arc vers la variable $\avar{X}$, donc
+nous ajoutons la paire $(\avar{X}, \avar{Y})$ dans $\avar{queue}$.  Comme
+$\avar{queue}$ était vide, cela devient notre paire suivante que nous traitons.
+Nous appliquons alors la contrainte $\avar{X} = \avar{Y}$ en modifiant
+$\avar{X}$.  Ainsi, nous obtenons~: $\avar{Domains}(\avar{X}) =
+\avar{Domains}(\avar{Y}) = \avar{Domains}(\avar{Z}) = \{5, 6\}$. La variable
+$\avar{X}$ n'a pas d'arc vers d'autres variables que $\avar{Y}$, donc nous ne
+modifions pas $\avar{queue}$.  Cette dernière est vide, donc l'algorithme se
 termine.
 
 \end{example}
@@ -630,7 +640,11 @@ S & \geq 0 \\
 %
 \mcard(X) & = \mcard(Y) \\
 %
-S & \in [\code{0..5}] \union \{\code{10}\} \\
+S & \in L_1 \union L_2 \\
+%
+L_1 & \subseteq [\code{O..5}] \\
+%
+L_2 & \subseteq \{\code{10}\} \\
 %
 X & = X_1 \\
 %
@@ -680,7 +694,7 @@ $\avar{queue}$.
 
 \item La quatrième paire est $(X, X)$. Nous avons la contrainte $\{\code{0}\}
 \subset X$. Nous vérifions $\code{0} \in \code{natural(0, 1)}$. Tout est
-consistent. Le tableau ne peut pas être vide car il contiendra au moins une
+consistant. Le tableau ne peut pas être vide car il contiendra au moins une
 paire. Dans la variable $\avar{queue}$, nous ajoutons uniquement la paire $(S,
 X)$, la paire $(Y, X)$ étant déjà présente.
 
@@ -698,14 +712,16 @@ variable $X$ avec la contrainte $\mcard(X) = S$. Nous n'avons rien à faire à
 part ajouter la paire $(Y, X)$.
 
 \item L'avant-dernière paire est $(S, X)$. Nous travaillons sur la variable $S$
-avec la con\-train\-te $\mcard(X) = S$. Nous révisons $S \in [\code{0..5}]
-\union \{\code{10}\}$ pour enlever la valeur $0$ et $10$. Sa disjonction est
-constituée de deux domaines réalistes. Le premier est un intervalle d'entiers
-(domaine réaliste \code{Boundinteger}) implémentant entre autre les interfaces
-\code{Interval} et \code{Nonconvex}. Nous appelons la méthode \code{discredit}
-pour supprimer $0$ de l'intervalle. Le second domaine réaliste est une constante
-représentant l'entier $10$, nous le supprimons simplement de la disjonction.
-Ainsi, nous obtenons $S \in [\code{1..5}]$.
+avec la con\-train\-te $\mcard(X) = S$. Nous révisons $S \in L_1 \union L_2$
+avec $L_1 \subseteq [\code{0..5}]$ et $L_2 \subseteq \{\code{10}\}$, pour
+enlever la valeur \code{0} et \code{10}. $L_1$ est un domaine réaliste
+représantant un intervalle d'entiers (domaine réaliste \code{Boundinteger})
+implémentant entre autre les interfaces \code{Interval} et \code{Nonconvex}.
+Nous appelons la méthode \code{discredit} pour supprimer \code{0} de
+l'intervalle.  $L_2$ est un domaine réaliste représentant une constante pour
+l'entier $10$. La variable $L_2$ est supprimée de l'union (de la disjonction de
+domaines réalistes). Ainsi, nous obtenons $S \in L_1$ avec $L_1 \subseteq
+[\code{1..5}]$.
 
 \item Enfin, la dernière paire est $(Y, X)$. Tout est consistant. $Y$ n'a pas
 d'autre arc. L'algorithme termine.
