@@ -1,10 +1,73 @@
-\paragraph{Remerciements}
-Salut.
+\noindent {\strong Remerciements} Je tiens à profiter de l'occasion qui m'est
+offerte pour remercier toutes les personnes qui ont été soutenantes. Je tiens à
+remercier avant tout mon Dieu, \inenglish{the Everlasting}, pour cette aventure,
+ses promesses et son soutien en tout temps. Merci.
 
-\begin{arabtext}
-al-salAm `alayum
-\end{arabtext}
+Je souhaite remercier ma petite femme, Hend, \inenglish{lady caramel}, pour son
+éternel amour, sa patience, son écoute et son infini tendresse. Je t'aime.
 
-Hello.
+Je souhaite remercier mes parents, Nadine et Christophe, et mes sœurs, Naomi et
+Joanna, ainsi que toute ma famille, pour leur présence et leur soutien.
+%
+Merci à tous les amis de France, de Suisse, de Tunisie, du Maroc, d'Italie, de
+Grèce, du Brésil, du Kenya, de Belgique, de Macédoine et de partout, qui m'ont aidé dans ma
+thèse et qui m'aide dans Hoa. Par ordre alphabétique, un immense et sincère
+merci à
+Abdallah~Ben~O.,
+Alexis~von~G.,
+Baptiste~et~Anne-Laure~F.,
+\foreignlanguage{russian}{Елизабета}~F.-\foreignlanguage{russian}{С}.,
+Emmanuel~T.,
+Frédéric~H.,
+Guislain~D.,
+Gérard~E.,
+Isabelle~et~Yves~D.,
+\RL{m.hmd jlAl},
+Julien~B.,
+Julien~C.,
+Julien~L.,
+Kalou~C.~C.,
+Laura et Raphaël~E.,
+Lucie et \RL{'Amyn}~M.,
+Marta~P.,
+Mikaël~R.,
+\foreignlanguage{english}{Naomy~W.},
+Nawo~M.,
+Ophélie et Matthieu~C.,
+Raphaëlle~M.,
+\textSigma\textomikron\straightphi\textiota\textalpha\ et \textKappa\textomega\textsigma\texttau\textalpha\textvarsigma~\textTau.,
+Stéphane~P.,
+Sylvie et Kiko~F.,
+Sébastien~H.,
+Willy~M.,
+Wilma et \foreignlanguage{italian}{Fabio}~S. (et toute la troupe~!),
+Yohann~D.,
+toute la communauté de Hoa, d'atoum et de PHP,
+et tout ceux que j'aurais oublié…
 
-$E\lambda\lambda\eta\nu\nu\iota\kappa\alpha$
+Et bien sûr, merci à mes encadrants~: Fabrice B., Frédéric D. et Alain G. pour
+leur savoir, leur patience et être restés à mes côtés durant cette aventure~!
+
+\drawfig{!}{6cm}{scale=.25}{
+  \draw [step=5cm, draw=sbase1, very thin] (-19.9, -17.9) grid (19.9, 13.9);
+  \draw [thick, ->] (-20, 0) -- (20, 0) node [anchor=north west] {$x$};
+  \draw [thick, ->] (0, -17) -- (0, 15) node [anchor=south east] {$y$};
+
+  \draw (0, 0) node [anchor=north east, text=sbase1] {$0$};
+  \foreach \x in {-15, -10, -5, 5, 10, 15}
+    \draw (\x cm, 0) node [anchor=north, text=sbase1] {$\x$};
+
+  \foreach \y in {-15, -10, -5, 5, 10}
+    \draw (0, \y cm) node [anchor=east, text=sbase1] {$\y$};
+
+  \def\x(#1){16 * sin(#1 r)^3}
+  \def\y(#1){13 * cos(#1 r) - 5 * cos(2 * #1 r) - 2 * cos(3 * #1 r) - cos(4 * #1 r)}
+
+  \draw [draw=sred, line width=2pt] plot [variable=\t, samples=200] ({\x(\t)}, {\y(\t)});
+
+  \draw (22, 0) node [anchor=west]
+        {\begin{tabular}{rl}
+         $x$ = & $16 \msin(t)^3$ \\
+         $y$ = & $13 \mcos(t) - 5 \mcos(2 t) - 2 \mcos(3 t) - \mcos(4 t)$
+         \end{tabular}};
+}
