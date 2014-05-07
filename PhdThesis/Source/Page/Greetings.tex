@@ -35,7 +35,7 @@ Mikaël~R.,
 Nawo~M.,
 Ophélie et Matthieu~C.,
 Raphaëlle~M.,
-\textSigma\textomikron\straightphi\textiota\textalpha\ et \textKappa\textomega\textsigma\texttau\textalpha\textvarsigma~\textTau.,
+\foreignlanguage{greek}{\textgreek{Sof'ia kai K'wstas T.}},
 Stéphane~P.,
 Sylvie et Kiko~F.,
 Sébastien~H.,
@@ -63,11 +63,11 @@ leur savoir, leur patience et être restés à mes côtés durant cette aventure
   \def\x(#1){16 * sin(#1 r)^3}
   \def\y(#1){13 * cos(#1 r) - 5 * cos(2 * #1 r) - 2 * cos(3 * #1 r) - cos(4 * #1 r)}
 
-  \draw [draw=sred, line width=2pt] plot [variable=\t, samples=200] ({\x(\t)}, {\y(\t)});
+  \draw [draw=sred, line width=2pt] plot [variable=\t, samples=512] ({\x(\t)}, {\y(\t)});
 
   \draw (22, 0) node [anchor=west]
-        {\begin{tabular}{rl}
-         $x$ = & $16 \msin(t)^3$ \\
-         $y$ = & $13 \mcos(t) - 5 \mcos(2 t) - 2 \mcos(3 t) - \mcos(4 t)$
+        {\begin{tabular}{l}
+         $x = 16 \msin(t)^3$ \\
+         $y = 13 \mcos(t) - 5 \mcos(2 t) - 2 \mcos(3 t) - \mcos(4 t)$
          \end{tabular}};
 }

@@ -147,6 +147,8 @@
 \newcommand{\inenglish}[1]{\foreignlanguage{english}{\em #1}}
 \newcommand{\inlatin}[1]{\foreignlanguage{latin}{\em #1}}
 \newcommand{\initalian}[1]{\foreignlanguage{italian}{\em #1}}
+\newcommand{\textgreek}[1]{\begingroup\fontencoding{LGR}\selectfont#1\endgroup}
+\newcommand{\ingreek}[1]{\foreignlanguage{greek}{\em \ingreek{#1}}}
 
 % Bibliography
 \newcommand{\acite}[1]{\citep{#1}}        % normal citation
