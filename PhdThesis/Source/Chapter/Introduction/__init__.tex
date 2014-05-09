@@ -39,7 +39,7 @@ permettant de mieux mesurer l'activité du test fonctionnel. Les travaux
 présentés dans ce mémoire ne s'inscrivent pas dans le même domaine que le projet
 Squash. Ces travaux se situent en amont de la chaîne de production. Le contexte
 scientifique de ce mémoire et les problématiques qui y sont développés sont liés
-aux savoir-faire et thématiques des équipes DISC et CASSIS. \\
+aux savoir-faire et thématiques des équipes VESONTIO et CASSIS. \\
 
 Informellement, un test est exécuté sur un Système Sous Test (\inenglish{System
 Under Test}, abrégé {\strong SUT}) et est composé de deux parties~:
@@ -48,8 +48,8 @@ Under Test}, abrégé {\strong SUT}) et est composé de deux parties~:
 
 \item des {\strong données de test} pour exécuter ce SUT~;
 
-\item un {\strong oracle}, permettant de calculer le verdict du test~: est-ce
-que le produit de l'exécution et l'état du SUT après son exécution sont ceux
+\item un {\strong oracle}, permettant d'établir le verdict du test~: est-ce que
+le produit de l'exécution et l'état du SUT après son exécution sont ceux
 attendus ou non~?
 
 \end{enumerate}
@@ -82,7 +82,7 @@ raisonnement statique n'est pas possible ou suffisant, nous pourrons utiliser
 une {\strong validation} dynamique, pour tester l'implémentation, c'est~à~dire
 que nous exécuterons le programme dans des configurations différentes (qui sont
 des sous-ensembles de toutes les configurations possibles). Une validation
-dynamique est un test. Elle est souvent accompagné d'un \inenglish{Runtime
+dynamique est un test. Elle peut être accompagnée d'un \inenglish{Runtime
 Assertion Checker}, abrégé RAC~\acite{Geller76}, qui permet de valider une
 spécification lors d'une exécution du programme.
 
@@ -115,9 +115,9 @@ programmation. Par exemple, ils facilitent la maintenance du code, qui n'est
 généralement pas suffisament expressif pour faire comprendre au développeur ses
 tenants et ses aboutissants. Par ailleurs, lors d'une phase de
 \inenglish{debugging}, les annotations permettent de localiser plus facilement
-l'erreur. Par exemple, si un comportement ou une propriété est violé, il sera
-plus facile à l'utilisateur de situer l'erreur dans un contexte spécifique. Dans
-le cas où nous travaillons en {\strong boîte blanche} (\inenglish{white-box}),
+l'erreur. Par exemple, si une propriété est violée, il sera plus facile à
+l'utilisateur de situer l'erreur dans un comportement spécifique. Dans le cas où
+nous travaillons en {\strong boîte blanche} (\inenglish{white-box}),
 c'est~à~dire où nous avons accès au code source du programme, les annotations
 peuvent faire partie de la grammaire du langage, ou alors, elles sont écrites
 dans des commentaires. Dans le cas où nous travaillons en {\strong boîte noire}
@@ -263,12 +263,12 @@ possible.
 \subsection{Praspel et les domaines réalistes}
 
 Le langage de contrat que nous proposons s'appelle {\strong Praspel}~:
-\inenglish{PHP Realistic Annotation and SPecification Language}. Cette première
+\inenglish{PHP Realistic Annotation and SPEcification Language}. Cette première
 contribution, présentée dans le chapitre~\ref{chapter:language}, s'intéresse au
 langage en lui-même, à savoir sa syntaxe et sa sémantique. Nous avons également
 étudié comment évaluer un contrat pour qu'il vérifie des données à l'exécution.
 Ce langage est inspiré de JML~\acite{JML} mais se différencie sur la façon de
-spécifier les données. En effet, il s'appuye en grande partie sur les {\strong
+spécifier les données. En effet, il s'appuie en grande partie sur les {\strong
 domaines réalistes}, des structures permettant de valider et générer des données
 et pouvant être emboîtées afin de représenter des données plus complexes. Cette
 contribution, à savoir Praspel et les domaines réalistes, a été publiée
@@ -306,8 +306,9 @@ conséquent, nous avons développé des algorithmes générant autant de tests
 unitaires que nécessaire pour satisfaire certains critères. Les données
 nécessaires pour exécuter ces tests seront générées automatiquement avec la
 contribution précédente. Cette contribution, accompagnée des contributions
-précédentes, ont été soumises à SoSyM (\inenglish{Software and Systems
-Modeling}) pour une édition spéciale.
+précédentes, ont été soumises au journal \inenglish{Software and Systems
+Modeling} (abrégé SoSyM) pour une édition spéciale sur les méthodes formelles
+intégrées.
 
 \section{Plan du mémoire}
 
@@ -340,5 +341,4 @@ nous semblant pertinentes.
 
 \end{enumerate}
 %
-Les chapitres 3 à 6 sont des contributions. Le chapitre 7 valide ces
-contributions par des expérimentations.
+Les chapitres 3 à 6 sont des contributions.
