@@ -36,10 +36,12 @@ pour~: développer un outillage \inenglish{open-source} mature et innovant,
 proposer une méthodologie \inenglish{open-source} documentant l'ensemble des
 processus de la qualification fonctionnelle et définir des normes et modèles
 permettant de mieux mesurer l'activité du test fonctionnel. Les travaux
-présentés dans ce mémoire ne s'inscrivent pas dans le même domaine que le projet
-Squash. Ces travaux se situent en amont de la chaîne de production. Le contexte
-scientifique de ce mémoire et les problématiques qui y sont développés sont liés
-aux savoir-faire et thématiques des équipes VESONTIO et CASSIS. \\
+présentés dans ce mémoire ne s'inscrivent pas dans la même thématique que le
+projet Squash. Ces travaux se situent en amont de la chaîne de production. Le
+contexte scientifique de ce mémoire et les problématiques qui y sont développés
+sont liés aux savoir-faire et thématiques des équipes VESONTIO et CASSIS. Les
+deux grandes thématiques sont la modélisation pour vérifier et valider, et la
+vérification et la validation symbolique et à contraintes. \\
 
 Informellement, un test est exécuté sur un Système Sous Test (\inenglish{System
 Under Test}, abrégé {\strong SUT}) et est composé de deux parties~:
@@ -50,25 +52,24 @@ Under Test}, abrégé {\strong SUT}) et est composé de deux parties~:
 
 \item un {\strong oracle}, permettant d'établir le verdict du test~: est-ce que
 le produit de l'exécution et l'état du SUT après son exécution sont ceux
-attendus ou non~?
+attendus ou non~? Les valeurs du verdict sont~: succès, échec ou inconclusif.
 
 \end{enumerate}
 
 Aujourd'hui, dans le monde industriel, la majorité des tests sont écrits
 {\strong manuellement}, par des ingénieurs de test. Un SUT leur est fourni, ils
-l'exécutent avec des données de test et calculent eux-mêmes le verdict du test.
-Dans le cas des tests {\strong automatisés}, l'exécution et le calcul du verdict
-sont faits par la machine. C'est le rôle qui incombe aux \inenglish{frameworks}
-«~xUnit~», comme JUnit~\acite{JUnit} pour Java, atoum~\acite{atoum} ou
-PHPUnit~\acite{PHPUnit} pour PHP, CUnit~\acite{CUnit} pour C etc. Le travail des
-ingénieurs de test peut se résumer à écrire une spécification exécutable,
-puisqu'ils transforment le cahier des charges en tests afin de valider le
-programme. Cela reste toutefois informel, et surtout, une tâche laborieuse.
-Pourquoi alors ne pas écrire une spécification formelle et la rendre
-exécutable~? C'est~à~dire utiliser un langage formel pour décrire le
-fonctionnement du programme, puis dériver, à partir de cette spécification, des
-tests qui soient exécutables et qui vont vérifier ou valider plusieurs aspects
-de cette spécification.
+l'exécutent avec des données de test et établissent eux-mêmes le verdict du
+test. Dans le cas des tests {\strong automatisés}, l'exécution du SUT et de
+l'oracle sont faites par la machine. C'est le rôle qui incombe aux
+\inenglish{frameworks} «~xUnit~», comme JUnit~\acite{JUnit} pour Java,
+atoum~\acite{atoum} ou PHPUnit~\acite{PHPUnit} pour PHP, CUnit~\acite{CUnit}
+pour C etc. Le travail des ingénieurs de test peut se résumer à transformer le
+cahier des charges en tests afin de valider le programme. Cela reste toutefois
+informel, et surtout, une tâche laborieuse. Pourquoi alors ne pas écrire une
+spécification formelle et la rendre exécutable~? C'est~à~dire utiliser un
+langage formel pour décrire le fonctionnement du programme, puis dériver, à
+partir de cette spécification, des tests qui soient exécutables et qui vont
+vérifier ou valider plusieurs aspects de cette spécification.
 
 \section{\inenglish{Behavioral Interface Specification Language}}
 
@@ -92,13 +93,10 @@ formelles} aident à rendre les spécifications non-ambiguës, moins dépendante
 des normes culturelles\footnote{Par exemple, une pinte représente $473$ml aux
 États-Unis d'Amérique, mais $586$ml en Angleterre.}, et ainsi moins sujettes à
 une mauvaise interprétation. Les langages de spécification sont conçus pour
-répondre à des problèmes généraux ou spécialisés. Les langages de spécification
-généraux, tels que Z~\acite{Spivey89} ou OCL~\acite{RichtersG98}, ne sont pas
-conçus pour une méthodologie particulière ou des outils de vérification.
-Cependant, les langages de spécification sont très souvent spécialisés, en
-fonction de la catégorie de problèmes ou langages qu'ils visent~: ensembliste,
-logique, typage statique et fort, ou dynamique et faible, orienté objet ou
-fonctionnel etc.
+répondre à des problèmes généraux ou spécialisés. Le plus souvent ils sont
+spécialisés, en fonction de la catégorie de problèmes ou langages qu'ils
+visent~: ensembliste, logique, typage statique et fort, ou dynamique et faible,
+orienté objet ou fonctionnel etc.
 
 Par ailleurs, puisqu'une notation est formelle, elle peut être exploitée par une
 machine pour y appliquer un traitement automatique. Les spécifications formelles
@@ -139,10 +137,10 @@ se situent nos contributions.
 
 Ce mémoire s'intéresse à la conformité entre un programme et sa spécification, à
 travers la création d'un nouveau langage de spécification simple, pragmatique
-pour le Web et les développeurs et assemblant plusieurs méthodes du test. Chaque
-méthode introduite se verra enrichie pour la rendre compatible avec les besoins
-liés au Web. Les parties suivantes expliquent notre motivation, le contexte et
-les enjeux.
+pour le Web et les développeurs, et assemblant plusieurs méthodes du test.
+Chaque méthode introduite se verra enrichie pour la rendre compatible avec les
+besoins liés au Web. Les parties suivantes expliquent notre motivation, le
+contexte et les enjeux.
 
 \subsection{\inenglish{PHP: Hypertext Preprocessor}}
 
@@ -161,9 +159,8 @@ langage «~glue~» (comme la majorité des langages de script), c'est~à~dire qu
 communique avec à peu près tout et est au centre de beaucoup de logiciels. La
 syntaxe du langage est inspirée de C, C++, Java ou encore Perl.  Depuis
 plusieurs années, le langage connaît des améliorations importantes afin de faire
-oublier les erreurs de conceptions passées qui lui sont trop souvent associées.
-Nous nous intéressons à des programmes écrits en PHP pour plusieurs raisons
-décrites dans cette partie et les suivantes.
+oublier les erreurs de conception passées qui lui sont trop souvent associées.
+Nous nous intéressons à des programmes écrits en PHP pour plusieurs raisons.
 
 Comparés à des langages plus traditionnels, comme C ou Java, les langages de
 scripts accélèrent le processus de développement grâce à la flexibilité qu'ils
@@ -267,78 +264,62 @@ Le langage de contrat que nous proposons s'appelle {\strong Praspel}~:
 contribution, présentée dans le chapitre~\ref{chapter:language}, s'intéresse au
 langage en lui-même, à savoir sa syntaxe et sa sémantique. Nous avons également
 étudié comment évaluer un contrat pour qu'il vérifie des données à l'exécution.
-Ce langage est inspiré de JML~\acite{JML} mais se différencie sur la façon de
-spécifier les données. En effet, il s'appuie en grande partie sur les {\strong
-domaines réalistes}, des structures permettant de valider et générer des données
-et pouvant être emboîtées afin de représenter des données plus complexes. Cette
-contribution, à savoir Praspel et les domaines réalistes, a été publiée
-dans~\acitei{EnderlinDGO11}.
+Ce langage est inspiré de JML~\acite{JML} (s'applique à Java) mais se
+différencie sur la façon de spécifier les données~: Java a un typage déclaré et
+fort, PHP a un typage dynamique et faible. Pour spécifier les données, Praspel
+s'appuie en grande partie sur les {\strong domaines réalistes}, des structures
+permettant de valider et générer des données et pouvant être emboîtées afin de
+représenter des données plus complexes. Cette contribution, à savoir Praspel et
+les domaines réalistes, a été publiée dans~\acitei{EnderlinDGO11}.
 
 \subsection{Générateurs de données}
 
 Un contrat peut être utilisé pour générer automatiquement des tests unitaires.
-Un test est constitué de trois parties~: un SUT, des données de test et un
-oracle. Cette contribution, présentée dans le chapitre~\ref{chapter:data},
-s'intéresse à générer des données de test. Ces données sont spécifiées au mieux
-par le contrat. Nous devons proposer des solutions capables de générer toutes
-sortes de données~: des booléens, des entiers, des réels, des chaînes de
-caractères, des tableaux, des objets etc. Les premières générations étaient
-aléatoires uniformes pour des booléens, des entiers et des réels. Toutefois,
-cette approche a rapidement montré ses limites avec des chaînes de caractères,
-des tableaux ou des objets. Nous avons proposé des algorithmes de génération de
-chaînes de caractères s'appuyant sur des grammaires. Ensuite, nous nous sommes
-concentrés sur les tableaux avec un solveur et des contraintes dédiées. Ces
-contributions ont donné lieu à deux publications, respectivement
-\acitei{EnderlinDGB12} et \acitei{EnderlinGB13}. Enfin, nous avons amélioré la
-génération des objets en combinant toutes ces approches.
+Un test est constitué de deux parties~: des données de test et un oracle. Cette
+contribution, présentée dans le chapitre~\ref{chapter:data}, s'intéresse à
+générer des données de test. Ces données sont spécifiées au mieux par le
+contrat. Nous devons proposer des solutions capables de générer toutes sortes de
+données~: des booléens, des entiers, des réels, des chaînes de caractères, des
+tableaux, des objets etc. Les premières générations étaient aléatoires uniformes
+pour des booléens, des entiers et des réels. Toutefois, cette approche a
+rapidement montré ses limites avec des chaînes de caractères, des tableaux ou
+des objets. Nous avons proposé des algorithmes de génération de chaînes de
+caractères s'appuyant sur des grammaires. Ensuite, nous nous sommes concentrés
+sur les tableaux avec un solveur et des contraintes dédiées. Ces contributions
+ont donné lieu à deux publications, respectivement \acitei{EnderlinDGB12} et
+\acitei{EnderlinGB13}. Enfin, nous avons amélioré la génération des objets en
+combinant toutes ces approches.
 
 \subsection{Critères de couverture des contrats}
 
 Cette dernière contribution, présentée dans le chapitre~\ref{chapter:tests},
-«~boucle la boucle~». Nous avons un langage de contrat qui peut être évalué pour
-valider et vérifier les données manipulées par le programme. Nous avons des
-algorithmes capables de générer automatiquement des données de test à partir
-d'un morceau d'un contrat. La dernière étape s'intéresse au fait qu'un contrat
-peut exprimer plusieurs comportements et nous devons nous assurer que tous ces
-comportements sont testés. Nous avons alors défini plusieurs critères de
-couverture sur les contrats afin d'avoir des objectifs de test à atteindre. Par
-conséquent, nous avons développé des algorithmes générant autant de tests
-unitaires que nécessaire pour satisfaire certains critères. Les données
-nécessaires pour exécuter ces tests seront générées automatiquement avec la
-contribution précédente. Cette contribution, accompagnée des contributions
+«~boucle la boucle~». D'une part, nous avons un langage de contrat qui peut être
+évalué pour valider et vérifier les données manipulées par le programme. D'autre
+part, nous avons des algorithmes capables de générer automatiquement des données
+de test à partir d'un morceau d'un contrat. La dernière étape s'intéresse au
+fait qu'un contrat peut exprimer plusieurs comportements et nous devons nous
+assurer que tous ces comportements sont testés. Nous avons alors défini
+plusieurs critères de couverture sur les contrats afin d'avoir des objectifs de
+test à atteindre.  Par conséquent, nous avons développé des algorithmes générant
+autant de tests unitaires que nécessaire pour satisfaire certains critères. Les
+données nécessaires pour exécuter ces tests seront générées automatiquement avec
+la contribution précédente. Cette contribution, accompagnée des contributions
 précédentes, ont été soumises au journal \inenglish{Software and Systems
 Modeling} (abrégé SoSyM) pour une édition spéciale sur les méthodes formelles
 intégrées.
 
 \section{Plan du mémoire}
 
-Ce mémoire s'articule en 8~chapitres plus annexes et bibliographie~:
-%
-\begin{enumerate}[$\mathrm{chapitre}$ 1,]
-
-\item contient ce chapitre, avec l'introduction, le contexte, la problématique
-et les contributions~;
-
-\item contient l'état de l'art nécessaire pour comprendre cette thèse et situer
-nos contributions~;
-
-\item présente les domaines réalistes ainsi que Praspel, au niveau syntaxique et
-sémantique~;
-
-\item présente les différents algorithmes et stratégies de génération de données
-de test~;
-
-\item présente les critères de couverture pour obtenir des objectifs de test à
-satisfaire afin de produire des tests unitaires pertinents~;
-
-\item décrit les outils développés durant ce mémoire ou les outils incluant nos
-travaux~;
-
-\item valide nos contributions à travers des expérimentations~;
-
-\item présente les conclusions de nos travaux et décrits plusieurs perspectives
-nous semblant pertinentes.
-
-\end{enumerate}
-%
-Les chapitres 3 à 6 sont des contributions.
+Ce mémoire s'articule en 8~chapitres plus annexes et bibliographie.  Le
+chapitre~1, ce chapitre, contient l'introduction, le contexte, la problématique
+et les contributions. Le chapitre~2 contient l'état de l'art nécessaire pour
+comprendre cette thèse et situer nos contributions. Les chapitres 3 à 5
+présentent nos contributions~: les domaines réalistes ainsi que Praspel, au
+niveau syntaxique et sémantiquen dans le chapitre~3, les différents algorithmes
+et stratégies de génération de données de test dans le chapitre~4 et les
+critères de couverture pour obtenir des objectifs de test à satisfaire afin de
+produire des tests unitaires pertinents dans le chapitre~5. Le chapitre~6 décrit
+les outils développés durant ce mémoire ou les outils incluant nos travaux. Le
+chapitre~7 valide nos contributions à travers des expérimentations. Et enfin, le
+chapitre~8 présente les conclusions de nos travaux et décrits plusieurs
+perspectives nous semblant pertinentes.
