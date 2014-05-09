@@ -11,16 +11,17 @@ avec les contraintes formelles suivantes~: des {\strong préconditions}, des
 {\strong postconditions} et des {\strong invariants}. Une précondition spécifie
 l'état du SUT (\inenglish{System Under Test}) avant son exécution. Une
 postcondition spécifie l'état du SUT après son exécution (et peu comparer cet
-état avec l'état précédent). Un invariant, quant à lui, est état-indépendant.
-Ces contraintes formelles sont aussi appelées des {\strong clauses}. Il est
-admis de dire qu'une clause contient des {\strong assertions}. Les contrats sont
-apparus dans le langage Eiffel~\acite{MeyerNM87}, basé sur le paradigme de la
-programmation orienté objet. Dans un tel contexte, les préconditions et
-postconditions portent sur les méthodes (aussi appelées procédures ou routines)
-et les invariants sur les classes (aussi appelés modules). D'autres usages des
-contrats ont été faits hors du paradigme de la programmation orientée objet, par
-exemple avec des fonctions d'ordre supérieur~\acite{FindlerF02}. Le
-\inenglish{Design by Contract} définit les critères de conformité suivants~:
+état avec l'état précédent). Un invariant, quant à lui, spécifie l'état du SUT
+avant et après son exécution.  Ces contraintes formelles sont aussi appelées des
+{\strong clauses}. Il est admis de dire qu'une clause contient des {\strong
+assertions}. Les contrats sont apparus dans le langage Eiffel~\acite{MeyerNM87},
+basé sur le paradigme de la programmation orienté objet. Dans un tel contexte,
+les préconditions et postconditions portent sur les méthodes (aussi appelées
+procédures ou routines) et les invariants sur les classes (aussi appelés
+modules). D'autres usages des contrats ont été faits hors du paradigme de la
+programmation orientée objet, par exemple avec des fonctions d'ordre
+supérieur~\acite{FindlerF02}. Le \inenglish{Design by Contract} définit les
+critères de conformité suivants~:
 %
 \begin{itemize}
 
@@ -78,7 +79,7 @@ rapide, mais il est nécessaire de s'assurer de la fiabilité du programme.
 
 \paragraph{JML} Le \inenglish{Java Modeling Language}~\acite{JML} est un langage
 de contrat pour Java~\acite{Java}. À l'inverse du langage Eiffel, JML est un
-langage d'annotation pour Java. Il utilise les mots-clés \code{requires} et
+langage d'annotations pour Java. Il utilise les mots-clés \code{requires} et
 \code{ensures} pour introduire les préconditions et les postconditions. Une
 postcondition exceptionnelle est introduite par le mot-clé \code{signals}. Les
 invariants de classe sont introduits par le mot-clé \code{invariant}, et les
@@ -146,16 +147,16 @@ spécifications.
 
 \paragraph{Spec\#} Le langage Spec\#~\acite{SpecSharp} permet de faire de la
 programmation par contrat pour C\#~\acite{CSharp}. Ce langage est très similaire
-à ACSL, avec toutefois moins de clauses. Les préconditions sont introduites avec
-le mot-clé \code{requires}, les postconditions avec le mot-clé \code{ensures}.
-De même, les invariants sont introduits avec le mot-clé \code{invariant}. En
-plus des quantificateurs \code{forall}, \code{exists} et \code{exists unique},
-Spec\# propose \code{sum}, \code{product}, \code{min} etc. Les assertions sont
-exprimées avec un langage proche de C\#, toujours pour ne pas perturber
-l'utilisateur, mais toutes les constructions de C\# ne sont pas présentes,
-seulement un sous-ensemble.  Par ailleurs, Spec\# enrichit le langage C\# en lui
-ajoutant des constructions permettant de vérifier l'absence ou la possible
-présence de valeurs nulles (avec \code{!} ou \code{?}).
+à JML ou ACSL, avec toutefois moins de clauses. Les préconditions sont
+introduites avec le mot-clé \code{requires}, les postconditions avec le mot-clé
+\code{ensures}.  De même, les invariants sont introduits avec le mot-clé
+\code{invariant}. Spec\# propose les quantificateurs \code{forall},
+\code{exists} et \code{exists unique}, \code{sum}, \code{product}, \code{min}
+etc. Les assertions sont exprimées avec un langage proche de C\#, toujours pour
+ne pas perturber l'utilisateur, mais toutes les constructions de C\# ne sont pas
+présentes, seulement un sous-ensemble. Par ailleurs, Spec\# enrichit le langage
+C\# en lui ajoutant des constructions permettant de vérifier l'absence ou la
+possible présence de valeurs nulles (avec \code{!} ou \code{?}).
 
 Tout comme ACSL, la vérification des contrats se fait statiquement, et non pas
 dynamiquement via un RAC. Contrairement à JML où les contrats sont transformés

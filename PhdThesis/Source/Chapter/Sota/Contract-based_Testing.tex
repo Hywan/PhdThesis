@@ -20,7 +20,7 @@ le verdict du test à l'exécution.
 %
 À partir d'une spécification formelle, sous la forme d'un contrat, il est
 possible de générer des suites de test automatiquement. Comme nous sommes au
-niveau du code source du programme, et plus précisément, sur les méthodes des
+niveau du code source du programme, et, plus précisément, sur les méthodes des
 classes (dans un contexte orienté objet), les tests seront {\strong unitaires}.
 
 Différents outils exploitant des contrats pour générer des suites de test sont
@@ -93,8 +93,8 @@ pour obtenir l'ensemble de tous les états concrets est possible. L'outil est
 également capable de vérifier les propriétés JML à la volée et d'afficher un
 contre-exemple si l'une d'entre elles est violée.
 
-Le générateur de test mélange les spécifications JML et le modèle. L'outil va
-tout d'abord extraire un ensemble de comportements (normaux et exceptionnels) à
+Le générateur de test se base sur les spécifications JML. L'outil va tout
+d'abord extraire un ensemble de comportements (normaux et exceptionnels) à
 partir de la spécification JML. Un comportement est représenté par un prédicat
 en forme disjonctive. Cet ensemble de comportements va être réduit en fonction
 du critère de couverture du modèle choisi par l'utilisateur. L'outil propose
@@ -107,7 +107,7 @@ l'un de ses attributs. Quand toutes les valeurs sont spécifiées, elles sont
 instanciées grâce à l'animateur symbolique et les tests peuvent être exécutés.
 
 \paragraph{TestEra} L'outil TestEra~\acite{MarinovK01} est un langage
-d'annotation de code Java. Ses préconditions, postconditions et invariants
+d'annotations de code Java. Ses préconditions, postconditions et invariants
 expriment des contraintes avec le langage Alloy~\acite{Jackson02}. Alloy est un
 langage de spécification déclaratif pour exprimer des contraintes structurelles
 complexes. Son objectif est d'instancier des micro-modèles, à l'aide de son
@@ -229,26 +229,7 @@ chaque construction du langage puisse être utilisée pour de la validation
 {\strong et} de la génération~: tout ce que l'utilisateur peut écrire doit
 fonctionner dans ces deux contextes. JSConTest montre que l'utilisation de
 contrats simples spécifiant le typage des données offrent déjà de bons
-résultats, mais l'expressivité qu'il offre est très faible comparé à JML.
+résultats, mais l'expressivité qu'il offre est très faible comparée à JML.
 Ainsi, Praspel doit spécifier plus que du typage simple et doit être capable de
 valider et générer des données de tout type, ou en tout cas, des types les plus
 manipulés par les développeurs au quotidien.
-
-%Le test à partir de contrat répond au constat suivant. La validation
-%dynamique souffre d'une limitation majeure~: elle fournit des résultats limités.
-%Les spécifications sont souvent vérifiées avec les données des exécutions
-%courantes et rarement de manière exhaustive. Ainsi, la validation dynamique
-%résulte souvent à une détection incomplète et tardive (potentiellement en
-%production) de défauts. Et pourtant, «~un test montre la présence, jamais
-%l'absence d'une erreur~» (Edsger W.~Dijkstra dans~\acitep{Buxton70}). Et un bon
-%test est un test qui échoue.  Pour savoir ce qu'est un «~bon test~», il existe
-%plusieurs métriques pour le qualifier~: les critères de couverture de
-%code~\acite{MillerM63, Myers04, GargantiniGM12}. Si plusieurs tests remplissent
-%les critères les plus élevés de la couverture de code, alors une importante
-%partie des erreurs serait détectée. Toutefois, il faut être conscient que ces
-%critères ne sont pas non plus exhaustives. En effet, ce n'est pas parce qu'un
-%test à activer tous les chemins que toutes les erreurs ont été évitées. De plus,
-%des erreurs peuvent se cacher dans l'environnement d'exécution du programme.
-%Notons que si nous travaillons en boîte noire, ces critères ne sont pas
-%appliquables, et nous pouvons uniquement nous référer aux postconditions des
-%contrats.

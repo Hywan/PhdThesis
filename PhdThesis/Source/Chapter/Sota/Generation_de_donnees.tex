@@ -25,14 +25,19 @@ gourmandes. D'autres techniques vont guider l'aléatoire afin de conserver un
 certain degré de non-déterminisme tout en respectant par exemple des critères de
 couverture.
 
-D'autres techniques travaillent à partir de solveurs de contraintes. Ces
-techniques explorent et analysent le code de manière symbolique et concrète afin
-de récolter un ensemble de contraintes. Ce dernier sera résolu afin de générer
-des données de test qui seront alors utilisées pour exécuter le programme. Le
-terme \inenglish{concolic} est la contraction de \inenglish{concrete} et
-\inenglish{symbolic} et désigne ce genre de technique.
+D'autres techniques travaillent de manière symbolique. Elles explorent et
+analysent le code de manière symbolique afin de constituer un système de
+contraintes. Ce dernier sera résolu à l'aide de solveurs de contraintes pour
+vérifier la consistence du code. Il est possible d'alterner une exécution
+symbolique avec une exécution concrète~: le système de contraintes est résolu
+pour produire des données, qui sont utilisées pour exécuter le programme. Cette
+nouvelle exécution va permettre de constituer un nouveau système de contraintes.
+Le terme \inenglish{concolic} est la contraction de \inenglish{concrete} et
+\inenglish{symbolic} et désigne ce genre de technique qui effectue des
+allers-retours entre une exécution symbolique et concrète.
 
-Nous présentons quelques outils qui adoptent ces techniques.
+Nous présentons quelques outils qui adoptent des approches symboliques et
+\inenglish{concolic}.
 
 \paragraph{EXE} \inenglish{EXecution generated Executions}, abrégé
 EXE~\acite{CadarGPDE06, CadarGPDE08}, est un outil d'exécution symbolique pour
@@ -223,8 +228,8 @@ Web pour représenter toutes sortes de collections ou organiser de manière
 structurelles des informations. Plusieurs solveurs supportent les tableaux en
 plus d'autres données, comme c'est le cas de STP (pour EXE et KLEE), Colibri
 (pour PathCrawler), Alcoa (pour Alloy), le solveur de l'outil Euclide etc.
-Toutefois, nous pouvons citer {\scshape fdcc} qui est un solveur dédié au
-tableau uniquement.
+Toutefois, nous pouvons citer {\scshape fdcc} qui est un solveur dédié
+uniquement au tableau.
 
 {\scshape fdcc}~\acite{BardinG12} est un solveur pour les tableaux avec
 contraintes sur des domaines finis. Les auteurs font le constat que les tableaux
