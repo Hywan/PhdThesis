@@ -119,8 +119,8 @@ valider qu'un programme fait bien ce que nous souhaitons. Les erreurs à
 l'exécution (comme des pointeurs nuls, des dépassements de tableaux, de tampons
 etc.) seront détectées, mais rien ne nous assure que le programme est correct
 par rapport à une spécification. Cependant, des travaux mélangent les exécutions
-symboliques ou concrètes avec les contrats, comme c'est le cas de {\scshape
-sante} ou Euclide.
+symboliques ou concrètes de code avec les contrats, comme c'est le cas de
+{\scshape sante} ou Euclide.
 
 \paragraph{\scshape sante} Les outils de test \inenglish{concolic} sont
 efficaces pour valider des programmes mais passent difficilement à l'échelle sur
@@ -152,8 +152,8 @@ programme. L'objectif est de mélanger les techniques pour dépasser la limite d
 chacune et ainsi, de générer des données permettant de satisfaire plus de
 critères de couverture de code. Optionellement, Euclide peut utiliser des
 contrats écrits en ACSL pour exprimer des préconditions et des postconditions.
-Dans ce cas, Euclide est capable de prouver que les contrats sont valides et
-conformes par rapport au programme.
+Dans ce cas, Euclide est capable de prouver que le programme est valide et
+conforme par rapport aux contrats.
 
 \subsection{Données générées}
 
