@@ -24,9 +24,9 @@ Language} ({\strong BISL}) basé sur les contrats. Un contrat est un modèle du
 comportement du code, décrit à travers des contraintes formelles, appelées
 clauses, comme les préconditions, les postconditions et les invariants. Ces
 contraintes sont généralement localisées dans le code source autour des données.
-Dans le cas de Praspel, les invariants sont localisés sur les attributs des
-classes et les préconditions et postconditions sont localisées sur les
-paramètres des méthodes. La sémantique d'un contrat est la suivante~:
+Dans le cas de Praspel, les invariants référencent les attributs des classes et
+les préconditions et postconditions référencent les paramètres des méthodes et
+les attributs des classes. La sémantique d'un contrat est la suivante~:
 
 \begin{itemize}
 
@@ -454,13 +454,14 @@ prédicabilité et de générabilité des domaines réalistes. Chaque concept
 introduit dans le langage doit supporter ces deux aspects. Mais il arrive qu'il
 soit impossible d'exprimer certaines contraintes avec les constructions
 actuelles. C'est pourquoi nous avons la construction «~boîte noire~» \apred{p},
-où $p$ est du code PHP. Cette construction permet à l'utilisateur d'exprimer des
-contraintes arbitraires en utilisant PHP lui-même au lieu de Praspel. Le code
-$p$ doit être un prédicat en forme normale {\strong conjonctive} (CNF). La
-construction \apred{p} supporte la validation mais pas la génération. Toutes les
-variables présentes dans $p$ doivent avoir un domaine réaliste associée (en
-dehors de la construction \apred{p}). Le prédicat
-\code{\bslash{}pred('\$this->getUsage() + \$file->getSize()
+où $p$ est du code PHP, pouvant contenir les constructions \aresult et \aold{i}.
+Cette construction \apred{p} permet à l'utilisateur d'exprimer des contraintes
+arbitraires en utilisant PHP lui-même au lieu de Praspel. Le code $p$ doit être
+un prédicat en forme normale {\strong conjonctive} (CNF). La construction
+\apred{p} supporte la validation mais pas la génération. Toutes les variables
+présentes dans $p$ doivent avoir un domaine réaliste associée (en dehors de la
+construction \apred{p}). Le prédicat \code{\bslash{}pred('\$this->getUsage() +
+\$file->getSize()
 > static::SIZE')} dans la figure~\ref{figure:language:short_contract} signifie
 que s'il n'y a plus de place pour ajouter un nouveau fichier, alors cette partie
 de la précondition est satisfaite.
@@ -492,8 +493,11 @@ page~\pageref{section:data:arrays}.
 \subsubsection{Qualifications}
 
 Praspel permet de qualifier une donnée en utilisant le mot-clé \code{is} suivi
-d'une liste d'adjectifs. Un exemple de qualification est présenté dans la
-partie~\ref{section:data:arrays} page~\pageref{section:data:arrays}.
+d'une liste d'adjectifs. Par exemple, dans le cas d'un tableau \code{a}, nous
+pouvons lui attribuer les adjectifs \code{a is unique, sorted} pour préciser que
+toutes ces valeurs sont uniques et triées. Un exemple de qualification est
+présenté dans la partie~\ref{section:data:arrays}
+page~\pageref{section:data:arrays}.
 
 \subsubsection{Identifiants}
 
@@ -547,23 +551,23 @@ utilisée.
 \subsection{Description de tableaux}
 \label{subsection:language:array}
 
-La description de tableaux est une partie très importante de Praspel.
+La description de tableaux est une partie très importante de Praspel. \\
 
-Pour mémoire, dans PHP, un tableau est toujours un {\strong tableau associatif}
-(ou une \inenglish{map}, un dictionnaire), \ie une collection de paires
-clé-valeur, où chaque clé apparaît au maximum une fois. Les clés peuvent être de
-type nul, booléen, entier, réel ou chaîne de caractères. PHP accepte ces types
-de clés mais les booléens sont transtypés en entier et les réels sont réduits à
-leur partie entière. Les valeurs quant à elles peuvent être de n'importe quel
-type. Un tableau peut être {\strong homogène} ou {\strong hétérogène}. Dans un
-tableau homogène, toutes les clés ont le même type, ainsi que toutes les
-valeurs. Dans un tableau hétérogène, les clés peuvent avoir des types distincts,
-tout comme les valeurs. Les clés peuvent être auto-incrémentées, en ajoutant 1 à
-la dernière clé entière, à partir de 0. La longueur (ou la taille) d'un tableau
-est son nombre de paires. Un tableau n'a pas de longueur prédéfinie, mais sa
+Dans PHP, un tableau est toujours un {\strong tableau associatif} (ou une
+\inenglish{map}, un dictionnaire), \ie une collection de paires clé-valeur, où
+chaque clé apparaît au maximum une fois. Les clés peuvent être de type nul,
+booléen, entier, réel ou chaîne de caractères. PHP accepte ces types de clés
+mais les booléens sont transtypés en entier et les réels sont réduits à leur
+partie entière. Les valeurs quant à elles peuvent être de n'importe quel type.
+Un tableau peut être {\strong homogène} ou {\strong hétérogène}. Dans un tableau
+homogène, toutes les clés ont le même type, ainsi que toutes les valeurs. Dans
+un tableau hétérogène, les clés peuvent avoir des types distincts, tout comme
+les valeurs. Les clés peuvent être auto-incrémentées, en ajoutant 1 à la
+dernière clé entière, à partir de 0. La longueur (ou la taille) d'un tableau est
+son nombre de paires. Un tableau n'a pas de longueur prédéfinie, mais sa
 longueur (stockée en interne par le moteur PHP) peut être connue grâce à la
 fonction PHP \code{count()}. Un tableau n'a également pas de profondeur
-prédéfinie, \ie il peut contenir un nombre arbitraire de sous-tableaux.
+prédéfinie, \ie il peut contenir un nombre arbitraire de sous-tableaux. \\
 
 Dans Praspel, \code{array($D$, $L$)} dénote le domaine réaliste des tableaux
 dont les domaines et codomaines sont décrits par $D$ et dont la longueur
@@ -599,7 +603,7 @@ alors que \code{a3} ne peut pas la contenir.
 \end{example}
 
 Dans la figure~\ref{figure:language:short_contract}, l'attribut \code{\_map} est
-spécifié comme un tableau d'objets \code{File} d'une longueur de 0 et 65535,
+spécifié comme un tableau d'objets \code{File} d'une longueur de 0 à 65535,
 avec~:
 %
 \begin{pre}
@@ -611,12 +615,13 @@ dans les descriptions des paires, en appliquant itérativement la règle de
 réécriture suivante~:
 %
 \begin{center}
-\begin{tabular}{cl}
-& \code{from $F_1$ or $F_2$ to $T_1$ or $T_2$} \\
-$\longrightarrow$ & \code{from $F_1$ to $T_1$,} \\
-& \code{from $F_1$ to $T_2$,} \\
-& \code{from $F_2$ to $T_1$,} \\
-& \code{from $F_2$ to $T_2$}
+\begin{tabular}{rcl}
+\code{from $F_1$ or $F_2$ to $T_1$ or $T_2$} &
+  $\longrightarrow$ &
+  \code{from $F_1$ to $T_1$,} \\
+& & \code{from $F_1$ to $T_2$,} \\
+& & \code{from $F_2$ to $T_1$,} \\
+& & \code{from $F_2$ to $T_2$}
 \end{tabular}
 \end{center}
 %

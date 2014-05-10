@@ -8,12 +8,13 @@ que nous pouvons comprendre comme types déclarés syntaxiquement ou calculés l
 de la compilation ou de l'exécution. Dans tous les cas, le type d'une donnée est
 connu au moment de l'exécution du programme. Le typage permet de {\strong
 vérifier} la cohérence entre les données manipulées. Ainsi, la plupart des
-systèmes de typage ne permettent pas l'addition d'une chaîne de caractères avec
-un entier, sauf si ce système est dit faible. Prenons l'exemple de PHP qui a un
-système de typage dynamique (déduit à l'exécution) et faible~: l'addition de la
-chaîne de caractères \code{'1.2'} avec l'entier \code{4} produit le réel
-\code{5.2}. Dans ce cas, le langage opère un transtypage, c'est~à~dire qu'à
-partir de règles internes il transforme les données vers un autre type.
+systèmes de typage ne permettent pas la soustraction d'une chaîne de caractères
+avec un entier, sauf si ce système est dit faible. Prenons l'exemple de PHP qui
+a un système de typage dynamique (déduit à l'exécution) et faible~: la
+soustraction de l'entier \code{4} avec la chaîne de caractères \code{'1.2'}
+produit le réel \code{2.8}. Dans ce cas, le langage opère implicitement un
+transtypage, c'est~à~dire qu'à partir de règles internes il transforme les
+données vers un autre type.
 
 Notons que dans un langage comme PHP où les types ne sont pas déclarés
 syntaxiquement, il est culturellement admis d'écrire une documentation API qui
@@ -77,12 +78,12 @@ orienté objet, nous pouvons appliquer de l'{\strong héritage}. Par conséquent
 un domaine réaliste enfant peut hériter et raffiner les propriétés de son
 parent. Par exemple, le domaine réaliste \code{Color} (qui représente des
 couleurs) hérite de \code{String} (qui représente des chaînes de caractères), et
-\code{Boundinteger} (qui représente des intervalles d'entiers) hérite de
-\code{Integer} (qui représente l'ensemble des entiers de la machine). Tous les
-domaines réalistes doivent être enfants de la classe \code{Realdom}, qui assure
-le fonctionnement des domaines réalistes (en proposant plusieurs fonctionnalités
-usuelles et partagées, comme la gestion des paramètres, des arguments, du
-générateur numérique etc.).
+le domaine réaliste \code{Boundinteger} (qui représente des intervalles
+d'entiers) hérite de \code{Integer} (qui représente l'ensemble des entiers de la
+machine). Tous les domaines réalistes doivent hériter de la classe
+\code{Realdom}, qui assure le fonctionnement des domaines réalistes (en
+proposant plusieurs fonctionnalités usuelles et partagées, comme la gestion des
+paramètres, des arguments, du générateur numérique etc.).
 
 \begin{figure}
 \begin{bigpre}
