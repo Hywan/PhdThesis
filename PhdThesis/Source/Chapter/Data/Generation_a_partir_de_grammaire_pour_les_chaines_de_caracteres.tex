@@ -162,12 +162,12 @@ par une règle de production, préfixée par des caractères blancs horizontaux
 types de constructions. La construction \code{::$t$::} signifie que le lexème
 $t$ ne sera pas conservé à la fin du processus de compilation (détaillé
 ci-après), contrairement à la construction \code{<$t$>}. La construction
-\code{$r$()} représente un appel à une règle $r$. Évidemment, nous pouvons avoir
-des appels récursifs. Les opérations de répétition sont classiques: \code{\{$x$,
-$y$\}} pour répéter le motif de $x$ à $y$ fois, \code{?} est identique à
-\code{\{0, 1\}}, \code{+} à \code{\{1, \}}, \code{*} à \code{\{0, \}}. Quand $y$
-est vide, cela signifie l'infini. Les disjonctions sont représentées par le
-symbole \code{\mvert} et le groupement par \code{(} et \code{)}. La construction
+\code{$r$()} représente un appel à une règle $r$. Nous pouvons avoir des appels
+récursifs. Les opérations de répétition sont classiques: \code{\{$x$, $y$\}}
+pour répéter le motif de $x$ à $y$ fois, \code{?} est identique à \code{\{0,
+1\}}, \code{+} à \code{\{1, \}}, \code{*} à \code{\{0, \}}. Quand $y$ est vide,
+cela signifie l'infini. Les disjonctions sont représentées par le symbole
+\code{\mvert} et le groupement par \code{(} et \code{)}. La construction
 \code{\#$n$} (parfois utilisé comme nom de règle), avec $n$ un identifiant, est
 utile pour la fin du processus de compilation, comme nous le verrons dans la
 partie suivante.
@@ -283,13 +283,13 @@ syntaxique.
 
 Nous expliquons le fonctionnement de l'analyseur lexical par l'algorithme de la
 figure~\ref{figure:data:algo_lexer}. À partir d'une donnée textuelle (le mot
-$\avar{word}$), nous allons calculer une séquence $\avar{sequence}$ de lexèmes .
+$\avar{word}$), nous allons calculer une séquence $\avar{sequence}$ de lexèmes.
 Nous allons appliquer (ligne 10) toutes les expressions régulières
 $\avar{regex}$ des lexèmes de l'espace de noms courant
 $\avar{tokens[namespace]}$ les uns après les autres sur le mot (ligne 11)
 jusqu'à trouver un lexème valide (reconnaissant un sous-mot à la position
 $\avar{offset}$). Quand un lexème est trouvé, nous lui associons certaines
-données, comme son nom $\avar{name}$, sa valeur $\avar{value}$, sa position
+informations, comme son nom $\avar{name}$, sa valeur $\avar{value}$, sa position
 $\avar{offset}$ et son espace de noms $\avar{namespace}$ (ligne 12). Ensuite,
 nous mettons à jour l'espace de noms courant à partir de l'espace de noms
 sortant $\avar{namespaceOut}$ du lexème~: soit un nom d'espace, soit le mot-clé
@@ -412,7 +412,7 @@ abstrait de la donnée \code{<a x="y"><b />\-<c>foo\-</c>\-</a>}.}
 \end{figure}
 %
 Un AST est une structure récursive. Nous pouvons lui appliquer un {\strong
-visiteur}~\acite{design-patterns}. Ce \inenglish{design-pattern} permet à
+visiteur}~\acite{design-patterns}. Ce patron de conception permet à
 l'utilisateur d'appliquer des traitements supplémentaires~: des contraintes qui
 ne peuvent pas être représentées par la grammaire, comme par exemple une
 vérification de typage. \\
@@ -442,9 +442,9 @@ données.}
 
 \end{figure}
 %
-Ainsi, ils vont générer différentes séquences de lexèmes à partir d'une
-grammaire. Ces lexèmes vont être concrétisés pour obtenir une donnée
-textuelle. L'algorithme de concrétisation est présenté à la fin de la partie.
+Ils vont générer différentes séquences de lexèmes à partir d'une grammaire. Ces
+lexèmes vont être concrétisés pour obtenir une donnée textuelle. L'algorithme de
+concrétisation est présenté à la fin de la partie.
 
 Pour générer des séquences de lexèmes, les algorithmes vont explorer les règles
 de la grammaire selon différentes contraintes~: la taille de la séquence, la
@@ -454,6 +454,8 @@ demi-douzaine d'ingénieurs de test qualifiés, ajoutée à notre propre expéri
 Certains souhaitaient des données de taille fixe ou bornée, d'autres insistaient
 sur la diversité des données, ou encore sur la quantité avec par exemple de
 l'exhaustivité.
+
+Nous présentons trois algorithmes qui implémentent ces solutions.
 
 \subsubsection{Génération aléatoire uniforme}
 \label{subsection:data:random_uniform_generation}
@@ -640,15 +642,14 @@ Et ainsi de suite.
 
 \end{example}
 
-Cet algorithme est efficace comparé aux autres pour calculer des petites
-séquences de taille fixe avec beaucoup de diversité dans les résultats
-(puisqu'aléatoire). Toutefois, la complexité de l'étape du dénombrement avec la
-fonction $\psi$ est quadratique~: $\m{O}(n^2)$. Et malgré l'utilisation
-d'heuristiques inspirées de la programmation dynamique, pour une valeur de $n >
-10$, au moins 2~heures de calcul sont nécessaires. Ce problème ne concerne que
-la première étape de l'algorithme, car l'étape de génération a une complexité
-linéaire $\m{O}(n)$~: la génération d'une séquence est la plus rapide de tous
-les algorithmes.
+Cet algorithme est efficace pour calculer des petites séquences de taille fixe
+avec beaucoup de diversité dans les résultats (puisqu'aléatoire). Toutefois, la
+complexité de l'étape du dénombrement avec la fonction $\psi$ est quadratique~:
+$\m{O}(n^2)$. Et malgré l'utilisation d'heuristiques inspirées de la
+programmation dynamique, pour une valeur de $n > 10$, au moins 2~heures de
+calcul sont nécessaires. Ce problème ne concerne que la première étape de
+l'algorithme, car l'étape de génération a une complexité linéaire $\m{O}(n)$~:
+la génération d'une séquence est la plus rapide de tous les algorithmes.
 
 \subsubsection{Génération exhaustive bornée}
 \label{subsection:data:bounded_exhaustive_generation}
@@ -983,8 +984,9 @@ visualisation graphique d'expressions régulières, réalisé avec notre compila
 et notre grammaire des PCRE. \\
 
 Nous n'avons vu que très peu de constructions qu'offre la syntaxe PCRE, mais il
-est possible d'exprimer des choses bien plus complexes. Nous vous encourageons à
-lire le manuel~\acite{Hazel05}, le langage est très riche.
+est possible d'exprimer des choses bien plus complexes. Le lecteur intéressé
+pourra trouver plus de détails sur ce très riche langage dans le manuel des
+PCRE~\acite{Hazel05}.
 
 \subsubsection{Domaines réalistes \code{Grammar} et \code{Regex}}
 
@@ -1061,4 +1063,8 @@ avec la syntaxe simplifiée, nous aurions~:
 
 \end{example}
 
-La partie suivante s'intéresse à la génération d'objets.
+Les parties précédentes expliquent comment générer des données scalaires, telles
+que des booléens, des entiers, réels ou chaînes, et aussi des données plus
+complexes, telles que des tableaux. Nous allons à présent décrire comment
+générer des objets, puisque le paradigme le plus utilisé en PHP5\footnote{Sorti
+en juillet 2004.} est l'objet.

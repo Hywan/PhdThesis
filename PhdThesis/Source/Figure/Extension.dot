@@ -3,14 +3,14 @@ digraph {
     node  [style="state", width=1.0];
 
     subgraph {
-        a -> b   [style=invis];
-        b -> SUT [style=invis];
+        model -> b   [style=invis];
+        b     -> SUT [style=invis];
     }
 
     subgraph {
-        model     -> suite     [label=" ", texlbl="\begin{tabular}{c}génération\\de tests\end{tabular}"];
-        suite     -> extension [label=" ", texlbl="sélection"                                          ];
-        extension -> reports   [label=" ", texlbl="exécution"                                          ];
+        generator -> suite;
+        suite     -> extension;
+        extension -> reports [label=" ", texlbl="exécution"];
     }
 
     subgraph {
@@ -20,15 +20,17 @@ digraph {
 
     edge  [constraint=false];
 
-    SUT  -> extension;
-    data -> extension;
+    model -> generator;
+    SUT   -> extension;
+    data  -> extension;
 
-    model     [label=" ", texlbl="\tikzref{boxextom}modèle objet"                ];
-    suite     [label=" ", texlbl="\begin{tabular}{c}suite de\\tests\end{tabular}"];
-    SUT       [label=" ", texlbl="\tikzref{boxextsut}SUT"                        ];
-    data      [label=" ", texlbl="données"                                       ];
-    extension [label=" ", texlbl="atoum"                                         ];
-    reports   [style="accepting", label=" ", texlbl="rapports"                   ];
+    model     [label=" ", texlbl="\tikzref{boxextom}modèle objet"                    ];
+    generator [label=" ", texlbl="générateur de tests", shape=rect, style="rectangle"];
+    suite     [label=" ", texlbl="\begin{tabular}{c}suite de\\tests\end{tabular}"    ];
+    SUT       [label=" ", texlbl="\tikzref{boxextsut}SUT"                            ];
+    data      [label=" ", texlbl="données"                                           ];
+    extension [label=" ", texlbl="atoum", shape=rect, style="rectangle"              ];
+    reports   [style="accepting", label=" ", texlbl="rapports"                       ];
 
     a [style=invis];
     b [style=invis];

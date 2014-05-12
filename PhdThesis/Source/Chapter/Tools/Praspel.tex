@@ -312,8 +312,9 @@ la valeur de la variable \code{\$praspel}. Cet exemple nous permet également
 d'avoir un aperçu de l'API du modèle objet~: elle se veut simple et la plus
 compréhensible possible. Une spécification est instanciée. Sur cette
 spécification, la clause \arequires est obtenue pour y déclarer une variable
-\code{i} dont les valeurs sont décrites par (ou présentes dans, \code{->in}) la
-disjonction de domaines réalistes, créée à l'aide de la fonction \code{realdom}.
+\code{i} dont les valeurs sont décrites par (ou présentes dans, traduit par
+\code{->in}) la disjonction de domaines réalistes, créée à l'aide de la fonction
+\code{realdom}.
 
 \end{example}
 
@@ -328,7 +329,7 @@ fait comparable à un \inenglish{pretty-printer}.
 
 \begin{example}[Désassembler un modèle objet]
 
-Ainsi, en réutilisant la variable \code{\$model} des exemples précédents~:
+En réutilisant la variable \code{\$model} des exemples précédents~:
 %
 \begin{pre}
 \$disassembler = new Hoa\bslash{}Praspel\bslash{}Visitor\bslash{}Praspel(); \\
@@ -417,7 +418,8 @@ d'une \inenglish{precondition failure} à un niveau supérieur.
 %
 Ces erreurs sont inspirées de JML~\acite{JML} et de son RAC~\acite{CheonL02}.
 Le test réussit si aucune erreur Praspel n'est détectée. Autrement, il échoue,
-et l'erreur est consignée avec des informations supplémentaires.
+et l'erreur est consignée avec des informations supplémentaires, comme le numéro
+de ligne du contrat, du fichier, l'assertion qui a échoué etc.
 
 \begin{example}[Évaluer un modèle objet]
 

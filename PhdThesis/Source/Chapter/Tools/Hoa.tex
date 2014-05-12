@@ -13,8 +13,9 @@ distribution et de compatibilité.
 
 \paragraph{Intégration dans une communauté} Hoa est impliqué dans plusieurs
 consortiums ou groupes de décision concernant plusieurs standards de
-l'Informatique ou du Web. Par conséquent, il est plus facile d'écrire, de
-maintenir et d'assurer la qualité des programmes constituant Praspel.
+l'Informatique ou du Web. Par conséquent, les bibliothèques et outils que nous
+allons utiliser pour construire Praspel nous permettront de mieux le maintenir
+et d'en assurer une meilleure qualité.
 
 \paragraph{Connaissance des besoins} Grâce à ce projet, il est possible d'avoir
 une meilleure connaissance des besoins des utilisateurs finaux, à savoir les
@@ -138,11 +139,11 @@ page~\pageref{subsection:language:realdom:hierarchy}).
     \item \code{Regex}, représentant les chaînes de caractères spécifiées par une
     expression régulière~;
 
-    \item \code{Smallfloat}, représentant des petits réels entre $-128.0$ et
-    $127.0$~;
+    \item \code{Smallfloat}, représentant des petits réels entre -128.0 et
+    127.0~;
 
-    \item \code{Smallinteger}, représentant des petits entiers entre $-128$ et
-    $127$~;
+    \item \code{Smallinteger}, représentant des petits entiers entre -128 et
+    127~;
 
     \item \code{Timestamp}, représentant des valeurs dans le temps, en secondes
     depuis l'\inenglish{Unix Epoch}~;
@@ -316,7 +317,7 @@ page~\pageref{subsection:data:isotropic_generation}. Enfin, la variable
 variables sont distribuées sur le générateur exhaustif borné~: les analyseurs en
 \circled{1}, le générateur de valeurs pour les lexèmes en \circled{2} et la
 taille maximum de la séquence en \circled{3}. Ce générateur fonctionne comme un
-itérateur~: chaque donnée est calculée au besoin. En PHP, le meilleur moyen
+itérateur~: chaque donnée est calculée à la demande. En PHP, le meilleur moyen
 d'exploiter un itérateur est d'utiliser la boucle \code{foreach}, qui permet de
 parcourir une structure \inenglish{traversable}, dont les itérateurs.  La
 variable \code{\$i} contient le numéro de la donnée et \code{\$data} contient

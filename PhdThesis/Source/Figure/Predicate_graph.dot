@@ -1,0 +1,12 @@
+digraph {
+    graph [rankdir=LR];
+    node [shape=circle, width=.5, fixedsize=true];
+
+    pre -> v_1 [label=" ", texlbl="\code{\$a}"];
+    pre -> v_1 [label=" ", texlbl="\code{\$b}"];
+    v_1 -> v_2 [label=" ", texlbl="\code{\$c}"];
+    v_1 -> v_2 [label=" ", texlbl="\code{\$d}"];
+
+    pre [label=" ", texlbl="$\mathit{pred}$", style="state,initial"];
+    v_2 [style="state,accepting"];
+}

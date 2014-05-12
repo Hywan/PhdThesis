@@ -1,53 +1,59 @@
 %%
 \pgfsetcolor{dot}
   % Edge: SUT -> extension
-  \draw [->] (389bp,143.86bp) .. controls (389bp,135.27bp) and (389bp,126.68bp)  .. (389bp,108bp);
+  \draw [->] (273bp,143.95bp) .. controls (273bp,135.41bp) and (273bp,126.86bp)  .. (273bp,108.28bp);
   % Edge: suite -> extension
-  \draw [->] (280.35bp,90bp) .. controls (299.08bp,90bp) and (322.31bp,90bp)  .. (352.56bp,90bp);
-  \pgfsetstrokecolor{dotstroke}
-  \draw (313bp,99.5bp) node {sélection};
+  \draw [->] (212.1bp,90bp) .. controls (216.75bp,90bp) and (221.56bp,90bp)  .. (236.72bp,90bp);
+  % Edge: generator -> suite
+  \draw [->] (113.54bp,90bp) .. controls (118.79bp,90bp) and (124.1bp,90bp)  .. (139.7bp,90bp);
+  % Edge: model -> generator
+  \draw [->] (61bp,143.95bp) .. controls (61bp,135.41bp) and (61bp,126.86bp)  .. (61bp,108.28bp);
   % Edge: data -> extension
-  \draw [->] (389bp,36bp) .. controls (389bp,44.591bp) and (389bp,53.183bp)  .. (389bp,71.859bp);
-  % Edge: model -> suite
-  \draw [->] (122.02bp,90bp) .. controls (146.74bp,90bp) and (174.89bp,90bp)  .. (207.95bp,90bp);
-  \draw (165bp,108bp) node {\begin{tabular}{c}génération\\de tests\end{tabular}};
+  \draw [->] (273bp,36bp) .. controls (273bp,44.591bp) and (273bp,53.183bp)  .. (273bp,71.859bp);
   % Edge: extension -> reports
-  \draw [->] (425.21bp,90bp) .. controls (445.14bp,90bp) and (470.27bp,90bp)  .. (501.82bp,90bp);
-  \draw (467bp,99.5bp) node {exécution};
+  \draw [->] (309.21bp,90bp) .. controls (329.14bp,90bp) and (354.27bp,90bp)  .. (385.82bp,90bp);
+  \pgfsetstrokecolor{dotstroke}
+  \draw (351bp,99.5bp) node {exécution};
+  % Node: generator
+\begin{scope}
+  \pgfsetstrokecolor{dotstroke}
+  \draw [rectangle] (114bp,108bp) -- (9bp,108bp) -- (9bp,72bp) -- (114bp,72bp) -- cycle;
+  \draw (61bp,90bp) node {générateur de tests};
+\end{scope}
   % Node: extension
 \begin{scope}
   \pgfsetstrokecolor{dotstroke}
-  \draw [state] (389bp,90bp) ellipse (36bp and 18bp);
-  \draw (389bp,90bp) node {atoum};
+  \draw [rectangle] (309bp,108bp) -- (237bp,108bp) -- (237bp,72bp) -- (309bp,72bp) -- cycle;
+  \draw (273bp,90bp) node {atoum};
 \end{scope}
   % Node: reports
 \begin{scope}
   \pgfsetstrokecolor{dotstroke}
-  \draw [accepting] (538bp,90bp) ellipse (36bp and 18bp);
-  \draw (538bp,90bp) node {rapports};
+  \draw [accepting] (422bp,90bp) ellipse (36bp and 18bp);
+  \draw (422bp,90bp) node {rapports};
 \end{scope}
   % Node: SUT
 \begin{scope}
   \pgfsetstrokecolor{dotstroke}
-  \draw [state] (389bp,162bp) ellipse (43bp and 18bp);
-  \draw (389bp,162bp) node {\tikzref{boxextsut}SUT};
+  \draw [state] (273bp,162bp) ellipse (43bp and 18bp);
+  \draw (273bp,162bp) node {\tikzref{boxextsut}SUT};
 \end{scope}
   % Node: suite
 \begin{scope}
   \pgfsetstrokecolor{dotstroke}
-  \draw [state] (244bp,90bp) ellipse (36bp and 19bp);
-  \draw (244bp,90bp) node {\begin{tabular}{c}suite de\\tests\end{tabular}};
+  \draw [state] (176bp,90bp) ellipse (36bp and 19bp);
+  \draw (176bp,90bp) node {\begin{tabular}{c}suite de\\tests\end{tabular}};
 \end{scope}
   % Node: model
 \begin{scope}
   \pgfsetstrokecolor{dotstroke}
-  \draw [state] (61bp,90bp) ellipse (61bp and 18bp);
-  \draw (61bp,90bp) node {\tikzref{boxextom}modèle objet};
+  \draw [state] (61bp,162bp) ellipse (61bp and 18bp);
+  \draw (61bp,162bp) node {\tikzref{boxextom}modèle objet};
 \end{scope}
   % Node: data
 \begin{scope}
   \pgfsetstrokecolor{dotstroke}
-  \draw [state] (389bp,18bp) ellipse (36bp and 18bp);
-  \draw (389bp,18bp) node {données};
+  \draw [state] (273bp,18bp) ellipse (36bp and 18bp);
+  \draw (273bp,18bp) node {données};
 \end{scope}
 %

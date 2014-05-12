@@ -1,9 +1,9 @@
 %%
 \pgfsetcolor{dot}
   % Edge: data -> RAC
-  \draw [->] (97.642bp,32.471bp) .. controls (116.25bp,40.026bp) and (139bp,49.264bp)  .. (167.28bp,60.744bp);
+  \draw [->] (97.642bp,32.471bp) .. controls (113.87bp,39.061bp) and (133.25bp,46.93bp)  .. (159.72bp,57.676bp);
   % Edge: model -> RAC
-  \draw [->] (97.642bp,111.53bp) .. controls (116.25bp,103.97bp) and (139bp,94.736bp)  .. (167.28bp,83.256bp);
+  \draw [->] (97.642bp,111.53bp) .. controls (113.87bp,104.94bp) and (133.25bp,97.07bp)  .. (159.72bp,86.324bp);
   % Edge: RAC -> verdict
   \draw [->] (232.18bp,72bp) .. controls (256.61bp,72bp) and (289.37bp,72bp)  .. (325.88bp,72bp);
   \pgfsetstrokecolor{dotstroke}
@@ -37,7 +37,7 @@
   % Node: RAC
 \begin{scope}
   \pgfsetstrokecolor{dotstroke}
-  \draw [state] (196bp,72bp) ellipse (36bp and 18bp);
+  \draw [rectangle] (232bp,90bp) -- (160bp,90bp) -- (160bp,54bp) -- (232bp,54bp) -- cycle;
   \draw (196bp,72bp) node {RAC};
 \end{scope}
 %

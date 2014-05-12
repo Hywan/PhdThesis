@@ -47,18 +47,18 @@ Ils nous fournissent des objectifs de tests. Ces critères sont satisfaits par u
 ensemble de tests auxquels nous associons des chemins dans les contrats. Nous
 avons proposé de transformer les contrats en graphes, afin de définir plus
 facilement les critères. Au total, trois critères, plus des combinaisons, ont
-été définis~: Critère de Clause, qui couvre la structure du contrat, Critère de
-Domaine, qui couvre tous les domaines réalistes de toutes les variables, et
-Critère de Prédicat, qui couvre toutes les combinaisons possibles. \\
+été définis~: Critère de Couverture de Clause, qui couvre la structure du
+contrat, Critère de Couverture de Domaine, qui couvre tous les domaines
+réalistes de toutes les variables, et Critère de Couverture de Prédicat, qui
+couvre toutes les combinaisons possibles. \\
 
 Ces contributions ont été implémentées en tant que bibliothèques dans le projet
 Hoa. La manipulation de Praspel à travers son modèle objet a été présentée~: les
 différentes analyses, l'exportation et l'importation et le désassemblage.
 L'évaluation de Praspel, avec un \inenglish{Runtime Assertion Checker}, a
-également été présentée. Puisque Praspel génère automatiquement des suites de
-test abstraites, une extension à atoum, un \inenglish{framework} de tests
-unitaires, a été proposée pour compiler ces suites de test abstraites en suites
-de test concrètes et exécutables. Ces dernières sont écrites avec l'API d'atoum.
+également été présentée. Une extension à atoum, un \inenglish{framework} de
+tests unitaires, a été proposée pour compiler les suites de test de Praspel en
+suites de test écrites avec l'API d'atoum.
 
 Nous avons choisi Hoa car l'auteur de ce mémoire est également l'auteur initial
 de cet ensemble de bibliothèques. Nous avons choisi atoum car c'est un

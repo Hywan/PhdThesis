@@ -7,9 +7,9 @@ digraph {
     data  -> RAC;
     RAC   -> verdict [label=" ", texlbl="évaluation"];
 
-    model   [label=" ", texlbl="\tikzref{boxracom}modèle objet", width=1.7];
-    SUT     [label=" ", texlbl="\tikzref{boxracsut}SUT", width=1.7        ];
-    data    [label=" ", texlbl="données", width=1.7                       ];
-    RAC     [label=" ", texlbl="RAC", width=1                             ];
-    verdict [style="accepting", label=" ", texlbl="verdict", width=1      ];
+    model   [label=" ", texlbl="\tikzref{boxracom}modèle objet", width=1.7  ];
+    SUT     [label=" ", texlbl="\tikzref{boxracsut}SUT", width=1.7          ];
+    data    [label=" ", texlbl="données", width=1.7                         ];
+    RAC     [label=" ", texlbl="RAC", shape=rect, style="rectangle", width=1];
+    verdict [style="accepting", label=" ", texlbl="verdict", width=1        ];
 }

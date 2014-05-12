@@ -1,9 +1,9 @@
 %%
 \pgfsetcolor{dot}
   % Edge: assertions -> atoum
-  \draw [->] (81.02bp,26.692bp) .. controls (92.497bp,29.386bp) and (105.23bp,32.375bp)  .. (127.08bp,37.505bp);
+  \draw [->] (81.02bp,26.692bp) .. controls (91.476bp,29.147bp) and (102.97bp,31.846bp)  .. (123.62bp,36.693bp);
   % Edge: SUT -> atoum
-  \draw [->] (81.02bp,63.308bp) .. controls (92.497bp,60.614bp) and (105.23bp,57.625bp)  .. (127.08bp,52.495bp);
+  \draw [->] (81.02bp,63.308bp) .. controls (91.476bp,60.853bp) and (102.97bp,58.154bp)  .. (123.62bp,53.307bp);
   % Edge: atoum -> reports
   \draw [->] (196.11bp,45bp) .. controls (219.56bp,45bp) and (250.61bp,45bp)  .. (285.97bp,45bp);
   \pgfsetstrokecolor{dotstroke}
@@ -11,7 +11,7 @@
   % Node: atoum
 \begin{scope}
   \pgfsetstrokecolor{dotstroke}
-  \draw [state] (160bp,45bp) ellipse (36bp and 18bp);
+  \draw [rectangle,] (196bp,63bp) -- (124bp,63bp) -- (124bp,27bp) -- (196bp,27bp) -- cycle;
   \draw (160bp,45bp) node {atoum};
 \end{scope}
   % Node: SUT

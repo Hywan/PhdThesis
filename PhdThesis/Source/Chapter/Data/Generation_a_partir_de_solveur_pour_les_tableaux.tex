@@ -807,7 +807,7 @@ inconsistances au plus tôt.
 \subsubsection{\inenglish{Labelling}}
 
 Le \inenglish{labelling} (étiquetage) est le processus qui trouve une valeur
-pour chaque variable. Il s'applique si les contraintes sont consistantes. L'idée
+pour chaque variable. Il s'applique si la fonction $\akw{AC3}$ termine. L'idée
 est de sélectionner une variable et de lui choisir une valeur, puis de
 recommencer avec une autre variable etc. Le choix de la variable à sélectionner
 dépend de la dépendance entre les variables (les arcs vus dans la partie
@@ -826,9 +826,9 @@ est discréditée afin de ne pas être re-sélectionnée.
 Dans notre implémentation, le choix d'une valeur utilise la caractéristique de
 générabilité des domaines réalistes, avec un générateur numérique
 pseudo-aléatoire. Afin de faire converger le solveur rapidement vers une
-solution, nous utilisons une heuristique qui consiste à choisir une valeur pour
-la variable $S$ en premier. Ensuite, le solveur essaie de calculer les ensembles
-$X_i$ et $Y_i$.
+solution, si le CSP est satisfaisable, vers une erreur sinon, nous utilisons une
+heuristique qui consiste à choisir une valeur pour la variable $S$ en premier.
+Ensuite, le solveur essaie de calculer les ensembles $X_i$ et $Y_i$.
 
 Quand toutes les variables sont étiquetées, c'est~à~dire que chacune a une
 valeur valide, le solveur retourne la solution.

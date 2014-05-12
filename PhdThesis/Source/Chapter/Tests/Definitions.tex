@@ -9,20 +9,31 @@ Tout au long de cette partie, nous considérons une méthode PHP \code{f} et nou
 désignons par $G(\code{f})$, ou $G$, son contrat $(V, D, i, N, E, U)$, comme
 défini dans la partie~\ref{section:test:contract}.
 
+\begin{definition}[Chemins dans un graphe de contrat]
+
 Un {\strong chemin} est une séquence de transitions consécutives séparées par
 des points. Deux transitions $(v, \alpha, w)$ et $(x, \beta, y)$ sont
 consécutives si et seulement si $w = x$. Nous disons qu'un sommet $v$ {\strong
 est dans} le chemin $p$ si et seulement si le chemin $p$ contient une transition
 $(v, \alpha, w)$ ou $(w, \alpha, v)$.
 
-Nous associons deux sortes de chemins à un contrat $G = (V, D, i, N, E, U)$. Une
-{\strong route} de $G$ est un chemin dont les transitions sont dans $D$. Soit
-$r$ une route de $G$. Remplaçons toutes les transitions $(v, e, w)$ dans $r$
-par le chemin $(v, \varepsilon, i_H) \cdot q \cdot (n_H, \varepsilon, w)$ où $q$
-est un chemin de $i_H$ à $n_H$ du graphe $H = (V_H, D_H, i_H, n_H)$ de
+\end{definition}
+
+Nous associons deux sortes de chemins à un contrat $G = (V, D, i, N, E, U)$.
+
+\begin{definition}[Routes et sentiers dans un graphe de contrat]
+
+Une {\strong route} de $G$ est un chemin dont les transitions sont dans $D$.
+Soit $r$ une route de $G$. Remplaçons toutes les transitions $(v, e, w)$ dans
+$r$ par le chemin $(v, \varepsilon, i_H) \cdot q \cdot (n_H, \varepsilon, w)$ où
+$q$ est un chemin de $i_H$ à $n_H$ du graphe $H = (V_H, D_H, i_H, n_H)$ de
 l'expression $e$. Le résultat est appelé un {\strong sentier} de $r$. Un sentier
 d'un graphe de contrat $G$ est n'importe quel sentier obtenu ainsi, à partir
 d'une route de $G$.
+
+\end{definition}
+
+\begin{definition}[Test unitaire, cas de test et suite de test]
 
 Un {\strong test unitaire} pour une méthode PHP \code{f} est un ensemble de
 données (appelées entrées), qui fixent les valeurs pour les
@@ -40,6 +51,8 @@ l'objet directement.
 \end{enumerate}
 %
 Une {\strong suite de test} est un ensemble de cas de test.
+
+\end{definition}
 
 Quand nous exécutons un cas de test, nous sommes capables d'y associer des
 chemins du graphe de contrat $G$, appelés chemins {\strong activés par} le cas
@@ -86,7 +99,7 @@ déclaration est exprimée dans une postcondition (normale ou exceptionnelle), l
 valeur de $i$ est choisie dans le post-état $s'$~;
 
 \item si la transition est étiquetée par un prédicat, la transition est activée
-si et seulement le prédicat est satisfait avec l'état courant du système ($s$
+si et seulement si le prédicat est satisfait avec l'état courant du système ($s$
 dans le cas d'une précondition, $s'$ pour un prédicat \inenglish{before-after},
 c'est~à~dire contenu dans une postcondition, dont les expressions \aold{\empty}
 sont évaluées dans le pré-état $s$)~;
@@ -106,4 +119,77 @@ v_2 \cdot v_4 \cdot v_5$ et $v_1 \cdot v_2 \cdot v_7 \cdot v_5$ seront activés.
 Nous représentons également par $R_\code{f}(S)$ l'ensemble des routes de
 $G(\code{f})$ activées par une suite de test $S$. Similairement, nous
 représentons par $T_\code{f}(S)$ l'ensemble des sentiers de $G(\code{f})$
-activés par une suite de test $S$ et traversant des graphes d'expressions.
+activés par une suite de test $S$ et traversant des graphes d'expressions. \\
+
+Les exemples suivants sont basés sur le contrat de la
+figure~\ref{figure:test:irc} pour la méthode \code{compute} avec deux arguments:
+\code{server} qui doit être une classe de type
+\code{\bslash{}Irc\bslash{}Server} et \code{buffer} qui doit contenir un message
+IRC.
+%
+\begin{figure}
+
+\begin{bigpre}
+/** \\
+ * \arequires server: class('\bslash{}Irc\bslash{}Server'); \\
+ * \abehavior message \{ \\
+ *     \arequires buffer: /^privmessage .+/ or /^message .+/; \\
+ *     \aensures  \aresult: 1..; \\
+ * \} \\
+ * \abehavior ping \{ \\
+ *     \arequires buffer: /^ping\$/ and \\
+ *               \bslash{}pred('\$server->bufferState   >= 0 or \\
+ *                      network\_buffer\_state() >  0'); \\
+ *     \aensures  \aresult: 1..; \\
+ * \} \\
+ * \adefault \{ \\
+ *     \athrowable \bslash{}Irc\bslash{}Exception\bslash{}MalformedMessage e \\
+ *                    with e->code: 400..491; \\
+ * \} \\
+ */ \\
+public static function compute ( \$server, \$buffer ) \{ … \}
+\end{bigpre}
+
+\caption{\label{figure:test:irc} Contrat et méthode manipulant un flux IRC.}
+
+\end{figure}
+%
+\begin{figure}
+
+\fig{\textwidth}{!}{IRC.tex}
+
+\caption{\label{figure:test:irc_graph} Graphe de contrat associé à la figure
+\ref{figure:test:irc}.}
+
+\end{figure}
+%
+Le graphe de contrat associé est présenté dans la
+figure~\ref{figure:test:irc_graph}. Tous les états ont été renommés en $v_i$
+avec $1 \leq i \leq 22$, pour éviter toute ambiguïté lorsque nous parlerons des
+chemins. Les graphes d'expressions sont représentés, ce qui permet de parcourir
+tous les sentiers. Les routes sont représentées par des arcs en
+pointillés. Certaines étiquettes sont tronquées pour réduire la taille du
+graphe. Dans cet exemple, nous avons deux comportements, un pour un message
+privé ou public (représenté par une expression régulière à travers le domaine
+réaliste \code{regex} sous sa forme simplifiée) et un pour un «~ping~». Dans le
+dernier comportement, la précondition a un prédicat pour spécifier que le réseau
+est dans un état spécifique. Enfin, le comportement par défaut spécifie qu'une
+exception de type \code{\bslash{}Irc\bslash{}Exception\bslash{}MalformedMessage}
+doit être levée si le tampon n'est ni un message ni un ping. De plus, le code
+d'une exception doit être un entier entre 400 et 491.
+
+\begin{example}[Test et chemin]
+
+La syntaxe \code{object($c$)} représente une instance valide d'une classe $c$.
+Le test $t_1 = \code{compute(object(\bslash{}Irc\bslash{}Server), 'message
+foobar')}$ va activer le chemin $(v_1, P, v_4) \cdot (v_4, P_\code{message},
+v_7) \cdot (v_7, Q_\code{message}, v_{10})$. En effet, la donnée
+\code{object(\bslash{}Irc\bslash{}Server)} représente la valeur de
+\code{\$server}. Cet objet est bien une instance de la classe
+\code{\bslash{}Irc\bslash{}Server}, donc la transition entre $v_1$ et $v_4$ est
+activée. Ensuite, la donnée \code{'message foobar'} représente la valeur de
+\code{\$buffer}. Cette donnée active la transition entre $v_4$ et $v_7$
+étiquetée par \code{buffer: /\^\empty privmessage .+/ or /\^\empty message .+/}
+car la donnée est une chaîne de caractères qui commence par \code{message}.
+
+\end{example}

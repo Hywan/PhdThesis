@@ -7,16 +7,7 @@ digraph {
     v_i -> v_j [label=" ", texlbl="\code{j: baz()}"];
     v_i -> v_j [label=" ", texlbl="\code{j: qux()}"];
 
-    pre -> v_1 [label=" ", texlbl="\code{\$a}"];
-    pre -> v_1 [label=" ", texlbl="\code{\$b}"];
-    v_1 -> v_2 [label=" ", texlbl="\code{\$c}"];
-    v_1 -> v_2 [label=" ", texlbl="\code{\$d}"];
-
-    v_j -> pre [label=" ", texlbl="$\varepsilon$"];
-
     dom [label=" ", texlbl="$\mathit{dom}$", style="state,initial"];
     v_i [label=" ", texlbl="$v_\code{i}$"];
     v_j [label=" ", texlbl="$v_\code{j}$", style="state,accepting"];
-    pre [label=" ", texlbl="$\mathit{pred}$", style="state,initial"];
-    v_2 [style="state,accepting"];
 }

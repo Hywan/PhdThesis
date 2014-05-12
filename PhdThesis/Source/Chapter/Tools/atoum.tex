@@ -13,8 +13,8 @@ Travis-CI\footnote{Voir \url{http://travis-ci.com/}.}, Jenkins\footnote{Voir
 \url{https://coveralls.io/}.} etc.
 
 Les suites de test générées par Praspel doivent être exécutables de plusieurs
-façons (en ligne, isolées ou autre), des rapports doivent être produits, les
-outils doivent être intégrés à des IDE etc. Tout ceci représente un travail
+façons (séquentielles, isolées ou autre), des rapports doivent être produits,
+les outils doivent être intégrés à des IDE etc. Tout ceci représente un travail
 important. atoum comporte déjà toutes ces fonctionnalités. Nous avons donc
 choisi de créer une extension pour introduire Praspel dans atoum. De plus, atoum
 ne possède aucun générateur de données, alors que Praspel en propose plusieurs.
@@ -91,12 +91,11 @@ rapports détaillés, nous pouvons citer trois points forts de cet outil.
 \subsubsection{Moteurs d'exécution}
 
 Tout d'abord, atoum permet nativement (comprendre sans \inenglish{plugin}
-supplémentaire) l'exécution des tests en ligne, en isolation ou en parallèle.
-Une exécution en ligne (traduction de l'anglais \inenglish{inline}, et non
-\inenglish{online}) va exécuter tous les tests les uns après les autres de
-manière séquentielle dans le même processus. Une exécution en isolation va
-exécuter tous les tests les uns après les autres mais dans un processus
-nouvellement créé à chaque fois afin d'isoler le test des exécutions
+supplémentaire) l'exécution des tests de manière séquentielle, en isolation ou
+en parallèle. Une exécution séquentielle va exécuter tous les tests les uns
+après les autres de manière séquentielle dans le même processus. Une exécution
+en isolation va exécuter tous les tests les uns après les autres mais dans un
+processus nouvellement créé à chaque fois afin d'isoler le test des exécutions
 précédentes. Une exécution en parallèle va exécuter tous les tests en isolation
 mais de manière concurrente. Cela permet d'accélérer les exécutions ou d'assurer
 une fiabilité dans les résultats des tests.
@@ -279,12 +278,12 @@ foreach(\$this->sampleMany(\$data, 7) as \$string) \\
 \end{tikzbox}
 %
 \begin{tikzannotation}
-    \node (sc) [left of=boxextsut, xshift=-3.9cm, yshift=-1.75cm] {};
-    \node (Sc) [left of=sc, node distance=1.5cm] {\circled{S}};
+    \node (sc) [right of=boxextsut, xshift=-.7cm, yshift=-.75cm] {};
+    \node (Sc) [right of=sc, node distance=1.5cm] {\circled{S}};
     \draw [mywavyarrow] (Sc) -- (sc);
 
-    \node (mc) [above of=boxextom, xshift=.48cm, yshift=-1.6cm] {};
-    \node (Mc) at (Sc -| mc) {\circled{M}};
+    \node (mc) [right of=boxextom, xshift=1.6cm, yshift=-.8cm] {};
+    \node (Mc) [right of=mc, node distance=1.5cm] {\circled{M}};
     \draw [mywavyarrow] (Mc) -- (mc);
 \end{tikzannotation}
 
@@ -300,15 +299,14 @@ représenté par un test. Praspel est capable de générer des tests corresponda
 ces chemins à partir d'un modèle objet d'un contrat. C'est le point de départ du
 processus illustré dans la figure~\ref{figure:tools:extension}. Nous y
 retrouvons \circled{M} et \circled{S}. À partir du modèle objet, une suite de
-test est générée. Ces tests que nous pourrions qualifier d'abstraits (car non
-exécutables) sont compilés vers des tests écrits avec l'API d'atoum (donc
-exécutables). Cette étape est regroupée dans le nœud suite de test dans la
-figure. atoum va ensuite sélectionner chaque test dans cette suite et les
-exécuter en utilisant le SUT associé et des données. Le nœud atoum dans la
+test est générée. Ces tests sont compilés vers des tests écrits avec l'API
+d'atoum (donc exécutables). Cette étape est regroupée dans le nœud suite de test
+dans la figure. atoum va ensuite sélectionner chaque test dans cette suite et
+les exécuter en utilisant le SUT associé et des données. Le nœud atoum dans la
 figure applique le même processus que dans la figure~\ref{figure:tools:rac}.
 
-La compilation de la suite de test abstrait en test concret s'effectue en ligne
-de commande~: plusieurs classes sont analysées pour en extraire des contrats
+La compilation de la suite de test en test concret s'effectue en ligne de
+commande~: plusieurs classes sont analysées pour en extraire des contrats
 Praspel, qui sont à leur tour analysés pour pouvoir appliquer les algorithmes de
 génération de tests unitaires sur leur modèle objet. Puis, l'extension compile
 ces tests vers des tests écrits au format atoum. Ces tests sont enregistrés dans

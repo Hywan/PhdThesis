@@ -5,88 +5,27 @@ Nous définissons maintenant les critères de couverture de contrat, par des
 propriétés de l'ensemble des chemins du graphe associé à un contrat Praspel
 annotant une méthode PHP.
 
-Les exemples suivants sont basés sur le contrat de la
-figure~\ref{figure:test:irc} pour la méthode \code{compute} avec deux arguments:
-\code{server} qui doit être une classe de type
-\code{\bslash{}Irc\bslash{}Server} et \code{buffer} qui doit contenir un message
-IRC.
-%
-\begin{figure}
+\subsection{Critère de Couverture de Clause}
 
-\begin{bigpre}
-/** \\
- * \arequires server: class('\bslash{}Irc\bslash{}Server'); \\
- * \abehavior message \{ \\
- *     \arequires buffer: /^privmessage .+/ or /^message .+/; \\
- *     \aensures  \aresult: 1..; \\
- * \} \\
- * \abehavior ping \{ \\
- *     \arequires buffer: /^ping\$/ and \\
- *               \bslash{}pred('\$server->bufferState   >= 0 or \\
- *                      network\_buffer\_state() >  0'); \\
- *     \aensures  \aresult: 1..; \\
- * \} \\
- * \adefault \{ \\
- *     \athrowable \bslash{}Irc\bslash{}Exception\bslash{}MalformedMessage e \\
- *                    with e->code: 400..491; \\
- * \} \\
- */ \\
-public static function compute ( \$server, \$buffer ) \{ … \}
-\end{bigpre}
+Le Critère de Couverture Clause vise à couvrir la structure d'un contrat. Ainsi,
+le Critère de Couverture de Clause est satisfait par une suite de test $S$ d'une
+méthode \code{f} de graphe de contrat $G(\code{f}) = (V, D, i, N, E, U)$ si tous
+les états de $V \bslash{}U$ sont dans une route de $R_\code{f}(S)$.
 
-\caption{\label{figure:test:irc} Contrat et méthode manipulant un flux IRC.}
+\begin{example}[Suite de tests satisfaisant le Critère de Couverture de Clause]
 
-\end{figure}
-%
-\begin{figure}
-
-\fig{\textwidth}{!}{IRC.tex}
-
-\caption{\label{figure:test:irc_graph} Graphe de contrat associé à la figure
-\ref{figure:test:irc}.}
-
-\end{figure}
-%
-Le graphe de contrat associé est présenté dans la
-figure~\ref{figure:test:irc_graph}. Tous les états ont été renommés en $v_i$
-avec $1 \leq i \leq 22$, pour éviter toute ambiguïté lorsque nous parlerons des
-chemins. Les graphes d'expressions sont représentés, ce qui permet de parcourir
-tous les sentiers. Les routes sont représentées par des arcs en
-pointillés. Certaines étiquettes sont tronquées pour réduire la taille du
-graphe. Dans cet exemple, nous avons deux comportements, un pour un message
-privé ou public (représenté par une expression régulière à travers le domaine
-réaliste \code{regex} sous sa forme simplifiée) et un pour un «~ping~». Dans le
-dernier comportement, la précondition a un prédicat pour spécifier que le réseau
-est dans un état spécifique. Enfin, le comportement par défaut spécifie qu'une
-exception de type \code{\bslash{}Irc\bslash{}Exception\bslash{}MalformedMessage}
-doit être levée si le tampon n'est ni un message ni un ping. De plus, le code
-d'une exception doit être un entier entre 400 et 491.
-
-\subsection{Critère de Clause}
-
-Le Critère de Clause vise à couvrir la structure d'un contrat. Ainsi, le Critère
-de Clause est satisfait par une suite de test $S$ d'une méthode \code{f} de
-graphe de contrat $G(\code{f}) = (V, D, i, N, E, U)$ si tous les états de $V
-\bslash{}U$ sont dans une route de $R_\code{f}(S)$.
-
-\begin{example}[Suite de tests satisfaisant le Critère de Clause]
-
-La syntaxe \code{object($c$)} représente une instance valide d'une classe $c$.
 La suite de test $\{t_1, t_2, t_3\}$ avec~:
 %
 \begin{itemize}
 
-\item[$t_1.$]
-%
-\code{compute(object(\bslash{}Irc\bslash{}Server), 'message foobar')}~;
+\item
+$t_1 =$ \code{compute(object(\bslash{}Irc\bslash{}Server), 'message foobar')}~;
 
-\item[$t_2.$]
-%
-\code{compute(object(\bslash{}Irc\bslash{}Server), 'ping')}~;
+\item
+$t_2 =$ \code{compute(object(\bslash{}Irc\bslash{}Server), 'ping')}~;
 
-\item[$t_3.$]
-%
-\code{compute(object(\bslash{}Irc\bslash{}Server), 'xyz')}.
+\item
+$t_3 =$ \code{compute(object(\bslash{}Irc\bslash{}Server), 'xyz')}.
 
 \end{itemize}
 %
@@ -96,44 +35,44 @@ routes)~:
 %
 \begin{align*}
 %
-R_\code{compute}(\{t_1\}) =\;
+R_\code{compute}(\{t_1\}) = \{\;
           & (v_1, P, v_4) \\
   \cdot\; & (v_4, P_\code{message}, v_7) \\
-  \cdot\; & (v_7, Q_\code{message}, v_{10}) \\
+  \cdot\; & (v_7, Q_\code{message}, v_{10}) \;\} \\
 %
-R_\code{compute}(\{t_2\}) =\;
+R_\code{compute}(\{t_2\}) = \{\;
           & (v_1, P, v_4) \\
   \cdot\; & (v_4, P_\code{ping}, v_{15}) \\
-  \cdot\; & (v_{15}, Q_\code{ping}, v_{18}) \\
+  \cdot\; & (v_{15}, Q_\code{ping}, v_{18}) \;\} \\
 %
-R_\code{compute}(\{t_3\}) =\;
+R_\code{compute}(\{t_3\}) = \{\;
           & (v_1, P, v_4) \\
   \cdot\; & (v_4, P_\m{D}, v_{19}) \\
-  \cdot\; & (v_{19}, T_\m{D}, v_{23})
+  \cdot\; & (v_{19}, T_\m{D}, v_{23}) \;\}
 %
 \end{align*}
 
 \end{example}
 
-\subsection{Critère de Domaine}
+\subsection{Critère de Couverture de Domaine}
 
-Le Critère de Domaine raffine le Critère de Clause en considérant la déclaration
-de domaines réalistes à l'intérieur des graphes d'expression. Plus formellement,
-le Critère de Domaine est satisfait par une suite de test $S$ pour une méthode
-\code{f} si toutes les transitions de la forme \code{$i$: $d$} dans le graphe de
-contrat $G(\code{f})$ (qui sont dans les graphes d'expressions étiquetant les
-transitions de $G(\code{f})$ et contenant le nœud $\mathit{dom}$) apparaissent
-dans au moins un sentier de $T_\code{f}(S)$.
+Le Critère de Couverture de Domaine raffine le Critère de Couverture de Clause
+en considérant la déclaration de domaines réalistes à l'intérieur des graphes
+d'expression. Plus formellement, le Critère de Couverture de Domaine est
+satisfait par une suite de test $S$ pour une méthode \code{f} si toutes les
+transitions de la forme \code{$i$: $d$} dans le graphe de contrat $G(\code{f})$
+(qui sont dans les graphes d'expressions étiquetant les transitions de
+$G(\code{f})$ et contenant le nœud $\mathit{dom}$) apparaissent dans au moins un
+sentier de $T_\code{f}(S)$.
 
-\begin{example}[Suite de tests satisfaisant le Critère de Domaine]
+\begin{example}[Suite de tests satisfaisant le Critère de Couverture de Domaine]
 
 La suite de test $\{t_1, t_2, t_4\}$ avec~:
 %
 \begin{itemize}
 
-\item[$t_4.$]
-%
-\code{compute(object(\bslash{}Irc\bslash{}Server), 'privmessage foobar')}.
+\item
+$t_4 =$ \code{compute(object(\bslash{}Irc\bslash{}Server), 'privmessage foobar')}.
 
 \end{itemize}
 %
@@ -144,7 +83,7 @@ respectifs suivants (sur les sentiers)~:
 %
 \begin{align*}
 %
-T_\code{compute}(\{t_1\}) =\;
+T_\code{compute}(\{t_1\}) = \{\;
           & (v_1, \varepsilon, v_2) \\
   \cdot\; & (v_2, \code{server: class('\bslash{}Irc\bslash{}Server')}, v_3) \\
   \cdot\; & (v_3, \varepsilon, v_4) \\
@@ -153,9 +92,9 @@ T_\code{compute}(\{t_1\}) =\;
   \cdot\; & (v_6, \varepsilon, v_7) \\
   \cdot\; & (v_7, \varepsilon, v_8) \\
   \cdot\; & (v_8, \code{\aresult: 1..}, v_9) \\
-  \cdot\; & (v_9, \varepsilon, v_{10}) \\
+  \cdot\; & (v_9, \varepsilon, v_{10}) \;\} \\
 %
-T_\code{compute}(\{t_2\}) =\;
+T_\code{compute}(\{t_2\}) = \{\;
           & (v_1, \varepsilon, v_2) \\
   \cdot\; & (v_2, \code{server: class('\bslash{}Irc\bslash{}Server')}, v_3) \\
   \cdot\; & (v_3, \varepsilon, v_4) \\
@@ -166,9 +105,9 @@ T_\code{compute}(\{t_2\}) =\;
   \cdot\; & (v_{14}, \varepsilon, v_{15}) \\
   \cdot\; & (v_{15}, \varepsilon, v_{16}) \\
   \cdot\; & (v_{16}, \code{\aresult: 1..}, v_{17}) \\
-  \cdot\; & (v_{17}, \varepsilon, v_{18}) \\
+  \cdot\; & (v_{17}, \varepsilon, v_{18}) \;\} \\
 %
-T_\code{compute}(\{t_4\}) =\;
+T_\code{compute}(\{t_4\}) = \{\;
           & (v_1, \varepsilon, v_2) \\
   \cdot\; & (v_2, \code{server: class('\bslash{}Irc\bslash{}Server')}, v_3) \\
   \cdot\; & (v_3, \varepsilon, v_4) \\
@@ -177,33 +116,36 @@ T_\code{compute}(\{t_4\}) =\;
   \cdot\; & (v_6, \varepsilon, v_7) \\
   \cdot\; & (v_7, \varepsilon, v_8) \\
   \cdot\; & (v_8, \code{\aresult: 1..}, v_9) \\
-  \cdot\; & (v_9, \varepsilon, v_{10}) \\
+  \cdot\; & (v_9, \varepsilon, v_{10}) \;\} \\
 %
 \end{align*}
 
 \end{example}
 
-\subsection{Critère de Prédicat}
+\subsection{Critère de Couverture de Prédicat}
 
-Similairement au Critère de Domaine, le Critère de Prédicat s'applique aux
-prédicats dans les graphes d'expression, et vise à tous les couvrir. Plus
-formellement, le Critère de Prédicat est satisfait par une suite de test $S$
-pour une méthode \code{f} si toutes les transitions qui ne sont pas de la forme
-\code{$i$: $d$} dans le graphe de contrat $G(\code{f})$ (qui sont dans les
-graphes d'expressions étiquetant les transitions de $G(\code{f})$ et contenant
-le nœud $\mathit{pred}$) apparaissent dans au moins un sentier de
-$T_\code{f}(S)$.
+Similairement au Critère de Couverture de Domaine, le Critère de Couverture de
+Prédicat s'applique aux prédicats dans les graphes d'expression, et vise à tous
+les couvrir. Plus formellement, le Critère de Couverture de Prédicat est
+satisfait par une suite de test $S$ pour une méthode \code{f} si toutes les
+transitions qui ne sont pas de la forme \code{$i$: $d$} dans le graphe de
+contrat $G(\code{f})$ (qui sont dans les graphes d'expressions étiquetant les
+transitions de $G(\code{f})$ et contenant le nœud $\mathit{pred}$) apparaissent
+dans au moins un sentier de $T_\code{f}(S)$.
 
-\begin{example}[Suite de tests satisfaisant le Critère de Prédicat]
+\begin{example}[Suite de tests satisfaisant le Critère de Couverture de
+Prédicat]
 
 La suite de test $\{t_5, t_6\}$ avec~:
 %
 \begin{itemize}
 
-\item[$t_5.$] \code{compute(object(\bslash{}Irc\bslash{}Server), 'ping')} \\
+\item
+$t_5 =$ \code{compute(object(\bslash{}Irc\bslash{}Server), 'ping')} \\
 avec \apred{\code{'\$server->bufferState >= 0'}}~;
 
-\item[$t_6.$] \code{compute(object(\bslash{}Irc\bslash{}Server), 'ping')} \\
+\item
+$t_6 =$ \code{compute(object(\bslash{}Irc\bslash{}Server), 'ping')} \\
 avec \apred{\code{'network\_buffer\_state() > 0'}}.
 
 \end{itemize}
@@ -213,7 +155,7 @@ produit les chemins suivants (sur les sentiers)~:
 %
 \begin{align*}
 %
-T_\code{compute}(\{t_5\}) =\;
+T_\code{compute}(\{t_5\}) = \{\;
           & (v_1, \varepsilon, v_2) \\
   \cdot\; & (v_2, \code{server: class('\bslash{}Irc\bslash{}Server')}, v_3) \\
   \cdot\; & (v_3, \varepsilon, v_4) \\
@@ -224,9 +166,9 @@ T_\code{compute}(\{t_5\}) =\;
   \cdot\; & (v_{14}, \varepsilon, v_{15}) \\
   \cdot\; & (v_{15}, \varepsilon, v_{16}) \\
   \cdot\; & (v_{16}, \code{\aresult: 1..}, v_{17}) \\
-  \cdot\; & (v_{17}, \varepsilon, v_{18}) \\
+  \cdot\; & (v_{17}, \varepsilon, v_{18}) \;\} \\
 %
-T_\code{compute}(\{t_6\}) =\;
+T_\code{compute}(\{t_6\}) = \{\;
           & (v_1, \varepsilon, v_2) \\
   \cdot\; & (v_2, \code{server: class('\bslash{}Irc\bslash{}Server')}, v_3) \\
   \cdot\; & (v_3, \varepsilon, v_4) \\
@@ -237,7 +179,7 @@ T_\code{compute}(\{t_6\}) =\;
   \cdot\; & (v_{14}, \varepsilon, v_{15}) \\
   \cdot\; & (v_{15}, \varepsilon, v_{16}) \\
   \cdot\; & (v_{16}, \code{\aresult: 1..}, v_{17}) \\
-  \cdot\; & (v_{17}, \varepsilon, v_{18}) \\
+  \cdot\; & (v_{17}, \varepsilon, v_{18}) \;\} \\
 %
 \end{align*}
 
@@ -256,14 +198,14 @@ les combinaisons suivantes~:
 %
 \begin{itemize}
 
-\item le Critère Clause~+~Domaine vise à couvrir la structure et les domaines
-réalistes d'un contrat~;
+\item le Critère de Couverture Clause~+~Domaine vise à couvrir la structure et
+les domaines réalistes d'un contrat~;
 
-\item le Critère Clause~+~Prédicat vise à couvrir la structure et les prédicats
-d'un contrat~;
+\item le Critère de Couverture Clause~+~Prédicat vise à couvrir la structure et
+les prédicats d'un contrat~;
 
-\item le Critère \inenglish{All}-$G$ vise à satisfaire les critères Clause,
-Domaine et Prédicat en même temps.
+\item le Critère de Couverture \inenglish{All}-$G$ vise à satisfaire les
+critères Clause, Domaine et Prédicat en même temps.
 
 \end{itemize}
 %

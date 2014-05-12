@@ -114,18 +114,17 @@ Dans l'expression suivante~:
 $$\code{i: foo() or bar() and j: baz() or qux()}$$
 %
 nous avons $S = [\code{i}, \code{j}]$, $D_1 = [\code{foo()}, \code{bar()}]$ et
-$D_2 = [\code{baz()}, \code{qux()}]$. La première partie de la
-figure~\ref{figure:test:expression_graph} présente graphiquement le graphe des
-domaines associé à cet exemple.
+
+$D_2 = [\code{baz()}, \code{qux()}]$. La figure~\ref{figure:test:domain_graph}
+présente graphiquement le graphe des domaines associé à cet exemple.
 
 \end{example}
 
 \begin{figure}
 
-\fig{\textwidth}{!}{Expression_graph.tex}
+\fig{8cm}{!}{Domain_graph.tex}
 
-\caption[Graphe d'expression.]{\label{figure:test:expression_graph} Graphe
-d'expression, composé d'un graphe des domaines et d'un graphe des prédicats.}
+\caption{\label{figure:test:domain_graph} Graphe des domaines.}
 
 \end{figure}
 
@@ -168,20 +167,27 @@ Dans l'expression suivante~:
 $$\apred{\code{'(\$a || \$b) \&\& (\$c || \$d)'}}$$
 %
 nous avons $m = 2$, $P_1 = [\code{\$a}, \code{\$b}]$ et $P_2 = [\code{\$c},
-\code{\$d}]$. La deuxième partie de la
-figure~\ref{figure:test:expression_graph} présente graphiquement le graphe
-associé à cet exemple de prédicat.
+\code{\$d}]$. La figure~\ref{figure:test:predicate_graph} présente graphiquement
+le graphe associé à cet exemple de prédicat.
 
 \end{example}
+
+\begin{figure}
+
+\fig{6.8cm}{!}{Predicate_graph.tex}
+
+\caption{\label{figure:test:predicate_graph} Graphe des prédicats.}
+
+\end{figure}
 
 \subsection{Graphe d'un contrat atomique}
 \label{subsection:test:atomic_graph}
 
 Un {\strong contrat atomique} est un contrat composé uniquement des clauses
 \arequires, \aensures et \athrowable. Il ne contient ni clauses \abehavior, ni
-\adefault, c'est~à~dire aucun sous-contrat, et n'est par conséquent pas
-décomposable en sous-contrats. Un contrat atomique en forme normale adopte
-la forme générale suivante~:
+\adefault, c'est~à~dire aucun sous-contrat, et n'est, par conséquent, pas
+décomposable en sous-contrats. Un contrat atomique en forme normale adopte la
+forme générale suivante~:
 %
 \begin{pre}
 \arequires  \(P\); \\
@@ -304,7 +310,7 @@ sommets et arcs de $G_\alpha$, complété avec un nouvel arc entre $v$, le nouve
 sommet initial, et $i_\alpha$, le sommet initial de $G_\alpha$. Le sommet
 $i_\alpha$ devient également un sommet final normal car la sémantique du contrat
 est qu'il n'est pas obligatoire d'emprunter un comportement. Par conséquent, $P$
-peut être évalué mais sans activer le comportement $\alpha$.
+peut être évalué mais sans activer le comportement~$\alpha$.
 
 \begin{figure}
 
@@ -398,8 +404,8 @@ partie~\ref{subsection:test:behaviors_graph}.
 \label{subsection:test:invariant_graph}
 
 Dans cette dernière partie, nous voyons comment intégrer une clause
-\ainvariant~$I$ (située au niveau des attributs de classe) dans le graphe de
-contrat d'une méthode $G_M = (V_M, D_M, i_M, N_M, E_M, U_M)$. Nous supposons que
+\ainvariant~$I$ (portant sur les attributs de classe) dans le graphe de contrat
+d'une méthode $G_M = (V_M, D_M, i_M, N_M, E_M, U_M)$. Nous supposons que
 l'ensemble $V_M$ ne contient pas les sommets $v_1$, $v_2$ et $v_3$. Le graphe
 résultant est~:
 %
