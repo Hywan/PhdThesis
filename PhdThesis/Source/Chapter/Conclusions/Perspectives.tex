@@ -124,11 +124,12 @@ catégorie de la méthode. Le seul qualificatif était \code{pure}, pour contrô
 la mutabilité de l'environnement. En effet, une méthode peut modifier ou pas son
 environnement lors de son exécution. Si elle ne le modifie pas, alors nous
 parlons d'une méthode pure, sinon nous parlons d'une méthode impure (par
-défaut).
+défaut). D'une manière plus générale, nous parlons de \inenglish{frame
+condition}~: quelle partie de l'environement est modifiable ou pas.
 
 Nous pensons qu'il serait pertinent de détecter la pureté d'une méthode. De
 même, une méthode pure peut être utilisée dans un contrat car elle ne modifie
-par l'état du SUT.  Ainsi, détecter la pureté d'une méthode peut permettre
+par l'état du SUT. Ainsi, détecter la pureté d'une méthode peut permettre
 d'écrire des contrats plus élaborés.
 
 \subsection{Vers des outils industriels~?}

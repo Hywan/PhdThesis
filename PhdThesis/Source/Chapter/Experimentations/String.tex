@@ -29,9 +29,11 @@ triple~:
 \item vérifier que les données correctes sont acceptées par tous les
 compilateurs~;
 
-\item les données incorrectes sont refusées par tous les compilateurs~;
+\item vérifier que les données incorrectes sont refusées par tous les
+compilateurs~;
 
-\item tous les compilateurs ont le même avis sur la validité des données.
+\item vérifier que tous les compilateurs ont le même avis sur la validité des
+données.
 
 \end{enumerate}
 
@@ -148,14 +150,14 @@ Nous avons tout d'abord expérimenté avec la grammaire de JSON pour générer d
 descriptions d'objet JSON. Nous avons utilisé l'algorithme exhaustif borné et
 l'algorithme basé sur la couverture.
 
-\paragraph{Algorithme exhaustif borné} À cause du nombre important de règles
+\paragraph{Algorithme exhaustif borné.} À cause du nombre important de règles
 imbriquées, l'algorithme exhaustif borné n'est pas capable de produire des
 données de taille raisonnable couvrant toutes les règles (et ainsi générer des
 descriptions complexes d'objet) malgré le fait que nous générions toutes les
 descriptions d'objets de taille $n \leq 9$ en un temps raisonnable (quelques
 minutes).
 
-\paragraph{Algorithme basé sur la couverture} L'algorithme basé sur la
+\paragraph{Algorithme basé sur la couverture.} L'algorithme basé sur la
 couverture produit moins de données mais il génère des descriptions complexes
 d'objets contenant jusqu'à 32~lexèmes. Il est intéressant de noter que toutes
 les règles sont couvertes avec très peu de données, ici 3~données en moyenne
@@ -173,8 +175,8 @@ produire d'importants ensembles de données dont la variété était assurée pa
 choix aléatoires dans la résolution des points des choix, comme expliqué dans la
 partie~\ref{subsection:data:coverage_based_generation}.
 
-\paragraph{Validation et erreurs} Durant cette évaluation, nous avons trouvé une
-erreur dans deux de nos algorithmes, qui était détectée par le compilateur.
+\paragraph{Validation et erreurs.} Durant cette évaluation, nous avons trouvé
+une erreur dans deux de nos algorithmes, qui était détectée par le compilateur.
 L'origine de l'erreur était une mauvaise gestion des caractères échappés, et par
 conséquent, des données incorrectes étaient produites à partir d'une grammaire
 valide.

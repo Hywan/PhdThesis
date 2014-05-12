@@ -39,7 +39,7 @@ algorithme est utilisé pour la génération de chaînes de caractères à parti
 d'une expression régulière.
 
 Enfin, la génération d'objet utilise une stratégie basée sur toutes les
-générations que nous venons d'énumérer. Cette stratégie considère des références
+générations que nous venons de citer. Cette stratégie considère des références
 circulaires et permet de réutiliser des objets déjà générés. \\
 
 La troisième contribution définit des critères de couverture sur les contrats.
@@ -47,9 +47,9 @@ Ils nous fournissent des objectifs de tests. Ces critères sont satisfaits par u
 ensemble de tests auxquels nous associons des chemins dans les contrats. Nous
 avons proposé de transformer les contrats en graphes, afin de définir plus
 facilement les critères. Au total, trois critères, plus des combinaisons, ont
-été définis~: Critère de Couverture de Clause, qui couvre la structure du
-contrat, Critère de Couverture de Domaine, qui couvre tous les domaines
-réalistes de toutes les variables, et Critère de Couverture de Prédicat, qui
+été définis~: le Critère de Couverture de Clause, qui couvre la structure du
+contrat, le Critère de Couverture de Domaine, qui couvre tous les domaines
+réalistes de toutes les variables, et le Critère de Couverture de Prédicat, qui
 couvre toutes les combinaisons possibles. \\
 
 Ces contributions ont été implémentées en tant que bibliothèques dans le projet
@@ -89,8 +89,9 @@ testés et parfois en production.  \\
 
 Toutes les contributions exceptées les critères de couverture des contrats ont
 été publiées dans des articles de conférence~\acite{EnderlinDGO11,
-EnderlinDGB12, EnderlinGB13}. L'ensemble des contributions a été soumis à SoSyM
-(\inenglish{Software and Systems Modeling}) pour une édition spéciale.
+EnderlinDGB12, EnderlinGB13}. L'ensemble des contributions a été soumis au
+journal \inenglish{Software and Systems Modeling}, abrégé SoSyM, pour une
+édition spéciale sur les méthodes formelles intégrées.
 
 \section{\inlatin{Summa summarum}}
 \label{section:conclusions:summa}
@@ -103,18 +104,23 @@ domaines réalistes ont permis de répondre à cette attente. Nous voulions
 données que les développeurs manipulent au quotidien. Pour les chaînes de
 caractères et les tableaux, nous avons des stratégies spécifiques qui ne
 demandent pas d'efforts supplémentaires aux développeurs pour être utilisées
-correctement. Enfin, nous voulions un langage permettant d'assembler plusieurs
-méthodes du test. Dans Praspel, nous trouvons de la génération aléatoire, de la
+correctement. Nous voulions un langage permettant d'assembler plusieurs méthodes
+du test. Dans Praspel, nous trouvons de la génération aléatoire, de la
 génération basée sur les solveurs et de la génération basée sur les grammaires.
-Toutes ces méthodes fonctionnent ensemble au sein d'un même langage par le
-truchement des domaines réalistes et leurs deux caractéristiques de
-prédicabilité et de générabilité. Ces derniers exposent des méthodes avancées
-du test aux développeurs de manière simple.
+Enfin, pour «~boucler la boucle~» et rendre l'ensemble du processus automatique,
+nous avons défini des critères de couverture sur les contrats. Ces derniers nous
+offrent des objectifs de test. Nous sommes capables de générer des suites de
+test satisfaisants plusieurs critères~: la structure du contrat, la couverture
+des données ou encore des prédicats. Il est également possible de combiner ces
+critères. Toutes ces méthodes fonctionnent ensemble au sein d'un même langage
+par le truchement des domaines réalistes et leurs deux caractéristiques de
+prédicabilité et de générabilité. Ces derniers exposent des méthodes avancées du
+test aux développeurs de manière simple.
 
 L'approche que nous avons présentée dans ce mémoire est satisfaisante.
 Toutefois, les expérimentations ont montré les limites de Praspel, notamment que
 le langage n'est pas capable de tout spécifier (comme du code technique
 manipulant par exemple des \inenglish{threads}). Nous aimerions générer des
 tests encore plus pertinents. Il est probable que la solution se trouve dans
-d'autres méthodes de test, ce qui ouvre des perspectives intéressantes
-présentées dans la partie suivante.
+d'autres méthodes de test ou dans la méthodologie du test paramétré, ce qui
+ouvre des perspectives intéressantes présentées dans la partie suivante.

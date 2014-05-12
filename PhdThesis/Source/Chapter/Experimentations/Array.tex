@@ -7,12 +7,10 @@ l'article~\acitei{EnderlinGB13}. Dans cette partie, nous utilisons le mot
 Cette expérimentation évalue l'efficacité du solveur présenté dans la
 partie~\ref{section:data:arrays} page~\pageref{section:data:arrays},
 c'est~à~dire sa capacité à supprimer ou réduire le rejet lors de la génération
-de données à partir d'un système. Nous mesurons le nombre de
-\inenglish{backtracks} dans le solveur, le temps de génération de données à
-partir d'un système satisfaisable et le nombre de systèmes non satisfaisables
-détectés. L'expérimentation est composée de trois étapes~:
+de données à partir d'un système. L'expérimentation est composée de trois
+étapes~:
 %
-\begin{enumerate}
+\begin{itemize}
 
 \item génération de systèmes (à partir d'une grammaire et des algorithmes
 présentés dans la partie~\ref{subsection:data:algorithms}
@@ -20,9 +18,11 @@ page~\pageref{subsection:data:algorithms})~;
 
 \item exécution du solveur sur chaque système généré~;
 
-\item mesures.
+\item mesures du nombre de \inenglish{backtracks} dans le solveur, le temps de
+génération de données à partir d'un système satisfaisable et le nombre de
+systèmes non satisfaisables détectés.
 
-\end{enumerate}
+\end{itemize}
 %
 Nous générons automatiquement des systèmes dont les propriétés portent sur des
 tableaux contenant des chaînes de caractères et des entiers, et dont la taille

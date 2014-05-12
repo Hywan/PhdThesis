@@ -26,7 +26,7 @@ classes (dans un contexte orienté objet), les tests seront {\strong unitaires}.
 Différents outils exploitant des contrats pour générer des suites de test sont
 présentés ci-dessous.
 
-\paragraph{JMLUnit} L'outil JMLUnit~\acite{CheonL02, ZimmermanN10} permet de
+\paragraph{JMLUnit.} L'outil JMLUnit~\acite{CheonL02, ZimmermanN10} permet de
 transformer un contrat JML en une suite de test exécutable avec JUnit. L'outil
 assure un moyen simple et efficace d'automatiser la génération d'oracles de
 test. L'objectif est de décharger l'utilisateur du calcul du verdict de test, à
@@ -55,7 +55,7 @@ postcondition n'a été violée.
 Enfin, le rapport de test est le même que celui produit habituellement par
 JUnit.
 
-\paragraph{Jartege} L'outil Jartege~\acite{Oriat05} est un générateur de tests
+\paragraph{Jartege.} L'outil Jartege~\acite{Oriat05} est un générateur de tests
 aléatoires pour des programmes écrits en Java. Jartege produit des séquences de
 test, dont le nombre et la taille sont fixés par l'utilisateur.
 
@@ -75,7 +75,7 @@ détermine la probabilité de créer un nouvel objet ou d'en réutiliser un déj
 existant. Selon les structures de données manipulées, cette fonction permettra
 de détecter plus ou moins d'erreurs.
 
-\paragraph{JML-Testing-Tools} L'outil JML-Testing-Tools~\acite{BouquetDLU05,
+\paragraph{JML-Testing-Tools.} L'outil JML-Testing-Tools~\acite{BouquetDLU05,
 BouquetDL06} est développé comme une extension aux outils
 BZ-Testing-Tools~\acite{LegeardPU02}, un ensemble d'outils d'animation et de
 génération automatique de programmes B~\acite{Abrial05}, Z~\acite{Spivey89} ou
@@ -106,7 +106,7 @@ pour les types primitifs de Java avec un domaine ordonné. L'outil considère
 l'un de ses attributs. Quand toutes les valeurs sont spécifiées, elles sont
 instanciées grâce à l'animateur symbolique et les tests peuvent être exécutés.
 
-\paragraph{TestEra} L'outil TestEra~\acite{MarinovK01} est un langage
+\paragraph{TestEra.} L'outil TestEra~\acite{MarinovK01} est un langage
 d'annotations de code Java. Ses préconditions, postconditions et invariants
 expriment des contraintes avec le langage Alloy~\acite{Jackson02}. Alloy est un
 langage de spécification déclaratif pour exprimer des contraintes structurelles
@@ -123,7 +123,7 @@ post-état, qui sont abstraits pour se ramener au formalisme d'Alloy afin d'y
 vérification échoue, un contre-exemple est produit. Sinon, le processus itère à
 l'instance suivante.
 
-\paragraph{Korat} L'outil Korat~\acite{BoyapatiKM02} est la suite de Test\-Era.
+\paragraph{Korat.} L'outil Korat~\acite{BoyapatiKM02} est la suite de Test\-Era.
 L'objectif de Korat est de couvrir des structures de données complexes
 non-isomorphiques de taille finie. Pour cela, il demande à l'utilisateur
 d'écrire un prédicat en Java (appelé \code{repOK}), qui va valider ou invalider
@@ -158,7 +158,7 @@ que d'autre part, l'utilisateur connaît déjà le langage dans lequel écrire c
 méthodes et que les prédicats lui seront très probablement utiles dans son
 programme.
 
-\paragraph{UDITA} Le langage UDITA~\acite{GligoricGJKKM10} répond à l'objectif
+\paragraph{UDITA.} Le langage UDITA~\acite{GligoricGJKKM10} répond à l'objectif
 suivant~: s'assurer que des structures de données complexes sont bien supportées
 par un programme Java, c'est~à~dire qu'un programme sait manipuler sans erreur
 toutes les formes d'une certaine structure de données non-scalaire, récursive,
@@ -191,7 +191,7 @@ borné~\acite{Marinov03, SullivanYCKJ04}. L'efficacité de la méthode s'appuie
 sur les choix retardés~\acite{NollS07}, c'est~à~dire sur des évaluations
 non-déterministes tardives~\acite{FischerKS09}.
 
-\paragraph{JSConTest} Le langage JSConTest~\acite{HeideggerT12} est un langage
+\paragraph{JSConTest.} Le langage JSConTest~\acite{HeideggerT12} est un langage
 de contrat annotant des programmes Javascript. Ce dernier est un langage à
 typage non déclaré. C'est pourquoi JSConTest propose que le contrat ne contienne
 que la signature de la fonction annotée, soient ses entrées et sa sortie,

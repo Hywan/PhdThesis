@@ -214,7 +214,7 @@ données. Le seul outil qu'il propose consiste à se brancher sur un dictionnair
 de données écrit manuellement. Nous présentons trois constats faits par le
 panel.
 
-\paragraph{Premier constat} Les domaines réalistes permettent de spécifier
+\paragraph{Premier constat.} Les domaines réalistes permettent de spécifier
 simplement et facilement une grande majorité des données. Pouvoir utiliser les
 domaines réalistes dans du code PHP directement permet de mixer et d'orienter la
 génération facilement. Par exemple, écrire des boucles où chaque pas produit une
@@ -230,7 +230,7 @@ données de test. Le panel insiste sur le fait que les tests sont par conséquen
 plus facilement maintenables. Cela implique que les ingénieurs n'hésiteront pas
 à modifier les suites de test car ce processus est simplifié.
 
-\paragraph{Deuxième constat} Sans générateur automatique de données, le panel
+\paragraph{Deuxième constat.} Sans générateur automatique de données, le panel
 nous avoue que les données de test utilisées étaient très peu nombreuses~:
 entre 1 à 5 données par tests, 1.3 en moyenne. L'objectif était d'assurer une
 certaine couverture du code avec le critère tous-les-arcs. Avec nos générateurs
@@ -244,7 +244,7 @@ exécutés en permanence, plusieurs dizaines de fois par heure. La rapidité
 d'exécution des tests est alors importante pour ne pas impacter la vitesse de
 développement des équipes.
 
-\paragraph{Troisième constat} Générer beaucoup de données de test n'a aucun
+\paragraph{Troisième constat.} Générer beaucoup de données de test n'a aucun
 sens si elles sont toutes inutiles. Le panel a majoritairement apprécié les
 algorithmes de génération de chaînes de caractères. Pouvoir spécifier des
 chaînes de caractères avec des expressions régulières ou des grammaires, et
@@ -323,9 +323,9 @@ contrat (par conséquent avec Praspel). La seconde est d'utiliser des contrats
 dans un contexte de test fonctionnel, c'est~à~dire que le contenu du test sera
 un assemblage de plusieurs briques logicielles de plus haut niveau.
 
-Durant cette expérimentation, seulement 1~ingénieur de test du panel a pu écrire
-des tests paramétrés. L'aspect test fonctionnel n'a pas été abordé. Ce membre
-n'a pas observé de différences particulières avec des MT dans lesquels il
+Durant cette expérimentation, seulement un ingénieur de test du panel a pu
+écrire des tests paramétrés. L'aspect test fonctionnel n'a pas été abordé. Ce
+membre n'a pas observé de différences particulières avec des MT dans lesquels il
 utilisait les générateurs de données. La raison principale est que les contrats
 qui annotaient les tests paramétrés se ramenaient à décrire le type des données
 pour la précondition dans un seul et unique comportement et la postcondition
@@ -345,7 +345,7 @@ paramétrés n'ont pas apporté de réels bénéfices dans ce contexte.
 Cette expérimentation a permis de révéler plusieurs erreurs dans tous les
 programmes testés. Nous analysons les plus intéressantes d'entre elles.
 
-\paragraph{Erreurs avec les dates} Les dates sont régulièrement des sources
+\paragraph{Erreurs avec les dates.} Les dates sont régulièrement des sources
 d'erreurs dans les programmes. L'utilisation des domaines réalistes \code{Date}
 et \code{Time\-stamp} permettent de générer et valider finement des dates. Une
 erreur a été découverte avec des dates relatives comme entre «~le dernier
@@ -353,7 +353,8 @@ vendredi de février~» (spécifié avec \code{time\-stamp('last Friday of
 February')}) et «~le lundi suivant~» (spécifié avec \code{time\-stamp('first
 Monday of March')}). Certains cas avec des samedis et dimanches lors d'années
 bissextiles étaient sources d'erreurs. L'erreur a été détectée par des gardes
-dans le programme qui ont levé des exceptions.
+dans le programme qui ont levé des exceptions. Un test a donc activé une branche
+de code jusqu'ici non couverte.
 
 Une autre erreur a été détectée dans un programme qui formatait mal les dates.
 Le mois de janvier était formaté en \code{1} au lieu de \code{01}. La donnée de
@@ -361,7 +362,8 @@ test manuelle portait sur le mois de décembre, mois durant lequel a été écri
 test (l'ingénieur de test s'est inspiré du mois courant de l'époque pour écrire
 la donnée de test). Lorsqu'il a spécifié sa donnée avec le domaine réaliste
 \code{date('d')}, où \code{d} représente les mois sur deux chiffres, l'erreur
-est apparue. L'erreur a été détectée avec la clause \aensures des contrats.
+est apparue. L'erreur a été détectée suite à la violation d'une clause \aensures
+des contrats.
 
 Une fois qu'un contrat a été écrit ou qu'un générateur de données a été utilisé
 manuellement, 2~minutes en moyenne sont nécessaires pour détecter ces erreurs.
@@ -369,12 +371,13 @@ Le code impacté n'était pas encore en production mais sur le point d'être liv
 L'ingénieur a estimé que si l'erreur était apparue en production, son impact
 aurait été «~important~».
 
-\paragraph{Erreurs avec JSON} Un programme devait valider des données formatées
+\paragraph{Erreurs avec JSON.} Un programme devait valider des données formatées
 en JSON. Les données de test manuelles ne couvraient pas tous les cas et
 l'utilisation d'un générateur de chaînes de caractères exhaustif a permis de
 détecter plusieurs erreurs. Elles ont été détectées en autant de temps qu'il
 était nécessaire pour écrire le test, c'est~à~dire moins de 3~minutes. L'erreur
-a été détectée par PHP à l'exécution lors d'opérations incomplètes.
+a été détectée par PHP à l'exécution lors d'opérations incomplètes. Des tests
+ont activé des branches de code qui n'étaient pas couvertes.
 
 Ce programme n'était pas encore en production, il était en cours de
 développement. L'impact des erreurs aurait pu être important puisqu'il
@@ -382,20 +385,21 @@ s'agissait de valider des données et que le programme retournait parfois des
 faux-positifs et parfois des faux-négatifs (ce qui est moins grave dans ce
 contexte). Il a fallu quelques minutes pour corriger les erreurs.
 
-\paragraph{Erreurs arithmétiques} Un programme évaluait des formules
-arithmétiques écrites par des utilisateurs pour caractériser l'évolution de
+\paragraph{Erreurs arithmétiques.} Un programme évaluait des formules
+arithmétiques écri\-tes par des utilisateurs pour caractériser l'évolution de
 tarifs en temps réel. Une erreur avec les divisions a été trouvée~: elles
 étaient évaluées comme étant associatives gauches au lieu d'associatives
 droites, seulement lorsque l'opérande droit avait une forme particulière. Cette
 erreur a été détectée avec le générateur de chaînes de caractères exhaustif en
-moins de 15~secondes une fois le test écrit.
+moins de 15~secondes une fois le test écrit. L'erreur a été détectée par la
+violation d'une postcondition avec une construction \apred{\empty}.
 
 Ce programme était en production, avec des centaines d'utilisateurs et plusieurs
 centaines de milliers de clients (pratiquement un million). Des tests unitaires
 et fonctionnels étaient même écrits et exécutés très régulièrement.
 Heureusement, aucune formule de cette forme n'a été écrite par les utilisateurs.
 
-\paragraph{Erreurs dans les tests} Dans les deux derniers points abordés, la
+\paragraph{Erreurs dans les tests.} Dans les deux derniers points abordés, la
 correction des erreurs a permis de détecter d'autres erreurs dans les tests. En
 effet, les tests calculaient mal leurs verdicts ou étaient incomplets. Praspel
 générait des AGT qui échouaient alors que les MT équivalent étaient des succès.
@@ -406,14 +410,14 @@ toute la combinatoire possible alors que certains cas étaient oubliés dans les
 MT. C'est la raison principale de ce genre d'erreurs dans les tests. Une autre
 raison est que les AGT utilisent des générateurs de données plus complets que
 les MT écrits sans nos générateurs de données. Un seul AGT exécuté plusieurs
-fois couvrent alors plus de données qu'un MT. Lorsqu'un AGT détectait une erreur
+fois couvre alors plus de données qu'un MT. Lorsqu'un AGT détectait une erreur
 sur les données, cette erreur n'était pas détectée dans les MT car la couverture
 des données était nettement plus faible.
 
-\paragraph{Autres erreurs} D'autres erreurs ont été détectées notamment avec les
-domaines réalistes \code{Regex} et \code{Array} qui généraient des données non
-prévues par l'implémentation. Ces erreurs ont principalement été détectées en
-2~minutes en moyenne, grâce aux clauses \aensures des contrats.
+\paragraph{Autres erreurs.} D'autres erreurs ont été détectées notamment avec
+les domaines réalistes \code{Regex} et \code{Array} qui généraient des données
+non prévues par l'implémentation. Ces erreurs ont principalement été détectées
+en 2~minutes en moyenne, suite à la violation des postconditions des contrats.
 
 \subsection{Expertise humaine~: discussion}
 \label{subsection:experimentation:discuss}
@@ -421,7 +425,7 @@ prévues par l'implémentation. Ces erreurs ont principalement été détectées
 Pour finir cette expérimentation, nous avons discuté en groupe avec les membres
 du panel. Nous avons synthétisé ces discussions en plusieurs sujets.
 
-\paragraph{Bénéfices des contrats} La remarque la plus fréquente était que les
+\paragraph{Bénéfices des contrats.} La remarque la plus fréquente était que les
 con\-trats offrent une documentation plus complète. Ils sont écrits en même
 temps que l'implémentation et sont utiles à court terme, alors qu'écrire une
 documentation n'a pas de réel intérêt à court terme. Elle était rarement
@@ -449,7 +453,7 @@ dédié à l'écriture des contrats permettrait d'éviter des erreurs de concept
 par la suite. Toutefois, nous n'avons pas réussi à observer ou quantifier ce
 phénomène.
 
-\paragraph{Bénéfices du \inenglish{Contract-based Testing}} Utiliser les
+\paragraph{Bénéfices du \inenglish{Contract-based Testing}.} Utiliser les
 contrats pour générer des tests apporte principalement un gain de temps. Même si
 les tests générés automatiquement sont considérés comme «~basiques~», ils
 couvrent tout de même toute la spécification et sont pertinents. Le panel nous a
@@ -466,7 +470,7 @@ le terrain~» pour reprendre leurs termes. Ainsi, ils peuvent davantage se
 concentrer sur des tests plus avancés tout en respectant le budget alloué à
 cette phase du développement.
 
-\paragraph{Génération de données de test} Utiliser des générateurs de données
+\paragraph{Génération de données de test.} Utiliser des générateurs de données
 permet de générer beaucoup de données pertinentes en très peu de temps. Le panel
 a ressenti plus de confiance dans les tests avec les générateurs plutôt qu'avec
 des données de test manuelles. Ce ressenti s'est confirmé par le nombre
@@ -488,7 +492,7 @@ effet, comparé aux dictionnaires de données ou aux données manuelles qu'ils
 utilisent quotidiennement, Praspel va plus loin et offre des services plus
 efficaces.
 
-\paragraph{À propos de Praspel} Praspel étant un projet de recherche en cours
+\paragraph{À propos de Praspel.} Praspel étant un projet de recherche en cours
 d'élaboration, nous n'avons pas eu le temps d'écrire une documentation
 utilisateur. Pour que le panel puisse utiliser Praspel durant cette
 expérimentation, nous lui avons fourni les articles

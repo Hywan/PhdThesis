@@ -1,0 +1,34 @@
+%%
+\pgfsetcolor{dot}
+  % Edge: v_i -> v_j
+  \draw [->] (154.09bp,31.611bp) .. controls (159.78bp,31.78bp) and (166.16bp,31.941bp)  .. (172bp,32.025bp) .. controls (193.33bp,32.329bp) and (198.67bp,32.329bp)  .. (220bp,32.025bp) .. controls (222.55bp,31.988bp) and (225.21bp,31.937bp)  .. (237.91bp,31.611bp);
+  \pgfsetstrokecolor{dotstroke}
+  \draw (196bp,43.525bp) node {\code{j: baz()}};
+  % Edge: v_i -> v_j
+  \draw [->] (149.47bp,18.676bp) .. controls (155.7bp,13.379bp) and (163.66bp,7.7824bp)  .. (172bp,5.0248bp) .. controls (192.25bp,-1.6749bp) and (199.75bp,-1.6749bp)  .. (220bp,5.0248bp) .. controls (225.08bp,6.7052bp) and (230.02bp,9.44bp)  .. (242.53bp,18.676bp);
+  \draw (196bp,16.525bp) node {\code{j: qux()}};
+  % Edge: dom -> v_i
+  \draw [->] (36.088bp,31.611bp) .. controls (41.784bp,31.78bp) and (48.165bp,31.941bp)  .. (54bp,32.025bp) .. controls (74.442bp,32.317bp) and (79.558bp,32.317bp)  .. (100bp,32.025bp) .. controls (102.55bp,31.988bp) and (105.21bp,31.937bp)  .. (117.91bp,31.611bp);
+  \draw (77bp,43.525bp) node {\code{i: foo()}};
+  % Edge: dom -> v_i
+  \draw [->] (31.474bp,18.676bp) .. controls (37.696bp,13.379bp) and (45.664bp,7.7824bp)  .. (54bp,5.0248bp) .. controls (73.41bp,-1.3958bp) and (80.59bp,-1.3958bp)  .. (100bp,5.0248bp) .. controls (105.08bp,6.7052bp) and (110.02bp,9.44bp)  .. (122.53bp,18.676bp);
+  \draw (77bp,16.525bp) node {\code{i: bar()}};
+  % Node: v_i
+\begin{scope}
+  \pgfsetstrokecolor{dotstroke}
+  \draw (136bp,31bp) ellipse (18bp and 18bp);
+  \draw (136bp,31.025bp) node {$v_\code{i}$};
+\end{scope}
+  % Node: v_j
+\begin{scope}
+  \pgfsetstrokecolor{dotstroke}
+  \draw [state,accepting] (256bp,31bp) ellipse (18bp and 18bp);
+  \draw (256bp,31.025bp) node {$v_\code{j}$};
+\end{scope}
+  % Node: dom
+\begin{scope}
+  \pgfsetstrokecolor{dotstroke}
+  \draw [state,initial] (18bp,31bp) ellipse (18bp and 18bp);
+  \draw (18bp,31.025bp) node {$\mathit{dom}$};
+\end{scope}
+%

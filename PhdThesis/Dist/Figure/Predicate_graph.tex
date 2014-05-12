@@ -1,0 +1,34 @@
+%%
+\pgfsetcolor{dot}
+  % Edge: v_1 -> v_2
+  \draw [->] (132.24bp,27.441bp) .. controls (146.02bp,27.441bp) and (165.6bp,27.441bp)  .. (191.87bp,27.441bp);
+  \pgfsetstrokecolor{dotstroke}
+  \draw (162bp,37.941bp) node {\code{\$c}};
+  % Edge: v_1 -> v_2
+  \draw [->] (127.55bp,15.561bp) .. controls (133.79bp,10.466bp) and (141.75bp,5.0849bp)  .. (150bp,2.4414bp) .. controls (160.16bp,-0.81381bp) and (163.84bp,-0.81381bp)  .. (174bp,2.4414bp) .. controls (178.9bp,4.011bp) and (183.69bp,6.5456bp)  .. (196.45bp,15.561bp);
+  \draw (162bp,12.941bp) node {\code{\$d}};
+  % Edge: pre -> v_1
+  \draw [->] (36.241bp,27.441bp) .. controls (50.022bp,27.441bp) and (69.6bp,27.441bp)  .. (95.868bp,27.441bp);
+  \draw (66bp,37.941bp) node {\code{\$a}};
+  % Edge: pre -> v_1
+  \draw [->] (31.553bp,15.561bp) .. controls (37.792bp,10.466bp) and (45.751bp,5.0849bp)  .. (54bp,2.4414bp) .. controls (64.158bp,-0.81381bp) and (67.842bp,-0.81381bp)  .. (78bp,2.4414bp) .. controls (82.898bp,4.011bp) and (87.694bp,6.5456bp)  .. (100.45bp,15.561bp);
+  \draw (66bp,12.941bp) node {\code{\$b}};
+  % Node: pre
+\begin{scope}
+  \pgfsetstrokecolor{dotstroke}
+  \draw [state,initial] (18bp,27bp) ellipse (18bp and 18bp);
+  \draw (18bp,27.441bp) node {$\mathit{pred}$};
+\end{scope}
+  % Node: v_1
+\begin{scope}
+  \pgfsetstrokecolor{dotstroke}
+  \draw (114bp,27bp) ellipse (18bp and 18bp);
+  \draw (114bp,27.441bp) node {$v_1$};
+\end{scope}
+  % Node: v_2
+\begin{scope}
+  \pgfsetstrokecolor{dotstroke}
+  \draw [state,accepting] (210bp,27bp) ellipse (18bp and 18bp);
+  \draw (210bp,27.441bp) node {$v_2$};
+\end{scope}
+%

@@ -47,7 +47,7 @@ comportement des programmes, et utilisés comme annotations, sont appelés des
 La suite de cette partie décrit les plus influents et connus~: Eiffel, JML pour
 Java, ACSL pour C et Spec\# pour C\#.
 
-\paragraph{Eiffel} Le langage Eiffel~\acite{MeyerNM87} est un langage de
+\paragraph{Eiffel.} Le langage Eiffel~\acite{MeyerNM87} est un langage de
 programmation orienté objet. Sa contribution majeure au domaine a été
 l'utilisation importante du \inenglish{Design by Contract} au sein même du
 langage (c'est~à~dire sans être placé en annotation), dont les assertions,
@@ -77,10 +77,10 @@ seulement un sous-ensemble de ses contrats pour des parties plus critiques.
 Moins il y a de contrats présents dans le programme, plus son exécution sera
 rapide, mais il est nécessaire de s'assurer de la fiabilité du programme.
 
-\paragraph{JML} Le \inenglish{Java Modeling Language}~\acite{JML} est un langage
-de contrat pour Java~\acite{Java}. À l'inverse du langage Eiffel, JML est un
-langage d'annotations pour Java. Il utilise les mots-clés \code{requires} et
-\code{ensures} pour introduire les préconditions et les postconditions. Une
+\paragraph{JML.} Le \inenglish{Java Modeling Language}~\acite{JML} est un
+langage de contrat pour Java~\acite{Java}. À l'inverse du langage Eiffel, JML
+est un langage d'annotations pour Java. Il utilise les mots-clés \code{requires}
+et \code{ensures} pour introduire les préconditions et les postconditions. Une
 postcondition exceptionnelle est introduite par le mot-clé \code{signals}. Les
 invariants de classe sont introduits par le mot-clé \code{invariant}, et les
 invariants de boucle avec le mot-clé \code{loop\_invariant}. JML propose la
@@ -117,7 +117,7 @@ du système au moment de l'exécution. L'utilisation du RAC confère un moyen
 direct et efficace de s'assurer que les contrats JML ne sont pas violés durant
 une exécution.
 
-\paragraph{ACSL} Le \inenglish{ANSI/ISO C Specification Language}~\acite{ACSL}
+\paragraph{ACSL.} Le \inenglish{ANSI/ISO C Specification Language}~\acite{ACSL}
 est un langage de contrat pour C~\acite{C}, inspiré principalement du langage de
 spécification de l'outil Caduceus~\acite{FilliatreM07}, dédié à la vérification
 déductive de propriétés comportementales de programmes C. Caduceus est lui-même
@@ -145,7 +145,7 @@ externes, comme des assistants de preuve interactifs ou des prouveurs
 automatiques de théorèmes, d'aider à la vérification de certaines
 spécifications.
 
-\paragraph{Spec\#} Le langage Spec\#~\acite{SpecSharp} permet de faire de la
+\paragraph{Spec\#.} Le langage Spec\#~\acite{SpecSharp} permet de faire de la
 programmation par contrat pour C\#~\acite{CSharp}. Ce langage est très similaire
 à JML ou ACSL, avec toutefois moins de clauses. Les préconditions sont
 introduites avec le mot-clé \code{requires}, les postconditions avec le mot-clé
