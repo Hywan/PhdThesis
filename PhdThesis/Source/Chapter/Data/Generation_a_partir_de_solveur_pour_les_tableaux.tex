@@ -162,7 +162,7 @@ Les trois fonctions les plus utilisées sont \code{count()},
 compte le nombre d'éléments contenus dans un tableau, la fonction
 \code{array\_key\_exists()} vérifie si une clé est présente dans un tableau
 (indépendamment de la valeur associée, c'est~à~dire que cette fonction retourne
-\code{true} même si la valeur est \code{null}), et enfin, la fontion
+\code{true} même si la valeur est \code{null}), et enfin, la fonction
 \code{in\_array()} vérifie si une valeur est présente dans le tableau. Toutes
 ces fonctions travaillent sur un seul tableau à la fois. Cette étude suggère que
 nous pouvons considérer ces fonctions sans effet de bord en tant que propriétés
@@ -183,7 +183,7 @@ $$\code{a[$K$]: $V$}$$
 où $K$ et $V$ sont des disjonctions de domaines réalistes. La propriété signifie
 que toute valeur de $K$ est la clé d'une paire dans le tableau \code{a}, et que
 toute paire dont la clé est dans $K$ a sa valeur dans $V$. $K$ accepte seulement
-les domaines réalistes qui implémentent les interfaces \code{Constant},
+les domaines réalistes qui implémentent au moins les interfaces \code{Constant},
 \code{Interval} et \code{Enumerable}. Cette propriété est équivalente à utiliser
 les fonctions \code{array\_key\_exists()} et \code{in\_array()} combinées.
 
@@ -236,12 +236,12 @@ valeur \code{'foo'}~; ce qui correspond en PHP au prédicat suivant~:
 
 \end{example}
 
-Au lieu d'utiliser le symbole \code{:} nous pouvons utiliser le symbole
-\code{!:}. La propriété \code{a[$K$]!: $V$} signifie que toute valeur de $K$ est
-la clé d'une paire dans le tableau \code{a}, et que toute paire dont la clé est
-dans $K$ n'a pas sa valeur dans $V$. La signification est similaire avec le
-symbole \code{\_}. La propriété \code{a[$K$]!: \_} signifie qu'aucune paire du
-tableau \code{a} n'a sa clé dans $K$.
+Nous pouvons également utiliser le symbole \code{!:}. La propriété
+\code{a[$K$]!: $V$} signifie que toute valeur de $K$ est la clé d'une paire dans
+le tableau \code{a}, et que toute paire dont la clé est dans $K$ n'a pas sa
+valeur dans $V$. La signification est similaire avec le symbole \code{\_}. La
+propriété \code{a[$K$]!: \_} signifie qu'aucune paire du tableau \code{a} n'a sa
+clé dans $K$.
 
 Les clés des tableaux sont toujours uniques, mais pas les valeurs. Nous pouvons
 exprimer la propriété d'unicité sur les valeurs en écrivant~:
@@ -281,18 +281,25 @@ un solveur de contraintes pour construire un tableau satisfaisant toutes ces
 propriétés. Cette partie explique comment les propriétés sur les tableaux sont
 transformées en contraintes pour le solveur, ou plus précisément en problème de
 satisfaction de contraintes (\inenglish{Constraint Satisfaction Problem}, abrégé
-CSP). Un CSP~\acite{Tsang93} est un triplet composé de variables, de domaines de
-valeurs pour ces variables et de contraintes. Les variables sont déclarées en
-Praspel, les domaines sont donnés par des disjonctions de domaines réalistes, et
-les contraintes entre ces variables sont données par des propriétés sur les
-tableaux.
+CSP~\acite{Tsang93}).
 
-Une et une seule de ces propriétés est supposée être une déclaration de tableau
-de la forme \code{a: array($D$, $L$)}, où $D$ est en forme normale, c'est~à~dire
-que $D$ est une liste de $p$ constructions \code{from $F_i$ to $T_i$} avec $1
-\leq i \leq p$, et $L$ est une disjonction de domaines réalistes $L_1, \dots,
-L_m$ héritant du domaine réaliste \code{Integer}. La taille doit être supérieure
-ou égale à zéro.
+\begin{definition}[\inenglish{Constraint Satisfaction Problem}]
+
+Un CSP est un triplet $(\Sigma, \Delta, \Pi)$ où $\Sigma$ est l'ensemble des
+variables, $\Delta$ est l'ensemble des domaines de valeurs pour ces variables et
+$\Pi$ est l'ensemble des contraintes. Les variables $\sigma \in \Sigma$ sont
+déclarées en Praspel, les domaines $\delta \in \Delta$ sont donnés par des
+disjonctions de domaines réalistes, et les contraintes $\pi \in \Pi$ entre ces
+variables sont données par des propriétés sur les tableaux.
+
+\end{definition}
+
+Une de ces propriétés est supposée être une déclaration de tableau de la forme
+\code{a: array($D$, $L$)}, où $D$ est en forme normale, c'est~à~dire que $D$ est
+une liste de $p$ constructions \code{from $F_i$ to $T_i$} avec $1 \leq i \leq
+p$, et $L$ est une disjonction de domaines réalistes $L_1, \dots, L_m$ héritant
+du domaine réaliste \code{Integer}. La taille doit être supérieure ou égale à
+zéro.
 
 Dans l'exemple~\ref{example:data:array_proprietes}, $p = 1$, $m = 2$, $L_1 =
 [\code{0..5}]$ et $L_2 = \{\code{10}\}$. Dans la description du tableau, aucun
@@ -310,8 +317,7 @@ Les variables du CSP sont~:
 %
 \begin{enumerate}
 
-\item les domaines réalistes $L_1, \dots, L_m$ et la taille du tableau, notée
-$S$, qui est un entier positif ou nul~;
+\item la taille du tableau, notée $S$, qui est un entier positif ou nul~;
 
 \item les ensembles $X$ et $Y$ qui sont respectivement le domaine du tableau
 (l'ensemble des clés) et le co-domaine (l'ensemble des valeurs)~;
@@ -484,7 +490,7 @@ algorithme.
 
       \If{$\acall{AC3\_Arc\_Reduce}(\avar{X}, \avar{Y})$}
 
-          \ForAll{$Z \in \avar{Neighbours}(\avar{X})$}
+          \ForAll{$\avar{Z} \in \avar{Neighbours}(\avar{X})$}
 
               \State $\avar{queue}.\acall{push}((\avar{Z}, \avar{X}))$
 
@@ -506,7 +512,7 @@ algorithme.
 
     \ForAll{$\avar{x} \in \avar{Domains}(\avar{X})$}
 
-        \If{$\akw{there~is~no} y \in \avar{Domains}(\avar{Y})~\akw{such~that} (\avar{x}, \avar{y})~\akw{satisfies~the~constraint}$}
+        \If{$\akw{no} y \in \avar{Domains}(\avar{Y})~\akw{such~that} (\avar{x}, \avar{y})~\akw{satisfies~the~selected~constraint}$}
 
             \State $\akw{delete} \avar{x}~\akw{from} \avar{Domains}(\avar{X})$
             \State $\avar{removed} \gets true$
@@ -572,7 +578,7 @@ D'après la figure~\ref{figure:data:ac3}, nous avons~:
 
 \end{itemize}
 %
-Ensuite, dans l'algorithme $\akw{AC3}$, la variable $\avar{queue}$ contient au
+Déroulons l'algorithme $\akw{AC3}$. La variable $\avar{queue}$ contient au
 départ tous les arcs du graphe, soit $\avar{queue} = \{(\avar{X}, \avar{Y}),
 (\avar{Y}, \avar{X}), (\avar{Y}, \avar{Z}), (\avar{Z}, \avar{Y})\}$. Nous
 commençons par traiter la première paire de $\avar{queue}$ après l'avoir
@@ -612,20 +618,18 @@ termine.
 
 \end{example}
 
-La complexité de cet algorithme est de $\m{O}(mn^3)$ où $m$ est le nombre de
-contraintes (d'arcs) et $n$ le nombre de valeurs de la «~plus grande~»
-disjonction de domaines réalistes.
-
-Notre implémentation est une variante de l'algorithme AC3 (tout en conservant la
-même complexité). Les variables n'ont pas des domaines mais une disjonction de
-domaines réalistes. Rappelons que nous manipulons cinq sortes de domaines
-réalistes classés par les interfaces \code{Constant}, \code{Interval},
-\code{Nonconvex}, \code{Finite} et \code{Enumerable}. Pour chaque sorte de
-domaine réaliste, nous avons implémenté une ou des méthodes de raffinement pour
-permettre la réduction du domaine réaliste. Par exemple, \code{Nonconvex} attend
-une méthode \code{discredit} pour supprimer une valeur du domaine,
-\code{Interval} attend les méthodes \code{reduceRightTo} et \code{reduceLeftTo}
-respectivement pour réduire la borne droite et gauche etc.
+Notre implémentation est une variante de l'algorithme AC3. Les variables n'ont
+pas des domaines mais une disjonction de domaines réalistes. La complexité de
+cet algorithme est de $\m{O}(mn^3)$ où $m$ est le nombre de contraintes (d'arcs)
+et $n$ le nombre de valeurs de la «~plus grande~» disjonction de domaines
+réalistes. Rappelons que nous manipulons cinq sortes de domaines réalistes
+classés par les interfaces \code{Constant}, \code{Interval}, \code{Nonconvex},
+\code{Finite} et \code{Enumerable}. Pour chaque sorte de domaine réaliste, nous
+avons implémenté une ou des méthodes de raffinement pour permettre la réduction
+du domaine réaliste. Par exemple, \code{Nonconvex} attend une méthode
+\code{discredit} pour supprimer une valeur du domaine, \code{Interval} attend
+les méthodes \code{reduceRightTo} et \code{reduceLeftTo} respectivement pour
+réduire la borne droite et gauche etc.
 
 \begin{example}[Propagation et consistance avec un algorithme AC3]
 
@@ -640,11 +644,7 @@ S & \geq 0 \\
 %
 \mcard(X) & = \mcard(Y) \\
 %
-S & \in L_1 \union L_2 \\
-%
-L_1 & \subseteq [\code{O..5}] \\
-%
-L_2 & \subseteq \{\code{10}\} \\
+S & \in [\code{O..5}] \union \{\code{10}\} \\
 %
 X & = X_1 \\
 %
@@ -663,66 +663,140 @@ Y & = \hat{H}(X) \\
 \end{align*}
 
 Nous appliquons l'algorithme. Au départ, nous avons la variable $\avar{queue}$
-initialisée à $\{(S, X), (S, S), (X, Y), (X, X)\}$.
+initialisée à $\{(X, X), (X, Y), (Y, X), (S, S), (S, X), (X, S)\}$.
 
-\begin{itemize}
+\noindent
+\begin{longtable}{m{.85\textwidth}m{.15\textwidth}}
 
-\item Nous sélectionnons et retirons la première paire $(S, X)$. Nous
-travaillons sur la variable $S$ et nous avons la contrainte $\mcard(X) = S$. La
-cardinalité de $X$ est égale à la cardinalité de $X_1$, qui est inférieure ou
-égale à la cardinalité de \code{natural(0, 1)}, qui vaut $+\infty$. Nous n'avons
-rien à réviser, $S$ reste alors inchangée. $X$ a un arc vers $Y$, donc ajoutons
-la paire $(Y, X)$ dans la variable $\avar{queue}$.
+Nous sélectionnons et retirons la paire $(X, X)$. Nous avons la contrainte
+unaire (ne portant que sur une seule variable) $\{\code{0}\} \subseteq X$. Nous
+vérifions $\code{0} \in \code{natural(0, 1)}$.  Tout est consistant. Le tableau
+ne peut pas être vide car il contiendra au moins une paire.
+& 
+\begin{tabular}{|c|}
+\hline
+$(X, X)$ \\
+\hline
+\hline
+$(X, Y)$ \\
+\hline
+$(Y, X)$ \\
+\hline
+$(S, S)$ \\
+\hline
+$(S, X)$ \\
+\hline
+$(X, S)$ \\
+\hline
+\end{tabular}
+\\
 
-\item Nous sélectionnons et retirons la deuxième paire $(S, S)$. Nous avons la
-con\-train\-te unaire (ne portant que sur une seule variable) $S \geq 0$. Nous
-n'avons rien à réviser. $S$ a un arc vers $X$, donc nous ajoutons la paire $(X,
-S)$.
+\\
 
-\item La troisième paire que nous sélectionnons et retirons est $(X, Y)$. Nous
-avons la première contrainte $\mcard(X) = \mcard(Y)$. Nous traitons uniquement
-la variable $X$ et nous n'avons rien à faire. La seconde contrainte est
+La paire suivante que nous sélectionnons et retirons est $(X, Y)$. Nous avons la
+première contrainte $\mcard(X) = \mcard(Y)$. Nous traitons uniquement la
+variable $X$ et nous n'avons rien à faire. La seconde contrainte est
 $\hat{H}(\{\code{0}\}) \subseteq \{\code{'b'}, \code{'c'}\}$. Nous vérifions
 $\code{0} \in \code{natural(0, 1)}$, $\code{'b'} \in \code{string('a', 'e', 1)}$
-et $\code{'c'} \in$ \code{string('a', 'e', 1)}. Tout est consistant. Nous
-devrions ajouter la paire $(Y, X)$ mais elle est déjà présente dans la variable
-$\avar{queue}$.
+et $\code{'c'} \in$ \code{string('a', 'e', 1)}. Tout est consistant.
+&
+\begin{tabular}{|c|}
+\hline
+$(X, Y)$ \\
+\hline
+\hline
+$(Y, X)$ \\
+\hline
+$(S, S)$ \\
+\hline
+$(S, X)$ \\
+\hline
+$(X, S)$ \\
+\hline
+\end{tabular}
+\\
 
-\item La quatrième paire est $(X, X)$. Nous avons la contrainte $\{\code{0}\}
-\subseteq X$. Nous vérifions $\code{0} \in \code{natural(0, 1)}$. Tout est
-consistant. Le tableau ne peut pas être vide car il contiendra au moins une
-paire. Dans la variable $\avar{queue}$, nous ajoutons uniquement la paire $(S,
-X)$, la paire $(Y, X)$ étant déjà présente.
+\\
 
-\item Nous sélectionnons et retirons la paire $(Y, X)$. Nous avons toujours la
+Nous sélectionnons et retirons la paire $(Y, X)$. Nous avons toujours la
 contrainte $\mcard(X) = \mcard(Y)$ mais nous traitons maintenant la variable
-$Y$. La cardinalité de $Y$ est égale à la cardinalité de $Y_1$, qui est
-inférieure ou égale à la cardinalité de \code{string('a', 'e', 1)}, qui vaut $5$
-car ce domaine réaliste peut produire les données \code{a} jusqu'à \code{e}.
-Nous savons aussi que le tableau contiendra au moins une paire. Ainsi,
-$\mcard(X) \in [1; 5]$. Dans la variable $\avar{queue}$, nous devrions ajouter
-la paire $(X, S)$, mais elle est déjà présente.
+$Y$. La cardinalité de $Y$ est égale la cardinalité de $Y_1$, qui est inférieure
+ou égale à la cardinalité de \code{string('a', 'e', 1)}, qui vaut $5$ car ce
+domaine réaliste peut produire les données \code{a} jusqu'à \code{e}. Nous
+savons aussi que le tableau contiendra au moins une paire. Ainsi, $\mcard(X) \in
+[1; 5]$. Nous devons ajouter une paire dans la variable $\avar{queue}$, mais
+$Y$ n'a pas d'arc vers d'autre variable, donc nous ne faisons rien.
+&
+\begin{tabular}{|c|}
+\hline
+$(Y, X)$ \\
+\hline
+\hline
+$(S, S)$ \\
+\hline
+$(S, X)$ \\
+\hline
+$(X, S)$ \\
+\hline
+\end{tabular}
+\\
 
-\item Nous sélectionnons et retirons la paire $(X, S)$. Nous travaillons sur la
-variable $X$ avec la contrainte $\mcard(X) = S$. Nous n'avons rien à faire à
-part ajouter la paire $(Y, X)$.
+\\
 
-\item L'avant-dernière paire est $(S, X)$. Nous travaillons sur la variable $S$
-avec la con\-train\-te $\mcard(X) = S$. Nous révisons $S \in L_1 \union L_2$
-avec $L_1 \subseteq [\code{0..5}]$ et $L_2 \subseteq \{\code{10}\}$, pour
-enlever les valeurs \code{0} et \code{10}. $L_1$ est un domaine réaliste
-représantant un intervalle d'entiers (domaine réaliste \code{Boundinteger})
-implémentant entre autre les interfaces \code{Interval} et \code{Nonconvex}.
-Nous appelons la méthode \code{discredit} pour supprimer \code{0} de
-l'intervalle.  $L_2$ est un domaine réaliste représentant une constante pour
-l'entier $10$. La variable $L_2$ est supprimée de l'union (de la disjonction de
-domaines réalistes). Ainsi, nous obtenons $S \in L_1$ avec $L_1 \subseteq
-[\code{1..5}]$.
+Nous sélectionnons et retirons la paire $(S, S)$. Nous avons la con\-train\-te
+unaire $S \geq 0$. Nous n'avons rien à réviser.
+&
+\begin{tabular}{|c|}
+\hline
+$(S, S)$ \\
+\hline
+\hline
+$(S, X)$ \\
+\hline
+$(X, S)$ \\
+\hline
+\end{tabular}
+\\
 
-\item Enfin, la dernière paire est $(Y, X)$. Tout est consistant. $Y$ n'a pas
-d'autre arc. L'algorithme termine.
+\\
 
-\end{itemize}
+Nous sélectionnons et retirons la paire $(S, X)$. Nous travaillons sur la
+variable $S$ avec la con\-train\-te $\mcard(X) = S$. Puisque $\mcard(X) \in
+[1;5]$, nous devons réviser $S \in [\code{0..5}] \,\union\, \{\code{10}\}$, pour
+enlever les valeurs \code{0} et \code{10}.  $\code{0..5}$ est un domaine
+réaliste représentant un intervalle d'entiers (domaine réaliste
+\code{Boundinteger}) implémentant entre autre les interfaces \code{Interval} et
+\code{Nonconvex}.  Nous appelons la méthode \code{discredit} pour supprimer
+\code{0} de l'intervalle. $\code{10}$ est un domaine réaliste représentant une
+constante pour l'entier $10$. Ce dernier est supprimée de la disjonction de
+domaines réalistes. Ainsi, nous obtenons $S \in [\code{1..5}]$. Dans la variable
+$\avar{queue}$, nous devrions ajouter la paire $(X, S)$ mais elle est déjà
+présente.
+&
+\begin{tabular}{|c|}
+\hline
+$(S, X)$ \\
+\hline
+\hline
+$(X, S)$ \\
+\hline
+\end{tabular}
+\\
+
+\\
+
+Nous sélectionnons et retirons la paire $(X, S)$. Nous travaillons sur la
+variable $X$ avec la contrainte $\mcard(X) = S$. Nous n'avons rien à faire.
+&
+\begin{tabular}{|c|}
+\hline
+$(X, S)$ \\
+\hline
+\end{tabular}
+
+\end{longtable}
+
+La variable $\avar{queue}$ est vide, l'algorithme se termine.
 
 \end{example}
 

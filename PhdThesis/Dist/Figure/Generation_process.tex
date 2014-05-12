@@ -1,68 +1,68 @@
 %%
 \pgfsetcolor{dot}
   % Edge: predicate -> sample
-  \draw [->] (69.108bp,130.21bp) .. controls (70.536bp,142.7bp) and (74.357bp,159.22bp)  .. (84.348bp,170bp) .. controls (95.732bp,182.28bp) and (111.78bp,190.27bp)  .. (137.19bp,198.33bp);
+  \draw [->] (72.998bp,132.2bp) .. controls (73.326bp,145.14bp) and (75.858bp,162.55bp)  .. (85.786bp,174bp) .. controls (97.104bp,187.06bp) and (113.65bp,195.24bp)  .. (139.98bp,203.19bp);
   \pgfsetstrokecolor{dotstroke}
-  \draw (130.85bp,159bp) node {\underline{invalide}, $\tau = \tau + 1$};
+  \draw (133.79bp,162bp) node {[invalide] $\tau = \tau + 1$};
   % Edge: predicate -> pred
-  \draw [->] (96.994bp,97.622bp) .. controls (131.43bp,81.543bp) and (189.32bp,54.505bp)  .. (236.67bp,32.394bp);
-  \draw (209.35bp,65bp) node {\underline{valide}};
+  \draw [->] (102.15bp,99.532bp) .. controls (136.85bp,83.059bp) and (195.71bp,55.118bp)  .. (243.47bp,32.443bp);
+  \draw (218.29bp,66bp) node {[valide]};
   % Edge: variable -> sample
-  \draw [->] (245.11bp,292.52bp) .. controls (228.98bp,287.29bp) and (211.41bp,279bp)  .. (199.35bp,266bp) .. controls (191.31bp,257.33bp) and (186.67bp,245.23bp)  .. (181.98bp,224.21bp);
-  \draw (240.35bp,254bp) node {\;\underline{$V \neq \emptyset$}, $v = \mpop(V)$};
+  \draw [->] (250.61bp,296.97bp) .. controls (233.81bp,291.8bp) and (215.4bp,283.44bp)  .. (202.79bp,270bp) .. controls (194.69bp,261.38bp) and (190.05bp,249.29bp)  .. (185.38bp,228.24bp);
+  \draw (245.29bp,258bp) node {\;[$V \neq \emptyset$] $v = \mpop(V)$};
   % Edge: sample -> predicate
-  \draw [->] (134.35bp,202.3bp) .. controls (87.815bp,198.5bp) and (20.506bp,189.69bp)  .. (4.3482bp,170bp) .. controls (-1.8549bp,162.44bp) and (-0.63839bp,156.41bp)  .. (4.3482bp,148bp) .. controls (9.0913bp,140bp) and (16.38bp,133.71bp)  .. (33.211bp,124.02bp);
-  \draw (25.348bp,159bp) node {\;\;\underline{$\tau \leq \tau_{\mmax}$}};
+  \draw [->] (137.44bp,206.45bp) .. controls (90.11bp,202.77bp) and (21.29bp,194.04bp)  .. (4.7855bp,174bp) .. controls (-1.9947bp,165.77bp) and (-0.79603bp,159.09bp)  .. (4.7855bp,150bp) .. controls (10.162bp,141.24bp) and (18.487bp,134.59bp)  .. (36.702bp,125.08bp);
+  \draw (28.286bp,162bp) node {\;\;[$\tau \leq \tau_{\mmax}$]};
   % Edge: sample -> error
-  \draw [->] (180.72bp,187.7bp) .. controls (181.01bp,174.46bp) and (181.41bp,155.95bp)  .. (181.97bp,130.23bp);
-  \draw (203.35bp,159bp) node {\;\;\underline{$\tau > \tau_{\mmax}$}};
+  \draw [->] (184.7bp,191.76bp) .. controls (185.44bp,177.98bp) and (186.48bp,158.4bp)  .. (187.87bp,132.13bp);
+  \draw (211.29bp,162bp) node {\;\;[$\tau > \tau_{\mmax}$]};
   % Edge: pred -> sample
-  \draw [->] (264.9bp,36.394bp) .. controls (263.36bp,66.208bp) and (256.7bp,127.92bp)  .. (228.35bp,170bp) .. controls (224.72bp,175.39bp) and (219.97bp,180.24bp)  .. (206.68bp,190.7bp);
-  \draw (280.35bp,112bp) node {\underline{invalide}};
+  \draw [->] (272.28bp,36.033bp) .. controls (272.34bp,66.479bp) and (268.6bp,131.06bp)  .. (238.79bp,174bp) .. controls (234.44bp,180.26bp) and (228.57bp,185.65bp)  .. (213.55bp,195.87bp);
+  \draw (292.29bp,114bp) node {[invalide]};
   % Edge: pred -> variable
-  \draw [->] (277.22bp,35.691bp) .. controls (287bp,50.335bp) and (300.35bp,72.58bp)  .. (307.35bp,94bp) .. controls (327.93bp,156.99bp) and (321.34bp,175.86bp)  .. (325.35bp,242bp) .. controls (325.99bp,252.65bp) and (329.76bp,256.29bp)  .. (325.35bp,266bp) .. controls (323.16bp,270.81bp) and (319.95bp,275.22bp)  .. (308.82bp,286.18bp);
-  \draw (356.35bp,159bp) node {\underline{valide}, $\tau = 1$};
+  \draw [->] (285.86bp,35.481bp) .. controls (297.63bp,50.282bp) and (313.76bp,73.142bp)  .. (321.79bp,96bp) .. controls (397.05bp,310.27bp) and (352.12bp,238.64bp)  .. (336.79bp,270bp) .. controls (334.17bp,275.35bp) and (330.29bp,280.13bp)  .. (318.13bp,290.73bp);
+  \draw (381.79bp,162bp) node {[valide] $\tau = 1$};
   % Edge: in -> variable
-  \draw [->] (285.35bp,375.65bp) .. controls (285.35bp,362.82bp) and (285.35bp,345.11bp)  .. (285.35bp,320.3bp);
-  \draw (303.35bp,348bp) node {$\tau = 1$};
+  \draw [->] (291.79bp,379.65bp) .. controls (291.79bp,366.82bp) and (291.79bp,349.11bp)  .. (291.79bp,324.3bp);
+  \draw (309.79bp,352bp) node {$\tau = 1$};
   % Edge: variable -> out
-  \draw [->] (285.35bp,283.76bp) .. controls (285.35bp,269.98bp) and (285.35bp,250.4bp)  .. (285.35bp,224.13bp);
-  \draw (304.85bp,254bp) node {\underline{$V = \emptyset$}};
+  \draw [->] (291.79bp,287.76bp) .. controls (291.79bp,273.98bp) and (291.79bp,254.4bp)  .. (291.79bp,228.13bp);
+  \draw (313.79bp,258bp) node {[$V = \emptyset$]};
   % Node: predicate
 \begin{scope}
   \pgfsetstrokecolor{dotstroke}
-  \draw [state] (68bp,112bp) ellipse (47bp and 18bp);
-  \draw (68.348bp,112bp) node {\code{predicate}};
+  \draw [state] (74bp,114bp) ellipse (47bp and 18bp);
+  \draw (73.786bp,114bp) node {\code{predicate}};
 \end{scope}
   % Node: pred
 \begin{scope}
   \pgfsetstrokecolor{dotstroke}
-  \draw [state] (265bp,18bp) ellipse (47bp and 18bp);
-  \draw (265.35bp,18bp) node {\apred{p}};
+  \draw [state] (272bp,18bp) ellipse (47bp and 18bp);
+  \draw (271.79bp,18bp) node {\apred{p}};
 \end{scope}
   % Node: sample
 \begin{scope}
   \pgfsetstrokecolor{dotstroke}
-  \draw [state] (180bp,206bp) ellipse (47bp and 18bp);
-  \draw (180.35bp,206bp) node {\code{sample}};
+  \draw [state] (184bp,210bp) ellipse (47bp and 18bp);
+  \draw (183.79bp,210bp) node {\code{sample}};
 \end{scope}
   % Node: error
 \begin{scope}
   \pgfsetdash{{3pt}{3pt}}{0pt}
   \pgfsetstrokecolor{dotstroke}
-  \draw [state,dashed] (182bp,112bp) ellipse (47bp and 18bp);
-  \draw (182.35bp,112bp) node {erreur};
+  \draw [state,dashed] (189bp,114bp) ellipse (47bp and 18bp);
+  \draw (188.79bp,114bp) node {erreur};
 \end{scope}
   % Node: variable
 \begin{scope}
   \pgfsetstrokecolor{dotstroke}
-  \draw [state] (285bp,302bp) ellipse (47bp and 18bp);
-  \draw (285.35bp,302bp) node {\code{pick}};
+  \draw [state] (292bp,306bp) ellipse (47bp and 18bp);
+  \draw (291.79bp,306bp) node {\code{pick}};
 \end{scope}
   % Node: out
 \begin{scope}
   \pgfsetstrokecolor{dotstroke}
-  \draw [state,accepting] (285bp,206bp) ellipse (18bp and 18bp);
-  \draw (285.35bp,206bp) node {$ $};
+  \draw [state,accepting] (292bp,210bp) ellipse (18bp and 18bp);
+  \draw (291.79bp,210bp) node {$ $};
 \end{scope}
 %

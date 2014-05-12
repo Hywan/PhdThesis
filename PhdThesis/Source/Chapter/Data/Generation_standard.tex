@@ -25,7 +25,7 @@ figure~\ref{figure:language:grammar_part2}
 page~\pageref{figure:language:grammar_part2}). Le processus est contrôlé par une
 variable $\tau$ et une constante $\tau_{\mmax}$, détaillées ci-après.  Dans la
 figure~\ref{figure:data:process}, $v$ est une variable de $V$. Les annotations
-sur les transitions représentent des actions, les annotations soulignées
+sur les transitions représentent des actions, les annotations entre crochets
 représentent des gardes.
 %
 \begin{figure}
@@ -74,15 +74,15 @@ $\tau$ est fixé afin d'éviter des générations et des rejets en boucle trop
 importants et donc trop longs. À chaque génération, $\tau$ est incrémenté de 1.
 La valeur de $\tau_{\mmax}$ est paramétrable. \\
 
-Mais il n'y a pas que le choix d'un domaine réaliste parmi une disjonction qui
-est pseudo-aléatoire. Par défaut, un domaine réaliste génère une donnée de
-manière pseudo-aléatoire.  Si nous écrivons \code{boundinteger(7, 42)}, alors un
-entier de l'intervalle $[7; 42]$ sera généré pseudo-aléatoirement. Nous avons
-précisé dans la partie~\ref{subsection:language:realdom:implementation} qu'une
-méthode \code{sample} d'un domaine réaliste reçoit un générateur numérique en
-argument. Le seul générateur actuel est pseudo-aléatoire, basé sur l'algorithme
-de Mersenne Twister~\acite{MatsumotoN98}. Il permet de générer des entiers et
-des réels. Un exemple d'utilisation a été montré dans la
+Il n'y a pas que le choix d'un domaine réaliste parmi une disjonction qui est
+pseudo-aléatoire. Par défaut, un domaine réaliste génère une donnée de manière
+pseudo-aléatoire. Si nous écrivons \code{boundinteger(7, 42)}, alors un entier
+de l'intervalle $[7; 42]$ sera généré pseudo-aléatoirement. Nous avons précisé
+dans la partie~\ref{subsection:language:realdom:implementation} qu'une méthode
+\code{sample} d'un domaine réaliste reçoit un générateur numérique en argument.
+Le seul générateur actuel est pseudo-aléatoire, basé sur l'algorithme de
+Mersenne Twister~\acite{MatsumotoN98}. Il permet de générer des entiers et des
+réels. Un exemple d'utilisation a été montré dans la
 figure~\ref{figure:language:boundinteger}
 page~\pageref{figure:language:boundinteger}.
 
@@ -94,9 +94,14 @@ rapidement des problèmes. Le nombre de valeurs possibles pour \code{string('a',
 différentes. La probabilité qu'une de ces valeurs détecte une erreur dans notre
 programme est extrêmement faible. C'est un problème inhérent à l'approche
 (pseudo-)aléatoire. Cependant, l'ensemble des valeurs générables peut être
-considérablement réduit si la donnée est mieux spécifiée~: plus la donnée pourra
-être spécifiée avec précision, plus il sera possible de générer des données
-pertinentes, c'est~à~dire capables de détecter des erreurs.
+considérablement réduit si la donnée est mieux spécifiée. Nous avons observer
+que les utilisateurs recourent à la construction \apred{p} pour mieux spécifier
+des données. Une tâche récurrente durant nos travaux de recherche est d'observer
+et analyser ce que les utilisateurs écrivent le plus dans cette construction, et
+enrichir Praspel avec des outils de générations pour les prédicats les plus
+fréquents. L'objectif est de faire évoluer le langage en supportant plus de
+constructions usuelles nativement au lieu de les avoir dans une boîte noire, et
+ainsi, entre autres, réduire le rejet lors de la génération de données.
 
 Dans les parties suivantes, nous allons nous intéresser à mieux spécifier et
 mieux générer des tableaux, des chaînes de caractères et des objets.

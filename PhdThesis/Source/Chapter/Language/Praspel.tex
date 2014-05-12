@@ -473,23 +473,6 @@ qu'une équivalence car, selon la grammaire dans la
 figure~\ref{figure:language:grammar_part2}, il empêche l'utilisation de
 déclarations, d'autres prédicats ou de qualifications.
 
-Parce que la construction \apred{p} est une boîte noire, elle introduit du rejet
-lors de la génération de données car les contraintes $p$ ne sont pas considérées
-immédiatement. En effet, quand nous générons des données, nous les validons
-auprès des prédicats mais ces derniers ne sont pas utilisés pour orienter la
-génération. Si un prédicat est trop fin, il invalide la donnée, et nous en
-générons de nouvelles. Une telle situation peut conduire à une boucle infinie.
-La partie~\ref{section:data:random} présente plus finement ce mécanisme.
-
-Une tâche récurrente durant nos travaux de recherche est d'observer et analyser
-ce que les utilisateurs écrivent le plus dans cette construction, et enrichir
-Praspel avec des outils de générations pour les prédicats les plus fréquents.
-L'objectif est de faire évoluer le langage en supportant plus de constructions
-usuelles nativement au lieu de les avoir dans une boîte noire, et ainsi, entre
-autres, réduire le rejet lors de la génération de données. Ce processus est
-illustré pour le cas des tableaux dans la partie~\ref{section:data:arrays}
-page~\pageref{section:data:arrays}.
-
 \subsubsection{Qualifications}
 
 Praspel permet de qualifier une donnée en utilisant le mot-clé \code{is} suivi
