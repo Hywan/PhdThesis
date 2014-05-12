@@ -53,7 +53,7 @@ centrale dans cet outil.
 \item générateur de données de test~: pour tester certaines parties techniques
 d'un outil, un générateur de données de test spécifique a été créé. Afin de
 s'assurer que ce générateur ne comporte pas d'erreurs et étant lui-même assez
-volumineux, il a sa propre suite de test. Les parties qui ont été abordées
+volumineux, il a sa propre suite de tests. Les parties qui ont été abordées
 durant cette expérimentation étaient le calcul de ces données, les tests
 unitaires et les tests fonctionnels.
 
@@ -90,7 +90,7 @@ manuellement (avec atoum)~;
 
 \item annoter ces méthodes avec des contrats Praspel~;
 
-\item générer automatiquement une suite de test satisfaisant le critère de
+\item générer automatiquement une suite de tests satisfaisant le critère de
 couverture de contrat \inenglish{All}-$G$, et l'exécuter~;
 
 \item comparer la suite MT (\inenglish{Manual Tests}) avec la suite AGT
@@ -104,17 +104,17 @@ dans atoum permet la définition et l'utilisation des domaines réalistes
 facilement (voir la partie~\ref{subsection:tools:extension}). Il n'y avait pas
 de protocole expérimental pré-défini mais nous avons demandé aux ingénieurs
 d'observer l'impact de certains générateurs sur la couverture de code ainsi que
-l'impact sur les suites de test (par exemple une réduction du nombre de
+l'impact sur les suites de tests (par exemple une réduction du nombre de
 tests).
 
 L'expérimentation a été ouverte pendant une première semaine avec un premier
 panel puis pendant deux autres semaines avec un second panel plus important. Les
 parties suivantes regroupent toutes les données et informations des deux panels.
 
-\subsection{Couverture de code des suites de test}
+\subsection{Couverture de code des suites de tests}
 \label{subsection:experimentation:coverage}
 
-Un moyen de comparer les suites de test est d'utiliser la couverture de code
+Un moyen de comparer les suites de tests est d'utiliser la couverture de code
 avec le critère tous-les-arcs, comme pour l'expérimentation précédente. Les
 résultats sont les suivants.
 
@@ -125,7 +125,7 @@ remarquer que c'était à cause de l'utilisation des bouchons (des
 prédéfinissons la manière dont il va se comporter, c'est~à~dire que nous
 décrivons un comportement bien spécifique et testons le SUT dans ces conditions.
 Les bouchons permettent d'améliorer la testabilité des programmes (en plus
-d'accélérer l'exécution des suites de test par effet de bord). Les bouchons ne
+d'accélérer l'exécution des suites de tests par effet de bord). Les bouchons ne
 concernent que les objets ou les fonctions, et Praspel n'est pas capable de
 générer de tels bouchons. Par exemple, si un contrat précise qu'une exception
 peut être levée quand une connexion réseau est interrompue, Praspel ne sera pas
@@ -147,9 +147,9 @@ n'auraient pas dû être activées. Comme le critère de couverture
 les variables, certaines combinaisons peuvent activer ces conditions d'une
 manière qui n'avait pas été testée manuellement.
 
-Maintenant, comparons le temps de rédaction de ces suites de test.
+Maintenant, comparons le temps de rédaction de ces suites de tests.
 
-\subsection{Temps de rédaction des suites de test}
+\subsection{Temps de rédaction des suites de tests}
 \label{subsection:experimentation:time}
 
 Tous les membres du panel sont habitués à écrire des tests. Ils en écrivent des
@@ -228,7 +228,7 @@ pénible. De même, cela simplifie aussi la lecture des tests. En effet, le
 contenu du test se restreint à sa logique plutôt qu'à la manipulation des
 données de test. Le panel insiste sur le fait que les tests sont par conséquent
 plus facilement maintenables. Cela implique que les ingénieurs n'hésiteront pas
-à modifier les suites de test car ce processus est simplifié.
+à modifier les suites de tests car ce processus est simplifié.
 
 \paragraph{Deuxième constat.} Sans générateur automatique de données, le panel
 nous avoue que les données de test utilisées étaient très peu nombreuses~:
@@ -237,7 +237,7 @@ certaine couverture du code avec le critère tous-les-arcs. Avec nos générateu
 de données, beaucoup de données sont générables «~instantanément~» pour
 reprendre leurs termes. En effet, le temps de génération est suffisamment rapide
 pour qu'il en devienne «~négligeable~». Le panel souligne qu'«~aucune différence
-n'est perceptible~» entre l'exécution des suites de test avec ou sans
+n'est perceptible~» entre l'exécution des suites de tests avec ou sans
 générateurs de données. Dans certaines méthodologies de développement comme le
 \inenglish{Test-Driven Development} ou les méthodes Agile, les tests sont
 exécutés en permanence, plusieurs dizaines de fois par heure. La rapidité
@@ -277,7 +277,7 @@ Dans tous les cas, les membres du panel ont remarqué une diminution du nombre d
 tests. En effet, comme un test manipule plus de données pertinentes, les autres
 tests du même genre deviennent inutiles. Cette diminution a été difficile à
 quantifier~: 5\% pour certains, 75\% pour d'autres, mais il y a toujours une
-simplification de la suite de test~: la quantité, la lecture, l'écriture et la
+simplification de la suite de tests~: la quantité, la lecture, l'écriture et la
 maintenance.
 
 \subsection{Tests paramétrés}
@@ -479,7 +479,7 @@ déjà testés.
 
 L'utilisation de générateurs simplifie également l'écriture des tests, ainsi que
 leur lecture et leur maintenance. Les générateurs permettent de réduire la
-taille des suites de test.
+taille des suites de tests.
 
 Ne pas connaître les algorithmes sous-jacents n'est pas réellement un problème.
 Toutefois, utiliser ce type d'algorithmes pousse la réflexion plus loin. En

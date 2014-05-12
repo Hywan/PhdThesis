@@ -12,7 +12,7 @@ Travis-CI\footnote{Voir \url{http://travis-ci.com/}.}, Jenkins\footnote{Voir
 \url{http://jenkins-ci.org/}.}, Coveralls\footnote{Voir
 \url{https://coveralls.io/}.} etc.
 
-Les suites de test générées par Praspel doivent être exécutables de plusieurs
+Les suites de tests générées par Praspel doivent être exécutables de plusieurs
 façons (séquentielles, isolées ou autre), des rapports doivent être produits,
 les outils doivent être intégrés à des IDE etc. Tout ceci représente un travail
 important. atoum comporte déjà toutes ces fonctionnalités. Nous avons donc
@@ -42,7 +42,7 @@ d'exécuter un ensemble d'assertions (pour les vérifier) sur un SUT et sont
 capables de produire différents rapports. Pour utiliser atoum, il faudra alors
 basiquement procéder en deux étapes~: écrire des assertions et les exécuter.
 Dans le vocabulaire d'atoum, un test est une méthode qui contient plusieurs
-assertions sur le SUT et une suite de test est une classe.
+assertions sur le SUT et une suite de tests est une classe.
 
 \begin{example}[Premier test avec atoum]
 \label{example:tools:first-test}
@@ -79,7 +79,7 @@ Puis nous pouvons exécuter le test en ligne de commande~:
 Le rapport simple nous informe que le test s'est exécuté en moins de
 0.005~seconde, en utilisant 0.25~Mb de mémoire, avec une couverture de code
 (avec le critère tous-les-arcs) de 100\%, que l'ensemble s'est exécuté en
-0.08~seconde et que l'exécution de la seule suite de test, ne contenant qu'un
+0.08~seconde et que l'exécution de la seule suite de tests, ne contenant qu'un
 seul test représentant deux assertions (\code{string} et \code{isEqualTo}), a
 été un succès.
 
@@ -181,7 +181,7 @@ introduit Praspel dans atoum. Elle propose deux fonctionnalités~:
 \item la génération automatique de données de test, qui n'est pas présente dans
 atoum~;
 
-\item la compilation de suites de test générées avec Praspel en suites de test
+\item la compilation de suites de tests générées avec Praspel en suites de tests
 écrites avec l'API d'atoum~; les tests seront donc exécutables avec atoum.
 
 \end{itemize}
@@ -267,7 +267,7 @@ foreach(\$this->sampleMany(\$data, 7) as \$string) \\
 
 \end{example}
 
-\subsubsection{Génération de suites de test unitaire}
+\subsubsection{Génération de suites de tests unitaires}
 
 \begin{figure}
 
@@ -299,13 +299,13 @@ représenté par un test. Praspel est capable de générer des tests corresponda
 ces chemins à partir d'un modèle objet d'un contrat. C'est le point de départ du
 processus illustré dans la figure~\ref{figure:tools:extension}. Nous y
 retrouvons \circled{M} et \circled{S}. À partir du modèle objet, une suite de
-test est générée. Ces tests sont compilés vers des tests écrits avec l'API
-d'atoum (donc exécutables). Cette étape est regroupée dans le nœud suite de test
-dans la figure. atoum va ensuite sélectionner chaque test dans cette suite et
-les exécuter en utilisant le SUT associé et des données. Le nœud atoum dans la
-figure applique le même processus que dans la figure~\ref{figure:tools:rac}.
+tests est générée. Ces tests sont compilés vers des tests écrits avec l'API
+d'atoum (donc exécutables). Cette étape est regroupée dans le nœud suite de
+tests dans la figure. atoum va ensuite sélectionner chaque test dans cette suite
+et les exécuter en utilisant le SUT associé et des données. Le nœud atoum dans
+la figure applique le même processus que dans la figure~\ref{figure:tools:rac}.
 
-La compilation de la suite de test en test concret s'effectue en ligne de
+La compilation de la suite de tests en tests concrets s'effectue en ligne de
 commande~: plusieurs classes sont analysées pour en extraire des contrats
 Praspel, qui sont à leur tour analysés pour pouvoir appliquer les algorithmes de
 génération de tests unitaires sur leur modèle objet. Puis, l'extension compile
@@ -377,7 +377,7 @@ commande suivante~:
            0 skipped method, 1 assertion)!
 \end{pre}
 %
-Sans surprise, la suite de test a été exécutée avec succès.
+Sans surprise, la suite de tests a été exécutée avec succès.
 
 Nous remarquons une assertion de moins par rapport à
 l'exemple~\ref{example:tools:first-test}.  Au moment de la rédaction de ce

@@ -9,8 +9,8 @@ de notre laboratoire a été invitée afin d'y donner des cours et des ateliers.
 C'est dans ce cadre que nous avons développé UniTestor, un robot écrit en PHP
 nous permettant d'aborder la majorité des aspects du test unitaire~: écrire un
 préambule de test, définir des assertions, boucher des objets etc. 16 élèves ont
-alors écrit manuellement une suite de test pour ce robot. Nous la comparons avec
-une suite de test générée automatiquement avec Praspel.
+alors écrit manuellement une suite de tests pour ce robot. Nous la comparons
+avec une suite de tests générée automatiquement avec Praspel.
 
 \subsection{Présentation générale}
 
@@ -56,11 +56,11 @@ constante).
 \subsection{\inlatin{Modus operandi} et résultats}
 
 Nous avons commencé par annoter le code du robot par des contrats Praspel.
-Ensuite, nous avons généré automatiquement une suite de test, appelée la suite
+Ensuite, nous avons généré automatiquement une suite de tests, appelée la suite
 AGT (\inenglish{Automatically Generated Tests}) satisfaisant le critère de
 couverture de contrat \inenglish{All}-$G$ (défini dans la
 partie~\ref{subsection:test:combination}). Nous avons comparé cette suite de
-test avec la suite de test manuel des étudiants, appelée la suite MT
+tests avec la suite de tests manuels des étudiants, appelée la suite MT
 (\inenglish{Manual Tests}), complétée pour atteindre un taux de couverture de
 code de 100\% quand ce n'était pas le cas.
 
@@ -69,7 +69,7 @@ Nous avons observé que le nombre moyen de tests générés par les étudiants e
 automatiquement 29 tests, soit une réduction de 45\%. Pour caractériser la
 pertinence des tests, nous avons utilisé comme métrique la couverture de code.
 Le critère de couverture de code le plus fin que nous propose atoum est le
-critère tous-les-arcs. Ainsi, nous avons observé que les deux suites de test
+critère tous-les-arcs. Ainsi, nous avons observé que les deux suites de tests
 avaient un score de 100\%. De plus, 1h30 a été nécessaire aux étudiants pour
 rédiger en moyenne 53~tests, alors qu'il nous a fallu 15~minutes pour écrire
 21~contrats.  La phase de génération de tests a pris moins d'une seconde~: cela
@@ -82,7 +82,7 @@ Ainsi, nous obtenons le même score de couverture du code avec pratiquement
 moitié moins de tests et en 6~fois moins de temps. Ces premiers résultats
 montrent l'efficacité de l'approche du test automatisé et le gain qu'apportent
 les contrats~: écrire des contrats est moins pénible et nécessite moins de temps
-que d'écrire une suite de test complète.
+que d'écrire une suite de tests complète.
 
 Cependant, cette expérimentation est biaisée~: les étudiants étaient en
 apprentissage de l'outil et un temps d'adaptation leur était nécessaire. De
