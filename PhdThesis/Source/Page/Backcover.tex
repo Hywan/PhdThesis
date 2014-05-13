@@ -1,0 +1,78 @@
+\newgeometry{top=0cm, right=0cm, bottom=0cm, left=0cm}
+
+\parindent0pt
+\null
+\vfill
+
+{
+\large
+
+\begin{tikzpicture}[overlay,
+                    every node/.style={inner sep=0, outer sep=0,
+                                       text justified, text width=15cm}]
+
+\node [anchor=south]
+      at (.5\paperwidth, .52\paperheight)
+      {
+      \paragraph{Résumé.}
+
+      Les travaux présentés dans ce mémoire portent sur la validation de
+      programmes PHP à travers un nouveau langage de spécification, accompagné
+      de ses outils. Ces travaux s'articulent selon trois axes~: langage de
+      spécification, génération automatique de données de test et génération
+      automatique de tests unitaires. La première contribution est Praspel, un
+      nouveau langage de spécification pour PHP, basé sur la programmation par
+      contrat. Praspel spécifie les données avec des domaines réalistes~: de
+      nouvelles structures permettant de valider et générer des données. À
+      partir d'un contrat écrit en Praspel, nous pouvons faire du
+      \inenglish{Contract-based Testing}, c'est~à~dire exploiter les contrats
+      pour générer automatiquement des tests unitaires. La deuxième contribution
+      concerne la génération de données de test. Pour les booléens, les entiers
+      et les réels, une génération aléatoire uniforme est employée. Pour les
+      tableaux, un solveur de contraintes dédié est employé. Pour les chaînes de
+      caractères, un langage de description de grammaires avec un compilateur de
+      compilateurs $LL(\star)$ et plusieurs algorithmes de génération de données
+      sont employés. Enfin, la génération d'objets est traitée. La troisième
+      contribution définit des critères de couverture sur les contrats. Ces
+      derniers fournissent des objectifs de tests. Toutes ces contributions ont
+      été implémentées et expérimentées dans des outils industriels.
+
+      \paragraph{Mots-clés.} Praspel, \inenglish{Contract-based Testing},
+      génération de données, génération automatique de tests unitaires, PHP.
+      };
+
+\node [anchor=north]
+      at (.5\paperwidth, .48\paperheight)
+      {
+      \paragraph{\foreignlanguage{english}{Abstract}.}
+
+      \foreignlanguage{english}{The works presented in this memoir are about the
+      validation of PHP programs through a new specification language, along
+      with its tools. These works follow three axes: specification language,
+      automatic test data generation and automatic unit test generation. The
+      first contribution is Praspel, a new specification language for PHP, based
+      on the Design by Contract. Praspel specifies data with realistic domains:
+      new structures allowing to validate and generate data. Based on a
+      contract, we are able to perform Contract-based Testing, i.e. using
+      contracts to automatically generate unit tests. The second contribution is
+      about test data generation. For booleans, integers, reals, a uniform
+      random generation is used. For arrays, a dedicated constraint solver is
+      used. For strings, a grammar description language along with an
+      $LL(\star)$ compiler compilers and several algorithms for data generation
+      are used. Finally, the object generation is supported. The third
+      contribution defines contracts coverage criteria. These latters provide
+      test objectives. All these contributions are implemented and experimented
+      in industrial tools.}
+
+      \paragraph{\foreignlanguage{english}{Keywords}.}
+      \foreignlanguage{english}{Praspel, Contract-based Testing, data
+      generation, automatic unit test generation, PHP.}
+      };
+
+\end{tikzpicture}
+
+}
+
+\pagebreak
+
+\restoregeometry

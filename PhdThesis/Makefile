@@ -4,21 +4,13 @@ SHELL = bash
 
 all: tex
 
-tex: | Dist/Page/Covers.pdf
+tex:
 	@pdflatex \
 		-output-directory Dist \
 		-output-format pdf \
 		-interaction errorstopmode \
 		-halt-on-error \
 		-shell-escape PhdThesis$(FORMAT).tex;
-
-Dist/Page/Covers.pdf:
-	@pdflatex \
-		-output-directory Dist/Page \
-		-output-format pdf \
-		-interaction errorstopmode \
-		-halt-on-error \
-		-shell-escape Source/Page/Covers.tex;
 
 bib: tex
 	@bibtex Dist/PhdThesis$(FORMAT).aux;
