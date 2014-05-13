@@ -663,13 +663,14 @@ Y & = \hat{H}(X) \\
 \end{align*}
 
 Nous appliquons l'algorithme. Au départ, nous avons la variable $\avar{queue}$
-initialisée à $\{(X, X), (X, Y), (Y, X), (S, S), (S, X), (X, S)\}$.
+initialisée à $\{(X, X), (X, Y), (Y, X), (S, S), (S, X), (X, S)\}$. 
 
 \noindent
 \begin{longtable}{m{.85\textwidth}m{.15\textwidth}}
 
-Nous sélectionnons et retirons la paire $(X, X)$. Nous avons la contrainte
-unaire (ne portant que sur une seule variable) $\{\code{0}\} \subseteq X$. Nous
+Nous sélectionnons et retirons la paire $(X, X)$, qui est la première de la
+variable $\avar{queue}$ représentée à gauche. Nous avons la contrainte unaire
+(ne portant que sur une seule variable) $\{\code{0}\} \subseteq X$. Nous
 vérifions $\code{0} \in \code{natural(0, 1)}$.  Tout est consistant. Le tableau
 ne peut pas être vide car il contiendra au moins une paire.
 & 
