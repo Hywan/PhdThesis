@@ -123,20 +123,20 @@ post-état, qui sont abstraits pour se ramener au formalisme d'Alloy afin d'y
 vérification échoue, un contre-exemple est produit. Sinon, le processus itère à
 l'instance suivante.
 
-\paragraph{Korat.} L'outil Korat~\acite{BoyapatiKM02} est la suite de Test\-Era.
-L'objectif de Korat est de couvrir des structures de données complexes
-non-isomorphiques de taille finie. Pour cela, il demande à l'utilisateur
-d'écrire un prédicat en Java (appelé \code{repOK}), qui va valider ou invalider
-les structures générées automatiquement. Il y a plusieurs avantages à cette
-démarche~: l'utilisateur est familier avec le langage puisqu'il l'utilise pour
-développer, il y a plusieurs outils et environnements de développement qui
-peuvent aider à la rédaction ou l'analyse de ce prédicat, et enfin, le prédicat
-peut potentiellement déjà exister dans le programme. Korat va ensuite générer
-des structures à partir des entrées de ce prédicat. Pour cela, Korat va analyser
-le prédicat et indexer quels sont les accès aux méthodes et attributs sur la
-structure qui influencent la décision du prédicat. Korat va ensuite jouer sur
-ces méthodes et attributs afin de générer plusieurs structures candidates. Korat
-demande également à l'utilisateur d'écrire une méthode de
+\paragraph{Korat.} L'outil Korat~\acite{BoyapatiKM02} est la succession de
+Test\-Era. L'objectif de Korat est de couvrir des structures de données
+complexes non-isomorphiques de taille finie. Pour cela, il demande à
+l'utilisateur d'écrire un prédicat en Java (appelé \code{repOK}), qui va valider
+ou invalider les structures générées automatiquement. Il y a plusieurs avantages
+à cette démarche~: l'utilisateur est familier avec le langage puisqu'il
+l'utilise pour développer, il y a plusieurs outils et environnements de
+développement qui peuvent aider à la rédaction ou l'analyse de ce prédicat, et
+enfin, le prédicat peut potentiellement déjà exister dans le programme. Korat va
+ensuite générer des structures à partir des entrées de ce prédicat. Pour cela,
+Korat va analyser le prédicat et indexer quels sont les accès aux méthodes et
+attributs sur la structure qui influencent la décision du prédicat. Korat va
+ensuite jouer sur ces méthodes et attributs afin de générer plusieurs structures
+candidates. Korat demande également à l'utilisateur d'écrire une méthode de
 \inenglish{finitization} qui précise la taille et la nature des données portées
 par la structure. L'idée est de préciser à Korat dans quelle mesure il peut
 modifier la structure pour générer de nouvelles structures candidates. Cette
@@ -165,24 +165,24 @@ toutes les formes d'une certaine structure de données non-scalaire, récursive,
 imbriquée etc. Pour atteindre cet objectif, UDITA se présente comme un langage
 étendu du langage Java permettant de décrire des structures de données
 complexes. Ces descriptions vont être utilisées pour générer des ensembles finis
-de ces structures. UDITA est la suite de Korat. Nous retrouvons ainsi la
+de ces structures. UDITA est la succession de Korat. Nous retrouvons ainsi la
 démarche de demander à l'utilisateur d'écrire lui-même des méthodes de
-génération de données (description des structures) mais les contrats ont
-totalement disparu. UDITA ajoute à Java deux extensions~: des primitives de
-choix non-déterministe et une primitive pour restreindre ces choix. Ces
-constructions sont familières aux utilisateurs du vérificateur de modèle Java
-PathFinder~\acite{VisserHBPL03}, sur lequel UDITA s'appuie. UDITA est d'ailleurs
-intégré au \inenglish{framework} Java PathFinder en tant qu'extension. Grâce aux
-points de choix non-déterministes, l'utilisateur ne décrit qu'une seule fois sa
-structure, et UDITA est capable d'en générer plusieurs. L'outil propose aussi à
-l'utilisateur des générateurs basiques, comme un générateur de booléens,
-d'entiers, de nouveaux objets ou d'objets déjà créés.  Ces deux derniers
-permettent à l'utilisateur de décrire des structures de données récursives ou
-liées. En plus d'une description, UDITA demande à l'utilisateur d'écrire un
-filtre, notion identique aux prédicats de Korat, si ce n'est qu'UDITA ne va pas
-s'en servir pour la génération de données, mais uniquement pour filtrer les
-données générées~: chaque donnée qui franchit le filtre sera mise de côté pour
-servir de donnée de test.
+génération de données (description des structures). En revanche, nous ne
+retrouvons plus les contrats. UDITA ajoute à Java deux extensions~: des
+primitives de choix non-déterministe et une primitive pour restreindre ces
+choix. Ces constructions sont familières aux utilisateurs du vérificateur de
+modèle Java PathFinder~\acite{VisserHBPL03}, sur lequel UDITA s'appuie. UDITA
+est d'ailleurs intégré au \inenglish{framework} Java PathFinder en tant
+qu'extension. Grâce aux points de choix non-déterministes, l'utilisateur ne
+décrit qu'une seule fois sa structure, et UDITA est capable d'en générer
+plusieurs. L'outil propose aussi à l'utilisateur des générateurs basiques, comme
+un générateur de booléens, d'entiers, de nouveaux objets ou d'objets déjà créés.
+Ces deux derniers permettent à l'utilisateur de décrire des structures de
+données récursives ou liées. En plus d'une description, UDITA demande à
+l'utilisateur d'écrire un filtre, notion identique aux prédicats de Korat, si ce
+n'est qu'UDITA ne va pas s'en servir pour la génération de données, mais
+uniquement pour filtrer les données générées~: chaque donnée qui franchit le
+filtre sera mise de côté pour servir de donnée de test.
 
 Contrairement à Korat, UDITA ne demande pas de méthode de
 \inenglish{finitization}, mais s'appuie sur ces points de choix
@@ -193,7 +193,7 @@ non-déterministes tardives~\acite{FischerKS09}.
 
 \paragraph{JSConTest.} Le langage JSConTest~\acite{HeideggerT12} est un langage
 de contrat annotant des programmes Javascript. Ce dernier est un langage à
-typage non déclaré. C'est pourquoi JSConTest propose que le contrat ne contienne
+typage non déclaré. C'est pourquoi JSConTest propose que le contrat ne spécifie
 que la signature de la fonction annotée, soient ses entrées et sa sortie,
 respectivement une précondition et une postcondition. JSConTest ne permet pas
 d'exprimer d'invariants ni de comportements. Le fait de préciser les types
@@ -230,6 +230,6 @@ chaque construction du langage puisse être utilisée pour de la validation
 fonctionner dans ces deux contextes. JSConTest montre que l'utilisation de
 contrats simples spécifiant le typage des données offrent déjà de bons
 résultats, mais l'expressivité qu'il offre est très faible comparée à JML.
-Ainsi, Praspel doit spécifier plus que du typage simple et doit être capable de
-valider et générer des données de tout type, ou en tout cas, des types les plus
-manipulés par les développeurs au quotidien.
+Ainsi, Praspel doit permettre de spécifier plus que du typage simple et doit
+permettre de valider et générer des données de tout type, ou en tout cas, des
+types les plus manipulés par les développeurs au quotidien.

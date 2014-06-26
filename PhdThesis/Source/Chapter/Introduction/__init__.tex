@@ -10,7 +10,8 @@ quotidien~: téléphones, tablettes, ordinateurs, télévisions, appareils
 électroménagers… Une très grande majorité d'entre eux sont connectés à un
 réseau, le plus souvent Internet. Ce dernier nous permet d'accéder à des
 milliers de millions de sites Web. Plus de 85\% de ces sites Web sont développés
-en PHP. La majorité de ces programmes ont besoin d'être vérifiés et validés.
+en PHP. Il est nécessaire que la majorité de ces programmes soient vérifiés et
+validés.
 
 Les travaux présentés dans ce mémoire portent sur la validation de programmes
 PHP à travers un nouveau langage de spécification, accompagné de ses outils. Ces
@@ -102,8 +103,8 @@ Par ailleurs, puisqu'une notation est formelle, elle peut être exploitée par u
 machine pour y appliquer un traitement automatique. Les spécifications formelles
 peuvent alors aider à {\strong automatiser le test}, autant pour générer les
 données de test~\acite{BernotGM91, KorelA98, SankarH94, Jalote92} que pour
-calculer le verdict du test~\acite{CheonL02}. C'est dans ces deux directions que
-nous allons nous tourner.
+calculer le verdict du test~\acite{CheonL02}. Nous allons explorer ces deux
+directions.
 
 Les spécifications peuvent documenter les {\strong interfaces} d'un programme.
 Par interfaces, il faut comprendre les parties du programme permettant de
@@ -135,7 +136,7 @@ se situent nos contributions.
 
 \section{Contexte et problématique}
 
-Ce mémoire s'intéresse à la conformité entre un programme et sa spécification, à
+Ce mémoire traite de la conformité entre un programme et sa spécification, à
 travers la création d'un nouveau langage de spécification simple, pragmatique
 pour le Web et les développeurs, et assemblant plusieurs méthodes du test.
 Chaque méthode introduite se verra enrichie pour la rendre compatible avec les
@@ -220,12 +221,12 @@ que nous ne tenons pas compte du contexte d'utilisation du programme
 
 \subsection{Langage de spécification}
 
-Comme PHP est un langage «~glue~», il manipule des données de toutes sortes.
+Comme PHP est un langage «~glue~», il traite des données de toutes sortes.
 C'est une première contrainte. De plus, les utilisateurs de PHP sont aussi bien
 des débutants que des experts. La palette des utilisateurs est donc très large.
 C'est un avantage et un inconvénient du langage~: il est simple à utiliser et
-permet d'obtenir des résultats rapidement mais il permet aussi de faire des
-choses très poussées. Toutefois, tous ces utilisateurs suivent la tendance
+permet d'obtenir des résultats rapidement mais il permet aussi de développer des
+programmes plus complexes. Toutefois, tous ces utilisateurs suivent la tendance
 d'amélioration de la qualité logicielle. C'est une deuxième contrainte. Enfin,
 le langage PHP est très pragmatique, c'est ce qui le rend si facile d'accès. Il
 est possible d'écrire un programme PHP en très peu de lignes de code sans
@@ -237,7 +238,7 @@ Si nous proposons un langage de spécification pour PHP, il doit impérativement
 tenir compte de ces trois contraintes. Il doit être simple pour être utilisé et
 compris par la majorité des utilisateurs. Il doit être pragmatique pour que le
 travail de spécification et de génération automatique de tests unitaires puisse
-être fait rapidement et comme il faut. L'objectif n'est pas de traiter tous les
+s'intégré dans la chaîne industrielle.  L'objectif n'est pas de traiter tous les
 problèmes mais les problèmes les plus courants et les plus préoccupants. Et
 enfin, puisque culturellement PHP est un langage «~glue~» et que nous voulons
 traiter plusieurs problèmes, le langage de spécification que nous proposons doit
@@ -261,7 +262,7 @@ possible.
 
 Le langage de contrat que nous proposons s'appelle {\strong Praspel}~:
 \inenglish{PHP Realistic Annotation and SPEcification Language}. Cette première
-contribution, présentée dans le chapitre~\ref{chapter:language}, s'intéresse au
+contribution, présentée dans le chapitre~\ref{chapter:language}, traite du
 langage en lui-même, à savoir sa syntaxe et sa sémantique. Nous avons également
 étudié comment évaluer un contrat pour qu'il vérifie des données à l'exécution.
 Ce langage est inspiré de JML~\acite{JML} (s'applique à Java) mais se
@@ -276,8 +277,8 @@ les domaines réalistes, a été publiée dans~\acitei{EnderlinDGO11}.
 
 Un contrat peut être utilisé pour générer automatiquement des tests unitaires.
 Un test est constitué de deux parties~: des données de test et un oracle. Cette
-contribution, présentée dans le chapitre~\ref{chapter:data}, s'intéresse à
-générer des données de test. Ces données sont spécifiées au mieux par le
+contribution, présentée dans le chapitre~\ref{chapter:data}, traite de la
+génération des données de test. Ces données sont spécifiées au mieux par le
 contrat. Nous devons proposer des solutions capables de générer toutes sortes de
 données~: des booléens, des entiers, des réels, des chaînes de caractères, des
 tableaux, des objets etc. Les premières générations étaient aléatoires uniformes
@@ -296,11 +297,11 @@ Cette dernière contribution, présentée dans le chapitre~\ref{chapter:tests},
 «~boucle la boucle~». D'une part, nous avons un langage de contrat qui peut être
 évalué pour valider et vérifier les données manipulées par le programme. D'autre
 part, nous avons des algorithmes capables de générer automatiquement des données
-de test à partir d'un morceau d'un contrat. La dernière étape s'intéresse au
-fait qu'un contrat peut exprimer plusieurs comportements et nous devons nous
+de test à partir d'un morceau d'un contrat. La dernière étape explique le fait
+qu'un contrat peut exprimer plusieurs comportements et que nous devons nous
 assurer que tous ces comportements sont testés. Nous avons alors défini
 plusieurs critères de couverture sur les contrats afin d'avoir des objectifs de
-test à atteindre.  Par conséquent, nous avons développé des algorithmes générant
+test à atteindre. Par conséquent, nous avons développé des algorithmes générant
 autant de tests unitaires que nécessaire pour satisfaire certains critères. Les
 données nécessaires pour exécuter ces tests seront générées automatiquement avec
 la contribution précédente. Cette contribution, accompagnée des contributions

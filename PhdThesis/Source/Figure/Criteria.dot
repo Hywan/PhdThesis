@@ -14,6 +14,6 @@ digraph {
     sc  [width=1.0, label=" ", texlbl="Couverture Clause"];
     dc  [width=1.0, label=" ", texlbl="Couverture Domaine"];
     pc  [width=1.0, label=" ", texlbl="Couverture Prédicat"];
-    sdc [width=1.0, label=" ", texlbl="\begin{tabular}{c}Couverture \\ Clause~+~ Domaine\end{tabular}"];
+    sdc [width=1.0, label=" ", texlbl="\begin{tabular}{c}Couverture \\ Clause~+~Domaine\end{tabular}"];
     spc [width=1.0, label=" ", texlbl="\begin{tabular}{c}Couverture \\ Clause~+~Prédicat\end{tabular}"];
 }
