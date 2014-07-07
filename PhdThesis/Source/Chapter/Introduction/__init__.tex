@@ -75,18 +75,18 @@ vérifier ou valider plusieurs aspects de cette spécification.
 \section{\inenglish{Behavioral Interface Specification Language}}
 
 Le terme {\strong spécification} signifie généralement une description précise
-des comportements et propriétés d'un artéfact. {\strong Vérification} signifie
-prouver qu'une implémentation (un programme) satisfait une spécification
-particulière dans toutes les exécutions et configurations possibles.
-Généralement, une telle preuve est accomplie à l'aide de raisonnements
-statiques, c'est~à~dire uniquement par analyse du programme. Lorsqu'un
-raisonnement statique n'est pas possible ou suffisant, nous pourrons utiliser
-une {\strong validation} dynamique, pour tester l'implémentation, c'est~à~dire
-que nous exécuterons le programme dans des configurations différentes (qui sont
-des sous-ensembles de toutes les configurations possibles). Une validation
-dynamique est un test. Elle peut être accompagnée d'un \inenglish{Runtime
-Assertion Checker}, abrégé RAC~\acite{Geller76}, qui permet de valider une
-spécification lors d'une exécution du programme.
+des comportements et propriétés d'un artéfact~\acite{HatcliffLLMP12}. {\strong
+Vérification} signifie prouver qu'une implémentation (un programme) satisfait
+une spécification particulière dans toutes les exécutions et configurations
+possibles.  Généralement, une telle preuve est accomplie à l'aide de
+raisonnements statiques, c'est~à~dire uniquement par analyse du programme.
+Lorsqu'un raisonnement statique n'est pas possible ou suffisant, nous pourrons
+utiliser une {\strong validation} dynamique, pour tester l'implémentation,
+c'est~à~dire que nous exécuterons le programme dans des configurations
+différentes (qui sont des sous-ensembles de toutes les configurations
+possibles). Une validation dynamique est un test. Elle peut être accompagnée
+d'un \inenglish{Runtime Assertion Checker}, abrégé RAC~\acite{Geller76}, qui
+permet de valider une spécification lors d'une exécution du programme.
 
 Un {\strong langage de spécification} formel est une notation précise pour
 décrire les comportements et propriétés d'un programme. Les {\strong notations
@@ -99,7 +99,7 @@ spécialisés, en fonction de la catégorie de problèmes ou langages qu'ils
 visent~: ensembliste, logique, typage statique et fort, ou dynamique et faible,
 orienté objet ou fonctionnel etc.
 
-Par ailleurs, puisqu'une notation est formelle, elle peut être exploitée par une
+Par ailleurs, quand une notation est formelle, elle peut être exploitée par une
 machine pour y appliquer un traitement automatique. Les spécifications formelles
 peuvent alors aider à {\strong automatiser le test}, autant pour générer les
 données de test~\acite{BernotGM91, KorelA98, SankarH94, Jalote92} que pour
@@ -117,22 +117,22 @@ tenants et ses aboutissants. Par ailleurs, lors d'une phase de
 l'erreur. Par exemple, si une propriété est violée, il sera plus facile à
 l'utilisateur de situer l'erreur dans un comportement spécifique. Dans le cas où
 nous travaillons en {\strong boîte blanche} (\inenglish{white-box}),
-c'est~à~dire où nous avons accès au code source du programme, les annotations
+c'est~à~dire quand le code source du programme est accessible, les annotations
 peuvent faire partie de la grammaire du langage, ou alors, elles sont écrites
 dans des commentaires. Dans le cas où nous travaillons en {\strong boîte noire}
-(\inenglish{black-box}), c'est~à~dire où nous n'avons pas ou partiellement accès
-au code source, les annotations peuvent parfois être externes au programme, par
-exemple sur un langage de définition d'interface (\inenglish{Interface
-Definition Language}, abrégé IDL) ou sur un modèle, ce qui nous rapprocherait du
-\inenglish{Model-based Testing}, abrégé MbT~\acite{Utting07}. La différence
-entre boîte noire et boîte blanche peut parfois être plus
-subtile~\acite{Gaudel11}~: nous considérons que nous sommes en boîte noire quand
-nous n'exploitons pas la structure du code, basiquement le contenu des fonctions
-et méthodes, sinon, nous sommes en boîte blanche.
+(\inenglish{black-box}), c'est~à~dire quand il n'y a pas ou partiellement
+d'accès au code source, les annotations peuvent parfois être externes au
+programme, par exemple sur un langage de définition d'interface
+(\inenglish{Interface Definition Language}, abrégé IDL) ou sur un modèle, ce qui
+nous rapprocherait du \inenglish{Model-based Testing}, abrégé
+MbT~\acite{Utting07}. La différence entre boîte noire et boîte blanche peut
+parfois être plus subtile~\acite{Gaudel11}~: nous considérons que nous sommes en
+boîte noire quand nous n'exploitons pas la structure du code, basiquement le
+contenu des fonctions et méthodes, sinon, nous sommes en boîte blanche.
 
 Les langages d'annotations sont des \inenglish{Behavioral Interface
-Specification Language}, abrégé BISL. C'est dans cette catégorie de langages que
-se situent nos contributions.
+Specification Language}, abré\-gé BISL. C'est dans cette catégorie de langages
+que se situent nos contributions.
 
 \section{Contexte et problématique}
 
@@ -158,10 +158,11 @@ les données. PHP est un langage de script interprété. Il existe plusieurs
 interpréteurs, appelés machines virtuelles. Nous pouvons voir PHP comme un
 langage «~glue~» (comme la majorité des langages de script), c'est~à~dire qu'il
 communique avec à peu près tout et est au centre de beaucoup de logiciels. La
-syntaxe du langage est inspirée de C, C++, Java ou encore Perl.  Depuis
+syntaxe du langage est inspirée de C, C++, Java ou encore Perl. Depuis
 plusieurs années, le langage connaît des améliorations importantes afin de faire
-oublier les erreurs de conception passées qui lui sont trop souvent associées.
-Nous nous intéressons à des programmes écrits en PHP pour plusieurs raisons.
+oublier les erreurs de conception passées qui lui sont trop souvent
+associées\footnote{Voir \url{https://wiki.php.net/rfc}.}. Nous nous intéressons
+à des programmes écrits en PHP pour plusieurs raisons.
 
 Comparés à des langages plus traditionnels, comme C ou Java, les langages de
 scripts accélèrent le processus de développement grâce à la flexibilité qu'ils
@@ -198,19 +199,18 @@ PHP côté serveur. Ces travaux sont intéressants pour, d'une part, tester la
 sécurité, et d'autre part, tester des programmes existants.
 
 Toutefois les méthodes de développement ont énormément évolué ces dernières
-années avec la qualité logicielle~\acite{LepineSF09}. Les horribles programmes
-tels ceux que nous avons lus ou écrits en PHP tendent à disparaître. De nouveaux
-\inenglish{frameworks} ou de nouvelles bibliothèques PHP ont fait leur
-apparition et mettent en avant l'usage intensif de bonnes pratiques pour le
-développement de programmes maintenables et testables. Des
+années avec la qualité logicielle~\acite{LepineSF09}. Les «~horribles
+programmes~» tels ceux que nous avons lus ou écrits en PHP tendent à
+disparaître. De nouveaux \inenglish{frameworks} ou de nouvelles bibliothèques
+PHP ont fait leur apparition et mettent en avant l'usage intensif de bonnes
+pratiques pour le développement de programmes maintenables et testables. Des
 \inenglish{frameworks} de test de plusieurs natures ont également fait leur
 apparition et un programme non testé ne sera même plus installé. 
 
 En outre, aucun travail de recherche n'a fait de propositions pour spécifier des
-programmes écrits en PHP. Pourtant cela permettrait d'éviter en amont une
-multitude de problèmes. Enfin, aucun travail ne considère PHP pour la génération
-automatique de données de test ou encore la génération automatique de tests
-unitaires.
+programmes écrits en PHP. Enfin, aucun travail ne considère PHP pour la
+génération automatique de données de test ou encore la génération automatique de
+tests unitaires.
 
 Nous profitons de cette tendance d'amélioration de la qualité logicielle et de
 l'absence de travaux dans le domaine des langages de spécification pour

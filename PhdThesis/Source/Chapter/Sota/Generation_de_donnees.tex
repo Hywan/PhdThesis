@@ -63,20 +63,20 @@ trouvées, mais avec des valeurs concrètes, donc exploitables par le développe
 font le constat suivant~: malgré le fait que les travaux sur l'exécution
 symbolique soient encourageants, les outils ne sont toujours pas capables de
 passer à l'échelle. En effet, le nombre de chemins dans les programmes est
-exponentiel, et les techniques d'exécution symbolique n'arrivent plus à résoudre
-toutes les contraintes générées. De même, l'exécution symbolique ne prenait pas
-en compte l'environnement du programme, comme l'OS, le réseau ou l'utilisateur.
-Ce sont ces deux problèmes qu'adresse KLEE grâce à de la réduction et
-simplification de contraintes, des améliorations sur l'exploration des chemins
-et des optimisations de la représentation de l'environnement. KLEE utilise
-toujours STP comme solveur de contraintes.
+exponentiel, et les techniques d'exécution symbolique ne permettent plus à
+résoudre toutes les contraintes générées. De même, l'exécution symbolique ne
+permet pas de prendre en compte l'environnement du programme, comme l'OS, le
+réseau ou l'utilisateur. Ce sont ces deux problèmes qu'adresse KLEE grâce à de
+la réduction et simplification de contraintes, des améliorations sur
+l'exploration des chemins et des optimisations de la représentation de
+l'environnement. KLEE utilise toujours STP comme solveur de contraintes.
 
 \paragraph{DART.} \inenglish{Directed Automated Random Testing}, abrégé
 DART~\acite{GodefroidKS05}, est également un outil de génération de données de
 test à partir de l'analyse du programme C. DART opère en trois étapes. Il
 commence par extraire les interfaces du programme pour connaître ses entrées.
 Ensuite il génère aléatoirement des données pour ses entrées, et exécute le
-programme.  Enfin, il analyse le comportement du programme pendant son exécution
+programme. Enfin, il analyse le comportement du programme pendant son exécution
 pour détecter quels sont les chemins ou zones qui n'ont pas été atteints. Cette
 analyse va permettre de guider la génération des nouvelles entrées pour la
 prochaine exécution.
