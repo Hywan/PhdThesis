@@ -1,16 +1,16 @@
 %%
 \pgfsetcolor{dot}
   % Edge: grammar -> sequence
-  \draw [->] (69.579bp,61bp) .. controls (94.99bp,61bp) and (130.99bp,61bp)  .. (173.83bp,61bp);
+  \draw [->] (69.51bp,61bp) .. controls (101.96bp,61bp) and (152.43bp,61bp)  .. (205.66bp,61bp);
   \pgfsetstrokecolor{dotstroke}
   \draw (117bp,71.5bp) node {génération};
   % Edge: sequence -> result
-  \draw [->] (318.05bp,61bp) .. controls (354.6bp,61bp) and (397.61bp,61bp)  .. (437.78bp,61bp);
-  \draw (383bp,70.5bp) node {concrétisation};
+  \draw [->] (350.02bp,61bp) .. controls (396.2bp,61bp) and (454.51bp,61bp)  .. (501.85bp,61bp);
+  \draw (447bp,70.5bp) node {concrétisation};
   % Edge: sequenceX -> resultX
-  \draw [->] (327.8bp,18bp) .. controls (362.16bp,18bp) and (400.5bp,18bp)  .. (437.94bp,18bp);
+  \draw [->] (391.84bp,18bp) .. controls (427.81bp,18bp) and (465.08bp,18bp)  .. (501.79bp,18bp);
   % Edge: grammarX -> sequenceX
-  \draw [->] (62.047bp,18bp) .. controls (85.253bp,18bp) and (120.62bp,18bp)  .. (164.41bp,18bp);
+  \draw [->] (62.25bp,18bp) .. controls (84.901bp,18bp) and (119.37bp,18bp)  .. (164.38bp,18bp);
   % Node: grammar
 \begin{scope}
   \pgfsetstrokecolor{dotstroke}
@@ -20,19 +20,19 @@
   % Node: resultX
 \begin{scope}
   \pgfsetstrokecolor{dotstroke}
-  \draw (465bp,18bp) node {\code{7 + 42}};
+  \draw (529bp,18bp) node {\code{7 + 42}};
 \end{scope}
   % Node: sequence
 \begin{scope}
   \pgfsetstrokecolor{dotstroke}
-  \draw [state] (246bp,61bp) ellipse (72bp and 18bp);
-  \draw (246bp,61bp) node {séquence de lexèmes};
+  \draw [state] (278bp,61bp) ellipse (72bp and 18bp);
+  \draw (278bp,61bp) node {séquence de lexèmes};
 \end{scope}
   % Node: result
 \begin{scope}
   \pgfsetstrokecolor{dotstroke}
-  \draw [state,accepting] (465bp,61bp) ellipse (27bp and 18bp);
-  \draw (465bp,61bp) node {mot};
+  \draw [state,accepting] (529bp,61bp) ellipse (27bp and 18bp);
+  \draw (529bp,61bp) node {mot};
 \end{scope}
   % Node: grammarX
 \begin{scope}
@@ -42,6 +42,6 @@
   % Node: sequenceX
 \begin{scope}
   \pgfsetstrokecolor{dotstroke}
-  \draw (246bp,18bp) node {$[[\code{7} \mapsto \dots], [\code{+} \mapsto \dots], [\code{42} \mapsto \dots]]$};
+  \draw (278bp,18bp) node {$[[\code{number} \mapsto \dots], [\code{plus} \mapsto \dots], [\code{number} \mapsto \dots]]$};
 \end{scope}
 %

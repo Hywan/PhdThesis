@@ -14,7 +14,7 @@ digraph {
     }
 
     grammarX  [shape=plaintext, label=" ", texlbl="PP"];
-    sequenceX [shape=plaintext, label=" ", texlbl="$[[\code{7} \mapsto \dots], [\code{+} \mapsto \dots], [\code{42} \mapsto \dots]]$"];
+    sequenceX [shape=plaintext, label=" ", texlbl="$[[\code{number} \mapsto \dots], [\code{plus} \mapsto \dots], [\code{number} \mapsto \dots]]$"];
     resultX   [shape=plaintext, label=" ", texlbl="\code{7 + 42}"];
 
     grammar  [label=" ", texlbl="grammaire"                   ];
