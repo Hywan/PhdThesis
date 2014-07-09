@@ -135,8 +135,8 @@ l'expression est très similaire. En effet, trivialement, nous pouvons dire que
 l'opérateur \code{and} est remplacé par \code{\&\&} et que \code{or} est
 remplacé par \code{||}. Plus formellement, un prédicat Praspel est de la forme
 générale \apred{p}, où $p$ est une chaîne de caractères contenant une expression
-logique PHP en forme normale conjonctive (\inenglish{Conjunctive Normal Form},
-abrégé CNF), c'est~à~dire que $p$ est de la forme \code{$P_1$ and $\dots$ and
+logique PHP en forme normale disjonctive (\inenglish{Disjunctive Normal Form},
+abrégé DNF), c'est~à~dire que $p$ est de la forme \code{$P_1$ and $\dots$ and
 $P_m$}, où $P_j = \code{$p_{j,1}$ or $\dots$ or $p_{j,k_j}$}$ est une
 disjonction de variables ou de prédicats PHP (fonctions booléennes ou opérations
 logiques), pour $1 \leq j \leq m$. Nous notons aussi par $P_j$ la liste

@@ -458,7 +458,7 @@ actuelles. C'est pourquoi nous avons la construction «~boîte noire~» \apred{p
 où $p$ est du code PHP, pouvant contenir les constructions \aresult et \aold{i}.
 Cette construction \apred{p} permet à l'utilisateur d'exprimer des contraintes
 arbitraires en utilisant PHP lui-même au lieu de Praspel. Le code $p$ doit être
-un prédicat en forme normale {\strong conjonctive} (CNF). La construction
+un prédicat en forme normale {\strong disjonctive} (DNF). La construction
 \apred{p} supporte la validation mais pas la génération. Toutes les variables
 présentes dans $p$ doivent avoir un domaine réaliste associée (en dehors de la
 construction \apred{p}). Le prédicat \code{\bslash{}pred('\$this->getUsage() +
